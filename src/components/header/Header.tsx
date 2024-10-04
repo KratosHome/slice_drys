@@ -3,23 +3,23 @@ import React from 'react'
 import { Button } from '../button/Button'
 import Link from 'next/link'
 import Image from 'next/image'
-import LOGO from '../../../../assets/LOGO.png'
-import INSTAGRAM from '../../../../assets/LOGO_INSTAGRAM.png'
-import FACEBOOK from '../../../../assets/LOGO_FACEBOOK.png'
-import SEARCH from '../../../../assets/LOGO_SEARCH.png'
-import BASKET from '../../../../assets/LOGO_BASKET.png'
-import PHONE from '../../../../assets/LOGO_PHONE.png'
+import LOGO from '@/assets/LOGO.png'
+import INSTAGRAM from '@/assets/LOGO_INSTAGRAM.png'
+import FACEBOOK from '@/assets/LOGO_FACEBOOK.png'
+import SEARCH from '@/assets/LOGO_SEARCH.png'
+import BASKET from '@/assets/LOGO_BASKET.png'
+import PHONE from '@/assets/LOGO_PHONE.png'
 import NavBar from '../navbar/NavBar'
 
 export default function Header() {
   return (
     <header>
-      <div className="m-auto mb-6 flex h-[32px] w-[1440px] items-center justify-center bg-black text-white">
+      <div className="m-auto mb-6 flex h-[32px] w-full items-center justify-center bg-black text-white">
         <p className="text-base font-medium leading-6">
           Безкоштовна доставка від 1000 грн.
         </p>
       </div>
-      <div className="relative m-auto flex h-[124.45px] w-[1240px] grid-cols-2 justify-between bg-[#E4E4E4] text-black">
+      <div className="relative m-auto flex h-[124.45px] w-[1240px] grid-cols-2 justify-between border-b-[1px] bg-[#FFFFFF] text-black">
         <div className="relative grid h-[100.45px] w-[663px] grid-cols-2">
           <div className="relative grid h-[100px] w-[375px] grid-rows-2">
             <NavBar />
@@ -56,7 +56,7 @@ export default function Header() {
                 Доставка
               </Link>
             </nav>
-            <div className="flex h-[32px] w-[148px] justify-between border-2">
+            <div className="flex h-[32px] w-[148px] items-center justify-between">
               <div>
                 <span onClick={() => null} className="cursor-pointer">
                   UA

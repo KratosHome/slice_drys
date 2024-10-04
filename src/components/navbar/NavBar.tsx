@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import CastomSelect from '../dropdown/DropDown'
+import DropDown from '../dropdown/DropDown'
 
 export default function NavBar() {
   return (
     <nav className="relative flex items-center justify-between">
-      <CastomSelect />
+      <DropDown />
       <Link href={'/catalog'} className="text-xl font-normal hover:scale-110">
         Каталог
       </Link>
