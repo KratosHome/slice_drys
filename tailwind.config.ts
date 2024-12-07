@@ -1,11 +1,15 @@
 import type { Config } from 'tailwindcss'
 
-const constants = {
+export const colorConstants = {
   white: '#FBFBFB',
   black: '#0F0F0F',
   red: '#A90909',
   light_gray: '#E4E4E4',
-}
+  mid_gray: '#9B9B9B',
+  orange: '#ec9006',
+  purple: '#b7006e',
+  green: '#07c70d',
+} as const
 
 const config: Config = {
   darkMode: ['class'],
@@ -17,7 +21,7 @@ const config: Config = {
   theme: {
     colors: {
       transparent: 'colors.transparent',
-      ...constants,
+      ...colorConstants,
     },
     extend: {
       screens: {
