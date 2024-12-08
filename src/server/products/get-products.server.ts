@@ -1,5 +1,6 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
+import { IProduct, IProductLocal } from '@/types/product'
 
 export async function getProducts(
   page = 1,

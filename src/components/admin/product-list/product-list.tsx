@@ -35,6 +35,12 @@ import {
 import Image from 'next/image'
 import { FC } from 'react'
 import EditorProduct from '@/components/admin/editor-product/editor-product'
+import {
+  IGetProduct,
+  IProduct,
+  IRecommendations,
+  IVariableProduct,
+} from '@/types/product'
 
 interface IProductList {
   data: IGetProduct

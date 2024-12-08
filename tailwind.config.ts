@@ -22,10 +22,7 @@ const config: Config = {
     extend: {
       screens: {
         lap: {
-          max: '991px',
-        },
-        mob: {
-          max: '767px',
+          min: '991px',
         },
       },
       backgroundImage: {
@@ -89,6 +86,9 @@ const config: Config = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+      },
+      fontFamily: {
+        poppins: ['var(--fontFamily)', 'sans-serif'],
       },
     },
   },

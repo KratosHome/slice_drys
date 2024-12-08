@@ -134,7 +134,7 @@ export const Hero = () => {
           </div>
         ))}
       </nav>
-      <div className="relative mx-auto h-[552px] w-full max-w-[1104px]">
+      <div className="relative mx-auto mb-20 h-[552px] w-full max-w-[1104px] md:mb-24 lg:mb-28 xl:mb-32">
         <Image
           src="/icons/slider-line.svg"
           fill={true}

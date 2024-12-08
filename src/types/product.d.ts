@@ -82,3 +82,13 @@ interface IGetProduct {
   success: boolean
   message: string
 }
+export interface IProductCard {
+  _id?: IProduct['_id']
+  name: IProduct['name']
+  img: string
+  available: boolean
+  newPrice?: number[]
+  price: number[]
+  weight: IRecommendations['weight']
+  badges: { type: string; label: string }[]
+}
