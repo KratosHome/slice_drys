@@ -80,6 +80,7 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+
 @keyframes rotation {
   from {
     transform: rotate(0deg);
@@ -87,4 +88,8 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  @apply mx-auto max-w-[1280px];
 }
