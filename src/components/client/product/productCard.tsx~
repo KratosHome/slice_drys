@@ -1,0 +1,95 @@
+import React from 'react'
+import { IProductLocal } from '@/types/product'
+import Image from 'next/image'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import Button from '@/components/client/ui/button'
+
+interface ProductCardProps {
+  product: IProductLocal
+  selectedWeightIndex: number
+  onWeightChange: (productId: string, weightIndex: number) => void
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  selectedWeightIndex,
+  onWeightChange,
+}) => {
+  const selectedVariant = product.variables[selectedWeightIndex]
+  useEffect(() => {
+    // Оновлюємо вибрану вагу при зміні продукту
+    onWeightChange(product._id, selectedWeightIndex || 0);
+  }, [product._id, selectedWeightIndex]);
+
+  return (
+    <div className="product-card flex flex-col items-center rounded-lg bg-white p-4 shadow-md">
+      {/* Labels */}
+      <div className="labels mb-2 flex gap-2">
+        {product.statusLabel?.includes('top') && (
+          <span className="badge badge-top">ТОП</span>
+        )}
+        {product.statusLabel?.includes('new') && (
+          <span className="badge badge-new">Новинка</span>
+        )}
+        {product.statusLabel?.includes('sale') && (
+          <span className="badge badge-sale">Акція</span>
+        )}
+      </div>
+
+      {/* Image */}
+      <Image
+        src={product.img || '/placeholder.png'}
+        alt={product.name?.uk || 'Назва недоступна'}
+        width={200}
+        height={200}
+        className="mb-4 rounded-md object-contain"
+      />
+
+      {/* Name */}
+      <h3 className="mb-2 text-center text-lg font-semibold">
+        {product.name?.uk || 'Назва недоступна'}
+      </h3>
+
+      {/* Select weight */}
+      <Select
+        onValueChange={(value) => onWeightChange(product._id, Number(value))}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder={`${selectedVariant.weight} г`} />
+        </SelectTrigger>
+        <SelectContent>
+          {product.variables.map((variant, index) => (
+            <SelectItem key={index} value={index.toString()}>
+              {variant.weight} г
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      {/* Prices */}
+      <div className="prices mt-4 flex flex-col items-center">
+        {selectedVariant.newPrice > 0 && (
+          <p className="text-gray-500 text-sm line-through">
+            {selectedVariant.price} грн
+          </p>
+        )}
+        <p className="text-red-500 text-lg font-bold">
+          {selectedVariant.newPrice || selectedVariant.price} грн
+        </p>
+      </div>
+
+      {/* Add to cart button */}
+      <Button type="button" variant="button" className="mt-4">
+        До кошика
+      </Button>
+    </div>
+  )
+}
+
+export default ProductCard

@@ -1,5 +1,6 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
+import { IProduct, IProductLocal } from '@/types/product'
 
 export async function getProducts(
   page = 1,
@@ -59,6 +60,12 @@ export async function getProducts(
       variables: product.variables,
       statusLabel: product.statusLabel,
       nutritionalValue: product.nutritionalValue,
+      available: product.available,
+      weight: product.weight,
+      price: product.price,
+      badges: product.badges,
+      type: product.type,
+      label: product.label,
     }))
 
     const allProducts: IProductLocal[] = fetchAll

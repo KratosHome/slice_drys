@@ -3,6 +3,7 @@ import React from 'react'
 import { getProducts } from '@/server/products/get-products.server'
 import { ProductList } from '@/components/admin/product-list/product-list'
 import { findProductInfoItems } from '@/server/products/find-product-info-items.server'
+import { IGetProduct, IRecommendations } from '@/types/product'
 
 export default async function Home({ params: { locale } }: IPage) {
   const products: IGetProduct = await getProducts(
