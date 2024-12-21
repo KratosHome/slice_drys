@@ -6,6 +6,7 @@ export const colorConstants = {
   red: '#A90909',
   light_gray: '#E4E4E4',
   mid_gray: '#9B9B9B',
+  dark_gray: '#7d7d7d',
   orange: '#ec9006',
   purple: '#b7006e',
   green: '#07c70d',
