@@ -4,11 +4,9 @@ import { findProductInfoItems } from '@/server/products/find-product-info-items.
 import { getProducts } from '@/server/products/get-products.server'
 
 export default async function Home(props: IPage) {
-  const params = await props.params;
+  const params = await props.params
 
-  const {
-    locale
-  } = params;
+  const { locale } = params
 
   const products: IGetProduct = await getProducts(
     1,
