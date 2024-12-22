@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Accordion,
   AccordionContent,
@@ -16,12 +18,27 @@ import {
   SelectLabel,
   SelectItem,
 } from '@/components/client/ui/select'
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
+
+import '@splidejs/react-splide/css'
 
 export default function ProductPage() {
   return (
     <main className="container px-5 font-poppins lg:px-0">
       <section className="mb-20 mt-[6.25rem] flex border border-light_gray pb-10">
-        <div className="w-1/2">Images</div>
+        <div className="w-1/2">
+          <Splide aria-label="My Favorite Images">
+            <SplideSlide>
+              <img src="/sliders/meat.png" alt="Image 1" />
+            </SplideSlide>
+            <SplideSlide>
+              <img src="/sliders/fruit.png" alt="Image 2" />
+            </SplideSlide>
+            <SplideSlide>
+              <img src="/sliders/fruit.png" alt="Image 2" />
+            </SplideSlide>
+          </Splide>
+        </div>
 
         <div className="w-1/2">
           <Title />
