@@ -49,29 +49,27 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="mb-[20px] flex h-full w-full flex-col items-center justify-between gap-4">
           <div className="flex w-full justify-between text-white">
-            <div className="flex flex-col gap-1">
-              <CardItem
-                translateZ={30}
-                className="z-10 rounded-sm bg-[#07C70D] px-2 py-1"
-              >
-                Новинка
-              </CardItem>
-              <CardItem translateZ={30} className="z-10 bg-[#A90909] px-2 py-1">
-                Акція
-              </CardItem>
-              <CardItem
-                translateZ={30}
-                className="rounded-sm bg-[#EC9006] px-2 py-1"
-              >
-                ТОП
-              </CardItem>
-            </div>
-            <CardItem
-              translateZ={30}
-              className="h-max rounded-sm bg-[#7D7D7D] px-2 py-1"
-            >
-              Очікуйте скоро будк!
+            <CardItem translateZ={30} className="flex flex-col gap-1">
+              {product.statusLabel.includes('new') && (
+                <div className="z-10 rounded-sm bg-[#07C70D] px-2 py-1">
+                  Новинка
+                </div>
+              )}
+              {product.statusLabel.includes('sale') && (
+                <div className="z-10 bg-[#A90909] px-2 py-1">Акція</div>
+              )}
+              {product.statusLabel.includes('top') && (
+                <div className="rounded-sm bg-[#EC9006] px-2 py-1">ТОП</div>
+              )}
             </CardItem>
+            {selectedVariable.count === 0 && (
+              <CardItem
+                translateZ={30}
+                className="h-max rounded-sm bg-[#7D7D7D] px-2 py-1"
+              >
+                Очікуйте скоро будк!
+              </CardItem>
+            )}
           </div>
           <CardItem
             translateZ={70}
@@ -117,22 +115,21 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             </CardItem>
           </div>
           <div className="flex w-full justify-between">
-            <div>
-              <CardItem
-                translateZ={130}
-                className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg"
-              >
-                {selectedVariable.newPrice} {selectedVariable.currency}
-              </CardItem>
-              <CardItem
-                translateZ={160}
-                className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl"
-              >
-                {selectedVariable.price} {selectedVariable.currency}
-              </CardItem>
-            </div>
             <CardItem translateZ={30}>
-              <div onClick={(e) => e.stopPropagation()}>
+              <div className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
+                {selectedVariable.newPrice} {selectedVariable.currency}
+              </div>
+              <div className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                {selectedVariable.price} {selectedVariable.currency}
+              </div>
+            </CardItem>
+            <CardItem translateZ={80}>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+              >
                 <Button
                   className="!z-50"
                   type="button"
