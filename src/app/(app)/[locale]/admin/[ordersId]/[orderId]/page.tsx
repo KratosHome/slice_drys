@@ -1,6 +1,9 @@
-export default async function ProductPage(props: any) {
-  const params = await props.params
-  const { ordersId } = params
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ ordersId: string }>
+}) {
+  const ordersId = (await params).ordersId
 
   return (
     <div>

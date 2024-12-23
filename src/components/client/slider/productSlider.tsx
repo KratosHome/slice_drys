@@ -27,7 +27,7 @@ export default function ProductSlider({
 }: ProductSlider) {
   const splideOptions = {
     arrowPath: Arrow(),
-    autoplay: true,
+    // autoplay: true,
     omitEnd: true,
     perPage: 3,
     perMove: 1,

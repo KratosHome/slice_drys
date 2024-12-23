@@ -205,7 +205,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                           key={variable._id}
                           value={String(variable._id)}
                         >
-                          {variable.weight} {variable.currency}
+                          {variable.weight} г
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -216,12 +216,24 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </div>
           <div className="flex w-full items-end justify-between">
             <CardItem translateZ={30}>
-              <div className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
-                {selectedVariable.newPrice} {selectedVariable.currency}
-              </div>
-              <div className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                {selectedVariable.price} {selectedVariable.currency}
-              </div>
+              {selectedVariable.newPrice ? (
+                <>
+                  {selectedVariable.price && (
+                    <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
+                      {selectedVariable.price} {selectedVariable.currency}
+                    </p>
+                  )}
+                  <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                    {selectedVariable.newPrice} {selectedVariable.currency}
+                  </p>
+                </>
+              ) : (
+                selectedVariable.price && (
+                  <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                    {selectedVariable.price} {selectedVariable.currency}
+                  </p>
+                )
+              )}
             </CardItem>
             <CardItem translateZ={80}>
               <div
