@@ -37,11 +37,11 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       console.log('Продукт додано до кошика:', productInfo)
       alert('Товар додано до кошика!')
     } else {
-      alert('Товар вже в дорозі!')
+      alert('Товар тимчасово відсутній на складі. Очікуємо!')
     }
   }
 
-  const handleVariableChange = (value: string) => {
+  const handleVariableChange = (value: number | string) => {
     const selected = product.variables.find(
       (variable) => variable._id === value,
     )
@@ -191,7 +191,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               <div onClick={(e) => e.stopPropagation()}>
                 <Select
                   onValueChange={handleVariableChange}
-                  defaultValue={product.variables[0]._id}
+                  defaultValue={String(product.variables[0]._id)}
                 >
                   <SelectTrigger className="w-fit border-none shadow-none outline-none">
                     <SelectValue
@@ -201,7 +201,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   <SelectContent>
                     <SelectGroup>
                       {product.variables.map((variable) => (
-                        <SelectItem key={variable._id} value={variable._id}>
+                        <SelectItem
+                          key={variable._id}
+                          value={String(variable._id)}
+                        >
                           {variable.weight} {variable.currency}
                         </SelectItem>
                       ))}

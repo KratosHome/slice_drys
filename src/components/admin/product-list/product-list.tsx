@@ -169,7 +169,7 @@ export const ProductList: FC<IProductList> = ({ data, recommendations }) => {
       cell: ({ row }) => {
         const product = row.original as IProduct
         const id = product._id
-        const fineProduct = data.productAll.find((item) => item._id === id)
+        const fineProduct = data.productAll?.find((item) => item._id === id)
         return (
           <>
             <EditorProduct
