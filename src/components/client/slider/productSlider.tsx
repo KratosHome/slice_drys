@@ -27,7 +27,7 @@ export default function ProductSlider({
 }: ProductSlider) {
   const splideOptions = {
     arrowPath: Arrow(),
-    autoplay: true,
+    // autoplay: true,
     omitEnd: true,
     perPage: 3,
     perMove: 1,
@@ -40,11 +40,11 @@ export default function ProductSlider({
         gap: '0px',
       },
       768: {
-        perPage: 2.2,
+        perPage: 2.1,
         gap: '4px',
       },
       992: {
-        perPage: 2.2,
+        perPage: 2.1,
         gap: '14px',
       },
       1024: {
@@ -67,7 +67,7 @@ export default function ProductSlider({
   }
 
   return (
-    <div className="mx-auto mb-12 mt-10 max-w-6xl px-0 lg:px-4">
+    <div className="mx-auto mb-48 mt-10 max-w-6xl px-0 lg:px-4">
       <div className="px-[20px] py-16 md:py-20 lg:py-24 xl:py-[130px]">
         <h2
           className={`${rubikDoodleShadow.className} mb-2 text-[32px] sm:mb-4 sm:text-5xl md:mb-6 md:text-6xl lg:mb-8 lg:text-7xl xl:mb-12 xl:text-8xl`}

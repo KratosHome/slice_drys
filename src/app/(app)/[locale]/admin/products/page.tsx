@@ -3,12 +3,12 @@ import { ProductList } from '@/components/admin/product-list/product-list'
 import { findProductInfoItems } from '@/server/products/find-product-info-items.server'
 import { getProducts } from '@/server/products/get-products.server'
 
-export default async function Home(props: IPage) {
-  const params = await props.params;
-
-  const {
-    locale
-  } = params;
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
 
   const products: IGetProduct = await getProducts(
     1,

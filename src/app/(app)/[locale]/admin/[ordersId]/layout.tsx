@@ -3,14 +3,16 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { tabsOrder } from '@/data/tabs-order'
+import { use } from 'react'
 
 export default function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode
-  params: { locale: LanguageType }
+  params: Promise<{ locale: LanguageType }>
 }) {
+  const { locale } = use(params)
   const pathname = usePathname()
 
   const getNewOrders = [{ id: '1', status: 'new' }]
