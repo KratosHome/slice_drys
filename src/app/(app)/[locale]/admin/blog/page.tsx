@@ -5,8 +5,7 @@ export default async function Blog({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params // Ждем разрешения промиса, чтобы извлечь значение locale
-
+  const { locale } = await params
   return (
     <div className="px-5">
       <div className="flex items-end justify-between">
