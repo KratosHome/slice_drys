@@ -12,7 +12,7 @@ import {
 } from '@/components/admin/ui/alert-dialog'
 import { Button } from '@/components/admin/ui/button'
 import Quill from 'quill'
-
+import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 
 interface ICratePost {
@@ -34,7 +34,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
 
   return (
     <div>
-      <div ref={editorRef}></div>
       {loading && <Loading />}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
@@ -45,7 +44,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
             <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            <div ref={editorRef}>111</div>
+            <QuillEditor />
           </AlertDialogDescription>
           <AlertDialogFooter>
             <div>22</div>
