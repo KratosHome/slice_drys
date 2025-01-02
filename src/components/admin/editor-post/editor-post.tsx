@@ -51,10 +51,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
             <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            <QuillEditor
-              content='{"ops":[{"insert":"test\n"}]}'
-              setContent={setQuillEditorContent}
-            />
+            <QuillEditor content="" setContent={setQuillEditorContent} />
           </AlertDialogDescription>
           <AlertDialogFooter>
             <div>22</div>

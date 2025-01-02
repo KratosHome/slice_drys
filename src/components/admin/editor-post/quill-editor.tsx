@@ -18,8 +18,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
       theme: 'snow',
       placeholder: 'Add message',
     })
-
-    quillRef.current.setContents(JSON.parse(content))
+    if (content) quillRef.current.setContents(JSON.parse(content))
 
     quillRef.current.on('text-change', () => {
       const currentContent = JSON.stringify(quillRef.current!.getContents())
