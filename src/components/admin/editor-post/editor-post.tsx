@@ -11,7 +11,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/admin/ui/alert-dialog'
 import { Button } from '@/components/admin/ui/button'
-import Quill from 'quill'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 
@@ -24,14 +23,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
   const [isOpen, setIsOpen] = useState(false)
   const editorRef = useRef<HTMLDivElement | null>(null)
   const [quillEditorContent, setQuillEditorContent] = useState<string>('')
-
-  useEffect(() => {
-    if (editorRef.current) {
-      new Quill(editorRef.current, {
-        theme: 'snow', // Specify theme in options
-      })
-    }
-  }, [editorRef])
 
   return (
     <div>
