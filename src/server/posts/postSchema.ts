@@ -30,7 +30,7 @@ const postSchema = new mongoose.Schema(
     },
     metaDescription: {
       type: String,
-      maxlength: 160,
+      maxlength: 160, // Typical length for SEO
       required: false,
     },
     keywords: {

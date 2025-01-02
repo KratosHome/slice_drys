@@ -3,22 +3,27 @@ import { connectToDb } from '@/server/connectToDb'
 import { Post } from './postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
 
-export async function createPost(formData: IPostLocal, image: string) {
+export async function createPost(formData: IPostLocal, image?: string) {
   'use server'
   try {
     await connectToDb()
 
-    const upload = await cloudinary.uploader.upload(image, {
-      folder: 'post-slice',
-    })
+    let imageUrl = ''
+    if (image) {
+      const upload = await cloudinary.uploader.upload(image, {
+        folder: 'post-slice',
+      })
+      imageUrl = upload.secure_url
+    }
 
-    const postData = { ...formData, img: upload.secure_url }
+    const postData = { ...formData, img: imageUrl }
 
     const post = new Post(postData)
     await post.save()
 
     return { success: true, message: 'Post created' }
   } catch (error) {
+    console.error('Error creating post:', error)
     return { success: false, message: "Can't create post" }
   }
 }

@@ -1,9 +1,9 @@
 interface IPostLocal {
   _id?: string
-  title: ILocalizedString
-  content: ILocalizedString
+  title?: string
+  content?: string
   img?: string
-  author?: ILocalizedString
+  author?: string
   date?: Date
   slug: string
   metaDescription?: string
