@@ -24,12 +24,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
   const editorRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && editorRef.current) {
-      const Quill = require('quill')
-      new Quill(editorRef.current, {
-        theme: 'snow',
-      })
-    }
+    const Quill = require('quill')
+    new Quill(editorRef.current, {
+      theme: 'snow',
+    })
   }, [])
 
   return (
