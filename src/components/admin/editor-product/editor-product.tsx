@@ -902,7 +902,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                     Скасувати
                   </Button>
                   <Button type="submit" disabled={loading}>
-                    {buttonTitle}--
+                    {buttonTitle}
                   </Button>
                 </div>
               </div>
