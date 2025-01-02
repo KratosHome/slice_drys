@@ -4,20 +4,19 @@ import React, { useEffect, useRef } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 
-const QuillEditor = () => {
-  const editorRef = useRef<HTMLDivElement | null>(null)
+const QUILL_CONTAINER_ID = 'js-editor-container'
 
+const QuillEditor = () => {
   useEffect(() => {
-    if (editorRef.current) {
-      new Quill(editorRef.current, {
-        theme: 'snow',
-      })
-    }
+    const quill = new Quill(`#${QUILL_CONTAINER_ID}`, {
+      theme: 'snow',
+      placeholder: 'Add message',
+    })
   }, [])
 
   return (
     <div>
-      <div ref={editorRef}></div>
+      <div id={QUILL_CONTAINER_ID}></div>
     </div>
   )
 }
