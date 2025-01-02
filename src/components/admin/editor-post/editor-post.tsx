@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/admin/ui/button'
 import Quill from 'quill'
 
-import 'quill/dist/quill.snow.css' // Import Quill styles
+import 'quill/dist/quill.snow.css'
 
 interface ICratePost {
   buttonTitle: string
@@ -45,8 +45,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
             <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            <div ref={editorRef}></div>
+            <div ref={editorRef}>111</div>
           </AlertDialogDescription>
+          <AlertDialogFooter>
+            <div>22</div>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
