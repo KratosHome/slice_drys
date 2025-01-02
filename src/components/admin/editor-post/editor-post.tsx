@@ -23,6 +23,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
   const [loading, setLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const editorRef = useRef<HTMLDivElement | null>(null)
+  const [quillEditorContent, setQuillEditorContent] = useState<string>('')
 
   useEffect(() => {
     if (editorRef.current) {
@@ -41,10 +42,19 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle }) => {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
+            <Button
+              variant="outline"
+              onClick={() => console.log(quillEditorContent)}
+            >
+              test
+            </Button>
             <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            <QuillEditor content='{"ops":[{"insert":"test\n"}]}' />
+            <QuillEditor
+              content='{"ops":[{"insert":"test\n"}]}'
+              setContent={setQuillEditorContent}
+            />
           </AlertDialogDescription>
           <AlertDialogFooter>
             <div>22</div>
