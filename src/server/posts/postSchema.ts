@@ -4,12 +4,11 @@ const postSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
-      maxlength: 255,
+      required: false,
     },
     content: {
       type: String,
-      required: true,
+      required: false,
     },
     img: {
       type: String,
@@ -26,11 +25,11 @@ const postSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
-      unique: true,
+      unique: false, // todo change to true
     },
     metaDescription: {
       type: String,
-      maxlength: 160, // Typical length for SEO
+      maxlength: 160,
       required: false,
     },
     keywords: {

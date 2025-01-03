@@ -1,6 +1,6 @@
 interface IPostLocal {
   _id?: string
-  title?: string
+  title?: ILocalizedString
   content?: string
   img?: string
   author?: string
