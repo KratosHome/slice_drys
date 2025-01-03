@@ -37,22 +37,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '1', uk: '2' },
+      title: { en: '', uk: '' },
+      content: '',
     },
   })
 
-  // const postData: IPostLocal = {
-  //   content: 'quillEditorContent',
-
-  //   img: 'path/to/image.jpqg',
-  //   author: 'John Doe',
-
-  //   date: new Date('2023-10-15'),
-  //   slug: 'test-slug',
-  //   metaDescription: 'A brief description of the sample post content.',
-  //   keywords: ['sample', 'post', 'typescript'],
-  //   readingTime: 5,
-  // }
+  useEffect(() => {
+    setValue('content', quillEditorContent)
+  }, [quillEditorContent, setValue])
 
   const onSubmit = async (data: IPostLocal) => {
     console.log(data)
@@ -105,7 +97,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   </div>
                 </div>
 
-                <QuillEditor content="" setContent={setQuillEditorContent} />
+                <QuillEditor
+                  content={quillEditorContent}
+                  setContent={setQuillEditorContent}
+                />
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
