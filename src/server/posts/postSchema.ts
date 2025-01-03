@@ -3,8 +3,18 @@ import mongoose from 'mongoose'
 const postSchema = new mongoose.Schema(
   {
     title: {
-      type: String,
-      required: false,
+      en: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
+      uk: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
     },
     content: {
       type: String,
@@ -24,7 +34,7 @@ const postSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
+      required: false,
       unique: false, // todo change to true
     },
     metaDescription: {

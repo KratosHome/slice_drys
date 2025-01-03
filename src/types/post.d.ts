@@ -5,7 +5,7 @@ interface IPostLocal {
   img?: string
   author?: string
   date?: Date
-  slug: string
+  slug?: string
   metaDescription?: string
   keywords?: string[]
   readingTime?: number

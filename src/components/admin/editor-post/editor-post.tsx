@@ -37,7 +37,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '', uk: '' },
+      title: { en: '1', uk: '2' },
     },
   })
 
@@ -55,7 +55,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }
   const onSubmit = async (data: IPostLocal) => {
     console.log(data)
-    // createPost(postData)
+    createPost(data)
   }
 
   return (
@@ -71,7 +71,41 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>
-              <QuillEditor content="" setContent={setQuillEditorContent} />
+              <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
+                <div className="flex justify-between">
+                  <div>
+                    <Label htmlFor="name-uk">Назва (UK)</Label>
+                    <Input
+                      id="title-uk"
+                      {...register('title.uk', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.title?.uk && (
+                      <span className="text-red">
+                        {errors.title.uk.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="title-en">Назва (EN)</Label>
+                    <Input
+                      id="title-en"
+                      {...register('title.en', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.title?.en && (
+                      <span className="text-red">
+                        {errors.title.en.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <QuillEditor content="" setContent={setQuillEditorContent} />
+              </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
               <Button type="submit">{buttonTitle}</Button>
