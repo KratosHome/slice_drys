@@ -20,14 +20,14 @@ import { createPost } from '@/server/posts/create-post.server'
 
 interface ICratePost {
   buttonTitle: string
-  post: IPostLocal
+  post?: IPostLocal
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
-  const [loading, setLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const editorRef = useRef<HTMLDivElement | null>(null)
-  const [quillEditorContent, setQuillEditorContent] = useState<string>('')
+  const [quillEditorContent, setQuillEditorContent] = useState<string>(
+    post?.content || '{\"ops\":[{\"insert\":\"1"}]}',
+  )
 
   const {
     register,
@@ -37,7 +37,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '', uk: '' },
+      title: { en: '1', uk: '1' },
       content: '',
     },
   })
@@ -53,7 +53,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   return (
     <div>
-      {loading && <Loading />}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
           <Button>{buttonTitle}</Button>
