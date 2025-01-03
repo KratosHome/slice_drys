@@ -41,18 +41,19 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     },
   })
 
-  const postData: IPostLocal = {
-    content: 'quillEditorContent',
+  // const postData: IPostLocal = {
+  //   content: 'quillEditorContent',
 
-    img: 'path/to/image.jpqg',
-    author: 'John Doe',
+  //   img: 'path/to/image.jpqg',
+  //   author: 'John Doe',
 
-    date: new Date('2023-10-15'),
-    slug: 'test-slug',
-    metaDescription: 'A brief description of the sample post content.',
-    keywords: ['sample', 'post', 'typescript'],
-    readingTime: 5,
-  }
+  //   date: new Date('2023-10-15'),
+  //   slug: 'test-slug',
+  //   metaDescription: 'A brief description of the sample post content.',
+  //   keywords: ['sample', 'post', 'typescript'],
+  //   readingTime: 5,
+  // }
+
   const onSubmit = async (data: IPostLocal) => {
     console.log(data)
     createPost(data)
@@ -74,7 +75,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
                 <div className="flex justify-between">
                   <div>
-                    <Label htmlFor="name-uk">Назва (UK)</Label>
+                    <Label htmlFor="name-uk">Заголовок (UK)</Label>
                     <Input
                       id="title-uk"
                       {...register('title.uk', {
@@ -89,7 +90,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   </div>
 
                   <div>
-                    <Label htmlFor="title-en">Назва (EN)</Label>
+                    <Label htmlFor="title-en">Заголовок (EN)</Label>
                     <Input
                       id="title-en"
                       {...register('title.en', {
