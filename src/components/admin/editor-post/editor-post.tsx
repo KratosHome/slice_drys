@@ -45,7 +45,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '1', uk: '1' },
+      title: { en: '', uk: '' },
       content: {
         en: '{\"ops\":[{\"insert\":\"1"}]}',
         uk: '{\"ops\":[{\"insert\":\"2"}]}',
