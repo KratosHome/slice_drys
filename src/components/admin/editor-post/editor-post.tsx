@@ -137,6 +137,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 <RadioGroup defaultValue="en" onChange={handleRadioChange}>
                   <div className="start flex gap-4">
                     <div className="flex gap-1">
+                      <Label>Контент</Label>
+                    </div>
+                    <div className="flex gap-1">
                       <Label>en</Label>
                       <RadioGroupItem value="en"> </RadioGroupItem>
                     </div>
