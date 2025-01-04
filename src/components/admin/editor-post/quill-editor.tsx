@@ -38,13 +38,13 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
       quillRef.current &&
       content !== JSON.stringify(quillRef.current.getContents())
     ) {
-      const range = quillRef.current.getSelection() // Зберігаємо позицію курсора
+      const range = quillRef.current.getSelection()
       console.log(range)
       quillRef.current.setContents(JSON.parse(content))
 
       if (range) {
         setTimeout(() => {
-          quillRef.current?.setSelection(range) // Відновлюємо позицію курсора
+          quillRef.current?.setSelection(range)
         }, 0)
       }
     }
