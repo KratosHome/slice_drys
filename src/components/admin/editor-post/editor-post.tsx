@@ -27,17 +27,15 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [contentError, setContentError] = useState<string | null>(null)
-  const [slug, setSlug] = useState<string>('1') // del
+  const [slug, setSlug] = useState<string>(post?.slug ?? '')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
     'en',
   )
   const [isOpen, setIsOpen] = useState(false)
-  const [postContent, setPostContent] = useState<ILocalizedString>(
-    post?.content || {
-      en: '{\"ops\":[{\"insert\":\""}]}', // del
-      uk: '{\"ops\":[{\"insert\":\""}]}', // del
-    },
-  )
+  const [postContent, setPostContent] = useState<ILocalizedString>({
+    en: '{\"ops\":[{\"insert\":\""}]}', // del
+    uk: '{\"ops\":[{\"insert\":\""}]}', // del
+  })
 
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
     postContent.en,
@@ -176,8 +174,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     onChange: (event) => setSlug(event.target.value),
                   })}
                 />
-                {errors.title?.uk && (
-                  <span className="text-red">{errors.title.uk.message}</span>
+                {errors.slug && (
+                  <span className="text-red">{errors.slug.message}</span>
                 )}
               </div>
             </AlertDialogDescription>
