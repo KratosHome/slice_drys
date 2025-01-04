@@ -26,13 +26,17 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
+    'en',
+  )
   const [isOpen, setIsOpen] = useState(false)
   const [postContent, setPostContent] = useState<ILocalizedString>(
     post?.content || {
-      en: '{\"ops\":[{\"insert\":\"11"}]}',
-      uk: '{\"ops\":[{\"insert\":\"22"}]}',
+      en: '',
+      uk: '',
     },
   )
+
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
     postContent.en,
   )
@@ -47,8 +51,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     defaultValues: {
       title: { en: '', uk: '' },
       content: {
-        en: '{\"ops\":[{\"insert\":\"1"}]}',
-        uk: '{\"ops\":[{\"insert\":\"2"}]}',
+        en: '',
+        uk: '',
       },
     },
   })
@@ -58,6 +62,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue])
 
   const onSubmit = async (data: IPostLocal) => {
+    if (data.content) {
+      data.content[quillEditorLanguage] = quillEditorContent
+    }
     console.log(data)
     createPost(data)
   }
@@ -65,10 +72,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target)
     if (event.target.value === 'en' && event.target.checked) {
+      setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, uk: quillEditorContent })
       setQuillEditorContent(postContent.en)
-      //
     } else if (event.target.value === 'uk' && event.target.checked) {
+      setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, en: quillEditorContent })
       setQuillEditorContent(postContent.uk)
     }
