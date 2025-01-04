@@ -27,15 +27,15 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [contentError, setContentError] = useState<string | null>(null)
-
+  const [slug, setSlug] = useState<string>('1') // del
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
     'en',
   )
   const [isOpen, setIsOpen] = useState(false)
   const [postContent, setPostContent] = useState<ILocalizedString>(
     post?.content || {
-      en: '',
-      uk: '',
+      en: '{\"ops\":[{\"insert\":\""}]}', // del
+      uk: '{\"ops\":[{\"insert\":\""}]}', // del
     },
   )
 
@@ -51,11 +51,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '', uk: '' },
+      title: { en: '1', uk: '1' }, // del
       content: {
         en: '',
         uk: '',
       },
+      slug: '1', // del
     },
   })
 
@@ -125,6 +126,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       id="title-en"
                       {...register('title.en', {
                         required: 'Це поле є обов’язковим',
+                        onChange: (event) =>
+                          setSlug(
+                            event.target.value
+                              .toLowerCase()
+                              .trim()
+                              .replace(/[^\w\s-]/g, '')
+                              .replace(/\s+/g, '-'),
+                          ),
                       })}
                     />
                     {errors.title?.en && (
@@ -156,6 +165,20 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   content={quillEditorContent}
                   setContent={setQuillEditorContent}
                 />
+              </div>
+              <div>
+                <Label htmlFor="title-en">Slug</Label>
+                <Input
+                  value={slug}
+                  id="title-en"
+                  {...register('slug', {
+                    required: 'Це поле є обов’язковим',
+                    onChange: (event) => setSlug(event.target.value),
+                  })}
+                />
+                {errors.title?.uk && (
+                  <span className="text-red">{errors.title.uk.message}</span>
+                )}
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
