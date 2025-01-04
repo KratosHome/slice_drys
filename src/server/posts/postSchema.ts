@@ -17,8 +17,16 @@ const postSchema = new mongoose.Schema(
       },
     },
     content: {
-      type: String,
-      required: false,
+      en: {
+        type: String,
+        required: false,
+        minlength: 1,
+      },
+      uk: {
+        type: String,
+        required: false,
+        minlength: 1,
+      },
     },
     img: {
       type: String,

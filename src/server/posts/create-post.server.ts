@@ -16,8 +16,11 @@ export async function createPost(formData: IPostLocal, image?: string) {
       imageUrl = upload.secure_url
     }
 
-    const postData = { ...formData, img: imageUrl }
-
+    const postData = {
+      ...formData,
+      img: imageUrl,
+    }
+    console.log(postData)
     const post = new Post(postData)
     await post.save()
 

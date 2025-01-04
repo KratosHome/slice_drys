@@ -14,6 +14,8 @@ import {
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
 import { Button } from '@/components/admin/ui/button'
+import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
+
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
@@ -25,8 +27,14 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [postContent, setPostContent] = useState<ILocalizedString>(
+    post?.content || {
+      en: '{\"ops\":[{\"insert\":\"11"}]}',
+      uk: '{\"ops\":[{\"insert\":\"22"}]}',
+    },
+  )
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
-    post?.content || '{\"ops\":[{\"insert\":\"1"}]}',
+    postContent.en,
   )
 
   const {
@@ -38,17 +46,32 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   } = useForm<IPostLocal>({
     defaultValues: {
       title: { en: '1', uk: '1' },
-      content: '',
+      content: {
+        en: '{\"ops\":[{\"insert\":\"1"}]}',
+        uk: '{\"ops\":[{\"insert\":\"2"}]}',
+      },
     },
   })
 
   useEffect(() => {
-    setValue('content', quillEditorContent)
-  }, [quillEditorContent, setValue])
+    setValue('content', postContent)
+  }, [postContent, setValue])
 
   const onSubmit = async (data: IPostLocal) => {
     console.log(data)
     createPost(data)
+  }
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target)
+    if (event.target.value === 'en' && event.target.checked) {
+      setPostContent({ ...postContent, uk: quillEditorContent })
+      setQuillEditorContent(postContent.en)
+      //
+    } else if (event.target.value === 'uk' && event.target.checked) {
+      setPostContent({ ...postContent, en: quillEditorContent })
+      setQuillEditorContent(postContent.uk)
+    }
   }
 
   return (
@@ -95,7 +118,18 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
-
+                <RadioGroup defaultValue="en" onChange={handleRadioChange}>
+                  <div className="start flex gap-4">
+                    <div className="flex gap-1">
+                      <Label>en</Label>
+                      <RadioGroupItem value="en"> </RadioGroupItem>
+                    </div>
+                    <div className="flex gap-1">
+                      <Label>uk</Label>
+                      <RadioGroupItem value="uk"></RadioGroupItem>
+                    </div>
+                  </div>
+                </RadioGroup>
                 <QuillEditor
                   content={quillEditorContent}
                   setContent={setQuillEditorContent}

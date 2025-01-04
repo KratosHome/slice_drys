@@ -12,7 +12,6 @@ interface QuillEditorProps {
 
 const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
   const quillRef = useRef<Quill | null>(null)
-
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
 
       quillRef.current.on('text-change', () => {
         const currentContent = JSON.stringify(quillRef.current!.getContents())
-
         setContent(currentContent)
       })
     }
@@ -34,9 +32,21 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
       quillRef.current = null
     }
   }, [setContent])
+
   useEffect(() => {
-    if (quillRef.current && content) {
+    if (
+      quillRef.current &&
+      content !== JSON.stringify(quillRef.current.getContents())
+    ) {
+      const range = quillRef.current.getSelection() // Зберігаємо позицію курсора
+      console.log(range)
       quillRef.current.setContents(JSON.parse(content))
+
+      if (range) {
+        setTimeout(() => {
+          quillRef.current?.setSelection(range) // Відновлюємо позицію курсора
+        }, 0)
+      }
     }
   }, [content])
 
