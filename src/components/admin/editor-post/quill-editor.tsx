@@ -43,7 +43,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
       content !== JSON.stringify(quillRef.current.getContents())
     ) {
       const range = quillRef.current.getSelection()
-      console.log(range)
       quillRef.current.setContents(JSON.parse(content))
 
       if (range) {

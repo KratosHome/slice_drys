@@ -26,6 +26,8 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const [contentError, setContentError] = useState<string | null>(null)
+
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
     'en',
   )
@@ -63,14 +65,20 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const onSubmit = async (data: IPostLocal) => {
     if (data.content) {
-      data.content[quillEditorLanguage] = quillEditorContent
+      data.content[quillEditorLanguage] = await quillEditorContent
+
+      if (!data.content.en || !data.content.uk) {
+        setContentError('Контент на обох мовах є обов’язковим')
+
+        return
+      } else {
+        setContentError(null)
+        createPost(data)
+      }
     }
-    console.log(data)
-    createPost(data)
   }
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target)
     if (event.target.value === 'en' && event.target.checked) {
       setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, uk: quillEditorContent })
@@ -136,6 +144,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       <Label>uk</Label>
                       <RadioGroupItem value="uk"></RadioGroupItem>
                     </div>
+                    {contentError && (
+                      <span className="text-red">{contentError}</span>
+                    )}
                   </div>
                 </RadioGroup>
                 <QuillEditor
