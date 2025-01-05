@@ -54,6 +54,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       slug: '',
       date: new Date(),
       author: { en: '', uk: '' },
+      keywords: { en: [], uk: [] },
+      metaDescription: { en: '', uk: '' },
     },
   })
 
@@ -66,6 +68,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setValue('date', post.date)
       setValue('title', post.title)
       setValue('author', post.author)
+      setValue('metaDescription', post.metaDescription)
+      setValue('keywords', post.keywords)
     }
   }, [postContent, setValue, post, slug])
 
@@ -170,61 +174,128 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   content={quillEditorContent}
                   setContent={setQuillEditorContent}
                 />
-              </div>
-              <div>
-                <Label htmlFor="slug">Slug</Label>
-                <Input
-                  value={slug}
-                  id="slug"
-                  {...register('slug', {
-                    required: 'Це поле є обов’язковим',
-                    onChange: (event) => {
-                      console.log(event.target.value)
-                      setSlug(event.target.value)
-                    },
-                  })}
-                />
-                {errors.slug && (
-                  <span className="text-red">{errors.slug.message}</span>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="date">Date</Label>
-                <Input
-                  id="date"
-                  {...register('date', {
-                    required: 'Це поле є обов’язковим',
-                  })}
-                />
-                {errors.date && (
-                  <span className="text-red">{errors.date.message}</span>
-                )}
-              </div>
-              <div className="flex justify-between">
-                <div>
-                  <Label htmlFor="author-uk">Автор (UK)</Label>
-                  <Input
-                    id="author-uk"
-                    {...register('author.uk', {
-                      required: 'Це поле є обов’язковим',
-                    })}
-                  />
-                  {errors.author?.uk && (
-                    <span className="text-red">{errors.author.uk.message}</span>
-                  )}
-                </div>
 
                 <div>
-                  <Label htmlFor="author-en">Автор (EN)</Label>
+                  <Label htmlFor="slug">Slug</Label>
                   <Input
-                    id="author-en"
-                    {...register('author.en', {
+                    value={slug}
+                    id="slug"
+                    {...register('slug', {
+                      required: 'Це поле є обов’язковим',
+                      onChange: (event) => {
+                        console.log(event.target.value)
+                        setSlug(event.target.value)
+                      },
+                    })}
+                  />
+                  {errors.slug && (
+                    <span className="text-red">{errors.slug.message}</span>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="date">Date</Label>
+                  <Input
+                    id="date"
+                    {...register('date', {
                       required: 'Це поле є обов’язковим',
                     })}
                   />
-                  {errors.author?.en && (
-                    <span className="text-red">{errors.author.en.message}</span>
+                  {errors.date && (
+                    <span className="text-red">{errors.date.message}</span>
                   )}
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <Label htmlFor="author-uk">Автор (UK)</Label>
+                    <Input
+                      id="author-uk"
+                      {...register('author.uk', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.author?.uk && (
+                      <span className="text-red">
+                        {errors.author.uk.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="author-en">Автор (EN)</Label>
+                    <Input
+                      id="author-en"
+                      {...register('author.en', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.author?.en && (
+                      <span className="text-red">
+                        {errors.author.en.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <Label htmlFor="keywords-uk">Ключові слова (UK)</Label>
+                    <Input
+                      id="keywords-uk"
+                      {...register('keywords.uk', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.keywords?.uk && (
+                      <span className="text-red">
+                        {errors.keywords.uk.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="keywords-en">Ключові слова (EN)</Label>
+                    <Input
+                      id="keywords-en"
+                      {...register('keywords.en', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.keywords?.en && (
+                      <span className="text-red">
+                        {errors.keywords.en.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <Label htmlFor="meta-description-uk">Мета опис (UK)</Label>
+                    <Input
+                      id="meta-description-uk"
+                      {...register('metaDescription.uk', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.metaDescription?.uk && (
+                      <span className="text-red">
+                        {errors.metaDescription.uk.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="meta-description-en">Мета опис (EN)</Label>
+                    <Input
+                      id="meta-description-en"
+                      {...register('metaDescription.en', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.metaDescription?.en && (
+                      <span className="text-red">
+                        {errors.metaDescription.en.message}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </AlertDialogDescription>

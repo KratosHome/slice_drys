@@ -23,8 +23,14 @@ export default async function Blog({
     },
     date: new Date('2023-10-15'),
     slug: 'example-title',
-    metaDescription: 'This is an example of a meta description.',
-    keywords: ['example', 'post', 'typescript'],
+    metaDescription: {
+      en: 'Jon Dou',
+      uk: 'Валер"ян Ібрагімович',
+    },
+    keywords: {
+      en: ['example', 'post', 'typescript'],
+      uk: ['example', 'post', 'тест'],
+    },
     readingTime: 5,
   }
 
