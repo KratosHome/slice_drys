@@ -57,6 +57,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     defaultValues: {
       content: { en: '', uk: '' },
       title: { en: '', uk: '' },
+      img: '',
       slug: post?.slug,
       date: new Date(),
       author: { en: '', uk: '' },
@@ -81,7 +82,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     setValue('content', postContent)
     if (post) {
       setValue('slug', slug)
-
+      setValue('img', post.img)
       setValue('date', post.date)
       setValue('title', post.title)
       setValue('author', post.author)
@@ -97,7 +98,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       data.content[quillEditorLanguage] = quillEditorContent
 
       const image = imageFile ? await convertToBase64(imageFile) : ''
-
+      console.log(data)
       if (!data.content.en || !data.content.uk) {
         setContentError('Контент на обох мовах є обов’язковим')
 
