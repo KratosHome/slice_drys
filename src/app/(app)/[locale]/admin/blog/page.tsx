@@ -13,8 +13,8 @@ export default async function Blog({
       uk: 'Приклад заголовку',
     },
     content: {
-      en: 'This is an example content in English.',
-      uk: 'Це приклад змісту українською мовою.',
+      en: '{"ops":[{"insert":"test en\\n"}]}',
+      uk: '{"ops":[{"insert":"test uk\\n"}]}',
     },
     img: 'https://example.com/image.jpg',
     author: 'John Doe',

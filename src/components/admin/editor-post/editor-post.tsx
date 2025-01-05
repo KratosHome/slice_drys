@@ -27,14 +27,14 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [contentError, setContentError] = useState<string | null>(null)
-  const [slug, setSlug] = useState<string>(post?.slug ?? '')
+  const [slug, setSlug] = useState<string>('')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
     'en',
   )
   const [isOpen, setIsOpen] = useState(false)
   const [postContent, setPostContent] = useState<ILocalizedString>({
-    en: '{\"ops\":[{\"insert\":\""}]}', // del
-    uk: '{\"ops\":[{\"insert\":\""}]}', // del
+    en: post?.content?.en ?? '',
+    uk: post?.content?.uk ?? '',
   })
 
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
@@ -49,18 +49,18 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      title: { en: '1', uk: '1' }, // del
-      content: {
-        en: '',
-        uk: '',
-      },
-      slug: '1', // del
+      title: { en: '', uk: '' },
+      slug: '',
     },
   })
 
   useEffect(() => {
     setValue('content', postContent)
-  }, [postContent, setValue])
+    if (post) {
+      setValue('slug', post.slug)
+      setValue('title', post.title)
+    }
+  }, [postContent, setValue, post])
 
   const onSubmit = async (data: IPostLocal) => {
     if (data.content) {
