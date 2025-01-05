@@ -19,12 +19,12 @@ const postSchema = new mongoose.Schema(
     content: {
       en: {
         type: String,
-        required: false,
+        required: true,
         minlength: 1,
       },
       uk: {
         type: String,
-        required: false,
+        required: true,
         minlength: 1,
       },
     },
@@ -54,16 +54,31 @@ const postSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: false,
-      unique: false, // todo change to true
+      unique: true,
     },
     metaDescription: {
-      type: String,
-      maxlength: 160,
-      required: false,
+      en: {
+        type: String,
+        required: false,
+        minlength: 1,
+        maxlength: 255,
+      },
+      uk: {
+        type: String,
+        required: false,
+        minlength: 1,
+        maxlength: 255,
+      },
     },
     keywords: {
-      type: [String],
-      required: false,
+      en: {
+        type: [String],
+        required: false,
+      },
+      uk: {
+        type: [String],
+        required: false,
+      },
     },
     readingTime: {
       type: Number,

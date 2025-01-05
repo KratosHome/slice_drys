@@ -6,7 +6,7 @@ interface IPostLocal {
   author?: ILocalizedString
   date?: Date
   slug?: string
-  metaDescription?: string
-  keywords?: string[]
+  metaDescription?: ILocalizedString
+  keywords?: ILocalizedStringArray
   readingTime?: number
 }
