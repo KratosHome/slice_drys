@@ -175,6 +175,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="title-uk">Заголовок (UK)</Label>
                     <Input
                       id="title-uk"
+                      maxLength={255}
                       {...register('title.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -190,6 +191,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="title-en">Заголовок (EN)</Label>
                     <Input
                       id="title-en"
+                      maxLength={255}
                       {...register('title.en', {
                         required: 'Це поле є обов’язковим',
                         onChange: (event) => {
@@ -242,6 +244,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   <Input
                     value={slug}
                     id="slug"
+                    maxLength={255}
                     {...register('slug', {
                       required: 'Це поле є обов’язковим',
                       onChange: (event) => {
@@ -270,6 +273,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="author-uk">Автор (UK)</Label>
                     <Input
                       id="author-uk"
+                      maxLength={255}
                       {...register('author.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -285,6 +289,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="author-en">Автор (EN)</Label>
                     <Input
                       id="author-en"
+                      maxLength={255}
                       {...register('author.en', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -301,6 +306,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="keywords-uk">Ключові слова (UK)</Label>
                     <Input
                       id="keywords-uk"
+                      maxLength={255}
                       {...register('keywords.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -316,6 +322,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="keywords-en">Ключові слова (EN)</Label>
                     <Input
                       id="keywords-en"
+                      maxLength={255}
                       {...register('keywords.en', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -332,6 +339,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="meta-description-uk">Мета опис (UK)</Label>
                     <Input
                       id="meta-description-uk"
+                      maxLength={255}
                       {...register('metaDescription.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -347,6 +355,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="meta-description-en">Мета опис (EN)</Label>
                     <Input
                       id="meta-description-en"
+                      maxLength={255}
                       {...register('metaDescription.en', {
                         required: 'Це поле є обов’язковим',
                       })}
