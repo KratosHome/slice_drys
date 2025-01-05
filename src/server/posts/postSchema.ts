@@ -30,7 +30,7 @@ const postSchema = new mongoose.Schema(
     },
     img: {
       type: String,
-      required: false,
+      required: true,
     },
     author: {
       en: {
@@ -53,19 +53,19 @@ const postSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
     },
     metaDescription: {
       en: {
         type: String,
-        required: false,
+        required: true,
         minlength: 1,
         maxlength: 255,
       },
       uk: {
         type: String,
-        required: false,
+        required: true,
         minlength: 1,
         maxlength: 255,
       },
@@ -73,11 +73,11 @@ const postSchema = new mongoose.Schema(
     keywords: {
       en: {
         type: [String],
-        required: false,
+        required: true,
       },
       uk: {
         type: [String],
-        required: false,
+        required: true,
       },
     },
     readingTime: {
