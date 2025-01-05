@@ -176,6 +176,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Input
                       id="title-uk"
                       maxLength={255}
+                      placeholder="..."
                       {...register('title.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
@@ -192,6 +193,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Input
                       id="title-en"
                       maxLength={255}
+                      placeholder="..."
                       {...register('title.en', {
                         required: 'Це поле є обов’язковим',
                         onChange: (event) => {
