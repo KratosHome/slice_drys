@@ -63,7 +63,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   useEffect(() => {
     setValue('content', postContent)
     if (post) {
-      setValue('slug', post.slug)
+      //  setValue('slug', post.slug)
       setValue('date', post.date)
       setValue('title', post.title)
       setValue('author', post.author)
@@ -140,6 +140,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                           if (post && post.title) {
                             post.title.en = event.target.value
                           }
+
                           setSlug(
                             event.target.value
                               .toLowerCase()
