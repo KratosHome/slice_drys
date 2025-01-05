@@ -27,7 +27,7 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [contentError, setContentError] = useState<string | null>(null)
-  const [slug, setSlug] = useState<string>('')
+  const [slug, setSlug] = useState<string>(post?.slug || '')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
     'en',
   )
@@ -91,7 +91,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, en: quillEditorContent })
       setQuillEditorContent(postContent.uk)
-      // console.log(quillEditorContent)
     }
   }
 

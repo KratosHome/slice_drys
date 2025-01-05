@@ -9,7 +9,7 @@ export default async function Blog({
   const post: IPostLocal = {
     _id: '12345',
     title: {
-      en: 'Example Title',
+      en: 'Example Title 1',
       uk: 'Приклад заголовку',
     },
     content: {
