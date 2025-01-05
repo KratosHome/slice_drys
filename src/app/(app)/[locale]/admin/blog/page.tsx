@@ -16,7 +16,7 @@ export default async function Blog({
       en: '{"ops":[{"insert":"test en\\n"}]}',
       uk: '{"ops":[{"insert":"test uk\\n"}]}',
     },
-    img: 'https://example.com/image.jpg',
+    img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736102699/post-slice/wuupmp14ariplq1pixu0.png',
     author: {
       en: 'Jon Dou',
       uk: 'Валер"ян Ібрагімович',

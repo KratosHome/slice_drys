@@ -15,6 +15,7 @@ import { Input } from '@/components/admin/ui/input'
 import { Button } from '@/components/admin/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
 import { convertToBase64 } from '@/utils/convertToBase64'
+import Image from 'next/image'
 
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
@@ -27,6 +28,7 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
 
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
@@ -60,6 +62,18 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       metaDescription: { en: '', uk: '' },
     },
   })
+  useEffect(() => {
+    let url: string | null = null
+
+    if (imageFile) {
+      url = URL.createObjectURL(imageFile)
+      setImagePreviewUrl(url)
+    } else if (post?.img) {
+      setImagePreviewUrl(post.img)
+    } else {
+      setImagePreviewUrl(null)
+    }
+  }, [imageFile, post?.img])
 
   useEffect(() => {
     setValue('content', postContent)
@@ -126,15 +140,29 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
             </AlertDialogHeader>
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
-                <div>
-                  <Label htmlFor="picture">Додати зображення</Label>
-                  <Input
-                    id="picture"
-                    type="file"
-                    onChange={handleImageChange}
-                  />
-                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <Label htmlFor="picture">Додати зображення</Label>
+                    <Input
+                      id="picture"
+                      type="file"
+                      onChange={handleImageChange}
+                    />
+                  </div>
 
+                  {imagePreviewUrl && (
+                    <div>
+                      <Label>Прев'ю </Label>
+                      <Image
+                        src={imagePreviewUrl}
+                        width={100}
+                        height={100}
+                        alt="Зображення продукту"
+                        className="rounded-md"
+                      />
+                    </div>
+                  )}
+                </div>
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="title-uk">Заголовок (UK)</Label>
