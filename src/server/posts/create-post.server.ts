@@ -7,6 +7,7 @@ export async function createPost(formData: IPostLocal, image?: string) {
   'use server'
   try {
     await connectToDb()
+    console.log(1111, image)
 
     let imageUrl = ''
     if (image) {

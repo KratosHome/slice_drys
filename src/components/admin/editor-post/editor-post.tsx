@@ -14,6 +14,7 @@ import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
 import { Button } from '@/components/admin/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
+import { convertToBase64 } from '@/utils/convertToBase64'
 
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
@@ -25,6 +26,8 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const [imageFile, setImageFile] = useState<File | null>(null)
+
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
@@ -77,13 +80,16 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     if (data.content) {
       data.content[quillEditorLanguage] = await quillEditorContent
 
+      const image = imageFile ? await convertToBase64(imageFile) : ''
+
       if (!data.content.en || !data.content.uk) {
         setContentError('Контент на обох мовах є обов’язковим')
 
         return
       } else {
         setContentError(null)
-        createPost(data)
+
+        createPost(data, image)
       }
     }
   }
@@ -97,6 +103,13 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, en: quillEditorContent })
       setQuillEditorContent(postContent.uk)
+    }
+  }
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setImageFile(file)
     }
   }
 
@@ -118,7 +131,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   <Input
                     id="picture"
                     type="file"
-                    // onChange={handleImageChange}
+                    onChange={handleImageChange}
                   />
                 </div>
 
@@ -197,7 +210,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     {...register('slug', {
                       required: 'Це поле є обов’язковим',
                       onChange: (event) => {
-                        console.log(event.target.value)
                         setSlug(event.target.value)
                       },
                     })}
