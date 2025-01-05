@@ -62,7 +62,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   useEffect(() => {
     setValue('content', postContent)
-    console.log(post?.title)
     if (post) {
       setValue('slug', post.slug)
       setValue('date', post.date)
