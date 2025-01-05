@@ -104,6 +104,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         setContentError(null)
 
         createPost(data, image)
+
+        setIsOpen(false)
       }
     }
   }
