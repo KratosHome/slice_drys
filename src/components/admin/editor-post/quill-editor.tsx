@@ -13,6 +13,9 @@ interface QuillEditorProps {
 const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
   const quillRef = useRef<Quill | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  if (!content) {
+    content = '{"ops":[{"insert":"\\n"}]}'
+  }
 
   useEffect(() => {
     if (containerRef.current && !quillRef.current) {
@@ -36,7 +39,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
   useEffect(() => {
     if (
       quillRef.current &&
-      content &&
       content !== JSON.stringify(quillRef.current.getContents())
     ) {
       const range = quillRef.current.getSelection()

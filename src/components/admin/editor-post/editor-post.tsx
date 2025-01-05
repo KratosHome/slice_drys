@@ -49,6 +49,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
+      content: { en: '', uk: '' },
       title: { en: '', uk: '' },
       slug: '',
       date: new Date(),
@@ -58,6 +59,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   useEffect(() => {
     setValue('content', postContent)
     setValue('slug', slug)
+
     if (post) {
       setValue('slug', post.slug)
       setValue('date', post.date)
@@ -86,9 +88,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setPostContent({ ...postContent, uk: quillEditorContent })
       setQuillEditorContent(postContent.en)
     } else if (event.target.value === 'uk' && event.target.checked) {
+      console.log(111111)
       setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, en: quillEditorContent })
+      console.log('zx', postContent.uk)
       setQuillEditorContent(postContent.uk)
+      // console.log(quillEditorContent)
     }
   }
 
