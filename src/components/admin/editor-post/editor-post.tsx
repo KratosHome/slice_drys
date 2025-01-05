@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
+import { Value } from '@radix-ui/react-select'
 
 interface ICratePost {
   buttonTitle: string
@@ -61,8 +62,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   useEffect(() => {
     setValue('content', postContent)
-    setValue('slug', slug)
-
+    console.log(post?.title)
     if (post) {
       setValue('slug', post.slug)
       setValue('date', post.date)
@@ -70,6 +70,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setValue('author', post.author)
       setValue('metaDescription', post.metaDescription)
       setValue('keywords', post.keywords)
+    } else if (!post) {
+      setValue('slug', slug)
     }
   }, [postContent, setValue, post, slug])
 
@@ -135,14 +137,18 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       id="title-en"
                       {...register('title.en', {
                         required: 'Це поле є обов’язковим',
-                        onChange: (event) =>
+                        onChange: (event) => {
+                          if (post && post.title) {
+                            post.title.en = event.target.value
+                          }
                           setSlug(
                             event.target.value
                               .toLowerCase()
                               .trim()
                               .replace(/[^\w\s-]/g, '')
                               .replace(/\s+/g, '-'),
-                          ),
+                          )
+                        },
                       })}
                     />
                     {errors.title?.en && (
