@@ -53,6 +53,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       title: { en: '', uk: '' },
       slug: '',
       date: new Date(),
+      author: { en: '', uk: '' },
     },
   })
 
@@ -64,6 +65,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setValue('slug', post.slug)
       setValue('date', post.date)
       setValue('title', post.title)
+      setValue('author', post.author)
     }
   }, [postContent, setValue, post, slug])
 
@@ -109,7 +111,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
                 <div className="flex justify-between">
                   <div>
-                    <Label htmlFor="name-uk">Заголовок (UK)</Label>
+                    <Label htmlFor="title-uk">Заголовок (UK)</Label>
                     <Input
                       id="title-uk"
                       {...register('title.uk', {
@@ -197,6 +199,33 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 {errors.date && (
                   <span className="text-red">{errors.date.message}</span>
                 )}
+              </div>
+              <div className="flex justify-between">
+                <div>
+                  <Label htmlFor="author-uk">Автор (UK)</Label>
+                  <Input
+                    id="author-uk"
+                    {...register('author.uk', {
+                      required: 'Це поле є обов’язковим',
+                    })}
+                  />
+                  {errors.author?.uk && (
+                    <span className="text-red">{errors.author.uk.message}</span>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="author-en">Автор (EN)</Label>
+                  <Input
+                    id="author-en"
+                    {...register('author.en', {
+                      required: 'Це поле є обов’язковим',
+                    })}
+                  />
+                  {errors.author?.en && (
+                    <span className="text-red">{errors.author.en.message}</span>
+                  )}
+                </div>
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>

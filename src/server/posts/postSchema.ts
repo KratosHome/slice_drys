@@ -33,8 +33,18 @@ const postSchema = new mongoose.Schema(
       required: false,
     },
     author: {
-      type: String,
-      required: false,
+      en: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
+      uk: {
+        type: String,
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
     },
     date: {
       type: Date,

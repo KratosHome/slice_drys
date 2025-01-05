@@ -22,8 +22,8 @@ export async function createPost(formData: IPostLocal, image?: string) {
     }
     console.log(postData)
     const post = new Post(postData)
-    console.log('Post created')
     await post.save()
+    console.log('Post created')
 
     return { success: true, message: 'Post created' }
   } catch (error) {

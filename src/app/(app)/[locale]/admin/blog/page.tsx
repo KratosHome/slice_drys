@@ -17,7 +17,10 @@ export default async function Blog({
       uk: '{"ops":[{"insert":"test uk\\n"}]}',
     },
     img: 'https://example.com/image.jpg',
-    author: 'John Doe',
+    author: {
+      en: 'Jon Dou',
+      uk: 'Валер"ян Ібрагімович',
+    },
     date: new Date('2023-10-15'),
     slug: 'example-title',
     metaDescription: 'This is an example of a meta description.',

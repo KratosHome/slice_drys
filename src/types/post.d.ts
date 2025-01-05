@@ -3,7 +3,7 @@ interface IPostLocal {
   title?: ILocalizedString
   content?: ILocalizedString
   img?: string
-  author?: string
+  author?: ILocalizedString
   date?: Date
   slug?: string
   metaDescription?: string
