@@ -94,7 +94,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const onSubmit = async (data: IPostLocal) => {
     if (data.content) {
-      data.content[quillEditorLanguage] = await quillEditorContent
+      data.content[quillEditorLanguage] = quillEditorContent
 
       const image = imageFile ? await convertToBase64(imageFile) : ''
 
