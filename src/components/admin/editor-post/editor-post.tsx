@@ -1,7 +1,6 @@
 'use client'
 import React, { FC, useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import Loading from '@/components/admin/ui/loading'
 import {
   AlertDialog,
   AlertDialogContent,
@@ -19,7 +18,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
-import { Value } from '@radix-ui/react-select'
 
 interface ICratePost {
   buttonTitle: string
@@ -52,7 +50,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     defaultValues: {
       content: { en: '', uk: '' },
       title: { en: '', uk: '' },
-      slug: '',
+      slug: post?.slug,
       date: new Date(),
       author: { en: '', uk: '' },
       keywords: { en: [], uk: [] },
@@ -63,7 +61,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   useEffect(() => {
     setValue('content', postContent)
     if (post) {
-      //  setValue('slug', post.slug)
+      setValue('slug', slug)
+
       setValue('date', post.date)
       setValue('title', post.title)
       setValue('author', post.author)
@@ -114,6 +113,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
             </AlertDialogHeader>
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
+                <div>
+                  <Label htmlFor="picture">Додати зображення</Label>
+                  <Input
+                    id="picture"
+                    type="file"
+                    // onChange={handleImageChange}
+                  />
+                </div>
+
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="title-uk">Заголовок (UK)</Label>
