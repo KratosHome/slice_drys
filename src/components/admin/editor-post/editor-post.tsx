@@ -30,6 +30,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
 
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
@@ -103,9 +105,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       } else {
         setContentError(null)
 
-        createPost(data, image)
-
-        setIsOpen(false)
+        const response = await createPost(data, image)
+        if (response.success) {
+          setIsOpen(false)
+        } else {
+          setSubmitError(response.message)
+        }
       }
     }
   }
@@ -353,6 +358,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
+                <span className="text-red">{submitError}</span>
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>

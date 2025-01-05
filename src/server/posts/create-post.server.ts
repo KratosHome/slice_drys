@@ -28,6 +28,9 @@ export async function createPost(formData: IPostLocal, image?: string) {
     return { success: true, message: 'Post created' }
   } catch (error) {
     console.error('Error creating post:', error)
-    return { success: false, message: "Can't create post" }
+    return {
+      success: false,
+      message: `Can't create post:  ${error}`,
+    }
   }
 }
