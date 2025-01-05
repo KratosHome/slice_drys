@@ -51,18 +51,19 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     defaultValues: {
       title: { en: '', uk: '' },
       slug: '',
-      date: undefined,
+      date: new Date(),
     },
   })
 
   useEffect(() => {
     setValue('content', postContent)
+    setValue('slug', slug)
     if (post) {
       setValue('slug', post.slug)
       setValue('date', post.date)
       setValue('title', post.title)
     }
-  }, [postContent, setValue, post])
+  }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
     if (data.content) {
@@ -173,7 +174,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   id="slug"
                   {...register('slug', {
                     required: 'Це поле є обов’язковим',
-                    onChange: (event) => setSlug(event.target.value),
+                    onChange: (event) => {
+                      console.log(event.target.value)
+                      setSlug(event.target.value)
+                    },
                   })}
                 />
                 {errors.slug && (
