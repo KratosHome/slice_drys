@@ -152,7 +152,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
                   {imagePreviewUrl && (
                     <div>
-                      <Label>Прев'ю </Label>
+                      <Label>Прев’ю </Label>
                       <Image
                         src={imagePreviewUrl}
                         width={100}
