@@ -51,6 +51,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     defaultValues: {
       title: { en: '', uk: '' },
       slug: '',
+      date: undefined,
     },
   })
 
@@ -58,6 +59,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     setValue('content', postContent)
     if (post) {
       setValue('slug', post.slug)
+      setValue('date', post.date)
       setValue('title', post.title)
     }
   }, [postContent, setValue, post])
@@ -165,10 +167,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 />
               </div>
               <div>
-                <Label htmlFor="title-en">Slug</Label>
+                <Label htmlFor="slug">Slug</Label>
                 <Input
                   value={slug}
-                  id="title-en"
+                  id="slug"
                   {...register('slug', {
                     required: 'Це поле є обов’язковим',
                     onChange: (event) => setSlug(event.target.value),
@@ -176,6 +178,18 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 />
                 {errors.slug && (
                   <span className="text-red">{errors.slug.message}</span>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="date">Date</Label>
+                <Input
+                  id="date"
+                  {...register('date', {
+                    required: 'Це поле є обов’язковим',
+                  })}
+                />
+                {errors.date && (
+                  <span className="text-red">{errors.date.message}</span>
                 )}
               </div>
             </AlertDialogDescription>
