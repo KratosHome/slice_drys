@@ -96,22 +96,21 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const onSubmit = async (data: IPostLocal) => {
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
+    }
+    const image = imageFile ? await convertToBase64(imageFile) : ''
+    console.log(data)
+    if (!data.content.en || !data.content.uk) {
+      setContentError('Контент на обох мовах є обов’язковим')
 
-      const image = imageFile ? await convertToBase64(imageFile) : ''
-      console.log(data)
-      if (!data.content.en || !data.content.uk) {
-        setContentError('Контент на обох мовах є обов’язковим')
+      return
+    } else {
+      setContentError(null)
 
-        return
+      const response = await createPost(data, image)
+      if (response.success) {
+        setIsOpen(false)
       } else {
-        setContentError(null)
-
-        const response = await createPost(data, image)
-        if (response.success) {
-          setIsOpen(false)
-        } else {
-          setSubmitError(response.message)
-        }
+        setSubmitError(response.message)
       }
     }
   }
