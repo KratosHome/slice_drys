@@ -21,7 +21,12 @@ import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { ToastAction } from '@/components/admin/ui/toast'
+
+// - поле дата залишилось (ми говорили що треба прибрати)
+// - Едітор треба зробити довшим, я розумію що він автоматично розширюється але коли ти заходиш то він занадто коротки, треба додати мінімальну висоту
+// - немає кнопки скасувати, тобто закрити модалку я не можу,  тільки зберігти зміни
+// - тайтел 'створити товар' але ми творим пост
+// - винеси функцію setSlug в utils її часто будуть перевикористовувати
 
 interface ICratePost {
   buttonTitle: string
@@ -30,12 +35,8 @@ interface ICratePost {
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const { toast } = useToast()
-
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
-
-  const [submitError, setSubmitError] = useState<string | null>(null)
-
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
   const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
@@ -381,7 +382,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
-                <span className="text-red">{submitError}</span>
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>

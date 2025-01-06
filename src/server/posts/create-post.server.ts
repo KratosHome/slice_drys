@@ -3,7 +3,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Post } from './postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
 
-export async function createPost(formData: IPostLocal, image?: string) {
+export async function createPost(formData: IPostLocal, image: string) {
   'use server'
   try {
     await connectToDb()
