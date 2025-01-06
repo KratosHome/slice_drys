@@ -12,7 +12,6 @@ import {
 } from '@/components/admin/ui/alert-dialog'
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
-import { Button } from '@/components/admin/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import Image from 'next/image'
@@ -20,6 +19,9 @@ import Image from 'next/image'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
+import { Button } from '@/components/admin/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { ToastAction } from '@/components/admin/ui/toast'
 
 interface ICratePost {
   buttonTitle: string
@@ -27,6 +29,8 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const { toast } = useToast()
+
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
 
@@ -143,6 +147,23 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         <AlertDialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  toast({
+                    title: 'Scheduled: Catch up ',
+                    description: 'Friday, February 10, 2023 at 5:57 PM',
+                    action: (
+                      <ToastAction altText="Goto schedule to undo">
+                        Undo
+                      </ToastAction>
+                    ),
+                  })
+                }}
+              >
+                Add to calendar
+              </Button>
               <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>
