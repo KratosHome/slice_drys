@@ -113,8 +113,16 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       const response = await createPost(data, image)
       if (response.success) {
         setIsOpen(false)
+        toast({
+          duration: 3000,
+          title: 'Post created successfully',
+        })
       } else {
-        setSubmitError(response.message)
+        toast({
+          variant: 'destructive',
+          title: 'Error creating post',
+          description: response.message,
+        })
       }
     }
   }
@@ -147,23 +155,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         <AlertDialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  toast({
-                    title: 'Scheduled: Catch up ',
-                    description: 'Friday, February 10, 2023 at 5:57 PM',
-                    action: (
-                      <ToastAction altText="Goto schedule to undo">
-                        Undo
-                      </ToastAction>
-                    ),
-                  })
-                }}
-              >
-                Add to calendar
-              </Button>
               <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>
