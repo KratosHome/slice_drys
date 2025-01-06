@@ -102,7 +102,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       data.content[quillEditorLanguage] = quillEditorContent
     }
     const image = imageFile ? await convertToBase64(imageFile) : ''
-    console.log(data)
+
     if (!data.content.en || !data.content.uk) {
       setContentError('Контент на обох мовах є обов’язковим')
 
