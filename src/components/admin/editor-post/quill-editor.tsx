@@ -19,7 +19,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
   let toPreventDoubleQuill = true
   useEffect(() => {
     toPreventDoubleQuill = !toPreventDoubleQuill
-    console.log(toPreventDoubleQuill)
     if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
