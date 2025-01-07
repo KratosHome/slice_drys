@@ -23,8 +23,6 @@ import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 
-// - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
-
 interface ICratePost {
   buttonTitle: string
   post?: IPostLocal
