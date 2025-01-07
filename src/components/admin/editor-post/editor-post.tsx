@@ -22,8 +22,6 @@ import { createPost } from '@/server/posts/create-post.server'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 
-// - немає кнопки скасувати, тобто закрити модалку я не можу,  тільки зберігти зміни
-// - тайтел 'створити товар' але ми творим пост
 // - винеси функцію setSlug в utils її часто будуть перевикористовувати
 // - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
 
@@ -153,7 +151,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         <AlertDialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader>
-              <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
+              <AlertDialogTitle>{buttonTitle} пост</AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
