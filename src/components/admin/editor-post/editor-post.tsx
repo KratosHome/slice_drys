@@ -189,7 +189,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         maxLength: {
                           value: 60,
-                          message: 'Максимум 30 символів',
+                          message: 'Максимум 60 символів',
                         },
                         required: 'Це поле є обов’язковим',
                       })}
