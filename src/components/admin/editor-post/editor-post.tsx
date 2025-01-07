@@ -22,7 +22,6 @@ import { createPost } from '@/server/posts/create-post.server'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 
-// - Едітор треба зробити довшим, я розумію що він автоматично розширюється але коли ти заходиш то він занадто коротки, треба додати мінімальну висоту
 // - немає кнопки скасувати, тобто закрити модалку я не можу,  тільки зберігти зміни
 // - тайтел 'створити товар' але ми творим пост
 // - винеси функцію setSlug в utils її часто будуть перевикористовувати
@@ -248,6 +247,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   </div>
                 </RadioGroup>
                 <QuillEditor
+                  className="min-h-64"
                   content={quillEditorContent}
                   setContent={setQuillEditorContent}
                 />
@@ -255,7 +255,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
-                    className="min-h-64"
                     value={slug}
                     id="slug"
                     maxLength={255}
@@ -372,7 +371,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
-              <Button type="submit">{buttonTitle}</Button>
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => setIsOpen(false)}
+              >
+                Скасувати
+              </Button>
+              <Button type="submit">{buttonTitle}</Button>{' '}
             </AlertDialogFooter>
           </form>
         </AlertDialogContent>
