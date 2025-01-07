@@ -27,6 +27,8 @@ import { useToast } from '@/hooks/use-toast'
 // - немає кнопки скасувати, тобто закрити модалку я не можу,  тільки зберігти зміни
 // - тайтел 'створити товар' але ми творим пост
 // - винеси функцію setSlug в utils її часто будуть перевикористовувати
+// - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
+// - remove date
 
 interface ICratePost {
   buttonTitle: string
@@ -64,7 +66,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       title: { en: '', uk: '' },
       img: '',
       slug: post?.slug,
-      date: new Date(),
       author: { en: '', uk: '' },
       keywords: { en: [], uk: [] },
       metaDescription: { en: '', uk: '' },
@@ -88,7 +89,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     if (post) {
       setValue('slug', slug)
       setValue('img', post.img)
-      setValue('date', post.date)
       setValue('title', post.title)
       setValue('author', post.author)
       setValue('metaDescription', post.metaDescription)
@@ -269,18 +269,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   />
                   {errors.slug && (
                     <span className="text-red">{errors.slug.message}</span>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="date">Date</Label>
-                  <Input
-                    id="date"
-                    {...register('date', {
-                      required: 'Це поле є обов’язковим',
-                    })}
-                  />
-                  {errors.date && (
-                    <span className="text-red">{errors.date.message}</span>
                   )}
                 </div>
                 <div className="flex justify-between">

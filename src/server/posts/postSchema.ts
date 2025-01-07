@@ -46,11 +46,7 @@ const postSchema = new mongoose.Schema(
         maxlength: 255,
       },
     },
-    date: {
-      type: Date,
-      required: true,
-      default: Date.now,
-    },
+
     slug: {
       type: String,
       required: true,
