@@ -23,7 +23,6 @@ import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 
-// - винеси функцію setSlug в utils її часто будуть перевикористовувати
 // - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
 
 interface ICratePost {
@@ -171,8 +170,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       <Label>Прев’ю </Label>
                       <Image
                         src={imagePreviewUrl}
-                        width={100}
-                        height={100}
+                        width={50}
+                        height={50}
                         alt="Зображення продукту"
                         className="rounded-md"
                       />
@@ -184,9 +183,16 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="title-uk">Заголовок (UK)</Label>
                     <Input
                       id="title-uk"
-                      maxLength={255}
                       placeholder="..."
                       {...register('title.uk', {
+                        minLength: {
+                          value: 30,
+                          message: 'Мінімумум 30 символів',
+                        },
+                        maxLength: {
+                          value: 60,
+                          message: 'Максимум 30 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -204,6 +210,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       maxLength={255}
                       placeholder="..."
                       {...register('title.en', {
+                        minLength: {
+                          value: 30,
+                          message: 'Мінімумум 30 символів',
+                        },
+                        maxLength: {
+                          value: 60,
+                          message: 'Максимум 60 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                         onChange: (event) => {
                           if (post && post.title) {
@@ -267,8 +281,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="author-uk">Автор (UK)</Label>
                     <Input
                       id="author-uk"
-                      maxLength={255}
                       {...register('author.uk', {
+                        minLength: {
+                          value: 3,
+                          message: 'Мінімум 3 символи',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'Максимум 50 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -278,13 +299,19 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       </span>
                     )}
                   </div>
-
                   <div>
                     <Label htmlFor="author-en">Автор (EN)</Label>
                     <Input
                       id="author-en"
-                      maxLength={255}
                       {...register('author.en', {
+                        minLength: {
+                          value: 3,
+                          message: 'Мінімум 3 символи',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'Максимум 50 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -300,8 +327,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="keywords-uk">Ключові слова (UK)</Label>
                     <Input
                       id="keywords-uk"
-                      maxLength={255}
                       {...register('keywords.uk', {
+                        minLength: {
+                          value: 5,
+                          message: 'Мінімум 5 символів',
+                        },
+                        maxLength: {
+                          value: 255,
+                          message: 'Максимум 255 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -316,8 +350,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="keywords-en">Ключові слова (EN)</Label>
                     <Input
                       id="keywords-en"
-                      maxLength={255}
                       {...register('keywords.en', {
+                        minLength: {
+                          value: 5,
+                          message: 'Мінімум 5 символів',
+                        },
+                        maxLength: {
+                          value: 255,
+                          message: 'Максимум 255 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -333,8 +374,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Label htmlFor="meta-description-uk">Мета опис (UK)</Label>
                     <Input
                       id="meta-description-uk"
-                      maxLength={255}
                       {...register('metaDescription.uk', {
+                        minLength: {
+                          value: 50,
+                          message: 'Мінімум 50 символів',
+                        },
+                        maxLength: {
+                          value: 160,
+                          message: 'Максимум 160 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
@@ -344,13 +392,19 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       </span>
                     )}
                   </div>
-
                   <div>
                     <Label htmlFor="meta-description-en">Мета опис (EN)</Label>
                     <Input
                       id="meta-description-en"
-                      maxLength={255}
                       {...register('metaDescription.en', {
+                        minLength: {
+                          value: 50,
+                          message: 'Мінімум 50 символів',
+                        },
+                        maxLength: {
+                          value: 160,
+                          message: 'Максимум 160 символів',
+                        },
                         required: 'Це поле є обов’язковим',
                       })}
                     />
