@@ -21,6 +21,7 @@ import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import { toSlug } from '@/utils/toSlug'
 
 // - винеси функцію setSlug в utils її часто будуть перевикористовувати
 // - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
@@ -209,13 +210,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                             post.title.en = event.target.value
                           }
 
-                          setSlug(
-                            event.target.value
-                              .toLowerCase()
-                              .trim()
-                              .replace(/[^\w\s-]/g, '')
-                              .replace(/\s+/g, '-'),
-                          )
+                          setSlug(toSlug(event.target.value))
                         },
                       })}
                     />
