@@ -22,13 +22,11 @@ import { createPost } from '@/server/posts/create-post.server'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 
-// - поле дата залишилось (ми говорили що треба прибрати)
 // - Едітор треба зробити довшим, я розумію що він автоматично розширюється але коли ти заходиш то він занадто коротки, треба додати мінімальну висоту
 // - немає кнопки скасувати, тобто закрити модалку я не можу,  тільки зберігти зміни
 // - тайтел 'створити товар' але ми творим пост
 // - винеси функцію setSlug в utils її часто будуть перевикористовувати
 // - мінімальна та максимальна довжина тексту в інпуті це повинно бути в register тобто useForm перевіряє це а не дофолтне maxLength={255} від input. і якщо будеш додавати переглянь що рекомендують по кількості символів для SEO в полях типу meta ключ слова і т.д.
-// - remove date
 
 interface ICratePost {
   buttonTitle: string
@@ -257,6 +255,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
+                    className="min-h-64"
                     value={slug}
                     id="slug"
                     maxLength={255}

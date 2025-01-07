@@ -8,9 +8,14 @@ const QUILL_CONTAINER_ID = 'js-editor-container'
 interface QuillEditorProps {
   content: string
   setContent: (content: string) => void
+  className?: string
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({
+  content,
+  setContent,
+  className,
+}) => {
   const quillRef = useRef<Quill | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   if (!content) {
@@ -54,7 +59,13 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent }) => {
     }
   }, [content])
 
-  return <div id={QUILL_CONTAINER_ID} ref={containerRef}></div>
+  return (
+    <div
+      className={className || ''}
+      id={QUILL_CONTAINER_ID}
+      ref={containerRef}
+    ></div>
+  )
 }
 
 export default QuillEditor
