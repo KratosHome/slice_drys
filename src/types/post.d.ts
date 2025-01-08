@@ -1,3 +1,15 @@
+interface IPost {
+  _id?: string
+  title: string
+  content: string
+  img: string
+  author: string
+  slug: string
+  metaDescription: string
+  keywords: string[]
+  visited?: number
+}
+
 interface IPostLocal {
   _id?: string
   title: ILocalizedString
@@ -7,12 +19,12 @@ interface IPostLocal {
   slug: string
   metaDescription: ILocalizedString
   keywords: ILocalizedStringArray
-  readingTime: number
+  visited?: number
 }
 
 interface IGetPost {
-  product: IPostLocal[]
-  productAll?: IPostLocal[]
+  product: IPost[]
+  productAll?: IPost[]
   success: boolean
   message: string
 }

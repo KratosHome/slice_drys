@@ -22,13 +22,42 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { Checkbox } from '@/components/admin/ui/checkbox'
+import Image from 'next/image'
+import EditorPost from '../editor-post/editor-post'
 
-interface IBlogList {
+interface IPostList {
   data: IGetPost
 }
 
-export const ProductList: FC<IBlogList> = ({ data }) => {
-  const columns: ColumnDef<IPostLocal>[] = [
+const examplePostLocal: IPostLocal = {
+  _id: '677ce334bf6de04db106be49',
+
+  title: {
+    en: 'Example Title 1Example Title 1Example Title 1',
+    uk: 'Приклад заголовкуПриклад заголовкуПриклад заголовку',
+  },
+  content: {
+    en: '{"ops":[{"insert":"sdf\\n"}]}',
+    uk: '{"ops":[{"insert":"sdfs\\n"}]}',
+  },
+  img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736237875/post-slice/xbpxg7agjkiqpduat4uc.png',
+  author: {
+    en: 'fsdfsds',
+    uk: 'dfsdfsdfs',
+  },
+  slug: 'example-title-1example-title-1example-title-1',
+  metaDescription: {
+    en: 'sdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfs',
+    uk: 'sdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfs',
+  },
+  keywords: {
+    en: ['sdfsdfsdfsdfs'],
+    uk: ['sdfsdfsdfsdfs'],
+  },
+}
+
+export const ProductList: FC<IPostList> = ({ data }) => {
+  const columns: ColumnDef<IPost>[] = [
     {
       id: 'select',
       header: ({ table }) => (
@@ -44,12 +73,68 @@ export const ProductList: FC<IBlogList> = ({ data }) => {
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value)
+          }}
           aria-label="Select row"
         />
       ),
       enableSorting: false,
       enableHiding: false,
+    },
+    {
+      id: 'зображення',
+      header: 'зображення',
+      accessorKey: 'img',
+      cell: ({ row }) => {
+        const product = row.original
+        return (
+          <div className="flex items-center justify-center">
+            {product.img && (
+              <Image
+                width={50}
+                height={50}
+                src={product.img}
+                alt={product.title}
+                className="h-10 w-10 rounded object-cover"
+              />
+            )}
+          </div>
+        )
+      },
+    },
+    {
+      id: 'заголовок',
+      header: 'заголовок',
+      accessorKey: 'name',
+      cell: ({ row }) => {
+        const product = row.original
+        return <div>{product.title}</div>
+      },
+    },
+    {
+      id: 'відвідувань',
+      header: 'відвідувань',
+      accessorKey: 'name',
+      cell: ({ row }) => {
+        const product = row.original
+        return <div>{product.visited}</div>
+      },
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: '',
+      cell: ({ row }) => {
+        const product = row.original as IPost
+        const id = product._id
+        const fineProduct = data.productAll?.find((item) => item._id === id)
+        return (
+          <>
+            <EditorPost buttonTitle="редагувати" post={examplePostLocal} />
+          </>
+        )
+      },
     },
   ]
   const table = useReactTable({

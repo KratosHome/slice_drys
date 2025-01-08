@@ -11,17 +11,15 @@ export default async function Blog({
     product: [
       {
         _id: '123',
-        title: { en: 'Sample Title', uk: 'Приклад заголовка' },
-        content: { en: 'Sample content', uk: 'Приклад змісту' },
-        img: 'https://example.com/image.jpg',
-        author: { en: 'Author Name', uk: "Ім'я автора" },
+        title: 'Приклад заголовка',
+        content: 'Приклад змісту',
+        img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736238115/post-slice/w2mscmujmyyaiez7ouop.png',
+        author: "Ім'я автора",
         slug: 'sample-title',
-        metaDescription: {
-          en: 'Sample meta description',
-          uk: 'Приклад мета опису',
-        },
-        keywords: { en: ['sample', 'example'], uk: ['приклад', 'зразок'] },
-        readingTime: 5,
+        metaDescription: 'Приклад мета опису',
+
+        keywords: ['приклад', 'зразок'],
+        visited: 0,
       },
     ],
     success: true,

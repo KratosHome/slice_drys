@@ -221,7 +221,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                           if (post && post.title) {
                             post.title.en = event.target.value
                           }
-
                           setSlug(toSlug(event.target.value))
                         },
                       })}
