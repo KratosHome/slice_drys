@@ -9,3 +9,10 @@ interface IPostLocal {
   keywords: ILocalizedStringArray
   readingTime: number
 }
+
+interface IGetPost {
+  product: IPostLocal[]
+  productAll?: IPostLocal[]
+  success: boolean
+  message: string
+}
