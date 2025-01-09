@@ -19,6 +19,7 @@ import Image from 'next/image'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
+import { editPost } from '@/server/posts/edit-post'
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
@@ -103,8 +104,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
+      console.log(post?._id)
+      let response
+      if (post?._id) {
+        response = await editPost(post._id, data, image)
+      } else {
+        response = await createPost(data, image)
+      }
 
-      const response = await createPost(data, image)
       if (response.success) {
         setIsOpen(false)
         toast({
