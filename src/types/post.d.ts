@@ -24,7 +24,7 @@ interface IPostLocal {
 
 interface IGetPost {
   post: IPost[]
-  postAll?: IPost[]
+  postAll?: IPostLocal[]
   success: boolean
   message: string
 }

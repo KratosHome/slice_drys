@@ -11,36 +11,8 @@ export default async function Blog({
   const posts1 = await getPosts(locale)
   console.log(111, posts1)
 
-  const posts: IGetPost = {
-    post: [
-      {
-        _id: '123',
-        title: 'Приклад заголовка',
-        content: 'Приклад змісту',
-        img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736238115/post-slice/w2mscmujmyyaiez7ouop.png',
-        author: "Ім'я автора",
-        slug: 'sample-title',
-        metaDescription: 'Приклад мета опису',
+  const posts: IGetPost = await getPosts(locale)
 
-        keywords: ['приклад', 'зразок'],
-        visited: 0,
-      },
-      {
-        _id: '123',
-        title: 'Приклад заголовка',
-        content: 'Приклад змісту',
-        img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736238115/post-slice/w2mscmujmyyaiez7ouop.png',
-        author: "Ім'я автора",
-        slug: 'sample-title',
-        metaDescription: 'Приклад мета опису',
-
-        keywords: ['приклад', 'зразок'],
-        visited: 0,
-      },
-    ],
-    success: true,
-    message: 'Posts successfully retrieved',
-  }
   return (
     <div className="px-5">
       <div className="flex items-end justify-between">
