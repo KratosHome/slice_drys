@@ -21,7 +21,7 @@ export async function getPosts(locale: string) {
 
     const formattedPost: IPost[] = post.map((post) => ({
       ...post,
-      _id: post._id as string,
+      _id: (post._id as string).toString(),
       slug: post.slug,
       img: post.img,
       title: post.title[locale],
@@ -30,14 +30,20 @@ export async function getPosts(locale: string) {
       metaDescription: post.metaDescription[locale],
       keywords: post.keywords[locale],
     }))
+
     const allPost: IPostLocal[] = (await Post.find()
       .sort({ createdAt: -1 })
       .lean()) as unknown as IPostLocal[]
 
+    const formattedAllPost = allPost.map((post) => ({
+      ...post,
+      _id: (post._id as string).toString(),
+    }))
+
     return {
       success: true,
       post: formattedPost,
-      postAll: allPost,
+      postAll: formattedAllPost,
       message: 'Products retrieved',
     }
   } catch (error) {
