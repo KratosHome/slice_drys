@@ -9,7 +9,6 @@ export default async function Blog({
 }) {
   const { locale } = await params
   const posts1 = await getPosts(locale)
-  console.log(111, posts1)
 
   const posts: IGetPost = await getPosts(locale)
 

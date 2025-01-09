@@ -15,6 +15,7 @@ export async function getPosts(locale: string) {
         slug: 1,
         [`metaDescription.${locale}`]: 1,
         [`keywords.${locale}`]: 1,
+        visited: 1,
       })
       .lean()
 
@@ -29,7 +30,6 @@ export async function getPosts(locale: string) {
       metaDescription: post.metaDescription[locale],
       keywords: post.keywords[locale],
     }))
-
     const allPost: IPostLocal[] = (await Post.find()
       .sort({ createdAt: -1 })
       .lean()) as unknown as IPostLocal[]
