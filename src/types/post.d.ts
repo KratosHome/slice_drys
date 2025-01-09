@@ -23,8 +23,8 @@ interface IPostLocal {
 }
 
 interface IGetPost {
-  product: IPost[]
-  productAll?: IPost[]
+  post: IPost[]
+  postAll?: IPost[]
   success: boolean
   message: string
 }

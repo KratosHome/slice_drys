@@ -56,7 +56,7 @@ const examplePostLocal: IPostLocal = {
   },
 }
 
-export const ProductList: FC<IPostList> = ({ data }) => {
+export const PostList: FC<IPostList> = ({ data }) => {
   const columns: ColumnDef<IPost>[] = [
     {
       id: 'select',
@@ -87,15 +87,15 @@ export const ProductList: FC<IPostList> = ({ data }) => {
       header: 'зображення',
       accessorKey: 'img',
       cell: ({ row }) => {
-        const product = row.original
+        const post = row.original
         return (
           <div className="flex items-center justify-center">
-            {product.img && (
+            {post.img && (
               <Image
                 width={50}
                 height={50}
-                src={product.img}
-                alt={product.title}
+                src={post.img}
+                alt={post.title}
                 className="h-10 w-10 rounded object-cover"
               />
             )}
@@ -108,8 +108,8 @@ export const ProductList: FC<IPostList> = ({ data }) => {
       header: 'заголовок',
       accessorKey: 'name',
       cell: ({ row }) => {
-        const product = row.original
-        return <div>{product.title}</div>
+        const post = row.original
+        return <div>{post.title}</div>
       },
     },
     {
@@ -117,8 +117,8 @@ export const ProductList: FC<IPostList> = ({ data }) => {
       header: 'відвідувань',
       accessorKey: 'name',
       cell: ({ row }) => {
-        const product = row.original
-        return <div>{product.visited}</div>
+        const post = row.original
+        return <div>{post.visited}</div>
       },
     },
     {
@@ -126,9 +126,9 @@ export const ProductList: FC<IPostList> = ({ data }) => {
       enableHiding: false,
       header: '',
       cell: ({ row }) => {
-        const product = row.original as IPost
-        const id = product._id
-        const fineProduct = data.productAll?.find((item) => item._id === id)
+        const post = row.original as IPost
+        const id = post._id
+        const findPost = data.postAll?.find((item) => item._id === id)
         return (
           <>
             <EditorPost buttonTitle="редагувати" post={examplePostLocal} />
@@ -138,7 +138,7 @@ export const ProductList: FC<IPostList> = ({ data }) => {
     },
   ]
   const table = useReactTable({
-    data: data.product,
+    data: data.post,
     columns,
     // onSortingChange: setSorting,
     // onColumnFiltersChange: setColumnFilters,
