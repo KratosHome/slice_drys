@@ -29,33 +29,6 @@ interface IPostList {
   data: IGetPost
 }
 
-const examplePostLocal: IPostLocal = {
-  _id: '677ce334bf6de04db106be49',
-
-  title: {
-    en: 'Example Title 1Example Title 1Example Title 1',
-    uk: 'Приклад заголовкуПриклад заголовкуПриклад заголовку',
-  },
-  content: {
-    en: '{"ops":[{"insert":"sdf\\n"}]}',
-    uk: '{"ops":[{"insert":"sdfs\\n"}]}',
-  },
-  img: 'https://res.cloudinary.com/dohos5iu3/image/upload/v1736237875/post-slice/xbpxg7agjkiqpduat4uc.png',
-  author: {
-    en: 'fsdfsds',
-    uk: 'dfsdfsdfs',
-  },
-  slug: 'example-title-1example-title-1example-title-1',
-  metaDescription: {
-    en: 'sdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfs',
-    uk: 'sdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfssdfsdfsdfsdfs',
-  },
-  keywords: {
-    en: ['sdfsdfsdfsdfs'],
-    uk: ['sdfsdfsdfsdfs'],
-  },
-}
-
 export const PostList: FC<IPostList> = ({ data }) => {
   const columns: ColumnDef<IPost>[] = [
     {
@@ -131,7 +104,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
         const findPost = data.postAll?.find((item) => item._id === id)
         return (
           <>
-            <EditorPost buttonTitle="редагувати" post={examplePostLocal} />
+            <EditorPost buttonTitle="редагувати" post={findPost} />
           </>
         )
       },
