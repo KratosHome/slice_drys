@@ -77,9 +77,18 @@ export const PostList: FC<IPostList> = ({ data }) => {
       },
     },
     {
+      id: 'автор',
+      header: 'автор',
+      accessorKey: 'author',
+      cell: ({ row }) => {
+        const post = row.original
+        return <div>{post.author}</div>
+      },
+    },
+    {
       id: 'заголовок',
       header: 'заголовок',
-      accessorKey: 'name',
+      accessorKey: 'title',
       cell: ({ row }) => {
         const post = row.original
         return <div>{post.title}</div>
