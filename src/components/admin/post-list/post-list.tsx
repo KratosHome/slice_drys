@@ -101,7 +101,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    initialState: { pagination: { pageSize: 7 } },
+    initialState: { pagination: { pageSize: 10 } },
   })
 
   return (
