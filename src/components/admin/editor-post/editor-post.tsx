@@ -478,25 +478,29 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
-              {post ? (
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => setIsConfirmDeleteOpen(true)}
-                >
-                  Видалити
-                </Button>
-              ) : (
-                <div />
-              )}
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => setIsOpen(false)}
-              >
-                Скасувати
-              </Button>
-              <Button type="submit">{buttonTitle}</Button>{' '}
+              <div className="flex w-full justify-between">
+                {post ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => setIsConfirmDeleteOpen(true)}
+                  >
+                    Видалити
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Скасувати
+                  </Button>
+                  <Button type="submit">{buttonTitle}</Button>
+                </div>
+              </div>
             </AlertDialogFooter>
           </form>
         </AlertDialogContent>
