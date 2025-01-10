@@ -30,6 +30,8 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
+
   const { toast } = useToast()
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
@@ -146,9 +148,44 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setImageFile(file)
     }
   }
+  const handleDelete = async () => {
+    console.log('delete')
+  }
+
+  const ConfirmDeletePopup = () => (
+    <AlertDialog
+      open={isConfirmDeleteOpen}
+      onOpenChange={setIsConfirmDeleteOpen}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Видалення</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          Дійсно хочете видалити цей товар?
+        </AlertDialogDescription>
+
+        <AlertDialogFooter>
+          <div className="flex w-full justify-end gap-3">
+            <Button variant="destructive" onClick={handleDelete}>
+              Так
+            </Button>
+
+            <Button
+              variant="default"
+              onClick={() => setIsConfirmDeleteOpen(false)}
+            >
+              Ні
+            </Button>
+          </div>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
 
   return (
     <div>
+      <ConfirmDeletePopup />
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
           <Button>{buttonTitle}</Button>
@@ -423,6 +460,17 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
+              {post ? (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setIsConfirmDeleteOpen(true)}
+                >
+                  Видалити
+                </Button>
+              ) : (
+                <div />
+              )}
               <Button
                 variant="outline"
                 type="button"
