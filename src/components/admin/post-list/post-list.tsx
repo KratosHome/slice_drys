@@ -1,4 +1,5 @@
 'use client'
+
 import * as React from 'react'
 import { FC } from 'react'
 import {
@@ -11,19 +12,16 @@ import {
 } from '@/components/admin/ui/table'
 import {
   ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { Checkbox } from '@/components/admin/ui/checkbox'
 import Image from 'next/image'
 import EditorPost from '../editor-post/editor-post'
+import { Button } from '@/components/admin/ui/button'
 
 interface IPostList {
   data: IGetPost
@@ -31,30 +29,6 @@ interface IPostList {
 
 export const PostList: FC<IPostList> = ({ data }) => {
   const columns: ColumnDef<IPost>[] = [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => {
-    //         row.toggleSelected(!!value)
-    //       }}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
       id: 'зображення',
       header: 'зображення',
@@ -97,7 +71,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
     {
       id: 'відвідувань',
       header: 'відвідувань',
-      accessorKey: 'name',
+      accessorKey: 'visited',
       cell: ({ row }) => {
         const post = row.original
         return <div>{post.visited}</div>
@@ -119,23 +93,15 @@ export const PostList: FC<IPostList> = ({ data }) => {
       },
     },
   ]
+
   const table = useReactTable({
     data: data.post,
     columns,
-    // onSortingChange: setSorting,
-    // onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    // onColumnVisibilityChange: setColumnVisibility,
-    // onRowSelectionChange: setRowSelection,
-    // state: {
-    //   sorting,
-    //   columnFilters,
-    //   columnVisibility,
-    //   rowSelection,
-    // },
+    initialState: { pagination: { pageSize: 7 } },
   })
 
   return (
@@ -182,6 +148,33 @@ export const PostList: FC<IPostList> = ({ data }) => {
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Попередня
+          </Button>
+          <span>
+            Сторінка
+            <strong>
+              {table.getState().pagination.pageIndex + 1} з{' '}
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Наступна
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
