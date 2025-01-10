@@ -20,9 +20,12 @@ import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
 import { editPost } from '@/server/posts/edit-post'
+import { deletePost } from '@/server/posts/delete-post.server'
+
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
+import { useRouter } from 'next/navigation'
 
 interface ICratePost {
   buttonTitle: string
@@ -30,6 +33,7 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const router = useRouter()
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
 
   const { toast } = useToast()
@@ -128,6 +132,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         })
       }
     }
+    router.refresh()
   }
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,9 +154,22 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     }
   }
   const handleDelete = async () => {
-    console.log('delete')
-  }
+    if (!post || !post._id) {
+      return toast({ title: 'Post is not defined' })
+    }
 
+    const result = await deletePost(post._id)
+
+    if (result.success) {
+      setIsConfirmDeleteOpen(false)
+    }
+
+    toast({
+      title: result.message,
+    })
+
+    router.refresh()
+  }
   const ConfirmDeletePopup = () => (
     <AlertDialog
       open={isConfirmDeleteOpen}
