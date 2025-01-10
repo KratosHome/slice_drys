@@ -166,6 +166,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Input
                       id="picture"
                       type="file"
+                      accept="image/*"
                       onChange={handleImageChange}
                     />
                   </div>
