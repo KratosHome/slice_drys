@@ -46,13 +46,15 @@ export default function Blog({ locale }: BlogProps) {
         <div className="m-20">
           <div className="mb-10 mt-10 flex justify-between">
             {posts.slice(0, 2).map((post, index) => (
-              <div key={index} className="flex w-full items-stretch">
-                <BlogPostCard
-                  key={index}
-                  image={post.img}
-                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
-                  title={post.title}
-                />
+              <div className="flex w-full" key={index}>
+                <div key={index} className="flex w-full items-stretch">
+                  <BlogPostCard
+                    key={index}
+                    image={post.img}
+                    date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                    title={post.title}
+                  />
+                </div>
                 {index !== 1 && (
                   <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}
@@ -61,15 +63,17 @@ export default function Blog({ locale }: BlogProps) {
           </div>
           <div className="my-4 border-t border-dashed border-black"></div>
 
-          <div className="mb-10 mt-10 flex flex-wrap justify-between">
+          <div className="mb-10 mt-10 flex justify-between">
             {posts.slice(2, 5).map((post, index) => (
-              <div key={index} className="flex w-full basis-1/3 items-stretch">
-                <BlogPostCard
-                  key={index}
-                  image={post.img}
-                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
-                  title={post.title}
-                />
+              <div className="flex w-full" key={index}>
+                <div key={index} className="flex w-full items-stretch">
+                  <BlogPostCard
+                    key={index}
+                    image={post.img}
+                    date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                    title={post.title}
+                  />
+                </div>
                 {index !== 2 && (
                   <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}
@@ -77,15 +81,17 @@ export default function Blog({ locale }: BlogProps) {
             ))}
           </div>
 
-          <div className="mb-10 mt-10 flex flex-wrap justify-between">
+          <div className="mb-10 mt-10 flex justify-between">
             {posts.slice(5).map((post, index) => (
-              <div key={index} className="flex w-full basis-1/3 items-stretch">
-                <BlogPostCard
-                  key={index}
-                  image={post.img}
-                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
-                  title={post.title}
-                />
+              <div className="flex w-full" key={index}>
+                <div key={index} className="flex w-full items-stretch">
+                  <BlogPostCard
+                    key={index}
+                    image={post.img}
+                    date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                    title={post.title}
+                  />
+                </div>
                 {index !== 2 && (
                   <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}

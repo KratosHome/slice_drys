@@ -18,8 +18,10 @@ export default function BlogPostCard({
       <div className="relative w-full pb-[75%]">
         <Image src={image} alt="img" layout="fill" objectFit="cover" />
       </div>
-      <h3>{date}</h3>
-      <h2>{title}</h2>
+      <h3 className="text-left font-poppins text-lg font-normal text-gray-400">
+        {date}
+      </h3>
+      <h2 className="text-left font-poppins text-2xl font-semibold">{title}</h2>
     </div>
   )
 }
