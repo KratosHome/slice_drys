@@ -37,10 +37,8 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
       author: post.author[locale],
       metaDescription: post.metaDescription[locale],
       keywords: post.keywords[locale],
-      updatedAt: post.updatedAt.$date,
+      updatedAt: post.updatedAt.$date ? post.updatedAt.$date : post.updatedAt,
     }))
-
-    console.log(1111, formattedPost)
 
     const allPost: IPostLocal[] = (await Post.find()
       .sort({ createdAt: -1 })

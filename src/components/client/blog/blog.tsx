@@ -1,4 +1,3 @@
-// Імпорт компонентів і хуків
 'use client'
 import { useState, useEffect } from 'react'
 import { getPosts } from '@/server/posts/get-posts.server'
@@ -11,113 +10,74 @@ import {
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
 import Image from 'next/image'
+import BlogPostCard from './blog-post-card'
 
 interface BlogProps {
   locale: string
 }
 
-// Компонент блогу
 export default function Blog({ locale }: BlogProps) {
-  const [page, setPage] = useState(1) // Стан для зберігання поточної сторінки
-  const [posts, setPosts] = useState<IPost[]>([]) // Стан для зберігання дописів
+  const [page, setPage] = useState(1)
+  const [posts, setPosts] = useState<IPost[]>([])
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const data = await getPosts(locale, page, 8) // Отримання дописів
+      const data = await getPosts(locale, page, 8)
       const posts = data.post
       setPosts(posts)
     }
 
-    fetchPosts() // Виклик функції для отримання дописів
-  }, [locale, page]) // Залежність від locale і page
+    fetchPosts()
+  }, [locale, page])
 
   const handleNext = () => {
-    setPage((prevPage) => prevPage + 1) // Збільшення номера сторінки
+    setPage((prevPage) => prevPage + 1)
   }
 
   const handlePrevious = () => {
     if (page > 1) {
-      setPage((prevPage) => prevPage - 1) // Зменшення номера сторінки
+      setPage((prevPage) => prevPage - 1)
     }
   }
 
   return (
     <div>
       {posts.length > 0 && ( // Перевірка наявності дописів
-        <>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {posts.slice(0, 2).map(
-              (
-                post,
-                index, // Ітерація по перших двох дописах
-              ) => (
-                <div key={index}>
-                  <Image
-                    width={250}
-                    height={250}
-                    src={post.img}
-                    alt={`Image ${index}`} // Альтернативний текс т з номером зображення
-                  />
-                  <h3>
-                    {new Date(post.updatedAt).toLocaleDateString('uk-UA')}
-                  </h3>
-
-                  <h2>{post.title}</h2>
-                </div>
-              ),
-            )}
+        <div className="m-20">
+          <div className="flex basis-2/5 justify-between">
+            {posts.slice(0, 2).map((post, index) => (
+              <BlogPostCard
+                key={index}
+                image={post.img}
+                date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                title={post.title}
+              />
+            ))}
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {posts.slice(2, 5).map(
-              (
-                post,
-                index, // Ітерація по решті дописів
-              ) => (
-                <div key={index}>
-                  <h2>{post.title}</h2> {/* Відображення заголовку допису */}
-                  <Image
-                    width={250}
-                    height={250}
-                    src={post.img}
-                    alt={`Image ${index + 2}`} // Альтернативний текст з номером зображення
-                  />
-                </div>
-              ),
-            )}
+          <div className="flex flex-wrap justify-between">
+            {posts.slice(2).map((post, index) => (
+              <div key={index} className="basis-1/3">
+                <BlogPostCard
+                  key={index}
+                  image={post.img}
+                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                  title={post.title}
+                />
+              </div>
+            ))}
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {posts.slice(5).map(
-              (
-                post,
-                index, // Ітерація по решті дописів
-              ) => (
-                <div key={index}>
-                  <h2>{post.title}</h2> {/* Відображення заголовку допису */}
-                  <Image
-                    width={250}
-                    height={250}
-                    src={post.img}
-                    alt={`Image ${index + 2}`} // Альтернативний текст з номером зображення
-                  />
-                </div>
-              ),
-            )}
-          </div>
-        </>
+        </div>
       )}
       <Pagination>
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious href="#" onClick={handlePrevious} />{' '}
-            {/* Кнопка попередня сторінка */}
           </PaginationItem>
           <PaginationItem>
             <PaginationLink href="#">{page}</PaginationLink>{' '}
-            {/* Поточна сторінка */}
           </PaginationItem>
           <PaginationItem>
             <PaginationNext href="#" onClick={handleNext} />{' '}
-            {/* Кнопка наступна сторінка */}
           </PaginationItem>
         </PaginationContent>
       </Pagination>
