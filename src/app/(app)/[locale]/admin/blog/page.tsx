@@ -8,7 +8,6 @@ export default async function Blog({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const posts1 = await getPosts(locale)
 
   const posts: IGetPost = await getPosts(locale)
 

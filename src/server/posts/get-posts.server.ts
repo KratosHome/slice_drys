@@ -1,8 +1,8 @@
+'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 
 export async function getPosts(locale: string, page?: number, limit?: number) {
-  'use server'
   try {
     await connectToDb()
 
