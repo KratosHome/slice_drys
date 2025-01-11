@@ -5,6 +5,7 @@ import { getMessages } from 'next-intl/server'
 import { Poppins } from 'next/font/google'
 import { hamburgerLinksOther, headerLinks } from '@/data/header-links'
 import Header from '@/components/client/header/header'
+import { Toaster } from '@/components/admin/ui/toaster'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -42,6 +43,7 @@ export default async function LocaleLayout(props: {
           />
           {children}
         </body>
+        <Toaster />
       </NextIntlClientProvider>
     </html>
   )
