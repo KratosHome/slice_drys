@@ -59,6 +59,8 @@ export default function Blog({ locale }: BlogProps) {
               </div>
             ))}
           </div>
+          <div className="my-4 border-t border-dashed border-black"></div>
+
           <div className="mb-10 mt-10 flex flex-wrap justify-between">
             {posts.slice(2, 5).map((post, index) => (
               <div key={index} className="flex w-full basis-1/3 items-stretch">
@@ -74,6 +76,7 @@ export default function Blog({ locale }: BlogProps) {
               </div>
             ))}
           </div>
+
           <div className="mb-10 mt-10 flex flex-wrap justify-between">
             {posts.slice(5).map((post, index) => (
               <div key={index} className="flex w-full basis-1/3 items-stretch">
