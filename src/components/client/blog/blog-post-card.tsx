@@ -14,14 +14,9 @@ export default function BlogPostCard({
   date,
 }: BlogPostCardProps) {
   return (
-    <div key={key} className="m-20 flex-1">
+    <div key={key} className="m-10 flex-1">
       <div className="relative w-full pb-[75%]">
         <Image src={image} alt="img" layout="fill" objectFit="cover" />
-        {/* <img
-          src={image}
-          alt="img"
-          style={{ width: '100%', aspectRatio: '4 / 3' }}
-        /> */}
       </div>
       <h3>{date}</h3>
       <h2>{title}</h2>
