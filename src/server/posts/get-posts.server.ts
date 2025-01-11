@@ -18,13 +18,13 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
         [`metaDescription.${locale}`]: 1,
         [`keywords.${locale}`]: 1,
         visited: 1,
+        updatedAt: 1,
       })
       .lean()
 
     if (pagination.skip !== undefined && pagination.limit !== undefined) {
       postQuery.skip(pagination.skip).limit(pagination.limit)
     }
-
     const post = await postQuery
 
     const formattedPost: IPost[] = post.map((post) => ({
@@ -37,7 +37,10 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
       author: post.author[locale],
       metaDescription: post.metaDescription[locale],
       keywords: post.keywords[locale],
+      updatedAt: post.updatedAt.$date,
     }))
+
+    console.log(1111, formattedPost)
 
     const allPost: IPostLocal[] = (await Post.find()
       .sort({ createdAt: -1 })

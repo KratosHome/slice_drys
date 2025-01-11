@@ -52,19 +52,23 @@ export default function Blog({ locale }: BlogProps) {
                 index, // Ітерація по перших двох дописах
               ) => (
                 <div key={index}>
-                  <h2>{post.title}</h2> {/* Відображення заголовку допису */}
                   <Image
                     width={250}
                     height={250}
                     src={post.img}
-                    alt={`Image ${index}`} // Альтернативний текст з номером зображення
+                    alt={`Image ${index}`} // Альтернативний текс т з номером зображення
                   />
+                  <h3>
+                    {new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                  </h3>
+
+                  <h2>{post.title}</h2>
                 </div>
               ),
             )}
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {posts.slice(2, 4).map(
+            {posts.slice(2, 5).map(
               (
                 post,
                 index, // Ітерація по решті дописів
@@ -82,7 +86,7 @@ export default function Blog({ locale }: BlogProps) {
             )}
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {posts.slice(4).map(
+            {posts.slice(5).map(
               (
                 post,
                 index, // Ітерація по решті дописів

@@ -8,6 +8,7 @@ interface IPost {
   metaDescription: string
   keywords: string[]
   visited?: number
+  updatedAt: Date
 }
 
 interface IPostLocal {
