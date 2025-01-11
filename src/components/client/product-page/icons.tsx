@@ -226,9 +226,9 @@ const Curve = () => (
 
 const CertIcons = () => (
   <svg
-    width="368"
+    className="w-[275px] sm:w-[358px]"
     height="99"
-    viewBox="0 0 345 99"
+    viewBox="0 0 355 99"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
