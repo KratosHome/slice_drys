@@ -14,7 +14,7 @@ export default function BlogPostCard({
   date,
 }: BlogPostCardProps) {
   return (
-    <div key={key} className="m-10 flex-1">
+    <div key={key} className="ml-5 mr-5 flex-1">
       <div className="relative w-full pb-[75%]">
         <Image src={image} alt="img" layout="fill" objectFit="cover" />
       </div>

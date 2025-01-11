@@ -44,25 +44,48 @@ export default function Blog({ locale }: BlogProps) {
     <div>
       {posts.length > 0 && ( // Перевірка наявності дописів
         <div className="m-20">
-          <div className="flex basis-2/5 justify-between">
+          <div className="mb-10 mt-10 flex justify-between">
             {posts.slice(0, 2).map((post, index) => (
-              <BlogPostCard
-                key={index}
-                image={post.img}
-                date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
-                title={post.title}
-              />
-            ))}
-          </div>
-          <div className="flex flex-wrap justify-between">
-            {posts.slice(2).map((post, index) => (
-              <div key={index} className="basis-1/3">
+              <div key={index} className="flex w-full items-stretch">
                 <BlogPostCard
                   key={index}
                   image={post.img}
                   date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
                   title={post.title}
                 />
+                {index !== 1 && (
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mb-10 mt-10 flex flex-wrap justify-between">
+            {posts.slice(2, 5).map((post, index) => (
+              <div key={index} className="flex w-full basis-1/3 items-stretch">
+                <BlogPostCard
+                  key={index}
+                  image={post.img}
+                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                  title={post.title}
+                />
+                {index !== 2 && (
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mb-10 mt-10 flex flex-wrap justify-between">
+            {posts.slice(5).map((post, index) => (
+              <div key={index} className="flex w-full basis-1/3 items-stretch">
+                <BlogPostCard
+                  key={index}
+                  image={post.img}
+                  date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
+                  title={post.title}
+                />
+                {index !== 2 && (
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                )}
               </div>
             ))}
           </div>
