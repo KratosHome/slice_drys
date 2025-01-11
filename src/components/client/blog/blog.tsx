@@ -54,7 +54,7 @@ export default function Blog({ locale }: BlogProps) {
                   title={post.title}
                 />
                 {index !== 1 && (
-                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}
               </div>
             ))}
@@ -69,7 +69,7 @@ export default function Blog({ locale }: BlogProps) {
                   title={post.title}
                 />
                 {index !== 2 && (
-                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}
               </div>
             ))}
@@ -84,7 +84,7 @@ export default function Blog({ locale }: BlogProps) {
                   title={post.title}
                 />
                 {index !== 2 && (
-                  <div className="m-1 ml-2 h-full border-l border-dashed border-blue-500"></div>
+                  <div className="m-1 ml-2 h-full border-l border-dashed border-black"></div>
                 )}
               </div>
             ))}
