@@ -41,7 +41,7 @@ export default function LocaleLayout({
     <>
       <div className="flex flex-wrap justify-between gap-1 border-gray-300 bg-transparent">
         {tabsOrder.map((tab) => {
-          const isActive = pathname.includes(tab.value)
+          const isActive = pathname?.includes(tab.value)
           const count = orderCountByStatus[tab.value] || 0
           const badgeStyles = statusStyles[tab.value] || ''
 

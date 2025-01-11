@@ -2,17 +2,10 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css/core'
 import '@splidejs/react-splide/css'
-import { Rubik_Doodle_Shadow } from 'next/font/google'
 import { Arrow } from '@/components/client/ui/arrow'
 import './productSlider.css'
 import Product from '@/components/client/product/product'
-
-const rubikDoodleShadow = Rubik_Doodle_Shadow({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-rubik-doodle-shadow',
-  weight: ['400'],
-})
+import { rubikDoodleShadow } from '@/fonts/fonts'
 
 interface ProductSlider {
   products: IProduct[]

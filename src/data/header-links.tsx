@@ -1,8 +1,15 @@
 const headerLinksUk = [
-  { id: 1, name: 'М’ясо', href: 'myaso' },
-  { id: 2, name: 'Фрукти', href: 'frukty' },
-  { id: 3, name: 'Овочі', href: 'ovochi' },
-  { id: 4, name: 'Мікси', href: 'miksy' },
+  { id: 1, name: 'М’ясо', href: '/uk/products/meat' },
+  { id: 2, name: 'Фрукти', href: '/uk/products/fruits' },
+  { id: 3, name: 'Овочі', href: '/uk/products/vegetables' },
+  { id: 4, name: 'Мікси', href: '/uk/products/mix' },
+]
+
+const headerLinksEn = [
+  { id: 1, name: 'Meat', href: '/en/products/meat' },
+  { id: 2, name: 'Fruit', href: '/en/products/fruits' },
+  { id: 3, name: 'Veggie', href: '/en/products/vegetables' },
+  { id: 4, name: 'Mix', href: '/en/products/mix' },
 ]
 
 const hamburgerLinksOtherUk = [
@@ -13,7 +20,7 @@ const hamburgerLinksOtherUk = [
 ]
 
 export const headerLinks = {
-  en: headerLinksUk,
+  en: headerLinksEn,
   uk: headerLinksUk,
 }
 
