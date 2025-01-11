@@ -1,12 +1,14 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 
-export async function getPosts(locale: string) {
+export async function getPosts(locale: string, page?: number, limit?: number) {
   'use server'
   try {
     await connectToDb()
 
-    const post = await Post.find()
+    const pagination = page && limit ? { skip: (page - 1) * limit, limit } : {}
+
+    const postQuery = Post.find()
       .select({
         [`title.${locale}`]: 1,
         [`content.${locale}`]: 1,
@@ -18,6 +20,12 @@ export async function getPosts(locale: string) {
         visited: 1,
       })
       .lean()
+
+    if (pagination.skip !== undefined && pagination.limit !== undefined) {
+      postQuery.skip(pagination.skip).limit(pagination.limit)
+    }
+
+    const post = await postQuery
 
     const formattedPost: IPost[] = post.map((post) => ({
       ...post,
