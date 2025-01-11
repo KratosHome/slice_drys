@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
+import Image from 'next/image'
 
 interface BlogProps {
   locale: string
@@ -40,8 +41,20 @@ export default function Blog({ locale }: BlogProps) {
 
   return (
     <div>
-      <div>{JSON.stringify(posts)}</div>
+      {posts.length > 0 && (
+        <>
+          <div>{JSON.stringify(posts[3].img)}</div>
+          <div>{JSON.stringify(posts[1].img)}</div>
 
+          <Image
+            width={250}
+            height={250}
+            src={posts[2].img}
+            alt="1"
+            // className="h-10 w-10 rounded object-cover"
+          />
+        </>
+      )}
       <Pagination>
         <PaginationContent>
           <PaginationItem>

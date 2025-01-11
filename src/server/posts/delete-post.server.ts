@@ -9,7 +9,7 @@ export async function deletePost(id: string) {
 
     const postToDelete = await Post.findByIdAndDelete(id)
     if (!postToDelete) {
-      return { success: false, message: "Product wasn't found" }
+      return { success: false, message: "Post wasn't found" }
     }
 
     const { img } = postToDelete

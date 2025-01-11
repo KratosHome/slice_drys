@@ -122,12 +122,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         setIsOpen(false)
         toast({
           duration: 3000,
-          title: 'Post created successfully',
+          title: 'Success',
         })
       } else {
         toast({
           variant: 'destructive',
-          title: 'Error creating post',
+          title: 'Error',
           description: response.message,
         })
       }
