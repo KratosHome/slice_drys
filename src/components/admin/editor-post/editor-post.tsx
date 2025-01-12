@@ -99,11 +99,15 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
+    data.keywords.en = data.keywords.en.join().split(/,\s*/)
+    data.keywords.uk = data.keywords.uk.join().split(/,\s*/)
+
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
     }
     const image = imageFile ? await convertToBase64(imageFile) : ''
 
+    console.log(data.keywords.en)
     if (!data.content.en || !data.content.uk) {
       setContentError('Контент на обох мовах є обов’язковим')
 
@@ -256,6 +260,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.title) {
+                          post.title.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.title?.uk && (
                       <span className="text-red">
@@ -313,13 +322,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </RadioGroup>
-                <div className="h-96 overflow-auto">
+                <div className="h-96">
                   <QuillEditor
-                    className="min-h-64"
+                    className="min-h-96"
                     content={quillEditorContent}
                     setContent={setQuillEditorContent}
                   />
                 </div>
+                <div className="h-10"></div>
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
@@ -353,6 +363,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.uk && (
                       <span className="text-red">
@@ -375,6 +390,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.en && (
                       <span className="text-red">
@@ -399,6 +419,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.uk = event.target.value.split(/,\s*/)
+                        }
+                      }}
                     />
                     {errors.keywords?.uk && (
                       <span className="text-red">
@@ -422,6 +447,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.en = event.target.value.split(/,\s*/)
+                          console.log(1111, post.keywords.en)
+                        }
+                      }}
                     />
                     {errors.keywords?.en && (
                       <span className="text-red">
@@ -446,6 +477,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.uk && (
                       <span className="text-red">
@@ -468,6 +504,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.en && (
                       <span className="text-red">
