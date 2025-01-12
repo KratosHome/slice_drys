@@ -1,29 +1,24 @@
-'use client'
-
-import { useParams } from 'next/navigation'
+// Імпорти
 import { getPostBySlug } from '@/server/posts/get-posts.server'
-import { useEffect, useState } from 'react'
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html' // Імпортуємо бібліотеку
 
-// Визначаємо тип даних для поста
+export default async function PostPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const slug = params.slug
 
-export default function ProductPage() {
-  const params = useParams()
-  const slug = params.slug as string
+  const data: IGetOnePost = await getPostBySlug('uk', slug)
 
-  // Оновлюємо типовий підпис стану
-  const [post, setPost] = useState<IGetOnePost | null>(null)
+  const content = data.post.content
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      const data: IGetOnePost = await getPostBySlug('uk', slug) // Отримання даних
-      setPost(data) // Зберігаємо дані у стан
-    }
-    fetchPost()
-  }, [slug])
+  const converter = new QuillDeltaToHtmlConverter(content.ops)
+  const html = converter.convert()
 
   return (
     <div>
-      <h1>{JSON.stringify(post)}</h1> {/* Відображуємо івпост */}
+      <h1 dangerouslySetInnerHTML={{ __html: html }} /> {/* Вставляємо HTML */}
     </div>
   )
 }
