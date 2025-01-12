@@ -29,3 +29,9 @@ interface IGetPost {
   success: boolean
   message: string
 }
+
+interface IGetOnePost {
+  post: IPost
+  success: boolean
+  message: string
+}

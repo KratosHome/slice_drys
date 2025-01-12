@@ -109,7 +109,7 @@ export async function getPostBySlug(locale: string, slug: string) {
   } catch (error) {
     return {
       success: false,
-      post: '',
+      post: null as unknown as IPost,
       message: "Can't retrieve posts",
     }
   }

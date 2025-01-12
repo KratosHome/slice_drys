@@ -5,22 +5,17 @@ import { getPostBySlug } from '@/server/posts/get-posts.server'
 import { useEffect, useState } from 'react'
 
 // Визначаємо тип даних для поста
-interface PostData {
-  success: boolean
-  post: string | undefined
-  message: string
-}
 
 export default function ProductPage() {
   const params = useParams()
   const slug = params.slug as string
 
   // Оновлюємо типовий підпис стану
-  const [post, setPost] = useState<PostData | null>(null)
+  const [post, setPost] = useState<IGetOnePost | null>(null)
 
   useEffect(() => {
     const fetchPost = async () => {
-      const data: PostData = await getPostBySlug('uk', slug) // Отримання даних
+      const data: IGetOnePost = await getPostBySlug('uk', slug) // Отримання даних
       setPost(data) // Зберігаємо дані у стан
     }
     fetchPost()
