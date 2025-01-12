@@ -313,12 +313,13 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </RadioGroup>
-                <QuillEditor
-                  className="min-h-64"
-                  content={quillEditorContent}
-                  setContent={setQuillEditorContent}
-                />
-
+                <div className="h-96 overflow-auto">
+                  <QuillEditor
+                    className="min-h-64"
+                    content={quillEditorContent}
+                    setContent={setQuillEditorContent}
+                  />
+                </div>
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
