@@ -76,9 +76,10 @@ const postSchema = new mongoose.Schema(
         required: true,
       },
     },
-    readingTime: {
+    visited: {
       type: Number,
       required: false,
+      default: 0,
     },
   },
   { timestamps: true },
