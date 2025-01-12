@@ -23,7 +23,7 @@ export default function ProductPage() {
 
   return (
     <div>
-      <h1>{JSON.stringify(post)}</h1> {/* Відображуємо пост */}
+      <h1>{JSON.stringify(post)}</h1> {/* Відображуємо івпост */}
     </div>
   )
 }
