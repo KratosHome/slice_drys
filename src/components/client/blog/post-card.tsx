@@ -27,7 +27,7 @@ export default function PostCard({
   }
 
   return (
-    <Link href={`/${local}/blog/${post?.slug}`} className="w-full">
+    <Link href={`/${local}/blog/${post?.slug}`} className="mb-10 w-full">
       <div className="ml-5 mr-5 flex-1 cursor-pointer">
         <div className="relative w-full pb-[75%]">
           <Image
