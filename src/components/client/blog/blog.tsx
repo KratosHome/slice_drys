@@ -9,7 +9,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
-import Image from 'next/image'
 import BlogPostCard from './blog-post-card'
 
 interface BlogProps {
@@ -53,6 +52,7 @@ export default function Blog({ locale }: BlogProps) {
                     image={post.img}
                     date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
                     title={post.title}
+                    slag={post.slug}
                   />
                 </div>
                 {index !== 1 && (
@@ -72,6 +72,7 @@ export default function Blog({ locale }: BlogProps) {
                     image={post.img}
                     date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
                     title={post.title}
+                    slag={post.slug}
                   />
                 </div>
                 {index !== 2 && (
@@ -90,6 +91,7 @@ export default function Blog({ locale }: BlogProps) {
                     image={post.img}
                     date={new Date(post.updatedAt).toLocaleDateString('uk-UA')}
                     title={post.title}
+                    slag={post.slug}
                   />
                 </div>
                 {index !== 2 && (
