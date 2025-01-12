@@ -1,5 +1,5 @@
-import Image from 'next/image' // Імпортуємо компонент Image з next/image
-import Link from 'next/link' // Імпортуємо компонент Link з next/link
+import Image from 'next/image'
+import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
 interface BlogPostCardProps {
@@ -7,7 +7,7 @@ interface BlogPostCardProps {
   image: string
   title: string
   date: string
-  slag?: string // Додаємо нову властивість url
+  slag?: string
 }
 
 export default function BlogPostCard({
@@ -15,15 +15,14 @@ export default function BlogPostCard({
   image,
   title,
   date,
-  slag, // Передаємо url
+  slag,
 }: BlogPostCardProps) {
   const local = useLocale()
-  slag = slag ? slag : ''
+  slag = slag ? slag : '111'
 
   return (
-    <Link href={`/${local}/${slag}`}>
+    <Link href={`/${local}/blog/${slag}`}>
       <div key={key} className="ml-5 mr-5 flex-1 cursor-pointer">
-        {/* Обгортаємо вміст в компонент Link */}
         <div className="relative w-full pb-[75%]">
           <Image src={image} alt="img" layout="fill" objectFit="cover" />
         </div>
