@@ -32,7 +32,7 @@ export default function PostCard({
         <div className="relative w-full pb-[75%]">
           <Image
             src={post?.img || ''}
-            alt="img"
+            alt={post?.title}
             layout="fill"
             objectFit="cover"
           />
