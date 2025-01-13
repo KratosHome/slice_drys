@@ -69,14 +69,12 @@ const PaginationPrevious = ({
     className={cn('gap-1 pl-2.5', className)}
     {...props}
   >
-    <span>
-      <img
-        src={'/icons/pagination-arrow-left.svg'}
-        alt="Previous"
-        width="16"
-        height="16"
-      />
-    </span>
+    <img
+      src={'/icons/pagination-arrow-left.svg'}
+      alt="Previous"
+      width="16"
+      height="16"
+    />
   </PaginationLink>
 )
 PaginationPrevious.displayName = 'PaginationPrevious'

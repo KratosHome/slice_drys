@@ -25,6 +25,10 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
     if (pagination.skip !== undefined && pagination.limit !== undefined) {
       postQuery.skip(pagination.skip).limit(pagination.limit)
     }
+
+    // Підраховуємо загальну кількість постів
+    const totalPostsCount = await Post.countDocuments()
+
     const post = await postQuery
 
     const formattedPost: IPost[] = post.map((post) => ({
@@ -53,6 +57,7 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
       success: true,
       post: formattedPost,
       postAll: formattedAllPost,
+      totalPosts: totalPostsCount, // Додаємо загальну кількість постів
       message: 'Products retrieved',
     }
   } catch (error) {
@@ -60,6 +65,7 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
       success: false,
       post: [],
       postAll: [],
+      totalPosts: 0, // Повертаємо 0 у випадку помилки
       message: "Can't retrieve posts",
     }
   }
