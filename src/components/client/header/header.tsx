@@ -48,7 +48,7 @@ const Header: FC<HeaderP> = ({ headerLinks, hamburgerLinksOther }) => {
             {headerLinks?.map((link: ILink) => (
               <Link
                 key={link.id}
-                href={`/${local}/${link.href}`}
+                href={link.href}
                 className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red"
               >
                 {link.name}

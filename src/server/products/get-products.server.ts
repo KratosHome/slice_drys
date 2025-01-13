@@ -5,8 +5,8 @@ export async function getProducts(
   page = 1,
   limit = 10,
   composition = [],
-  menu = [],
-  category = [],
+  menu: string[] = [],
+  category: string[] = [],
   locale: string,
   fetchAll = false,
 ) {
