@@ -1,8 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
-import { Post } from '@/server/posts/postSchema'
-import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card' // Імпортуємо необхідні компоненти
+import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card'
 
 interface PostCardProps {
   post?: IPost
@@ -29,8 +28,6 @@ export default function PostCard({
 
   return (
     <CardContainer className="w-full">
-      {' '}
-      {/* Використовуємо CardContainer */}
       <CardBody>
         <CardItem
           as={Link}
