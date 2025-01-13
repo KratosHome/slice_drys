@@ -47,13 +47,7 @@ const PaginationLink = ({
 }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? 'page' : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
-        size,
-      }),
-      className,
-    )}
+    className={cn(className)}
     {...props}
   />
 )
@@ -72,8 +66,8 @@ const PaginationPrevious = ({
     <img
       src={'/icons/pagination-arrow-left.svg'}
       alt="Previous"
-      width="16"
-      height="16"
+      width="32"
+      height="32"
     />
   </PaginationLink>
 )
@@ -89,14 +83,12 @@ const PaginationNext = ({
     className={cn('gap-1 pr-2.5', className)}
     {...props}
   >
-    <span>
-      <img
-        src={'/icons/pagination-arrow-right.svg'}
-        alt="Next"
-        width="16"
-        height="16"
-      />
-    </span>
+    <img
+      src={'/icons/pagination-arrow-right.svg'}
+      alt="Next"
+      width="32"
+      height="32"
+    />
   </PaginationLink>
 )
 PaginationNext.displayName = 'PaginationNext'

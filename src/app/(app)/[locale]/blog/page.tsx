@@ -27,12 +27,15 @@ export default async function Home({ params, searchParams }: Props) {
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href={`?page=${page > 1 ? page - 1 : 1}`} />
+            <PaginationPrevious
+              className="mr-4 flex w-10 items-center"
+              href={`?page=${page > 1 ? page - 1 : 1}`}
+            />
           </PaginationItem>
 
           {/* Додавання всіх сторінок в пагінаційні елементи */}
           {Array.from({ length: pageCount }, (_, idx) => (
-            <PaginationItem key={idx} className="w-4">
+            <PaginationItem key={idx} className="w-4 items-center">
               <PaginationLink href={`?page=${idx + 1}`}>
                 {idx + 1 == page ? (
                   <img
@@ -55,6 +58,7 @@ export default async function Home({ params, searchParams }: Props) {
 
           <PaginationItem>
             <PaginationNext
+              className="ml-4 flex w-10 items-center"
               href={`?page=${page < pageCount ? page + 1 : pageCount}`}
             />
           </PaginationItem>
