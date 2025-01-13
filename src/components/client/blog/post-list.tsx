@@ -21,6 +21,7 @@ export default function PostList({ posts }: BlogProps) {
               </div>
             </div>
           </div>
+          <div className="my-4 border-t border-dashed border-black"></div>
 
           <div className="mb-10 mt-10 flex justify-between">
             <div className="flex w-full flex-wrap justify-between">
