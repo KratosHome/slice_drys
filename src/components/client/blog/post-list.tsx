@@ -14,7 +14,7 @@ export default function PostList({ posts }: BlogProps) {
               <div className="flex sm:w-[45%]">
                 <PostCard post={posts[0]} />
               </div>
-              <div className="m-1 ml-2 h-full border-l border-dashed border-white pr-1 sm:w-[1%] sm:border-black"></div>
+              <div className="m-1 ml-2 hidden h-full border-l border-dashed border-black pr-1 sm:block sm:w-[1%]"></div>
 
               <div className="flex sm:w-[45%]">
                 <PostCard post={posts[1]} />
