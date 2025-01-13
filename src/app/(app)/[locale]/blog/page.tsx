@@ -24,16 +24,14 @@ type Props = {
   searchParams: { page?: string }
 }
 
-// Основна асинхронна функція для отримання даних блогу
 export default async function Blog({ params, searchParams }: Props) {
   const { locale } = params
   const page = parseInt(searchParams.page || '1', 10)
-  const data = await getPosts(locale, page, 8) // Отримати пости асинхронно
+  const data = await getPosts(locale, page, 8)
 
-  return <RenderContent locale={locale} page={page} data={data} /> // Виклик компонента
+  return <RenderContent locale={locale} page={page} data={data} />
 }
 
-// Компонент React, що відображає контент
 function RenderContent({
   locale,
   page,
