@@ -1,5 +1,13 @@
 {
   "HomePage": {
     "title": "Привіт, світ!"
+  },
+  "Blog": {
+    "paginationButtonLeft": "Попередня",
+    "paginationButtonRight": "Наступна"
+  },
+  "Breadcrumbs": {
+    "Home": "Головна",
+    "Blog": "Блог"
   }
 }

@@ -1,5 +1,6 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
+
 import {
   Pagination,
   PaginationContent,
@@ -8,62 +9,81 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/client/ui/breadcrumbs'
+import { useTranslations } from 'next-intl'
 
 type Props = {
   params: { locale: string }
   searchParams: { page?: string }
 }
 
-export default async function Home({ params, searchParams }: Props) {
+export default async function Blog({ params, searchParams }: Props) {
   const { locale } = params
   const page = parseInt(searchParams.page || '1', 10)
   const postsOnPage = 8
   const data = await getPosts(locale, page, postsOnPage)
   const pageCount = Math.ceil(data.totalPosts / postsOnPage)
 
+  return <RenderContent locale={locale} page={page} data={data} />
+}
+
+function RenderContent({
+  locale,
+  page,
+  data,
+}: {
+  locale: string
+  page: number
+  data: any
+}) {
+  const t = useTranslations('Breadcrumbs')
+
   return (
-    <main className="mx-auto flex max-w-[1280px] flex-col items-center">
-      <PostList posts={data.post} />
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              className="mr-4 flex w-10 items-center"
-              href={`?page=${page > 1 ? page - 1 : 1}`}
-            />
-          </PaginationItem>
+    <main className="mx-auto max-w-[1280px]">
+      <div className="mt-10">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}/blog`}>
+                {t('Blog')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage> {page}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
 
-          {/* Додавання всіх сторінок в пагінаційні елементи */}
-          {Array.from({ length: pageCount }, (_, idx) => (
-            <PaginationItem key={idx} className="w-4 items-center">
-              <PaginationLink href={`?page=${idx + 1}`}>
-                {idx + 1 == page ? (
-                  <img
-                    src={'/icons/pagination-dot-active.svg'}
-                    alt="Next"
-                    width="16"
-                    height="16"
-                  />
-                ) : (
-                  <img
-                    src={'/icons/pagination-dot.svg'}
-                    alt="Next"
-                    width="16"
-                    height="16"
-                  />
-                )}
-              </PaginationLink>
+      <div className="mx-auto flex flex-col items-center">
+        <PostList posts={data.post} />
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href={`?page=${page > 1 ? page - 1 : 1}`} />
             </PaginationItem>
-          ))}
-
-          <PaginationItem>
-            <PaginationNext
-              className="ml-4 flex w-10 items-center"
-              href={`?page=${page < pageCount ? page + 1 : pageCount}`}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            <PaginationItem>
+              <PaginationLink href={`?page=${page}`}>{page}</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href={`?page=${page + 1}`} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </main>
   )
 }

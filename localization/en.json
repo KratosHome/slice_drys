@@ -1,5 +1,13 @@
 {
   "HomePage": {
     "title": "Hello world!"
+  },
+  "Blog": {
+    "paginationButtonLeft": "Previous",
+    "paginationButtonRight": "Next"
+  },
+  "Breadcrumbs": {
+    "Home": "Home",
+    "Blog": "Blog"
   }
 }
