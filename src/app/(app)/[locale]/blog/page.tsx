@@ -43,7 +43,8 @@ function RenderContent({
   page: number
   data: any
 }) {
-  const t = useTranslations('Breadcrumbs')
+  const breadCrumbsTranslation = useTranslations('Breadcrumbs')
+  const blogTranslation = useTranslations('Blog')
 
   return (
     <main className="mx-auto max-w-[1280px]">
@@ -51,17 +52,22 @@ function RenderContent({
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href={`/${locale}/blog`}>
-                {t('Blog')}
+              <BreadcrumbLink href="/">
+                {breadCrumbsTranslation('Home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage> {t('Page') + ' ' + page}</BreadcrumbPage>
+              <BreadcrumbLink href={`/${locale}/blog`}>
+                {breadCrumbsTranslation('Blog')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>
+                {' '}
+                {breadCrumbsTranslation('Page') + ' ' + page}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -75,16 +81,13 @@ function RenderContent({
                 className="w-[100%] text-[128px]"
                 style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               >
-                БЛОГ
+                {blogTranslation('Blog')}
               </div>
             </div>
 
             <div className="flex w-[100%] sm:w-[65%]">
               <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_16px_0px_#A90909]">
-                Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з
-                нашими сушениками – від цікавих рецептів і корисних порад до
-                просто веселих історій. Заглядай частіше, тут завжди щось
-                смачненьке!
+                {blogTranslation('title')}
               </div>
             </div>
           </div>

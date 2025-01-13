@@ -4,7 +4,9 @@
   },
   "Blog": {
     "paginationButtonLeft": "Previous",
-    "paginationButtonRight": "Next"
+    "paginationButtonRight": "Next",
+    "Blog": "Blog",
+    "title": "Welcome to our blog! Here we talk about everything related to our dryers – from interesting recipes and useful tips to just plain funny stories. Check back often, there’s always something delicious here!"
   },
   "Breadcrumbs": {
     "Home": "Home",
