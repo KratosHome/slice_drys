@@ -19,9 +19,13 @@ import Image from 'next/image'
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
+import { editPost } from '@/server/posts/edit-post'
+import { deletePost } from '@/server/posts/delete-post.server'
+
 import { Button } from '@/components/admin/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
+import { useRouter } from 'next/navigation'
 
 interface ICratePost {
   buttonTitle: string
@@ -29,6 +33,9 @@ interface ICratePost {
 }
 
 const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+  const router = useRouter()
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
+
   const { toast } = useToast()
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
@@ -103,8 +110,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
+      console.log(post?._id)
+      let response
+      if (post?._id) {
+        response = await editPost(post._id, data, image)
+      } else {
+        response = await createPost(data, image)
+      }
 
-      const response = await createPost(data, image)
       if (response.success) {
         setIsOpen(false)
         toast({
@@ -119,6 +132,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         })
       }
     }
+    router.refresh()
   }
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,9 +153,57 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setImageFile(file)
     }
   }
+  const handleDelete = async () => {
+    if (!post || !post._id) {
+      return toast({ title: 'Post is not defined' })
+    }
+
+    const result = await deletePost(post._id)
+
+    if (result.success) {
+      setIsConfirmDeleteOpen(false)
+    }
+
+    toast({
+      title: result.message,
+    })
+
+    router.refresh()
+  }
+  const ConfirmDeletePopup = () => (
+    <AlertDialog
+      open={isConfirmDeleteOpen}
+      onOpenChange={setIsConfirmDeleteOpen}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Видалення</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          Дійсно хочете видалити цей товар?
+        </AlertDialogDescription>
+
+        <AlertDialogFooter>
+          <div className="flex w-full justify-end gap-3">
+            <Button variant="destructive" onClick={handleDelete}>
+              Так
+            </Button>
+
+            <Button
+              variant="default"
+              onClick={() => setIsConfirmDeleteOpen(false)}
+            >
+              Ні
+            </Button>
+          </div>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
 
   return (
     <div>
+      <ConfirmDeletePopup />
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
           <Button>{buttonTitle}</Button>
@@ -159,6 +221,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     <Input
                       id="picture"
                       type="file"
+                      accept="image/*"
                       onChange={handleImageChange}
                     />
                   </div>
@@ -221,7 +284,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                           if (post && post.title) {
                             post.title.en = event.target.value
                           }
-
                           setSlug(toSlug(event.target.value))
                         },
                       })}
@@ -416,14 +478,29 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
               </div>
             </AlertDialogDescription>
             <AlertDialogFooter>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => setIsOpen(false)}
-              >
-                Скасувати
-              </Button>
-              <Button type="submit">{buttonTitle}</Button>{' '}
+              <div className="flex w-full justify-between">
+                {post ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => setIsConfirmDeleteOpen(true)}
+                  >
+                    Видалити
+                  </Button>
+                ) : (
+                  <div />
+                )}
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Скасувати
+                  </Button>
+                  <Button type="submit">{buttonTitle}</Button>
+                </div>
+              </div>
             </AlertDialogFooter>
           </form>
         </AlertDialogContent>
