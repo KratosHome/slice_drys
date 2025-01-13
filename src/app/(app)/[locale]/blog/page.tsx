@@ -20,7 +20,7 @@ export default async function Home({ params, searchParams }: Props) {
   const data = await getPosts(locale, page, 8)
 
   return (
-    <main>
+    <main className="mx-auto flex max-w-[1280px] flex-col items-center">
       <PostList posts={data.post} />
       <Pagination>
         <PaginationContent>

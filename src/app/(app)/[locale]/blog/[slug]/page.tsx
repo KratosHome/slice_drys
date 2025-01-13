@@ -16,7 +16,7 @@ export default async function PostPage({
   const html = converter.convert()
 
   return (
-    <div>
+    <div className="mx-auto flex max-w-[1280px] flex-col items-center">
       <h1 dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   )

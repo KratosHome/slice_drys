@@ -36,7 +36,7 @@ export default async function LocaleLayout(props: {
   return (
     <html lang={locale} className={`${poppins.variable}`}>
       <NextIntlClientProvider messages={messages}>
-        <body>
+        <body className="p-10">
           <Header
             headerLinks={headerLinksData}
             hamburgerLinksOther={hamburgerLinksOtherData}
