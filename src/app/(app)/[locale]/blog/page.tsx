@@ -44,7 +44,7 @@ function RenderContent({
   const t = useTranslations('Breadcrumbs')
 
   return (
-    <main className="max-w-[1280px]">
+    <main className="mx-auto max-w-[1280px]">
       <div className="mt-10">
         <Breadcrumb>
           <BreadcrumbList>
