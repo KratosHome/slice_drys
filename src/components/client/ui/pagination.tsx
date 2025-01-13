@@ -92,10 +92,9 @@ const PaginationNext = ({
     {...props}
   >
     <span>
-      {' '}
       <img
         src={'/icons/pagination-arrow-right.svg'}
-        alt="Previous"
+        alt="Next"
         width="16"
         height="16"
       />
