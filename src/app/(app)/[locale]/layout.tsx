@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import '../globals.css'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Poppins } from 'next/font/google'
+import { Poppins, Rubik_Doodle_Shadow } from 'next/font/google'
 import { hamburgerLinksOther, headerLinks } from '@/data/header-links'
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
@@ -12,6 +12,13 @@ const poppins = Poppins({
   display: 'swap',
   variable: '--font-poppins',
   weight: ['400', '500', '600', '700', '800'],
+})
+
+const rubikDoodleShadow = Rubik_Doodle_Shadow({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-rubik-doodle-shadow',
+  weight: ['400'],
 })
 
 export const metadata: Metadata = {
@@ -26,7 +33,6 @@ export default async function LocaleLayout(props: {
   const params = await props.params
 
   const { locale } = params
-
   const { children } = props
 
   const messages = await getMessages()
@@ -34,7 +40,10 @@ export default async function LocaleLayout(props: {
   const hamburgerLinksOtherData = hamburgerLinksOther[locale]
 
   return (
-    <html lang={locale} className={`${poppins.variable}`}>
+    <html
+      lang={locale}
+      className={`${poppins.variable} ${rubikDoodleShadow.variable}`}
+    >
       <NextIntlClientProvider messages={messages}>
         <body className="p-10">
           <Header

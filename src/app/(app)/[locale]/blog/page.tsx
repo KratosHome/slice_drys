@@ -67,6 +67,30 @@ function RenderContent({
         </Breadcrumb>
       </div>
 
+      <div className="flex">
+        <div className="mb-10 mt-10 flex justify-between">
+          <div className="flex w-full flex-wrap justify-between">
+            <div className="flex w-[100%] sm:w-[28%]">
+              <div
+                className="w-[28%] text-[128px]"
+                style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+              >
+                БЛОГ
+              </div>
+            </div>
+
+            <div className="flex w-[100%] sm:w-[65%]">
+              <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_16px_0px_#A90909]">
+                Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з
+                нашими сушениками – від цікавих рецептів і корисних порад до
+                просто веселих історій. Заглядай частіше, тут завжди щось
+                смачненьке!
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="my-4 border-t border-dashed border-black"></div>
+      </div>
       <div className="mx-auto flex flex-col items-center">
         <PostList posts={data.post} />
         <Pagination>
