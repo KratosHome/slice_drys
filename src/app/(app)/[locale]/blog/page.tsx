@@ -70,9 +70,9 @@ function RenderContent({
       <div className="flex">
         <div className="mb-10 mt-10 flex justify-between">
           <div className="flex w-full flex-wrap justify-between">
-            <div className="flex w-[100%] sm:w-[28%]">
+            <div className="flex w-[100%] sm:w-[34%]">
               <div
-                className="w-[28%] text-[128px]"
+                className="w-[100%] text-[128px]"
                 style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               >
                 БЛОГ
