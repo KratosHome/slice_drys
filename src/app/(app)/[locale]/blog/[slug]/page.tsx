@@ -62,7 +62,12 @@ function RenderContent({
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-
+      <div className="my-20 px-20">
+        <div className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_16px_0px_#A90909]">
+          {data.post.title}
+        </div>
+      </div>
+      <div className="h-10"></div>
       <div className="mx-auto flex max-w-[1280px] flex-col items-center">
         <h1 dangerouslySetInnerHTML={{ __html: html }} />
       </div>
