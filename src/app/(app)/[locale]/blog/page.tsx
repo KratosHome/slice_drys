@@ -11,7 +11,6 @@ import {
 } from '@/components/client/ui/pagination'
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -62,7 +61,7 @@ function RenderContent({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage> {page}</BreadcrumbPage>
+              <BreadcrumbPage> {t('Page') + ' ' + page}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
