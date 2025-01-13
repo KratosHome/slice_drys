@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
+import Image from 'next/image'
 
 import { cn } from '@/utils/cn'
 
@@ -66,7 +67,7 @@ const BreadcrumbPage = React.forwardRef<
     role="link"
     aria-disabled="true"
     aria-current="page"
-    className={cn('font-normal text-foreground', className)}
+    className={cn('font-bold text-foreground', className)}
     {...props}
   />
 ))
@@ -83,7 +84,15 @@ const BreadcrumbSeparator = ({
     className={cn('[&>svg]:h-3.5 [&>svg]:w-3.5', className)}
     {...props}
   >
-    {children ?? <ChevronRight />}
+    {children ?? (
+      <Image
+        src={'/icons/slide-next.svg'}
+        alt="search"
+        width={16}
+        height={16}
+        className="cursor-pointer"
+      />
+    )}
   </li>
 )
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
