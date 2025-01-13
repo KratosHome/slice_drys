@@ -1,5 +1,6 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
+
 import {
   Pagination,
   PaginationContent,

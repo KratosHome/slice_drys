@@ -1,5 +1,6 @@
 import { getPostBySlug } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import { notFound } from 'next/navigation'
 
 export default async function PostPage({
   params,
@@ -9,7 +10,9 @@ export default async function PostPage({
   const { slug, locale } = params
 
   const data: IGetOnePost = await getPostBySlug(locale, slug)
-
+  if (!data.success) {
+    return notFound()
+  }
   const content = JSON.parse(data.post.content)
 
   const converter = new QuillDeltaToHtmlConverter(content.ops)
