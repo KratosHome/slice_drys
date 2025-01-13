@@ -1,5 +1,6 @@
 {
   "HomePage": {
     "title": "Привіт, світ!"
-  }
+  },
+  "Blog": { "paginationButtonLeft": "Попередня" }
 }

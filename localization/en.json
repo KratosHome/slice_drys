@@ -1,5 +1,6 @@
 {
   "HomePage": {
     "title": "Hello world!"
-  }
+  },
+  "Blog": { "paginationButtonLeft": "Previous" }
 }
