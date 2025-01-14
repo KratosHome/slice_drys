@@ -25,23 +25,28 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
     type: 'loop',
     perPage: 1,
     perMove: 1,
-    gap: '1rem',
+    gap: '2.1rem',
     pagination: false,
-    width: '400px',
     height: '400px',
     arrows: false,
   }
 
   const thumbsOptions: Options = {
-    rewind: true,
-    gap: '1rem',
+    gap: '1.625rem',
     pagination: false,
     fixedWidth: 100,
     fixedHeight: 100,
     cover: true,
-    focus: 'center',
+    focus: 0,
     isNavigation: true,
     arrows: false,
+
+    breakpoints: {
+      640: {
+        fixedWidth: 80,
+        fixedHeight: 80,
+      },
+    },
   }
 
   /**
@@ -52,7 +57,7 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
   const renderSlides = () => {
     return images.map((src, index) => (
       <SplideSlide key={src} className="p-2.5">
-        <Image src={src} alt={`Slider ${index}`} fill />
+        <Image className="p-10 sm:p-0" src={src} alt={`Slider ${index}`} fill />
       </SplideSlide>
     ))
   }
@@ -60,7 +65,7 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
   return (
     <div>
       <Splide
-        className="py-16"
+        className="sm:py-16"
         options={mainOptions}
         ref={mainRef}
         aria-labelledby="thumbnail-slider-example"
@@ -71,10 +76,11 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
       <Splide
         options={thumbsOptions}
         ref={thumbsRef}
+        className="flex justify-center"
         aria-label="The carousel with thumbnails. Selecting a thumbnail will change the main carousel"
       >
         {images.map((src, index) => (
-          <SplideSlide key={src} className="p-2.5">
+          <SplideSlide key={src}>
             <Image src={src} alt={`Slider ${index}`} width={100} height={100} />
           </SplideSlide>
         ))}

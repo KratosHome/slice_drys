@@ -47,7 +47,7 @@ const AccordionContent = React.forwardRef<
     <div
       className={cn(
         'pb-4 pt-0',
-        'flex flex-col gap-6 border-2 border-t-0 border-dotted px-6 py-8 text-base sm:flex-row sm:flex-wrap md:text-xl',
+        'flex flex-col gap-6 border-[3px] border-t-0 border-dotted border-black px-6 py-8 text-base sm:flex-row sm:flex-wrap md:text-xl',
         className,
       )}
     >

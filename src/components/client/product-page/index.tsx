@@ -16,7 +16,7 @@ import {
 import { cn } from '@/utils/cn'
 import { accordions } from './consts'
 import { CertIcons, Curve, MinusIcon, PlusIcon } from './icons'
-import SliderWithThumbnails from './slider-with-thumbnails'
+import SliderWithThumbnails from './slider'
 
 const images = ['/sliders/meat.png', '/sliders/fruit.png', '/sliders/promo.png']
 
@@ -36,7 +36,7 @@ export const ProductInfo = () => (
       <Description />
       <WeightSelect />
       <PriceControl />
-      <Certs />
+      <Certifications />
     </div>
   </section>
 )
@@ -96,7 +96,7 @@ export const WeightSelect = () => (
 
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
+          <SelectLabel>Вага</SelectLabel>
           <SelectItem value="30">30 г</SelectItem>
           <SelectItem value="100">100 г</SelectItem>
           <SelectItem value="200">200 г</SelectItem>
@@ -135,7 +135,7 @@ export const PriceControl = () => (
   </div>
 )
 
-export const Certs = () => (
+export const Certifications = () => (
   <div className="flex flex-col items-center gap-4 px-4 sm:items-end sm:justify-end">
     <CertIcons />
     <Curve />
