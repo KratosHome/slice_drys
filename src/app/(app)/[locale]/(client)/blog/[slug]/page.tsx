@@ -1,4 +1,4 @@
-import { getPostBySlug } from '@/server/posts/get-posts.server'
+import { getPosts } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { notFound } from 'next/navigation'
 import {
@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
-import { useTranslations } from 'next-intl' // Імпорт функції перекладу
 
 export default async function PostPage({
   params,
@@ -18,28 +17,15 @@ export default async function PostPage({
 }) {
   const { slug, locale } = params
 
-  const data: IGetOnePost = await getPostBySlug(locale, slug)
+  const data = await getPosts({ locale, slug })
   if (!data.success) {
     return notFound()
   }
-  const content = JSON.parse(data.post.content)
+  const content = JSON.parse(data.post[0].content)
+  const title = data.post[0].title
 
   const converter = new QuillDeltaToHtmlConverter(content.ops)
   const html = converter.convert()
-
-  return <RenderContent locale={locale} data={data} html={html} />
-}
-
-function RenderContent({
-  locale,
-  data,
-  html,
-}: {
-  locale: string
-  data: IGetOnePost
-  html: string
-}) {
-  const t = useTranslations('Breadcrumbs') // Використання функції перекладу
 
   return (
     <main className="mx-auto max-w-[1280px]">
@@ -47,24 +33,26 @@ function RenderContent({
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href={`/${locale}/blog`}>
-                {t('Blog')}
+              <BreadcrumbLink href="/" localizationKey="Home">
+                1
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{data.post.title}</BreadcrumbPage>
+              <BreadcrumbLink href={`/${locale}/blog`} localizationKey="Blog">
+                1
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
       <div className="my-20 px-20">
         <div className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
-          {data.post.title}
+          {title}
         </div>
       </div>
       <div className="h-10"></div>

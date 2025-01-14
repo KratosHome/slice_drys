@@ -30,8 +30,8 @@ type Props = {
 export default async function Blog({ params, searchParams }: Props) {
   const { locale } = params
   const page = parseInt(searchParams.page || '1', 10)
-  const postsOnPage = 8
-  const data = await getPosts(locale, page, postsOnPage)
+  const limit = 8
+  const data = await getPosts({ locale, page, limit })
 
   return <RenderContent locale={locale} page={page} data={data} />
 }

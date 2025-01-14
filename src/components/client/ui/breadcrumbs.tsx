@@ -53,14 +53,13 @@ const BreadcrumbLink = React.forwardRef<
   const localization = breadCrumbsTranslation(localizationKey)
 
   return (
-    <div>
-      <Comp
-        ref={ref}
-        className={cn('transition-colors hover:text-foreground', className)}
-        {...props}
-      />
+    <Comp
+      ref={ref}
+      className={cn('transition-colors hover:text-foreground', className)}
+      {...props}
+    >
       {localizationKey ? localization : ''}
-    </div>
+    </Comp>
   )
 })
 
