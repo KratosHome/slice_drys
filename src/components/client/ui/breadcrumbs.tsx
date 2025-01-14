@@ -73,20 +73,19 @@ const BreadcrumbPage = React.forwardRef<
   }
 >(({ className, localizationKey, ...props }, ref) => {
   const breadCrumbsTranslation = useTranslations('Breadcrumbs')
-  const localization = breadCrumbsTranslation(localizationKey)
+  const translation = breadCrumbsTranslation(localizationKey)
 
   return (
-    <div>
-      <span
-        ref={ref}
-        role="link"
-        aria-disabled="true"
-        aria-current="page"
-        className={cn('font-bold text-foreground', className)}
-        {...props}
-      />
-      {localizationKey ? localization : ''}
-    </div>
+    <span
+      ref={ref}
+      role="link"
+      aria-disabled="true"
+      aria-current="page"
+      className={cn('font-bold text-foreground', className)}
+      {...props}
+    >
+      {localizationKey ? `${translation} ` : ''} {props.children}
+    </span>
   )
 })
 BreadcrumbPage.displayName = 'BreadcrumbPage'

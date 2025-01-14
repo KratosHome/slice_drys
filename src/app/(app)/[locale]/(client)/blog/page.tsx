@@ -42,7 +42,6 @@ function RenderContent({
   page: number
   data: IGetPost
 }) {
-  const breadCrumbsTranslation = useTranslations('Breadcrumbs')
   const blogTranslation = useTranslations('Blog')
 
   return (
@@ -62,9 +61,7 @@ function RenderContent({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>
-                {breadCrumbsTranslation('Page') + ' ' + page}
-              </BreadcrumbPage>
+              <BreadcrumbPage localizationKey="Page">{page}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
