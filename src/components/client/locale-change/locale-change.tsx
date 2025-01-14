@@ -14,7 +14,7 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
   const path = usePathname()
 
   const getLocalizedPath = (newLocale: string) => {
-    const pathWithoutLocale = path.replace(/^\/(uk|en)/, '')
+    const pathWithoutLocale = path?.replace(/^\/(uk|en)/, '')
     return `/${newLocale}${pathWithoutLocale}`
   }
 
