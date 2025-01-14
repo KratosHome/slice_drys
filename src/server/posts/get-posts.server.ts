@@ -66,7 +66,7 @@ export async function getPosts(locale: string, page?: number, limit?: number) {
       post: [],
       postAll: [],
       totalPosts: 0, // Повертаємо 0 у випадку помилки
-      message: "Can't retrieve posts",
+      message: "Can't retrieve posts" + { error },
     }
   }
 }
@@ -116,7 +116,7 @@ export async function getPostBySlug(locale: string, slug: string) {
     return {
       success: false,
       post: null as unknown as IPost,
-      message: "Can't retrieve posts",
+      message: "Can't retrieve post" + { error },
     }
   }
 }
