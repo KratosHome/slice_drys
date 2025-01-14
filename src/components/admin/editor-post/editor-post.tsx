@@ -57,7 +57,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     formState: { errors },
   } = useForm<IPostLocal>({
@@ -99,15 +98,16 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
-    data.keywords.en = data.keywords.en.join().split(/,\s*/)
-    data.keywords.uk = data.keywords.uk.join().split(/,\s*/)
+    if (post) {
+      data.keywords.en = data.keywords.en.join().split(/,\s*/)
+      data.keywords.uk = data.keywords.uk.join().split(/,\s*/)
+    }
 
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
     }
     const image = imageFile ? await convertToBase64(imageFile) : ''
 
-    console.log(data.keywords.en)
     if (!data.content.en || !data.content.uk) {
       setContentError('Контент на обох мовах є обов’язковим')
 
