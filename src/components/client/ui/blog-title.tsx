@@ -1,13 +1,13 @@
 import { useTranslations } from 'next-intl'
 
-const BlogWordLocalization = () => {
-  const t = useTranslations('Blog')
-  return t('Blog')
+// Визначаємо інтерфейс для параметра 'variant'
+interface BlogTitleProps {
+  variant: string
 }
 
-const BlogTitleLocalization = () => {
+const BlogTitle = ({ variant }: BlogTitleProps) => {
   const t = useTranslations('Blog')
-  return t('title')
+  return t(variant)
 }
 
-export { BlogWordLocalization as WordBlogLocalization, BlogTitleLocalization }
+export default BlogTitle

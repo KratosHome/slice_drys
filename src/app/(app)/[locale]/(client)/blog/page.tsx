@@ -1,9 +1,6 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
-import {
-  WordBlogLocalization,
-  BlogTitleLocalization,
-} from '@/components/client/ui/blog-title'
+import BlogTitle from '@/components/client/ui/blog-title'
 
 import {
   Pagination,
@@ -33,18 +30,6 @@ export default async function Blog({ params, searchParams }: Props) {
   const limit = 8
   const data = await getPosts({ locale, page, limit })
 
-  return <RenderContent locale={locale} page={page} data={data} />
-}
-
-function RenderContent({
-  locale,
-  page,
-  data,
-}: {
-  locale: string
-  page: number
-  data: IGetPost
-}) {
   return (
     <main className="mx-auto max-w-[1280px]">
       <div className="mt-10">
@@ -76,13 +61,13 @@ function RenderContent({
                 className="w-[100%] text-[128px]"
                 style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               >
-                {WordBlogLocalization()}
+                <BlogTitle variant="Blog" />
               </div>
             </div>
 
             <div className="flex w-[100%] items-center sm:w-[65%]">
               <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_-16px_0px_#A90909]">
-                {BlogTitleLocalization()}
+                <BlogTitle variant="title" />
               </div>
             </div>
           </div>
@@ -94,7 +79,10 @@ function RenderContent({
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious href={`?page=${page > 1 ? page - 1 : 1}`} />
+              <PaginationPrevious
+                className={`${page === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                href={`?page=${page > 1 ? page - 1 : 1}`}
+              />
             </PaginationItem>
             <PaginationItem>
               <PaginationLink href={`?page=${page}`}>{page}</PaginationLink>
