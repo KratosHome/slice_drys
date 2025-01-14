@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { MoreHorizontal } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/utils/cn'
 
@@ -43,33 +44,51 @@ const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   React.ComponentPropsWithoutRef<'a'> & {
     asChild?: boolean
+    localizationKey?: string
   }
->(({ asChild, className, ...props }, ref) => {
+>(({ asChild, className, localizationKey, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a'
 
+  const breadCrumbsTranslation = useTranslations('Breadcrumbs')
+  const localization = breadCrumbsTranslation(localizationKey)
+
   return (
-    <Comp
-      ref={ref}
-      className={cn('transition-colors hover:text-foreground', className)}
-      {...props}
-    />
+    <div>
+      <Comp
+        ref={ref}
+        className={cn('transition-colors hover:text-foreground', className)}
+        {...props}
+      />
+      {localizationKey ? localization : ''}
+    </div>
   )
 })
+
 BreadcrumbLink.displayName = 'BreadcrumbLink'
 
 const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<'span'>
->(({ className, ...props }, ref) => (
-  <span
-    ref={ref}
-    role="link"
-    aria-disabled="true"
-    aria-current="page"
-    className={cn('font-bold text-foreground', className)}
-    {...props}
-  />
-))
+  React.ComponentPropsWithoutRef<'span'> & {
+    localizationKey?: string
+  }
+>(({ className, localizationKey, ...props }, ref) => {
+  const breadCrumbsTranslation = useTranslations('Breadcrumbs')
+  const localization = breadCrumbsTranslation(localizationKey)
+
+  return (
+    <div>
+      <span
+        ref={ref}
+        role="link"
+        aria-disabled="true"
+        aria-current="page"
+        className={cn('font-bold text-foreground', className)}
+        {...props}
+      />
+      {localizationKey ? localization : ''}
+    </div>
+  )
+})
 BreadcrumbPage.displayName = 'BreadcrumbPage'
 
 const BreadcrumbSeparator = ({

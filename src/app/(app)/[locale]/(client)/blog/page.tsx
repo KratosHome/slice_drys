@@ -51,20 +51,18 @@ function RenderContent({
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                {breadCrumbsTranslation('Home')}
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/${locale}/blog`}>
-                {breadCrumbsTranslation('Blog')}
-              </BreadcrumbLink>
+              <BreadcrumbLink
+                href={`/${locale}/blog`}
+                localizationKey="Blog"
+              ></BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>
-                {' '}
                 {breadCrumbsTranslation('Page') + ' ' + page}
               </BreadcrumbPage>
             </BreadcrumbItem>
