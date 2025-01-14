@@ -29,7 +29,6 @@ export default async function Blog({ params, searchParams }: Props) {
   const page = parseInt(searchParams.page || '1', 10)
   const postsOnPage = 8
   const data = await getPosts(locale, page, postsOnPage)
-  const pageCount = Math.ceil(data.totalPosts / postsOnPage)
 
   return <RenderContent locale={locale} page={page} data={data} />
 }
@@ -41,7 +40,7 @@ function RenderContent({
 }: {
   locale: string
   page: number
-  data: any
+  data: IGetPost
 }) {
   const breadCrumbsTranslation = useTranslations('Breadcrumbs')
   const blogTranslation = useTranslations('Blog')
