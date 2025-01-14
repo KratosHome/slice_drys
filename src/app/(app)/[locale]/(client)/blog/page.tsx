@@ -78,7 +78,7 @@ export default async function Blog({ params, searchParams }: Props) {
       <div className="mx-auto flex flex-col items-center">
         <PostList posts={data.post} />
         <Pagination>
-          <PaginationContent>
+          <PaginationContent className="m-10">
             <PaginationItem>
               <PaginationPrevious
                 className={`${page === 1 ? 'pointer-events-none opacity-50' : ''}`}
@@ -86,7 +86,9 @@ export default async function Blog({ params, searchParams }: Props) {
               />
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href={`?page=${page}`}>{page}</PaginationLink>
+              <PaginationLink className="mx-5" href={`?page=${page}`}>
+                {page}
+              </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
