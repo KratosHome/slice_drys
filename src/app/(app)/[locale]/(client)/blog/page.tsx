@@ -1,5 +1,9 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
+import {
+  WordBlogLocalization,
+  BlogTitleLocalization,
+} from '@/components/client/ui/blog-title'
 
 import {
   Pagination,
@@ -17,7 +21,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
-import { useTranslations } from 'next-intl'
 
 type Props = {
   params: { locale: string }
@@ -42,8 +45,6 @@ function RenderContent({
   page: number
   data: IGetPost
 }) {
-  const blogTranslation = useTranslations('Blog')
-
   return (
     <main className="mx-auto max-w-[1280px]">
       <div className="mt-10">
@@ -75,13 +76,13 @@ function RenderContent({
                 className="w-[100%] text-[128px]"
                 style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               >
-                {blogTranslation('Blog')}
+                {WordBlogLocalization()}
               </div>
             </div>
 
             <div className="flex w-[100%] items-center sm:w-[65%]">
               <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_-16px_0px_#A90909]">
-                {blogTranslation('title')}
+                {BlogTitleLocalization()}
               </div>
             </div>
           </div>
