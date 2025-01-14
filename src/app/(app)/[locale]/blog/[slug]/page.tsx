@@ -36,7 +36,7 @@ function RenderContent({
   html,
 }: {
   locale: string
-  data: any
+  data: IGetOnePost
   html: string
 }) {
   const t = useTranslations('Breadcrumbs') // Використання функції перекладу
