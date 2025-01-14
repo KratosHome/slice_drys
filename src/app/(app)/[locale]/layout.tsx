@@ -45,7 +45,7 @@ export default async function LocaleLayout(props: {
       className={`${poppins.variable} ${rubikDoodleShadow.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
-        <body className="p-10">
+        <body>
           <Header
             headerLinks={headerLinksData}
             hamburgerLinksOther={hamburgerLinksOtherData}
