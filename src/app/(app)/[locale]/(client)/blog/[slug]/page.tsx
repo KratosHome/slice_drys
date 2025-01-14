@@ -33,15 +33,14 @@ export default async function PostPage({
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" localizationKey="Home">
-                1
-              </BreadcrumbLink>
+              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/${locale}/blog`} localizationKey="Blog">
-                1
-              </BreadcrumbLink>
+              <BreadcrumbLink
+                href={`/${locale}/blog`}
+                localizationKey="Blog"
+              ></BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

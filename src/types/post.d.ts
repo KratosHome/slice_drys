@@ -6,7 +6,7 @@ interface IPost {
   author: string
   slug: string
   metaDescription: string
-  keywords: string[]
+  keywords: string
   visited?: number
   updatedAt: Date
 }
@@ -19,7 +19,7 @@ interface IPostLocal {
   author: ILocalizedString
   slug: string
   metaDescription: ILocalizedString
-  keywords: ILocalizedStringArray
+  keywords: ILocalizedString
   visited?: number
 }
 

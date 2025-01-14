@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   AlertDialog,
@@ -66,7 +66,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       img: '',
       slug: post?.slug,
       author: { en: '', uk: '' },
-      keywords: { en: [], uk: [] },
+      keywords: { en: '', uk: '' },
       metaDescription: { en: '', uk: '' },
     },
   })
@@ -98,11 +98,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
-    if (post) {
-      data.keywords.en = data.keywords.en.join().split(/,\s*/)
-      data.keywords.uk = data.keywords.uk.join().split(/,\s*/)
-    }
-
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
     }
@@ -114,7 +109,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
-      console.log(post?._id)
       let response
       if (post?._id) {
         response = await editPost(post._id, data, image)
@@ -421,7 +415,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       })}
                       onChange={(event) => {
                         if (post && post.keywords) {
-                          post.keywords.uk = event.target.value.split(/,\s*/)
+                          post.keywords.uk = event.target.value
                         }
                       }}
                     />
@@ -449,8 +443,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       })}
                       onChange={(event) => {
                         if (post && post.keywords) {
-                          post.keywords.en = event.target.value.split(/,\s*/)
-                          console.log(1111, post.keywords.en)
+                          post.keywords.en = event.target.value
                         }
                       }}
                     />
