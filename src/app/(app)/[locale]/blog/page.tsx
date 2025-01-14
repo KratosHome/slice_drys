@@ -84,8 +84,8 @@ function RenderContent({
               </div>
             </div>
 
-            <div className="flex w-[100%] sm:w-[65%]">
-              <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_16px_0px_#A90909]">
+            <div className="flex w-[100%] items-center sm:w-[65%]">
+              <div className="flex h-min w-full items-center justify-center bg-black p-5 text-left font-poppins text-xl text-white drop-shadow-[16px_-16px_0px_#A90909]">
                 {blogTranslation('title')}
               </div>
             </div>
