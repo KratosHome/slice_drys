@@ -25,6 +25,6 @@ export async function deletePost(id: string) {
 
     return { success: true, message: 'Post was deleted' }
   } catch (error) {
-    return { success: false, message: "Can't delete post" }
+    return { success: false, message: "Can't delete post" + error }
   }
 }
