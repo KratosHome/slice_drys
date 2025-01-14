@@ -51,8 +51,8 @@ export default async function LocaleLayout(props: {
             hamburgerLinksOther={hamburgerLinksOtherData}
           />
           {children}
+          <Toaster />
         </body>
-        <Toaster />
       </NextIntlClientProvider>
     </html>
   )
