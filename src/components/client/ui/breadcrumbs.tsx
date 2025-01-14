@@ -85,13 +85,14 @@ const BreadcrumbSeparator = ({
     {...props}
   >
     {children ?? (
-      <Image
-        src={'/icons/slide-next.svg'}
-        alt="search"
-        width={16}
-        height={16}
-        className="cursor-pointer"
-      />
+      <div>
+        <div
+          className="font-normal"
+          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+        >
+          {'>'}
+        </div>
+      </div>
     )}
   </li>
 )
