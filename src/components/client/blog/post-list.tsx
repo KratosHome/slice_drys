@@ -28,13 +28,23 @@ export default function PostList({ posts }: BlogProps) {
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[2]} />
               </div>
-              <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
-
+              {posts[3] ? (
+                <div
+                  className={`m-1 ml-1 hidden ${!posts[5] ? 'h-[90%]' : 'h-[45%]'} border-l border-dashed border-black sm:block`}
+                ></div>
+              ) : (
+                ''
+              )}
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[3]} />
               </div>
-              <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
-
+              {posts[4] ? (
+                <div
+                  className={`m-1 ml-1 hidden ${!posts[5] ? 'h-[90%]' : 'h-[45%]'} border-l border-dashed border-black sm:block`}
+                ></div>
+              ) : (
+                ''
+              )}
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[4]} />
               </div>
@@ -42,12 +52,19 @@ export default function PostList({ posts }: BlogProps) {
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[5]} />
               </div>
-              <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
-
+              {posts[6] ? (
+                <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
+              ) : (
+                ''
+              )}
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[6]} />
               </div>
-              <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
+              {posts[7] ? (
+                <div className="m-1 ml-1 hidden h-[45%] border-l border-dashed border-black sm:block"></div>
+              ) : (
+                ''
+              )}
 
               <div className="flex w-[47%] sm:w-[30%]">
                 <PostCard post={posts[7]} />

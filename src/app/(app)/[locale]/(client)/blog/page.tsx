@@ -29,6 +29,7 @@ export default async function Blog({ params, searchParams }: Props) {
   const page = parseInt(searchParams.page || '1', 10)
   const limit = 8
   const data = await getPosts({ locale, page, limit })
+  const countOfPages = Math.ceil(data.totalPosts / limit)
 
   return (
     <main className="mx-auto max-w-[1280px]">
@@ -88,7 +89,10 @@ export default async function Blog({ params, searchParams }: Props) {
               <PaginationLink href={`?page=${page}`}>{page}</PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationNext href={`?page=${page + 1}`} />
+              <PaginationNext
+                className={`${page === countOfPages ? 'pointer-events-none opacity-50' : ''}`}
+                href={`?page=${page + 1}`}
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
