@@ -9,7 +9,7 @@ export default async function Blog({
 }) {
   const { locale } = await params
 
-  const posts: IGetPost = await getPosts(locale)
+  const posts: IGetPost = await getPosts({ locale })
 
   return (
     <div className="px-5">
