@@ -70,7 +70,7 @@ export default async function PostPage({
           <div className="text-gray-500">{author}</div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center gap-5 sm:flex-row">
+      <div className="mb-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
         <div
           className="text-[26px]"
           style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
