@@ -22,6 +22,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     content = '{"ops":[{"insert":"\\n"}]}'
   }
   let toPreventDoubleQuill = true
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     toPreventDoubleQuill = !toPreventDoubleQuill
     if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
