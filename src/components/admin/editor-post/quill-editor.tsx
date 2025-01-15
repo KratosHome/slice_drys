@@ -17,14 +17,18 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   className,
 }) => {
   const quillRef = useRef<Quill | null>(null)
+  const toPreventDoubleQuillRef = useRef(true)
   const containerRef = useRef<HTMLDivElement | null>(null)
   if (!content) {
     content = '{"ops":[{"insert":"\\n"}]}'
   }
-  let toPreventDoubleQuill = true
   useEffect(() => {
-    toPreventDoubleQuill = !toPreventDoubleQuill
-    if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
+    if (
+      containerRef.current &&
+      !quillRef.current &&
+      toPreventDoubleQuillRef.current
+    ) {
+      toPreventDoubleQuillRef.current = false
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
