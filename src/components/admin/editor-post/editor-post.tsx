@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   AlertDialog,
@@ -57,7 +57,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     formState: { errors },
   } = useForm<IPostLocal>({
@@ -67,7 +66,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       img: '',
       slug: post?.slug,
       author: { en: '', uk: '' },
-      keywords: { en: [], uk: [] },
+      keywords: { en: '', uk: '' },
       metaDescription: { en: '', uk: '' },
     },
   })
@@ -110,7 +109,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
-      console.log(post?._id)
       let response
       if (post?._id) {
         response = await editPost(post._id, data, image)
@@ -122,12 +120,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         setIsOpen(false)
         toast({
           duration: 3000,
-          title: 'Post created successfully',
+          title: 'Success',
         })
       } else {
         toast({
           variant: 'destructive',
-          title: 'Error creating post',
+          title: 'Error',
           description: response.message,
         })
       }
@@ -256,6 +254,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.title) {
+                          post.title.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.title?.uk && (
                       <span className="text-red">
@@ -313,12 +316,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </RadioGroup>
-                <QuillEditor
-                  className="min-h-64"
-                  content={quillEditorContent}
-                  setContent={setQuillEditorContent}
-                />
-
+                <div className="h-96">
+                  <QuillEditor
+                    className="min-h-96"
+                    content={quillEditorContent}
+                    setContent={setQuillEditorContent}
+                  />
+                </div>
+                <div className="h-10"></div>
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
@@ -352,6 +357,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.uk && (
                       <span className="text-red">
@@ -374,6 +384,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.en && (
                       <span className="text-red">
@@ -398,6 +413,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.keywords?.uk && (
                       <span className="text-red">
@@ -421,6 +441,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.keywords?.en && (
                       <span className="text-red">
@@ -445,6 +470,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.uk && (
                       <span className="text-red">
@@ -467,6 +497,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.en && (
                       <span className="text-red">

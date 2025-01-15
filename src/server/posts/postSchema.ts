@@ -68,11 +68,11 @@ const postSchema = new mongoose.Schema(
     },
     keywords: {
       en: {
-        type: [String],
+        type: String,
         required: true,
       },
       uk: {
-        type: [String],
+        type: String,
         required: true,
       },
     },

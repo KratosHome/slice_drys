@@ -80,3 +80,19 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+
+.ql-align-center {
+  text-align: center !important;
+}
+
+.ql-align-left {
+  text-align: left !important;
+}
+
+.ql-align-right {
+  text-align: right !important;
+}
+
+.ql-align-justify {
+  text-align: justify !important;
+}
