@@ -18,25 +18,31 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 }) => {
   const quillRef = useRef<Quill | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const initializedRef = useRef(false)
-
   if (!content) {
     content = '{"ops":[{"insert":"\\n"}]}'
   }
-
+  let toPreventDoubleQuill = true
   useEffect(() => {
-    if (containerRef.current && !quillRef.current && !initializedRef.current) {
+    toPreventDoubleQuill = !toPreventDoubleQuill
+    if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            [{ align: [] }],
+          ],
+        },
       })
 
       quillRef.current.on('text-change', () => {
         const currentContent = JSON.stringify(quillRef.current!.getContents())
         setContent(currentContent)
       })
-
-      initializedRef.current = true
     }
 
     return () => {
