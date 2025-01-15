@@ -11,6 +11,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import 'quill/dist/quill.snow.css'
 
 export default async function PostPage({
   params,
@@ -60,7 +61,8 @@ export default async function PostPage({
       <div className="h-10"></div>
       <div className="mx-auto max-w-[1280px]">
         <article
-          className="prose lg:prose-xl"
+          id="editor"
+          className="ql-editor prose lg:prose-xl"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

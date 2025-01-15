@@ -80,25 +80,3 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
-
-/* .ql-align-center {
-  display: flex !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-.ql-align-left {
-  display: flex !important;
-  justify-content: left !important;
-  text-align: left !important;
-}
-
-.ql-align-right {
-  display: flex !important;
-  justify-content: right !important;
-  text-align: right !important;
-}
-
-.ql-align-justify {
-  text-align: justify !important;
-} */
