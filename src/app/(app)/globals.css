@@ -81,7 +81,7 @@ body {
   }
 }
 
-.ql-align-center {
+/* .ql-align-center {
   display: flex !important;
   justify-content: center !important;
   text-align: center !important;
@@ -101,4 +101,4 @@ body {
 
 .ql-align-justify {
   text-align: justify !important;
-}
+} */
