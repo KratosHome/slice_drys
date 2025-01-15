@@ -44,18 +44,16 @@ export default async function LocaleLayout(props: {
       lang={locale}
       className={`${poppins.variable} ${rubikDoodleShadow.variable}`}
     >
-      <div className="prose">
-        <NextIntlClientProvider messages={messages}>
-          <body>
-            <Header
-              headerLinks={headerLinksData}
-              hamburgerLinksOther={hamburgerLinksOtherData}
-            />
-            {children}
-            <Toaster />
-          </body>
-        </NextIntlClientProvider>
-      </div>
+      <NextIntlClientProvider messages={messages}>
+        <body>
+          <Header
+            headerLinks={headerLinksData}
+            hamburgerLinksOther={hamburgerLinksOtherData}
+          />
+          {children}
+          <Toaster />
+        </body>
+      </NextIntlClientProvider>
     </html>
   )
 }
