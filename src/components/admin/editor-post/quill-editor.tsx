@@ -30,6 +30,15 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, false] }], // Розміри заголовків
+            ['bold', 'italic', 'underline', 'strike'], // Стилі тексту
+            [{ list: 'ordered' }, { list: 'bullet' }], // Списки
+            ['link', 'image'], // Вставка лінків та зображень
+            [{ align: [] }],
+          ],
+        },
       })
 
       quillRef.current.on('text-change', () => {

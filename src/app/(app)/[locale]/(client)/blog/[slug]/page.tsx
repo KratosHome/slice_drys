@@ -86,7 +86,7 @@ export default async function PostPage({
               height={32}
               className="cursor-pointer"
             />
-            <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
           </Link>
           <Link href="#" className="w-fit">
             <Image
@@ -96,7 +96,7 @@ export default async function PostPage({
               height={32}
               className="cursor-pointer"
             />
-            <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
           </Link>
           <Link href="#" className="w-fit">
             <Image
@@ -106,7 +106,7 @@ export default async function PostPage({
               height={32}
               className="cursor-pointer"
             />
-            <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
           </Link>
         </div>
       </div>
