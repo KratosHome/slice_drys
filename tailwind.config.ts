@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import typographyPlugin from '@tailwindcss/typography'
 
 export const colorConstants = {
   white: '#FBFBFB',
@@ -94,10 +95,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-    require('tailwind-hamburgers'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [typographyPlugin],
 }
 export default config

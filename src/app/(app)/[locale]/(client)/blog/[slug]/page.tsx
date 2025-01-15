@@ -58,10 +58,11 @@ export default async function PostPage({
         </div>
       </div>
       <div className="h-10"></div>
-      <div className="flex max-w-[1280px] flex-col items-center">
-        <div className="prose">
-          <h1 dangerouslySetInnerHTML={{ __html: html }} />
-        </div>
+      <div className="mx-auto max-w-[1280px]">
+        <article
+          className="prose lg:prose-xl"
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
       </div>
       <div className="my-20">
         <div className="my-4 border-t border-dashed border-black"></div>
