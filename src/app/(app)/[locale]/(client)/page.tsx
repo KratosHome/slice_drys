@@ -10,8 +10,6 @@ export default async function Home(props: {
 
   const productsData: IGetProducts = await getProductsSliderMain(locale)
 
-  console.log('productsData', productsData)
-
   return (
     <main>
       <Hero />
