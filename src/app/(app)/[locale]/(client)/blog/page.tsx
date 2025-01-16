@@ -32,7 +32,7 @@ export default async function Blog({ params, searchParams }: Props) {
   const countOfPages = Math.ceil(data.totalPosts / limit)
 
   return (
-    <main className="mx-auto max-w-[1280px]">
+    <main className="mx-auto max-w-[1280px] p-10 sm:p-28">
       <div className="mt-10">
         <Breadcrumb>
           <BreadcrumbList>
