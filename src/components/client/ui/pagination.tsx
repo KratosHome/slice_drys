@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
 import { ButtonProps } from '@/components/ui/button'
-import { useTranslations } from 'next-intl'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -57,8 +56,6 @@ const PaginationPrevious = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-  const t = useTranslations('Blog')
-
   return (
     <PaginationLink
       aria-label="Go to previous page"
@@ -67,7 +64,6 @@ const PaginationPrevious = ({
       {...props}
     >
       <ChevronLeft className="h-4 w-4" />
-      <span> {t('paginationButtonLeft')}</span>
     </PaginationLink>
   )
 }
@@ -77,8 +73,6 @@ const PaginationNext = ({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-  const t = useTranslations('Blog')
-
   return (
     <PaginationLink
       aria-label="Go to next page"
@@ -86,7 +80,6 @@ const PaginationNext = ({
       className={cn('flex items-center gap-1 pr-2.5', className)}
       {...props}
     >
-      <span>{t('paginationButtonRight')}</span>
       <ChevronRight className="h-4 w-4" />
     </PaginationLink>
   )
