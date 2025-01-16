@@ -81,17 +81,23 @@ export default async function Blog({ params, searchParams }: Props) {
           <PaginationContent className="m-10">
             <PaginationItem>
               <PaginationPrevious
+                size={'default'}
                 className={`${page === 1 ? 'pointer-events-none opacity-50' : ''}`}
                 href={`?page=${page > 1 ? page - 1 : 1}`}
               />
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink className="mx-5" href={`?page=${page}`}>
+              <PaginationLink
+                size={'default'}
+                className="mx-5"
+                href={`?page=${page}`}
+              >
                 {page}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
+                size={'default'}
                 className={`${page === countOfPages ? 'pointer-events-none opacity-50' : ''}`}
                 href={`?page=${page + 1}`}
               />

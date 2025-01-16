@@ -23,6 +23,8 @@ import { editPost } from '@/server/posts/edit-post'
 import { deletePost } from '@/server/posts/delete-post.server'
 
 import { Button } from '@/components/admin/ui/button'
+import Spinner from '@/components/admin/ui/spinner'
+
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 import { useRouter } from 'next/navigation'
@@ -38,6 +40,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const { toast } = useToast()
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
@@ -98,6 +102,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
+    setIsLoading(true)
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
     }
@@ -115,7 +120,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       } else {
         response = await createPost(data, image)
       }
-
+      setIsLoading(false)
       if (response.success) {
         setIsOpen(false)
         toast({
@@ -533,7 +538,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   >
                     Скасувати
                   </Button>
-                  <Button type="submit">{buttonTitle}</Button>
+                  <Button type="submit">
+                    {isLoading ? <Spinner /> : buttonTitle}
+                  </Button>
                 </div>
               </div>
             </AlertDialogFooter>
