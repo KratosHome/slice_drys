@@ -9,7 +9,11 @@ import {
   SelectValue,
 } from '@/components/client/ui/select'
 import Link from 'next/link'
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
+import {
+  CardBody,
+  CardContainer,
+  CardItem,
+} from '@/components/client/ui/3d-card'
 import Image from 'next/image'
 import Button from '@/components/client/ui/button'
 import { useLocale } from 'next-intl'

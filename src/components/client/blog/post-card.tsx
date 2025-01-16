@@ -1,7 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
-import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card'
+import {
+  CardContainer,
+  CardBody,
+  CardItem,
+} from '@/components/client/ui/3d-card'
 
 interface PostCardProps {
   post?: IPost
