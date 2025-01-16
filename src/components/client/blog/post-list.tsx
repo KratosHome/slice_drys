@@ -6,9 +6,9 @@ interface BlogProps {
 
 export default function PostList({ posts }: BlogProps) {
   return (
-    <div>
+    <div className="w-[100%]">
       {posts.length > 0 && (
-        <div>
+        <div className="w-[100%]">
           <div className="mb-10 mt-10 flex justify-between">
             <div className="flex w-full flex-wrap justify-between">
               <div className="flex w-[100%] sm:w-[45%]">
