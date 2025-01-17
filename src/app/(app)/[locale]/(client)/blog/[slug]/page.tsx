@@ -31,6 +31,7 @@ export async function generateMetadata({
   return {
     title: data.post[0].title,
     description: data.post[0].metaDescription || '',
+    keywords: data.post[0].keywords || '',
   }
 }
 
