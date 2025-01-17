@@ -1,7 +1,5 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
-import Link from 'next/link'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import {
   Breadcrumb,
@@ -12,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 import 'quill/dist/quill.snow.css'
+import Share from '@/components/client/ui/share'
 
 export default async function PostPage({
   params,
@@ -32,7 +31,7 @@ export default async function PostPage({
   const html = converter.convert()
 
   return (
-    <main className="mx-auto flex max-w-[1280px] flex-col justify-center">
+    <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
       <div className="mt-10">
         <Breadcrumb>
           <BreadcrumbList>
@@ -73,46 +72,7 @@ export default async function PostPage({
           <div className="text-gray-500">{author}</div>
         </div>
       </div>
-      <div className="mb-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
-        <div
-          className="text-[26px]"
-          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-        >
-          Поділитись
-        </div>
-        <div className="flex gap-3">
-          <Link href="#" className="w-fit">
-            <Image
-              src={'/icons/facebook.svg'}
-              alt="facebook icon"
-              width={32}
-              height={32}
-              className="cursor-pointer"
-            />
-            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
-          </Link>
-          <Link href="#" className="w-fit">
-            <Image
-              src={'/icons/instagram.svg'}
-              alt="facebook icon"
-              width={32}
-              height={32}
-              className="cursor-pointer"
-            />
-            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
-          </Link>
-          <Link href="#" className="w-fit">
-            <Image
-              src={'/icons/telegram.svg'}
-              alt="facebook icon"
-              width={32}
-              height={32}
-              className="cursor-pointer"
-            />
-            <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
-          </Link>
-        </div>
-      </div>
-    </main>
+      <Share />
+    </div>
   )
 }
