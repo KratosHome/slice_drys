@@ -1,5 +1,7 @@
 import { Hero } from '@/components/client/hero/hero'
 import ProductSlider from '@/components/client/slider/productSlider'
+import AboutUs from '@/components/client/about-us/about-us'
+
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
 export default async function Home(props: {
@@ -18,6 +20,7 @@ export default async function Home(props: {
         message={'найсмачніші кусь-топчики'}
         products={productsData.products}
       />
+      <AboutUs />
     </div>
   )
 }
