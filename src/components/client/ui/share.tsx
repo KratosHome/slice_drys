@@ -14,7 +14,7 @@ const Share = () => {
         {t('Share')}
       </div>
       <div className="flex gap-3">
-        <Link href="#" className="w-fit">
+        <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/facebook.svg'}
             alt="facebook icon"
@@ -24,7 +24,7 @@ const Share = () => {
           />
           <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
         </Link>
-        <Link href="#" className="w-fit">
+        <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/instagram.svg'}
             alt="facebook icon"
@@ -34,7 +34,7 @@ const Share = () => {
           />
           <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
         </Link>
-        <Link href="#" className="w-fit">
+        <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/telegram.svg'}
             alt="telegram icon"
