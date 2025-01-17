@@ -20,8 +20,25 @@ import {
 } from '@/components/client/ui/breadcrumbs'
 
 type Props = {
-  params: { locale: string }
+  params: { locale: 'en' | 'uk' }
   searchParams: { page?: string }
+}
+
+const translations = {
+  en: {
+    title: 'Blog',
+    description: 'This is the blog page.',
+    keywords: ['blog', 'articles', 'news'],
+  },
+  uk: {
+    title: 'Блог',
+    description: 'Це сторінка блогу.',
+    keywords: ['блог', 'статті', 'новини'],
+  },
+}
+
+export function generateMetadata({ params }: Props) {
+  return translations[params.locale]
 }
 
 export default async function Blog({ params, searchParams }: Props) {
