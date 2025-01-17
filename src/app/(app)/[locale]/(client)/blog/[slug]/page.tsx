@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { getPosts } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { notFound } from 'next/navigation'
@@ -11,6 +12,27 @@ import {
 } from '@/components/client/ui/breadcrumbs'
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/client/ui/share'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; locale: string }
+}): Promise<Metadata> {
+  const { slug, locale } = params
+  const data = await getPosts({ locale, slug })
+
+  if (!data.success) {
+    return {
+      title: 'post not found',
+      description: 'post not found',
+    }
+  }
+
+  return {
+    title: data.post[0].title,
+    description: data.post[0].metaDescription || '',
+  }
+}
 
 export default async function PostPage({
   params,
