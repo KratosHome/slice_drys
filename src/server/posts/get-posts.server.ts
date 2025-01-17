@@ -14,19 +14,24 @@ export async function getPosts({ locale, slug, page, limit }: GetPostsOptions) {
     await connectToDb()
 
     if (slug) {
-      const postQuery = Post.findOne({ slug: slug })
-        .select({
-          [`title.${locale}`]: 1,
-          [`content.${locale}`]: 1,
-          img: 1,
-          [`author.${locale}`]: 1,
-          slug: 1,
-          [`metaDescription.${locale}`]: 1,
-          [`keywords.${locale}`]: 1,
-          visited: 1,
-          updatedAt: 1,
-        })
-        .lean()
+      const postQuery = Post.findOneAndUpdate(
+        { slug: slug },
+        { $inc: { visited: 1 } },
+        {
+          new: true,
+          select: {
+            [`title.${locale}`]: 1,
+            [`content.${locale}`]: 1,
+            img: 1,
+            [`author.${locale}`]: 1,
+            slug: 1,
+            [`metaDescription.${locale}`]: 1,
+            [`keywords.${locale}`]: 1,
+            visited: 1,
+            updatedAt: 1,
+          },
+        },
+      ).lean()
 
       const post = (await postQuery) as Any
       if (!post) {
