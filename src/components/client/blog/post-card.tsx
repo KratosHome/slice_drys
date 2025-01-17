@@ -20,7 +20,7 @@ export default function PostCard({ post }: PostCardProps) {
   const rotateZ = Math.floor(Math.random() * 20) - 10
 
   return (
-    <Link href={`/${local}/blog/${post?.slug}`}>
+    <Link className="w-full" href={`/${local}/blog/${post?.slug}`}>
       <CardContainer className="w-full">
         <CardBody>
           <CardItem
