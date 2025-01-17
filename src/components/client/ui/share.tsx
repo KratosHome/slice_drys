@@ -17,7 +17,7 @@ const Share = () => {
         <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/facebook.svg'}
-            alt="facebook icon"
+            alt={t('facebook icon')}
             width={32}
             height={32}
             className="cursor-pointer"
@@ -27,7 +27,7 @@ const Share = () => {
         <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/instagram.svg'}
-            alt="facebook icon"
+            alt={t('instagram icon')}
             width={32}
             height={32}
             className="cursor-pointer"
@@ -37,7 +37,7 @@ const Share = () => {
         <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
             src={'/icons/telegram.svg'}
-            alt="telegram icon"
+            alt={t('telegram icon')}
             width={32}
             height={32}
             className="cursor-pointer"
