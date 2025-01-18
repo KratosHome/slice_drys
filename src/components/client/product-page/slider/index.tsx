@@ -3,7 +3,7 @@ import { Options } from '@splidejs/splide'
 import Image from 'next/image'
 import React, { useEffect, useRef } from 'react'
 
-import './slider.css'
+import './styles.css'
 
 const SliderWithThumbnails = ({ images }: { images: string[] }) => {
   const mainRef = useRef<Splide>(null)

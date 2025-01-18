@@ -6,7 +6,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/client/ui/select'
+} from '@/components/client/ui/doodle-select'
 import { cn } from '@/utils/cn'
 import {
   CertIcons,
