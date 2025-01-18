@@ -21,6 +21,7 @@ interface IPostLocal {
   metaDescription: ILocalizedString
   keywords: ILocalizedString
   visited?: number
+  updatedAt: Date
 }
 
 interface IGetPost {

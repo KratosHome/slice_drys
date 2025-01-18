@@ -13,12 +13,12 @@ import {
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/client/ui/share'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string; locale: string }
-}): Promise<Metadata> {
-  const { slug, locale } = params
+type Props = {
+  params: Promise<{ locale: ILocale; slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, locale } = await params
   const data = await getPosts({ locale, slug })
 
   if (!data.success) {
@@ -35,14 +35,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function PostPage({
-  params,
-}: {
-  params: { slug: string; locale: string }
-}) {
-  const { slug, locale } = params
+export default async function PostPage({ params }: Props) {
+  const { slug, locale } = await params
 
-  const data = await getPosts({ locale, slug })
+  const data = await getPosts({ locale, slug, isVisited: true })
   if (!data.success) {
     return notFound()
   }

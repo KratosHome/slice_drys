@@ -29,16 +29,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
 
   const handleAddToCart = () => {
-    const productInfo = {
-      id: product._id,
-      name: product.name,
-      count: 1,
-      price: selectedVariable.price,
-      newPrice: selectedVariable.newPrice,
-      weight: selectedVariable.weight,
-    }
     if (selectedVariable.count >= 1) {
-      console.log('Продукт додано до кошика:', productInfo)
       alert('Товар додано до кошика!')
     } else {
       alert('Товар тимчасово відсутній на складі. Очікуємо!')
