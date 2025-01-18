@@ -67,6 +67,7 @@ export async function getPosts({ locale, slug, page, limit }: GetPostsOptions) {
     const pagination = page && limit ? { skip: (page - 1) * limit, limit } : {}
 
     const postQuery = Post.find()
+      .sort({ createdAt: -1 })
       .select({
         [`title.${locale}`]: 1,
         [`content.${locale}`]: 1,
