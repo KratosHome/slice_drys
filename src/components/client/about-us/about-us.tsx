@@ -23,36 +23,35 @@ export default function AboutUs() {
             {t('about us')}
           </div>
         </div>
-
-        <div className="flex w-[100%]">
-          <div className="flex w-[60%] flex-col">
-            <div className="flex">
-              <div className="justify-center bg-black px-6 py-12">
-                <Image
-                  src={'/icons/logo-white.svg'}
-                  alt={t('facebook icon')}
-                  width={120}
-                  height={140}
-                />
-              </div>
-
-              <div
-                className="flex items-center text-[36px]"
-                style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-              >
-                <div className="pl-10 pr-20">-</div>
-                {t('is')}
-              </div>
-            </div>
-            <div className="pr-10 pt-20 text-[24px]"> {t('description')}</div>
+        <div className="flex w-[100%] flex-row items-center">
+          <div className="justify-center bg-black px-6 py-12">
+            <Image
+              src={'/icons/logo-white.svg'}
+              alt={t('facebook icon')}
+              width={120}
+              height={140}
+            />
           </div>
-          <Image
-            className="w-[40%] object-cover"
-            src={'/images/pork.jpeg'}
-            alt="pork image"
-            width={550}
-            height={675}
-          />
+          <div
+            className="flex w-[15%] items-center justify-between text-[36px]"
+            style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+          >
+            <div className="pl-10">-</div>
+            <div>{t('is')}</div>
+          </div>
+        </div>
+
+        <div className="mt-20 max-w-[100%]">
+          <div className="float-right -mt-80 pl-10">
+            <Image
+              src={'/images/pork.jpeg'}
+              alt="pork image"
+              width={550}
+              height={675}
+              objectFit={'contain'}
+            />
+          </div>
+          <p className="text-[20px]">{t('description')}</p>
         </div>
       </div>
     </div>
