@@ -6,9 +6,6 @@ import React, { useEffect, useRef } from 'react'
 import './slider.css'
 
 const SliderWithThumbnails = ({ images }: { images: string[] }) => {
-  /**
-   * References for the main and thumbnail Splide components.
-   */
   const mainRef = useRef<Splide>(null)
   const thumbsRef = useRef<Splide>(null)
 
@@ -49,35 +46,31 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
     },
   }
 
-  /**
-   * Render slides.
-   *
-   * @return Slide nodes.
-   */
-  const renderSlides = () => {
-    return images.map((src, index) => (
-      <SplideSlide key={src} className="p-2.5">
-        <Image className="p-10 sm:p-0" src={src} alt={`Slider ${index}`} fill />
-      </SplideSlide>
-    ))
-  }
-
   return (
     <div>
       <Splide
         className="sm:py-16"
         options={mainOptions}
         ref={mainRef}
-        aria-labelledby="thumbnail-slider-example"
+        aria-labelledby="The image slider"
       >
-        {renderSlides()}
+        {images.map((src, index) => (
+          <SplideSlide key={src} className="p-2.5">
+            <Image
+              className="p-10 sm:p-0"
+              src={src}
+              alt={`Slider ${index}`}
+              fill
+            />
+          </SplideSlide>
+        ))}
       </Splide>
 
       <Splide
         options={thumbsOptions}
         ref={thumbsRef}
         className="flex justify-center"
-        aria-label="The carousel with thumbnails. Selecting a thumbnail will change the main carousel"
+        aria-label="The carousel with thumbnails"
       >
         {images.map((src, index) => (
           <SplideSlide key={src}>

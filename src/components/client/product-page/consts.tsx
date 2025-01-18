@@ -1,5 +1,36 @@
 import { CardIcon, ChequeIcon, PaperIcon } from './icons'
 
+export const mockSliders = [
+  '/sliders/meat.png',
+  '/sliders/fruit.png',
+  '/sliders/promo.png',
+]
+
+export const mockProduct: IProduct = {
+  name: 'Курка сушена',
+  description:
+    'Сушене куряче м’ясо, приготовлене з ретельно відібраних спецій та трав. Ідеальний перекус для активних людей та поціновувачів натуральних продуктів.',
+  img: '',
+  variables: [
+    {
+      weight: 30,
+      price: 130,
+      currency: 'грн',
+      count: 1,
+    },
+  ],
+  category: ["М'ясо", 'Сушені продукти'],
+  menu: ['Перекус', 'Обід'],
+  composition: ['Куряче м’ясо', 'Спеції', 'Трави'],
+  statusLabel: ['В наявності'],
+  nutritionalValue: {
+    proteins: '45 г',
+    fats: '15 г',
+    carbohydrates: '0 г',
+    energyValue: '15 г',
+  },
+}
+
 export const accordions = [
   {
     title: 'Інформація про продукт',
@@ -17,10 +48,16 @@ export const accordions = [
   {
     title: 'Поживна (харчова) цінність на 100 г продукту',
     fields: [
-      { label: 'Білки', value: '45 г' },
-      { label: 'Жири', value: '15 г' },
-      { label: 'Вуглеводи', value: '0 г' },
-      { label: 'Енергетична цінність', value: '15 г' },
+      { label: 'Білки', value: mockProduct.nutritionalValue.proteins },
+      { label: 'Жири', value: mockProduct.nutritionalValue.fats },
+      {
+        label: 'Вуглеводи',
+        value: mockProduct.nutritionalValue.carbohydrates,
+      },
+      {
+        label: 'Енергетична цінність',
+        value: mockProduct.nutritionalValue.energyValue,
+      },
     ],
   },
   {

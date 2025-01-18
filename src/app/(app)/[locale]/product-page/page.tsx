@@ -1,6 +1,7 @@
 'use client'
 
-import { ProductInfo, Accordions } from '@/components/client/product-page'
+import { ProductInfo } from '@/components/client/product-page'
+import { Accordions } from '@/components/client/product-page/accordions'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 
 export default function ProductPage() {

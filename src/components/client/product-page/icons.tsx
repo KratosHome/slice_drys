@@ -1,4 +1,62 @@
-function CardIcon() {
+export function TopIcon() {
+  return (
+    <svg
+      className="h-[16px] w-[16px] sm:h-[24px] sm:w-[24px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <g clipPath="url(#clip0_2798_6)">
+        <path
+          d="M17.3604 20H6C4.89543 20 4 19.1046 4 18V10H7.92963C8.59834 10 9.2228 9.6658 9.59373 9.1094L12.1094 5.3359C12.6658 4.5013 13.6025 4 14.6056 4H14.8195C15.4375 4 15.9075 4.55487 15.8059 5.1644L15 10H18.5604C19.8225 10 20.7691 11.1547 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20Z"
+          stroke="#FBFBFB"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path d="M8 10V20" stroke="#FBFBFB" />
+      </g>
+      <defs>
+        <clipPath id="clip0_2798_6">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
+
+export function NewIcon() {
+  return (
+    <svg
+      className="h-[16px] w-[16px] sm:h-[24px] sm:w-[24px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <g clipPath="url(#clip0_2798_15401)">
+        <path
+          d="M12.5858 4.58579C12.2107 4.21071 11.702 4 11.1716 4H4V11.1716C4 11.702 4.21071 12.2107 4.58579 12.5858L11.5858 19.5858C12.3668 20.3668 13.6332 20.3668 14.4142 19.5858L19.5858 14.4142C20.3668 13.6332 20.3668 12.3668 19.5858 11.5858L12.5858 4.58579Z"
+          stroke="#FBFBFB"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <rect
+          x="9"
+          y="9"
+          width="0.01"
+          height="0.01"
+          stroke="#FBFBFB"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_2798_15401">
+          <rect width="24" height="24" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
+
+export function CardIcon() {
   return (
     <svg
       width="34"
@@ -41,7 +99,7 @@ function CardIcon() {
   )
 }
 
-function ChequeIcon() {
+export function ChequeIcon() {
   return (
     <svg
       width="33"
@@ -99,7 +157,7 @@ function ChequeIcon() {
   )
 }
 
-function PaperIcon() {
+export function PaperIcon() {
   return (
     <svg
       width="35"
@@ -172,7 +230,7 @@ function PaperIcon() {
   )
 }
 
-const MinusIcon = () => (
+export const MinusIcon = () => (
   <svg
     width="21"
     height="11"
@@ -187,7 +245,7 @@ const MinusIcon = () => (
   </svg>
 )
 
-const PlusIcon = () => (
+export const PlusIcon = () => (
   <svg
     width="26"
     height="24"
@@ -202,7 +260,7 @@ const PlusIcon = () => (
   </svg>
 )
 
-const Curve = () => (
+export const Curve = () => (
   <svg
     width="317"
     height="16"
@@ -224,7 +282,7 @@ const Curve = () => (
   </svg>
 )
 
-const CertIcons = () => (
+export const CertIcons = () => (
   <svg
     className="w-[275px] sm:w-[358px]"
     height="99"
@@ -767,13 +825,3 @@ const CertIcons = () => (
     />
   </svg>
 )
-
-export {
-  CardIcon,
-  ChequeIcon,
-  PaperIcon,
-  MinusIcon,
-  PlusIcon,
-  Curve,
-  CertIcons,
-}
