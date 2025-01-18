@@ -22,12 +22,23 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     content = '{"ops":[{"insert":"\\n"}]}'
   }
   let toPreventDoubleQuill = true
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     toPreventDoubleQuill = !toPreventDoubleQuill
     if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, false] }], // Розміри заголовків
+            ['bold', 'italic', 'underline', 'strike'], // Стилі тексту
+            [{ list: 'ordered' }, { list: 'bullet' }], // Списки
+            ['link', 'image'], // Вставка лінків та зображень
+            [{ align: [] }],
+          ],
+        },
       })
 
       quillRef.current.on('text-change', () => {
