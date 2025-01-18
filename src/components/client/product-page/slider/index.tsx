@@ -6,8 +6,8 @@ import React, { useEffect, useRef } from 'react'
 import './styles.css'
 
 const SliderWithThumbnails = ({ images }: { images: string[] }) => {
-  const mainRef = useRef<Splide>(null)
-  const thumbsRef = useRef<Splide>(null)
+  const mainRef = useRef<typeof Splide>(null)
+  const thumbsRef = useRef<typeof Splide>(null)
 
   /**
    * Sync the main and thumbnail sliders after the component mounts.
