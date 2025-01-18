@@ -5,11 +5,11 @@ import { getPosts } from '@/server/posts/get-posts.server'
 export default async function Blog({
   params,
 }: {
-  params: Promise<{ locale: string }>
+  params: Promise<{ locale: ILocale }>
 }) {
   const { locale } = await params
 
-  const posts: IGetPost = await getPosts({ locale })
+  const posts = await getPosts({ locale })
 
   return (
     <div className="px-5">

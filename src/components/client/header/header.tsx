@@ -16,10 +16,9 @@ import NumberCall from '@/components/client/number-call/number-call'
 
 interface HeaderP {
   headerLinks: ILink[]
-  hamburgerLinksOther: ILink[]
 }
 
-const Header: FC<HeaderP> = ({ headerLinks, hamburgerLinksOther }) => {
+const Header: FC<HeaderP> = ({ headerLinks }) => {
   const local = useLocale()
   const headerRef = useRef<HTMLDivElement>(null)
 

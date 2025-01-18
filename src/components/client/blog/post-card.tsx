@@ -26,7 +26,6 @@ export default function PostCard({ post }: PostCardProps) {
           <CardItem
             translateZ={-100}
             rotateZ={rotateZ}
-            href={`/${local}/blog/${post?.slug}`}
             className="flex-1 cursor-pointer"
           >
             <div className="relative w-full pb-[75%]">

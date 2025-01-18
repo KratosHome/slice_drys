@@ -3,7 +3,7 @@ import '../globals.css'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Poppins, Rubik_Doodle_Shadow } from 'next/font/google'
-import { hamburgerLinksOther, headerLinks } from '@/data/header-links'
+import { headerLinks } from '@/data/header-links'
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
 
@@ -37,7 +37,6 @@ export default async function LocaleLayout(props: {
 
   const messages = await getMessages()
   const headerLinksData = headerLinks[locale]
-  const hamburgerLinksOtherData = hamburgerLinksOther[locale]
 
   return (
     <html
@@ -46,10 +45,7 @@ export default async function LocaleLayout(props: {
     >
       <NextIntlClientProvider messages={messages}>
         <body>
-          <Header
-            headerLinks={headerLinksData}
-            hamburgerLinksOther={hamburgerLinksOtherData}
-          />
+          <Header headerLinks={headerLinksData} />
           {children}
           <Toaster />
         </body>

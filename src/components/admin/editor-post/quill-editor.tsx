@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 
@@ -16,16 +16,15 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   setContent,
   className,
 }) => {
+  const [toPreventDoubleQuill, setToPreventDoubleQuill] = useState(true)
   const quillRef = useRef<Quill | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
   if (!content) {
     content = '{"ops":[{"insert":"\\n"}]}'
   }
-  let toPreventDoubleQuill = true
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    toPreventDoubleQuill = !toPreventDoubleQuill
+    setToPreventDoubleQuill(!toPreventDoubleQuill)
     if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
@@ -51,6 +50,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       quillRef.current?.off('text-change')
       quillRef.current = null
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setContent])
 
   useEffect(() => {

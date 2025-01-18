@@ -20,8 +20,8 @@ import {
 } from '@/components/client/ui/breadcrumbs'
 
 type Props = {
-  params: { locale: 'en' | 'uk' }
-  searchParams: { page?: string }
+  params: Promise<{ locale: ILocale }>
+  searchParams: Promise<{ page?: string }>
 }
 
 const translations = {
@@ -37,16 +37,20 @@ const translations = {
   },
 }
 
-export function generateMetadata({ params }: Props) {
-  return translations[params.locale]
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params
+
+  return translations[locale]
 }
 
 export default async function Blog({ params, searchParams }: Props) {
-  const { locale } = params
-  const page = parseInt(searchParams.page || '1', 10)
+  const { locale } = await params
+  const { page } = await searchParams
+
+  const pageItem = parseInt(page || '1', 10)
   const limit = 8
-  const data = await getPosts({ locale, page, limit })
-  const countOfPages = Math.ceil(data.totalPosts / limit)
+  const data = await getPosts({ locale, page: pageItem, limit })
+  const countOfPages = Math.ceil((data.totalPosts || 0) / limit)
 
   return (
     <div className="mx-auto max-w-[1280px] p-5">
@@ -65,7 +69,7 @@ export default async function Blog({ params, searchParams }: Props) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage localizationKey="Page">{page}</BreadcrumbPage>
+              <BreadcrumbPage localizationKey="Page">{pageItem}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -79,24 +83,24 @@ export default async function Blog({ params, searchParams }: Props) {
             <PaginationItem>
               <PaginationPrevious
                 size={'default'}
-                className={`${page === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                href={`?page=${page > 1 ? page - 1 : 1}`}
+                className={`${pageItem === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                href={`?page=${pageItem > 1 ? pageItem - 1 : 1}`}
               />
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
                 size={'default'}
                 className="mx-5"
-                href={`?page=${page}`}
+                href={`?page=${pageItem}`}
               >
-                {page}
+                {pageItem}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationNext
                 size={'default'}
-                className={`${page === countOfPages ? 'pointer-events-none opacity-50' : ''}`}
-                href={`?page=${page + 1}`}
+                className={`${pageItem === countOfPages ? 'pointer-events-none opacity-50' : ''}`}
+                href={`?page=${pageItem + 1}`}
               />
             </PaginationItem>
           </PaginationContent>
