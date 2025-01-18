@@ -18,8 +18,8 @@ export async function findProductInfoItems() {
     const uniqueCategoriesEn: string[] = await Product.distinct('category.en')
     const uniqueCategoriesUk: string[] = await Product.distinct('category.uk')
 
-    const squirrels: string[] = await Product.distinct(
-      'nutritionalValue.squirrels',
+    const proteins: string[] = await Product.distinct(
+      'nutritionalValue.proteins',
     )
     const fats: string[] = await Product.distinct('nutritionalValue.fats')
     const carbohydrates: string[] = await Product.distinct(
@@ -49,7 +49,7 @@ export async function findProductInfoItems() {
       },
       currency,
       weight,
-      squirrels,
+      proteins,
       fats,
       carbohydrates,
       energyValue,
@@ -72,7 +72,7 @@ export async function findProductInfoItems() {
       },
       currency: [],
       weight: [],
-      squirrels: [],
+      proteins: [],
       fats: [],
       carbohydrates: [],
       energyValue: [],
