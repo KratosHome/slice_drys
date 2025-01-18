@@ -46,7 +46,7 @@ export default async function LocaleLayout(props: {
       <NextIntlClientProvider messages={messages}>
         <body>
           <Header headerLinks={headerLinksData} />
-          {children}
+          <main>{children}</main>
           <Toaster />
         </body>
       </NextIntlClientProvider>
