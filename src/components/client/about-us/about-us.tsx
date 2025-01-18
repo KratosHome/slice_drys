@@ -6,7 +6,7 @@ export default function AboutUs() {
 
   return (
     <div>
-      <div className="mx-auto flex w-full max-w-[1280] flex-col items-center">
+      <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5">
         <div></div>
         <div className="flex items-center pb-20">
           <Image
