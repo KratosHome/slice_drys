@@ -1,6 +1,7 @@
 import { Hero } from '@/components/client/hero/hero'
 import ProductSlider from '@/components/client/slider/productSlider'
 import AboutUs from '@/components/client/about-us/about-us'
+import Reviews from '@/components/client/reviews/Review'
 
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
@@ -21,6 +22,7 @@ export default async function Home(props: {
         products={productsData.products}
       />
       <AboutUs />
+      <Reviews />
     </div>
   )
 }
