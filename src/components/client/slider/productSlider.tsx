@@ -1,5 +1,5 @@
 'use client'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css/core'
 import '@splidejs/react-splide/css'
 import { Arrow } from '@/components/client/ui/arrow'
@@ -71,11 +71,17 @@ export default function ProductSlider({
           {message}
         </div>
       </div>
-      <Splide options={splideOptions} className="mb-28 h-full max-w-6xl">
+      <Splide
+        aria-labelledby="Main slider"
+        options={splideOptions}
+        className="mb-28 h-full max-w-6xl"
+      >
         {products.map((product) => (
-          <SplideSlide key={product._id} className="px-2 py-8 sm:px-3 md:px-4">
-            <Product product={product} />
-          </SplideSlide>
+          <SplideTrack key={product._id}>
+            <SplideSlide className="px-2 py-8 sm:px-3 md:px-4">
+              <Product product={product} />
+            </SplideSlide>
+          </SplideTrack>
         ))}
       </Splide>
     </div>

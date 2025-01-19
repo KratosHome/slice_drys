@@ -26,6 +26,6 @@ export async function deleteProduct(id?: string) {
 
     return { success: true, message: 'Product was deleted' }
   } catch (error) {
-    return { success: false, message: "Can't delete product" }
+    return { success: false, message: `Can't delete product ${error}` }
   }
 }

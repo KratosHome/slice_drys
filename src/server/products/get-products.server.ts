@@ -14,7 +14,7 @@ export async function getProducts(
   try {
     await connectToDb()
 
-    const query: Record<string, any> = {}
+    const query: IQueryType = {}
 
     if (composition.length > 0) {
       query[`composition.${locale}`] = { $in: composition }
@@ -78,7 +78,7 @@ export async function getProducts(
       success: false,
       product: [],
       productAll: [],
-      message: "Can't retrieve products",
+      message: `Can't retrieve products ${error}`,
     }
   }
 }

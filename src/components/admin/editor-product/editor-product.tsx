@@ -65,7 +65,7 @@ const EditorProduct: FC<ICrateProduct> = ({
         },
       ],
       nutritionalValue: {
-        squirrels: '',
+        proteins: '',
         fats: '',
         carbohydrates: '',
         energyValue: '',
@@ -184,7 +184,6 @@ const EditorProduct: FC<ICrateProduct> = ({
     if (product?._id) {
       result = await editProduct(product._id, newData, image)
     } else {
-      console.log('work', newData)
       result = await createProduct(newData, image)
     }
 
@@ -596,22 +595,22 @@ const EditorProduct: FC<ICrateProduct> = ({
                   <h2 className="text-lg font-semibold">Харчова цінність</h2>
                   <div className="space-y-2">
                     <div>
-                      <Label htmlFor="nutritionalValue.squirrels">Білки</Label>
+                      <Label htmlFor="nutritionalValue.proteins">Білки</Label>
                       <Input
-                        id="nutritionalValue.squirrels"
-                        list="squirrels-suggestions"
-                        {...register('nutritionalValue.squirrels', {
+                        id="nutritionalValue.proteins"
+                        list="proteins-suggestions"
+                        {...register('nutritionalValue.proteins', {
                           required: 'Це поле є обов’язковим',
                         })}
                       />
-                      <datalist id="squirrels-suggestions">
-                        {recommendations.squirrels.map((category: string) => (
+                      <datalist id="proteins-suggestions">
+                        {recommendations.proteins.map((category: string) => (
                           <option key={category} value={category} />
                         ))}
                       </datalist>
-                      {errors.nutritionalValue?.squirrels && (
+                      {errors.nutritionalValue?.proteins && (
                         <span className="text-red">
-                          {errors.nutritionalValue.squirrels.message}
+                          {errors.nutritionalValue.proteins.message}
                         </span>
                       )}
                     </div>

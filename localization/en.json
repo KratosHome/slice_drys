@@ -1,5 +1,22 @@
 {
   "HomePage": {
     "title": "Hello world!"
+  },
+  "Blog": {
+    "paginationButtonLeft": "Previous",
+    "paginationButtonRight": "Next",
+    "Blog": "Blog",
+    "title": "Welcome to our blog! Here we talk about everything related to our dryers – from interesting recipes and useful tips to just plain funny stories. Check back often, there’s always something delicious here!"
+  },
+  "Breadcrumbs": {
+    "Home": "Home",
+    "Blog": "Blog",
+    "Page": "Page"
+  },
+  "Share": {
+    "Share": "Share",
+    "facebook icon": "facebook icon",
+    "instagram icon": "instagram icon",
+    "telegram icon": "telegram icon"
   }
 }

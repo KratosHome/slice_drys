@@ -67,7 +67,7 @@ const productSchema = new mongoose.Schema(
       },
     ],
     nutritionalValue: {
-      squirrels: {
+      proteins: {
         type: String,
         required: true,
         minlength: 1,

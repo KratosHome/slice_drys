@@ -89,7 +89,7 @@ export const Hero = () => {
   )
 
   return (
-    <div className="mx-auto max-w-[1280px] overflow-x-clip sm:pt-9 xl:overflow-x-visible">
+    <div className="container overflow-x-clip sm:pt-9 xl:overflow-x-visible">
       <div className="px-[20px]">
         <div
           className={cn(
