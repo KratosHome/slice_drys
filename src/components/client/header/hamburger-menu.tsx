@@ -106,6 +106,7 @@ export default function HamburgerMenu({
                   <Link
                     className="group relative block w-min py-4"
                     href={link.href}
+                    onClick={closeMenu}
                   >
                     {link.name}
                     <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>

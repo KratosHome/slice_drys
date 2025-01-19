@@ -11,13 +11,13 @@ export default async function Home(props: {
   const productsData = await getProductsSliderMain(locale)
 
   return (
-    <div>
+    <>
       <Hero />
       <ProductSlider
         title={'ТОПОВІ СУШЕНИКИ'}
         message={'найсмачніші кусь-топчики'}
         products={productsData.products}
       />
-    </div>
+    </>
   )
 }
