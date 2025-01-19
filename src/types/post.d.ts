@@ -6,8 +6,9 @@ interface IPost {
   author: string
   slug: string
   metaDescription: string
-  keywords: string[]
+  keywords: string
   visited?: number
+  updatedAt: Date
 }
 
 interface IPostLocal {
@@ -18,13 +19,20 @@ interface IPostLocal {
   author: ILocalizedString
   slug: string
   metaDescription: ILocalizedString
-  keywords: ILocalizedStringArray
+  keywords: ILocalizedString
   visited?: number
+  updatedAt: Date
 }
 
 interface IGetPost {
   post: IPost[]
   postAll?: IPostLocal[]
+  success: boolean
+  message: string
+}
+
+interface IGetOnePost {
+  post: IPost
   success: boolean
   message: string
 }

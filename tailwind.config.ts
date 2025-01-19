@@ -20,6 +20,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            maxWidth: '100ch',
+          },
+        },
+        lg: {
+          css: {
+            maxWidth: '120ch',
+          },
+        },
+      }),
       screens: {
         lap: {
           min: '991px',
@@ -94,6 +106,13 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('tailwind-hamburgers')],
+  plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('@tailwindcss/typography'),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('tailwindcss-animate'),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('tailwind-hamburgers'),
+  ],
 }
 export default config

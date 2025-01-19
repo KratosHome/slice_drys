@@ -7,9 +7,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/client/ui/select'
 import Link from 'next/link'
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
+import {
+  CardBody,
+  CardContainer,
+  CardItem,
+} from '@/components/client/ui/3d-card'
 import Image from 'next/image'
 import Button from '@/components/client/ui/button'
 import { useLocale } from 'next-intl'
@@ -25,16 +29,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
 
   const handleAddToCart = () => {
-    const productInfo = {
-      id: product._id,
-      name: product.name,
-      count: 1,
-      price: selectedVariable.price,
-      newPrice: selectedVariable.newPrice,
-      weight: selectedVariable.weight,
-    }
     if (selectedVariable.count >= 1) {
-      console.log('Продукт додано до кошика:', productInfo)
       alert('Товар додано до кошика!')
     } else {
       alert('Товар тимчасово відсутній на складі. Очікуємо!')

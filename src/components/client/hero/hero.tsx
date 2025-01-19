@@ -36,7 +36,6 @@ export const Hero = () => {
 
   const handleMainImageAnimation = (status: boolean) => {
     const tl = gsap.timeline()
-    console.log(status)
 
     if (status) {
       tl.to(imgRef.current, {
@@ -45,40 +44,6 @@ export const Hero = () => {
       })
     }
   }
-
-  const handleMouseEnter = contextSafe((index: number) => {
-    if (index === currentIndex) return
-
-    const tl = gsap.timeline()
-
-    tl.to(titleRef.current, {
-      duration: 0.3,
-      opacity: 0,
-      scaleX: 0.8,
-      scaleY: 0.8,
-      filter: 'blur(10px)',
-      ease: 'power2.in',
-
-      onComplete: () => {
-        setCurrentIndex(index)
-
-        gsap.fromTo(
-          titleRef.current,
-          { opacity: 0, scaleX: 1.2, scaleY: 1.2, filter: 'blur(10px)' },
-          {
-            opacity: 1,
-            scaleX: 1,
-            scaleY: 1,
-            filter: 'blur(0px)',
-            duration: 0.2,
-            ease: 'power2.out',
-          },
-        )
-      },
-    })
-
-    setHoveredIndex(index)
-  })
 
   useGSAP(
     () => {
@@ -100,14 +65,40 @@ export const Hero = () => {
         },
       )
 
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, scaleX: 1.2, scaleY: 1.2, filter: 'blur(10px)' },
+        {
+          opacity: 1,
+          scaleX: 1,
+          scaleY: 1,
+          filter: 'blur(0px)',
+          duration: 0.2,
+          ease: 'power2.out',
+        },
+      )
+
       if (slidersLocale[hoveredIndex].subImages) {
+        const mm = gsap.matchMedia()
+
         subImagesRefs.current.forEach((el, i) => {
-          gsap.to(el, {
-            opacity: 1,
-            duration: 1.5,
-            x: slidersLocale[hoveredIndex]?.subImages?.[i]?.x,
-            y: slidersLocale[hoveredIndex]?.subImages?.[i]?.y,
-            ease: 'power2.out',
+          // mm.add('(min-width: 390px)', () => {
+          //   gsap.to(el, {
+          //     opacity: 1,
+          //     duration: 1.5,
+          //     x: slidersLocale[hoveredIndex]?.subImages?.[i]?.x,
+          //     y: slidersLocale[hoveredIndex]?.subImages?.[i]?.y,
+          //     ease: 'power2.out',
+          //   })
+          // })
+          mm.add('(min-width: 1200px)', () => {
+            gsap.to(el, {
+              opacity: 1,
+              duration: 1.5,
+              x: slidersLocale[hoveredIndex]?.subImages?.[i]?.x,
+              y: slidersLocale[hoveredIndex]?.subImages?.[i]?.y,
+              ease: 'power2.out',
+            })
           })
         })
       }
@@ -156,7 +147,7 @@ export const Hero = () => {
                 'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%]',
                 'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
               )}
-              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseEnter={() => setHoveredIndex(index)}
             >
               <SliderItem
                 title={item.name}
@@ -194,7 +185,9 @@ export const Hero = () => {
                     className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform opacity-0"
                     width={item.width}
                     height={item.height}
-                    ref={(el) => (subImagesRefs.current[index] = el)}
+                    ref={(el) => {
+                      if (el) subImagesRefs.current[index] = el
+                    }}
                   />
                 ))}
               </div>

@@ -2,11 +2,11 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 
-export async function getProductsSliderMain(locale: keyof ILocalizedString) {
+export async function getProductsSliderMain(locale: ILocale) {
   try {
     await connectToDb()
-    const query: Record<string, any> = {}
-    const products = await Product.find(query)
+
+    const products = await Product.find()
       .sort({ visited: -1 })
       .limit(7)
       .lean<IProductLocal[]>()
@@ -35,7 +35,7 @@ export async function getProductsSliderMain(locale: keyof ILocalizedString) {
     return {
       success: false,
       products: [],
-      message: "Can't retrieve products",
+      message: error,
     }
   }
 }

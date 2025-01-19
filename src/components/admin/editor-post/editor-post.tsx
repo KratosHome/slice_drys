@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   AlertDialog,
@@ -23,6 +23,8 @@ import { editPost } from '@/server/posts/edit-post'
 import { deletePost } from '@/server/posts/delete-post.server'
 
 import { Button } from '@/components/admin/ui/button'
+import Spinner from '@/components/admin/ui/spinner'
+
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 import { useRouter } from 'next/navigation'
@@ -38,6 +40,8 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const { toast } = useToast()
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
   const [slug, setSlug] = useState<string>(post?.slug || '')
@@ -57,7 +61,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     formState: { errors },
   } = useForm<IPostLocal>({
@@ -67,7 +70,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       img: '',
       slug: post?.slug,
       author: { en: '', uk: '' },
-      keywords: { en: [], uk: [] },
+      keywords: { en: '', uk: '' },
       metaDescription: { en: '', uk: '' },
     },
   })
@@ -99,6 +102,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
+    setIsLoading(true)
     if (data.content) {
       data.content[quillEditorLanguage] = quillEditorContent
     }
@@ -110,24 +114,23 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
-      console.log(post?._id)
       let response
       if (post?._id) {
         response = await editPost(post._id, data, image)
       } else {
         response = await createPost(data, image)
       }
-
+      setIsLoading(false)
       if (response.success) {
         setIsOpen(false)
         toast({
           duration: 3000,
-          title: 'Post created successfully',
+          title: 'Success',
         })
       } else {
         toast({
           variant: 'destructive',
-          title: 'Error creating post',
+          title: 'Error',
           description: response.message,
         })
       }
@@ -256,6 +259,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.title) {
+                          post.title.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.title?.uk && (
                       <span className="text-red">
@@ -313,12 +321,14 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </RadioGroup>
-                <QuillEditor
-                  className="min-h-64"
-                  content={quillEditorContent}
-                  setContent={setQuillEditorContent}
-                />
-
+                <div className="h-96">
+                  <QuillEditor
+                    className="min-h-96"
+                    content={quillEditorContent}
+                    setContent={setQuillEditorContent}
+                  />
+                </div>
+                <div className="h-10"></div>
                 <div>
                   <Label htmlFor="slug">Slug</Label>
                   <Input
@@ -352,6 +362,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.uk && (
                       <span className="text-red">
@@ -374,6 +389,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.author) {
+                          post.author.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.author?.en && (
                       <span className="text-red">
@@ -398,6 +418,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.keywords?.uk && (
                       <span className="text-red">
@@ -421,6 +446,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.keywords) {
+                          post.keywords.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.keywords?.en && (
                       <span className="text-red">
@@ -445,6 +475,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.uk = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.uk && (
                       <span className="text-red">
@@ -467,6 +502,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                         required: 'Це поле є обов’язковим',
                       })}
+                      onChange={(event) => {
+                        if (post && post.metaDescription) {
+                          post.metaDescription.en = event.target.value
+                        }
+                      }}
                     />
                     {errors.metaDescription?.en && (
                       <span className="text-red">
@@ -498,7 +538,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   >
                     Скасувати
                   </Button>
-                  <Button type="submit">{buttonTitle}</Button>
+                  <Button type="submit">
+                    {isLoading ? <Spinner /> : buttonTitle}
+                  </Button>
                 </div>
               </div>
             </AlertDialogFooter>

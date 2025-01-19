@@ -1,13 +1,7 @@
 import * as React from 'react'
 import OrdersList from '@/components/admin/orders/orders-list'
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ ordersId: string }>
-}) {
-  const ordersId = (await params).ordersId
-
+export default async function ProductPage() {
   const dataOrders: IOrder[] = [
     {
       id: '1',

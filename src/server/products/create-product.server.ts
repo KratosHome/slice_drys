@@ -19,6 +19,6 @@ export async function createProduct(formData: IProductLocal, image: string) {
 
     return { success: true, message: 'Product created' }
   } catch (error) {
-    return { success: false, message: "Can't create product" }
+    return { success: false, message: `Can't create product ${error}` }
   }
 }

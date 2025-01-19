@@ -76,7 +76,7 @@ export async function findProductInfoItems() {
       fats: [],
       carbohydrates: [],
       energyValue: [],
-      message: "Can't create product",
+      message: `Can't create product ${error}`,
     }
   }
 }
