@@ -8,7 +8,7 @@ export default async function Home(props: {
 }) {
   const { locale } = await props.params
 
-  const productsData = await getProductsSliderMain(locale)
+  const productsData: IGetProducts = await getProductsSliderMain(locale)
 
   return (
     <div>
