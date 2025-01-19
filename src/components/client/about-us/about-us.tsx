@@ -6,7 +6,7 @@ export default function AboutUs() {
 
   return (
     <div>
-      <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5">
+      <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5 pb-16">
         <div></div>
         <div className="flex items-center pb-20">
           <Image
@@ -93,10 +93,10 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center py-20">
-        <div className="flex-1 pl-20 text-[20px]">{t('more description')}</div>
+      <div className="mx-auto flex max-w-[1280] items-center justify-center p-5 pt-16">
+        <div className="flex-1 pr-10 text-[20px]">{t('more description')}</div>
         <Image
-          className="mx-20 w-[550px]"
+          className="w-[550px]"
           src={'/images/beef-in-bag.png'}
           alt="pork image"
           width={550}
