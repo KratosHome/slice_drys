@@ -1,4 +1,4 @@
-export default function CloseDialog({ className }: { className?: string }) {
+export default function CloseDialog() {
   return (
     <svg
       width="28"
@@ -10,16 +10,16 @@ export default function CloseDialog({ className }: { className?: string }) {
       <path
         d="M23.334 4.66602L3.50065 24.4993"
         stroke="#A90909"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M3.5 4.66602L23.3333 24.4993"
         stroke="#A90909"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

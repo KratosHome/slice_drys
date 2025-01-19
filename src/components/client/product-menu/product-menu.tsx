@@ -23,7 +23,7 @@ const ProductMenu: React.FC<ProductMenuProps> = ({
         {filteredMenus.map((menuItem) => (
           <Link
             key={menuItem.key}
-            href={`/${locale}/products/${menuItem.key}`}
+            href={`/${locale}/${menuItem.key}`}
             className="text-base font-medium hover:text-[#a90909] sm:text-[18px] md:text-[20px] lg:text-[24px]"
           >
             {capitalize(menuItem.label)}

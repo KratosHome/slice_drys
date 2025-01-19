@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { getProducts } from '@/server/products/get-products.server'
 import Product from '@/components/client/product/product'
 import { rubikDoodleShadow } from '@/fonts/fonts'
-import ArrowRight from '@/components/ui/arrow-right'
-import Filter from '@/components/ui/filter'
+import ArrowRight from '@/components/client/ui/arrow-right'
+import Filter from '@/components/client/ui/filter'
 import ProductMenu from '@/components/client/product-menu/product-menu'
 import ProductSidebar from '@/components/client/product-sidebar/product-sidebar'
 import {
@@ -14,50 +14,28 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@/components/client/ui/dialog'
 import { Button } from '@/components/admin/ui/button'
+import { capitalize } from '@/utils/capitalize'
+import { menuToUk } from '@/utils/menuToUk'
+import { generateMetadata } from '@/data/meta'
 
-export const generateMetadata = async (props: {
-  params: Promise<{ locale: string; menu: string; category: string }>
-}) => {
-  const { params } = props
-  const { menu } = await params
-
-  return {
-    title: `Slice Dry's | ${capitalize(menu)}`,
-    description: `The best dried ${menu} products`,
-  }
-}
-
-const capitalize = (str: string): string => {
-  if (!str) return str
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-function menuToUk(menu: string): string {
-  const translations: { [key: string]: string } = {
-    meat: "м'ясо",
-    fruits: 'фрукти',
-    vegetables: 'овочі',
-    mix: 'мікс',
-    promo: 'акція',
-  }
-  return translations[menu] || menu
-}
+export { generateMetadata }
 
 export default async function MenuPage(props: {
   params: Promise<{ locale: string; menu: string; category: string }>
 }) {
   const { params } = props
-  const { locale, menu } = await params
+  const { locale, menu, category } = await params
   const menuToLocale = locale === 'uk' ? menuToUk(menu) : menu
+  const categoryArray = category ? category.split(',') : []
 
   const productsData = await getProducts(
     1,
     100,
     [],
     [menuToLocale],
-    [],
+    categoryArray,
     locale,
     false,
   )
@@ -67,8 +45,8 @@ export default async function MenuPage(props: {
   const categories = Array.from(
     new Set(
       productsData.product
-        .filter((product: any) => product.menu)
-        .flatMap((product: any) => product.category),
+        .filter((product) => product.menu)
+        .flatMap((product) => product.category),
     ),
   ).filter(Boolean)
 
@@ -103,14 +81,21 @@ export default async function MenuPage(props: {
         capitalize={capitalize}
       />
       <div className="flex items-center gap-2 px-[22px] py-[16px]">
-        <div className={`${rubikDoodleShadow.className} text-xl sm:text-2xl`}>
+        <div
+          className={`${rubikDoodleShadow.className} hidden text-xl sm:text-2xl md:block`}
+        >
           Фільтр
         </div>
         <div className="hidden md:block">
           <Filter />
         </div>
         <Dialog>
-          <DialogTrigger className="md:hidden">
+          <DialogTrigger className="flex items-center gap-2 md:hidden">
+            <div
+              className={`${rubikDoodleShadow.className} text-xl sm:text-2xl`}
+            >
+              Фільтр
+            </div>
             <Filter />
           </DialogTrigger>
           <DialogContent className="max-h-[90vh] overflow-y-auto">
@@ -121,7 +106,11 @@ export default async function MenuPage(props: {
                 Фільтр
               </DialogTitle>
               <DialogDescription>
-                <ProductSidebar categories={categories} />
+                <ProductSidebar
+                  locale={locale}
+                  menu={menu}
+                  categories={categories}
+                />
                 <div className="flex items-center justify-between pb-[40px] pt-[60px]">
                   <Button
                     className="rounded-none text-base"
@@ -146,7 +135,7 @@ export default async function MenuPage(props: {
       </div>
       <div className="my-10 flex w-full gap-4 lg:gap-8 xl:gap-12">
         <div className="hidden w-full max-w-80 grow md:block">
-          <ProductSidebar categories={categories} />
+          <ProductSidebar locale={locale} menu={menu} categories={categories} />
         </div>
         <div className="w-full min-w-[67%]">
           <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
@@ -158,7 +147,7 @@ export default async function MenuPage(props: {
               <div>No products found in this menu.</div>
             )}
           </div>
-          {products.length > 0 ? (
+          {products.length > 10 ? (
             <div className="py-10 text-center text-3xl">
               Pagination - coming soon
             </div>

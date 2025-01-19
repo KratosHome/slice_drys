@@ -3,7 +3,7 @@
 import * as React from 'react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { cn } from '@/utils/cn'
-import ArrowUp from '@/components/ui/arrow-up'
+import ArrowUp from '@/components/client/ui/arrow-up'
 
 const Accordion = AccordionPrimitive.Root
 
@@ -47,10 +47,10 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="text-sm first:pt-[60px] last:pb-[60px] data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="overflow-hidden text-sm first:pt-[60px] last:pb-[60px] data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn('pb-0 pt-0', className)}>{children}</div>
+    <div className={cn('pb-[60px] pt-[60px]', className)}>{children}</div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName

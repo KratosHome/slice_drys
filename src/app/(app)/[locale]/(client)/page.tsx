@@ -11,13 +11,13 @@ export default async function Home(props: {
   const productsData: IGetProducts = await getProductsSliderMain(locale)
 
   return (
-    <main>
+    <>
       <Hero />
       <ProductSlider
         title={'ТОПОВІ СУШЕНИКИ'}
         message={'найсмачніші кусь-топчики'}
         products={productsData.products}
       />
-    </main>
+    </>
   )
 }

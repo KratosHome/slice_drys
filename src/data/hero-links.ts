@@ -1,19 +1,19 @@
 import { colorConstants } from '../../tailwind.config'
 
 const sliderLinksUk = [
-  { name: 'М’ЯСО', link: '/uk/products/meat' },
-  { name: 'ФРУКТИ', link: '/uk/products/fruits' },
-  { name: 'ОВОЧІ', link: '/uk/products/vegetables' },
-  { name: 'МІКСИ', link: '/uk/products/mix' },
-  { name: 'АКЦІЯ', link: '/uk/products/promo' },
+  { name: 'М’ЯСО', link: '/uk/meat' },
+  { name: 'ФРУКТИ', link: '/uk/fruits' },
+  { name: 'ОВОЧІ', link: '/uk/vegetables' },
+  { name: 'МІКСИ', link: '/uk/mix' },
+  { name: 'АКЦІЯ', link: '/uk/promo' },
 ]
 
 const sliderLinksEn = [
-  { name: 'Meat', link: '/en/products/meat' },
-  { name: 'Fruit', link: '/en/products/fruits' },
-  { name: 'Veggie', link: '/en/products/vegetables' },
-  { name: 'Mix', link: '/en/products/mix' },
-  { name: 'Promo', link: '/en/products/promo' },
+  { name: 'Meat', link: '/en/meat' },
+  { name: 'Fruit', link: '/en/fruits' },
+  { name: 'Veggie', link: '/en/vegetables' },
+  { name: 'Mix', link: '/en/mix' },
+  { name: 'Promo', link: '/en/promo' },
 ]
 
 const slidersUk = [
