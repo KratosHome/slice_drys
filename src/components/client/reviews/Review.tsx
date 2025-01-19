@@ -1,36 +1,17 @@
-import { useTranslations } from 'next-intl'
-import Image from 'next/image'
+interface ReviewsProps {
+  text: string
+  author: string
+  variant: string
+}
 
-export default function AboutUs() {
-  const t = useTranslations('Reviews')
-
+export default function Reviews({ text, author, variant }: ReviewsProps) {
   return (
-    <div>
-      <div className="flex flex-col items-center">
-        <div
-          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-          className="inline-block pr-60 text-[96px]"
-        >
-          {t('reviews')}
-        </div>
-        <div className="flex flex-col pl-60">
-          <div className="inline-block flex-1 pb-3 text-[24px]">
-            {' '}
-            {t('say those')}
-          </div>
-          <div className="flex w-full">
-            <div className="pl-10"></div>
-            <Image
-              className="flex-1"
-              src={'/images/curved-line2.svg'}
-              alt="pork image"
-              width={388}
-              height={13}
-              objectFit={'contain'}
-            />
-          </div>
-        </div>
+    // Перевіряємо, чи варіант "grey", і рендеримо div лише в цьому випадку
+    variant === 'grey' ? (
+      <div className="h-24 w-96 bg-gray-500">
+        <div>{author}</div>
+        {text}
       </div>
-    </div>
+    ) : null
   )
 }
