@@ -54,6 +54,44 @@ export default function AboutUs() {
           <p className="text-[20px]">{t('description')}</p>
         </div>
       </div>
+      <div className="flex justify-center bg-black py-20">
+        <div className="flex max-w-[1280]">
+          <Image
+            className="flex-1 pr-10"
+            src={'/images/oranges-in-bag.png'}
+            alt="pork image"
+            width={550}
+            height={675}
+            objectFit={'contain'}
+          />
+          <div className="w-[100%] flex-1 flex-col justify-center">
+            <div
+              style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+              className="text-center text-[96px] text-white"
+            >
+              МіСІЯ :
+            </div>
+            <div className="mx-auto w-[80%] py-10 text-center text-2xl leading-6 text-white">
+              створювати смачні, корисні продукти, притримуючись філософії
+              натуральності та здоров’я, щоб ви змогли ...
+            </div>
+            <div
+              style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+              className="mx-auto w-[60%] text-center text-[40px] text-white"
+            >
+              {'Зробити смачний Кусь :)'}
+            </div>
+            <Image
+              className="mx-auto flex-1 p-5"
+              src={'/images/curved-line.svg'}
+              alt="pork image"
+              width={358}
+              height={13}
+              objectFit={'contain'}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
