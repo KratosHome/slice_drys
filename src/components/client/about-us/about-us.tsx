@@ -54,6 +54,7 @@ export default function AboutUs() {
           <p className="text-[20px]">{t('description')}</p>
         </div>
       </div>
+
       <div className="flex justify-center bg-black py-20">
         <div className="flex max-w-[1280]">
           <Image
@@ -69,17 +70,16 @@ export default function AboutUs() {
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               className="text-center text-[96px] text-white"
             >
-              МіСІЯ :
+              {t('mission')}
             </div>
             <div className="mx-auto w-[80%] py-10 text-center text-2xl leading-6 text-white">
-              створювати смачні, корисні продукти, притримуючись філософії
-              натуральності та здоров’я, щоб ви змогли ...
+              {t('mission description')}
             </div>
             <div
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               className="mx-auto w-[60%] text-center text-[40px] text-white"
             >
-              {'Зробити смачний Кусь :)'}
+              {t('bite')}
             </div>
             <Image
               className="mx-auto flex-1 p-5"
@@ -91,6 +91,18 @@ export default function AboutUs() {
             />
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-center py-20">
+        <div className="flex-1 pl-20 text-[20px]">{t('more description')}</div>
+        <Image
+          className="mx-20 w-[550px]"
+          src={'/images/beef-in-bag.png'}
+          alt="pork image"
+          width={550}
+          height={675}
+          objectFit={'contain'}
+        />
       </div>
     </div>
   )
