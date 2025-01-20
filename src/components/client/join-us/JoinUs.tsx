@@ -5,7 +5,7 @@ export default function Reviews() {
   const t = useTranslations('JoinUs')
 
   return (
-    <div className="flex flex-col justify-center bg-black py-7">
+    <div className="mt-60 flex flex-col justify-center bg-black py-7">
       <div className="mx-auto flex">
         <div className="align-center flex max-w-[1280]">
           <div className="flex w-[40%] -rotate-[17deg] flex-col">
