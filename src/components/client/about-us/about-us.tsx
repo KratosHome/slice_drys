@@ -11,7 +11,7 @@ export default function AboutUs() {
         <div className="flex items-center pb-20">
           <Image
             src={'/icons/arc-arrow-down.svg'}
-            alt={t('facebook icon')}
+            alt="arc-arrow-down image"
             width={42}
             height={60}
             className="mr-16 pt-28"
@@ -27,7 +27,7 @@ export default function AboutUs() {
           <div className="justify-center bg-black px-6 py-12">
             <Image
               src={'/icons/logo-white.svg'}
-              alt={t('facebook icon')}
+              alt="logo-white"
               width={120}
               height={140}
             />

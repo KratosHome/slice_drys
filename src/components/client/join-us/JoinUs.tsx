@@ -17,32 +17,34 @@ export default function Reviews() {
             </div>
             <Image
               className="w-full"
-              src={'/images/iPhone 15 Pro.png'}
-              alt="pork image"
+              src={'/images/iPhone-15-Pro.png'}
+              alt="iPhone image"
               width={520}
               height={440}
               objectFit={'contain'}
             />
           </div>
-          <div className="flex w-[60%] flex-col justify-center">
+          <div className="ml-10 flex w-[60%] flex-col justify-center">
             <div
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-              className="text-center text-[80px] leading-tight text-white"
+              className="text-start text-[80px] leading-tight text-white"
             >
               {t('join us')}
             </div>
-            <div className="text-center text-white">{t('be first')}</div>
+            <div className="max-w-[600px] text-start text-[24px] text-white">
+              {t('be first')}
+            </div>
             <div className="ml-auto mt-8 flex h-[20%] w-[50%] translate-x-12 translate-y-2 -rotate-12 bg-red">
               <Image
                 src={'/icons/instagram-white.svg'}
-                alt={t('instagram icon')}
+                alt="instagram icon"
                 width={60}
                 height={60}
                 className="my-auto ml-5 h-[65%] cursor-pointer"
               />
               <Image
-                src={'/icons/faceboo-white.svg'}
-                alt={t('instagram icon')}
+                src={'/icons/facebook-white.svg'}
+                alt="facebook icon"
                 width={60}
                 height={60}
                 className="my-auto ml-5 h-[65%] cursor-pointer"
@@ -51,15 +53,15 @@ export default function Reviews() {
           </div>
         </div>{' '}
       </div>
-      <div className="mx-auto mt-auto flex h-0">
+      <div className="mx-auto mt-auto flex h-0 items-center">
         <Image
           src={'/icons/instagram-white2.svg'}
-          alt={t('instagram icon')}
+          alt="instagram icon"
           width={24}
           height={24}
-          className="h-[24px] cursor-pointer pr-3"
+          className="mr-3 h-[24px] cursor-pointer"
         />
-        <div className="text-white">@slicedrys</div>
+        <div className="text-[20px] text-white">@slicedrys</div>
       </div>
     </div>
   )
