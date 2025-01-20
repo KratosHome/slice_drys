@@ -45,7 +45,7 @@ export default function Reviews({ text, author, variant }: ReviewsProps) {
     </div>
   ) : variant === 'grey-white' ? (
     <div className="mx-5 mx-auto my-10 max-w-[900px] pr-20">
-      <div className="w-full bg-[#E4E4E4] p-5">
+      <div className="w-full bg-[#E4E4E4] p-3">
         <div className="w-full bg-white p-2">
           <div
             className="h-0 -translate-x-16 -translate-y-12 text-[96px]"
