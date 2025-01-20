@@ -21,7 +21,6 @@ export default function Reviews() {
               alt="iPhone image"
               width={520}
               height={440}
-              objectFit={'contain'}
             />
           </div>
           <div className="ml-10 flex w-[60%] flex-col justify-center">

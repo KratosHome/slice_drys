@@ -29,12 +29,7 @@ export default function PostCard({ post }: PostCardProps) {
             className="flex-1 cursor-pointer"
           >
             <div className="relative w-full pb-[75%]">
-              <Image
-                src={post?.img || ''}
-                alt={post?.title}
-                layout="fill"
-                objectFit="cover"
-              />
+              <Image src={post?.img || ''} alt={post?.title} layout="fill" />
             </div>
           </CardItem>
           <CardItem translateZ={20}>

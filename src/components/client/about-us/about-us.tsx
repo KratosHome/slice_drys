@@ -48,7 +48,6 @@ export default function AboutUs() {
               alt="pork image"
               width={550}
               height={675}
-              objectFit={'contain'}
             />
           </div>
           <p className="text-[20px]">{t('description')}</p>
@@ -63,7 +62,6 @@ export default function AboutUs() {
             alt="pork image"
             width={550}
             height={675}
-            objectFit={'contain'}
           />
           <div className="w-[100%] flex-1 flex-col justify-center">
             <div
@@ -87,7 +85,6 @@ export default function AboutUs() {
               alt="pork image"
               width={358}
               height={13}
-              objectFit={'contain'}
             />
           </div>
         </div>
@@ -101,7 +98,6 @@ export default function AboutUs() {
           alt="pork image"
           width={550}
           height={675}
-          objectFit={'contain'}
         />
       </div>
     </div>

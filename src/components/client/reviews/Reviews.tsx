@@ -85,7 +85,6 @@ export default function Reviews() {
               alt="pork image"
               width={388}
               height={13}
-              objectFit={'contain'}
             />
           </div>
         </div>
