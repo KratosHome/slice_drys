@@ -1,38 +1,68 @@
+import { useLocale } from 'next-intl'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Review from './Review'
 
-const reviewsData = [
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-]
+const reviewsData = {
+  en: [
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+    {
+      author: 'Valera Valeryan',
+      text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    },
+  ],
+  uk: [
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+    {
+      author: 'Валера Валерʼян',
+      text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    },
+  ],
+}
 const variants = ['grey', 'black', 'grey-white']
 
 export default function Reviews() {
   const t = useTranslations('Reviews')
 
+  const locale: ILocale = useLocale() as ILocale
   return (
     <div className="mt-40">
       <div className="mb-20 flex flex-col items-center">
@@ -61,7 +91,7 @@ export default function Reviews() {
         </div>
       </div>
       <div>
-        {reviewsData.map((review, index) => (
+        {reviewsData[locale].map((review, index) => (
           <Review
             key={index}
             author={review.author}
