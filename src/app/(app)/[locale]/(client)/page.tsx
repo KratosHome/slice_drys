@@ -2,6 +2,7 @@ import { Hero } from '@/components/client/hero/hero'
 import ProductSlider from '@/components/client/slider/productSlider'
 import AboutUs from '@/components/client/about-us/about-us'
 import Reviews from '@/components/client/reviews/Reviews'
+import JoinUs from '@/components/client/join-us/JoinUs'
 
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
@@ -23,6 +24,7 @@ export default async function Home(props: {
       />
       <AboutUs />
       <Reviews />
+      <JoinUs />
     </div>
   )
 }
