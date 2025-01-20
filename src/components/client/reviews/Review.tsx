@@ -50,7 +50,7 @@ export default function Reviews({ text, author, variant }: ReviewsProps) {
         <div className="w-full bg-[#E4E4E4] p-5">
           <div className="w-full bg-white p-2">
             <div
-              className="h-0 -translate-x-16 -translate-y-16 text-[96px]"
+              className="h-0 -translate-x-16 -translate-y-12 text-[96px]"
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
             >
               “
@@ -62,7 +62,7 @@ export default function Reviews({ text, author, variant }: ReviewsProps) {
               <div>{text}</div>
             </div>
             <div
-              className="h-0 -translate-y-10 translate-x-16 text-end text-[96px]"
+              className="h-0 -translate-y-14 translate-x-16 text-end text-[96px]"
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
             >
               “
