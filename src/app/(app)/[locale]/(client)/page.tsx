@@ -3,6 +3,7 @@ import ProductSlider from '@/components/client/slider/productSlider'
 import AboutUs from '@/components/client/about-us/about-us'
 import Reviews from '@/components/client/reviews/Reviews'
 import JoinUs from '@/components/client/join-us/JoinUs'
+import FAQ from '@/components/client/FAQ/FAQ'
 
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
@@ -25,6 +26,7 @@ export default async function Home(props: {
       <AboutUs />
       <Reviews />
       <JoinUs />
+      <FAQ />
     </div>
   )
 }
