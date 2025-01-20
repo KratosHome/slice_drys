@@ -33,7 +33,7 @@ export default function Reviews() {
         </div>
       </div>
       <Review
-        author="werwerw"
+        author="Валера Валерʼян"
         variant="grey"
         text="Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!"
       />
