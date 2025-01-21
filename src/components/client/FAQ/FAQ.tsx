@@ -26,17 +26,7 @@ export default function AboutUs() {
         </div>
       </div>
       <Collapse question={t('q1')} answer={t('a1')}></Collapse>
-      <div className="mx-auto mb-5 flex max-w-[800px] items-center border border-black p-2 pl-4 text-[24px]">
-        {t('q1')}{' '}
-        <div className="ml-auto pr-3">
-          <div
-            style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-            className="ml-auto mt-3 rotate-90 text-[28px]"
-          >
-            {'>'}
-          </div>
-        </div>
-      </div>
+      <Collapse question={t('q2')} answer={t('a2')}></Collapse>
     </div>
   )
 }
