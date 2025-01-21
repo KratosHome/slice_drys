@@ -8,20 +8,20 @@ export default function AboutUs() {
     <div>
       <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5 pb-16">
         <div></div>
-        <div className="flex items-center pb-20">
-          <Image
-            src={'/icons/arc-arrow-down.svg'}
-            alt="arc-arrow-down image"
-            width={42}
-            height={60}
-            className="mr-16 pt-28"
-          />
+        <div className="mx-auto flex flex-col items-center">
           <div
             className="w-[100%] text-[96px]"
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
           >
             {t('about us')}
           </div>
+          <Image
+            src={'/icons/arc-arrow-down.svg'}
+            alt="arc-arrow-down image"
+            width={42}
+            height={60}
+            className="mr-auto -translate-x-8 -rotate-[20deg] pb-16 md:-translate-x-32 md:rotate-0"
+          />
         </div>
         <div className="mr-auto flex min-w-[30%] flex-row items-center">
           <div className="justify-center bg-black px-6 py-12">
