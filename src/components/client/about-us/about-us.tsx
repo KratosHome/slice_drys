@@ -92,10 +92,12 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1280] items-center justify-center p-5 pt-16">
-        <div className="flex-1 pr-10 text-[20px]">{t('more description')}</div>
+      <div className="mx-auto my-16 flex max-w-[1280] flex-col items-center justify-center lg:flex-row">
+        <div className="ml-3 flex-1 pr-10 text-[20px]">
+          {t('more description')}
+        </div>
         <Image
-          className="w-[550px]"
+          className="w-full flex-1 py-16 lg:py-0"
           src={'/images/beef-in-bag.png'}
           alt="pork image"
           width={550}
