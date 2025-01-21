@@ -5,7 +5,6 @@ interface FAQProps {
   question: string
   answer: string
 }
-
 export default function FAQ({ question, answer }: FAQProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -17,7 +16,6 @@ export default function FAQ({ question, answer }: FAQProps) {
           (isOpen ? 'bg-black text-white' : '')
         }
       >
-        {' '}
         {question}
         <div className="ml-auto pr-3">
           <div
@@ -29,11 +27,15 @@ export default function FAQ({ question, answer }: FAQProps) {
           </div>
         </div>
       </div>
-      {isOpen && (
-        <div className="mx-auto flex max-w-[800px] items-center border border-dotted border-black p-2 pl-4 text-[24px]">
+      <div
+        className={`transition-max-height mx-auto flex max-w-[800px] overflow-hidden duration-1000 ${
+          isOpen ? 'max-h-[500px]' : 'max-h-0'
+        }`}
+      >
+        <div className="w-full items-center border border-dotted border-black p-2 pl-4 text-[24px]">
           {answer}
         </div>
-      )}{' '}
+      </div>
     </div>
   )
 }
