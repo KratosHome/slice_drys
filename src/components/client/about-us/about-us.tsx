@@ -8,14 +8,14 @@ export default function AboutUs() {
     <div>
       <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5 pb-16">
         <div></div>
-        <div className="flex items-center pb-20">
+        <div className="flex flex-col items-center pb-20">
           <Image
             src={'/icons/arc-arrow-down.svg'}
             alt="arc-arrow-down image"
             width={42}
             height={60}
             className="mr-16 pt-28"
-          />
+          
           <div
             className="w-[100%] text-[96px]"
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
@@ -23,7 +23,7 @@ export default function AboutUs() {
             {t('about us')}
           </div>
         </div>
-        <div className="flex w-[100%] flex-row items-center">
+        <div className="mr-auto flex min-w-[30%] flex-row items-center">
           <div className="justify-center bg-black px-6 py-12">
             <Image
               src={'/icons/logo-white.svg'}
@@ -33,24 +33,26 @@ export default function AboutUs() {
             />
           </div>
           <div
-            className="flex w-[15%] items-center justify-between text-[36px]"
+            className="flex w-[100%] items-center justify-between text-[36px]"
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
           >
-            <div className="pl-10">-</div>
-            <div>{t('is')}</div>
+            <div className="flex-1"></div>
+            <div className="flex-1">-</div>
+            <div className="flex-1">{t('is')}</div>
           </div>
         </div>
 
-        <div className="mt-20 max-w-[100%]">
-          <div className="float-right -mt-80 pl-10">
+        <div className="mt-20 max-w-[100%] items-end md:mt-20">
+          <div className="float-right -mt-32 pl-10 md:-mt-80">
             <Image
+              className="w-[350px] md:w-[500px]"
               src={'/images/pork.jpeg'}
               alt="pork image"
-              width={550}
+              width={500}
               height={675}
             />
           </div>
-          <p className="text-[20px]">{t('description')}</p>
+          <p className="min-w-[500px] text-[20px]">{t('description')}</p>
         </div>
       </div>
 
