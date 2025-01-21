@@ -8,14 +8,14 @@ export default function AboutUs() {
     <div>
       <div className="mx-auto flex w-full max-w-[1280] flex-col items-center p-5 pb-16">
         <div></div>
-        <div className="flex flex-col items-center pb-20">
+        <div className="flex items-center pb-20">
           <Image
             src={'/icons/arc-arrow-down.svg'}
             alt="arc-arrow-down image"
             width={42}
             height={60}
             className="mr-16 pt-28"
-          
+          />
           <div
             className="w-[100%] text-[96px]"
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
