@@ -9,7 +9,7 @@ export default function FAQ({ question, answer }: FAQProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="mb-5">
+    <div className="mb-5 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
       <div
         className={
           'mx-auto flex max-w-[800px] items-center border border-black p-1 pl-4 text-[24px] transition-colors duration-500 ' +
@@ -20,10 +20,9 @@ export default function FAQ({ question, answer }: FAQProps) {
         <div className="ml-auto pr-3">
           <div
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-            className={`ml-auto transform cursor-pointer text-[28px] duration-500 ${
+            className={`ml-auto transform text-[28px] duration-500 ${
               isOpen ? 'rotate-90' : 'rotate-0'
             }`}
-            onClick={() => setIsOpen(!isOpen)}
           >
             {'>'}
           </div>
