@@ -17,7 +17,7 @@ export default function AboutUs() {
           </div>
           <Image
             src={'/icons/arc-arrow-down.svg'}
-            alt="arc-arrow-down image"
+            alt={t('arc-arrow-down image')}
             width={42}
             height={60}
             className="mr-auto -translate-x-8 -rotate-[20deg] pb-16 md:-translate-x-32 md:rotate-0"
@@ -27,7 +27,7 @@ export default function AboutUs() {
           <div className="justify-center bg-black px-6 py-12">
             <Image
               src={'/icons/logo-white.svg'}
-              alt="logo-white"
+              alt={t('logo-white image')}
               width={120}
               height={140}
             />
@@ -47,7 +47,7 @@ export default function AboutUs() {
             <Image
               className="w-[350px] md:w-[500px]"
               src={'/images/pork.jpeg'}
-              alt="pork image"
+              alt={t('pork image')}
               width={500}
               height={675}
             />
@@ -61,7 +61,7 @@ export default function AboutUs() {
           <Image
             className="mr-10 mt-10 w-full flex-1"
             src={'/images/oranges-in-bag.png'}
-            alt="pork image"
+            alt={t('oranges-in-bag image')}
             width={550}
             height={675}
           />
@@ -84,7 +84,7 @@ export default function AboutUs() {
             <Image
               className="mx-auto flex-1 p-5"
               src={'/images/curved-line.svg'}
-              alt="pork image"
+              alt={t('curved-line image')}
               width={358}
               height={13}
             />
@@ -99,7 +99,7 @@ export default function AboutUs() {
         <Image
           className="w-full flex-1 py-16 lg:py-0"
           src={'/images/beef-in-bag.png'}
-          alt="pork image"
+          alt={t('beef-in-bag image')}
           width={550}
           height={675}
         />

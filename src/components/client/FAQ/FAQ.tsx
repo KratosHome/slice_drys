@@ -19,7 +19,7 @@ export default function AboutUs() {
           <Image
             className="pl-5"
             src={'/images/curved-line2.svg'}
-            alt="pork image"
+            alt={t('curved line')}
             width={258}
             height={13}
           />

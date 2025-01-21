@@ -24,7 +24,7 @@ export default function Reviews() {
             <Image
               className="-mt-32 ml-auto mr-20 w-[50%] lg:mr-0 lg:mt-0 lg:w-full"
               src={'/images/iPhone-15-Pro.png'}
-              alt="iPhone image"
+              alt={t('iPhone image')}
               width={520}
               height={440}
             />
@@ -42,14 +42,14 @@ export default function Reviews() {
             <div className="ml-auto mt-8 flex w-[50%] -translate-x-[130%] translate-y-[60%] -rotate-12 justify-end bg-red md:h-32 lg:h-[20%] lg:translate-x-12 lg:translate-y-2 lg:justify-start">
               <Image
                 src={'/icons/instagram-white.svg'}
-                alt="instagram icon"
+                alt={t('instagram-white icon')}
                 width={160}
                 height={160}
                 className="my-auto ml-5 h-[65%] w-[40%] cursor-pointer pl-10 md:mr-4 md:w-20 md:pl-0 lg:mr-0 lg:w-16"
               />
               <Image
                 src={'/icons/facebook-white.svg'}
-                alt="facebook icon"
+                alt={t('facebook-white icon')}
                 width={160}
                 height={160}
                 className="mx-4 my-auto h-[65%] w-[40%] cursor-pointer md:mx-8 md:ml-5 md:w-20 lg:w-16"
@@ -61,7 +61,7 @@ export default function Reviews() {
       <div className="mx-auto mt-auto flex h-0 items-center">
         <Image
           src={'/icons/instagram-white2.svg'}
-          alt="instagram icon"
+          alt={t('instagram-white2 icon')}
           width={24}
           height={24}
           className="mr-3 h-[24px] cursor-pointer"

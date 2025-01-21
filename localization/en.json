@@ -26,7 +26,13 @@
     "mission": "MISSION",
     "mission description": "to create tasty, healthy products, adhering to the philosophy of naturalness and wellness, so you can ...",
     "bite": "Make a tasty Bite :)",
-    "more description": "Over the years, we decided to share these traditions with the world, and thus our brand Slice&Dry was born. We adopted ancient family recipes and combined them with modern drying technologies to offer you true delicacies. Our production is located in a picturesque corner of Ukraine, where we carefully select only the highest quality products. Every stage, from slicing to packaging, is personally overseen by members of our family, as it is important to us that you receive only the best."
+    "more description": "Over the years, we decided to share these traditions with the world, and thus our brand Slice&Dry was born. We adopted ancient family recipes and combined them with modern drying technologies to offer you true delicacies. Our production is located in a picturesque corner of Ukraine, where we carefully select only the highest quality products. Every stage, from slicing to packaging, is personally overseen by members of our family, as it is important to us that you receive only the best.",
+    "arc-arrow-down image": "arc-arrow-down image",
+    "logo-white image": "logo-white image",
+    "pork image": "pork image",
+    "oranges-in-bag image": "oranges-in-bag image",
+    "curved-line image": "curved-line image",
+    "beef-in-bag image": "beef-in-bag image"
   },
   "Reviews": {
     "reviews": "REVIEWS",
@@ -35,11 +41,17 @@
   "JoinUs": {
     "join us": "Join our community!",
     "be first": "Be the first to know about special offers and get exclusive discounts.",
-    "bite": "BITE !"
+    "bite": "BITE !",
+    "iPhone image": "iPhone image",
+    "instagram-white icon": "instagram-white icon",
+    "facebook-white icon": "facebook-white icon",
+    "instagram-white2 icon": "instagram-white2 icon"
   },
   "FAQ": {
     "title": "ВСЕ ПРО СУШЕНИКИ",
     "subtitle": "і навіть те, що не питали :) ",
+    "curved line": "curved line image",
+
     "q1": "Won't you get tired of eating only snacks?",
     "a1": "How is that possible? Each bite is like a new flavor explosion!",
     "q2": "Why are your snacks so popular?",
