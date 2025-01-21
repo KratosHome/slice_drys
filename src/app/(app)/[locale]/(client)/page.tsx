@@ -5,6 +5,8 @@ import Reviews from '@/components/client/reviews/Reviews'
 import JoinUs from '@/components/client/join-us/JoinUs'
 import FAQ from '@/components/client/FAQ/FAQ'
 
+import ToTheTop from '@/components/client/ui/to-the-top'
+
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
 export default async function Home(props: {
@@ -27,6 +29,7 @@ export default async function Home(props: {
       <Reviews />
       <JoinUs />
       <FAQ />
+      <ToTheTop />
     </div>
   )
 }

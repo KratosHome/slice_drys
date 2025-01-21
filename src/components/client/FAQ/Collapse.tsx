@@ -20,7 +20,7 @@ export default function FAQ({ question, answer }: FAQProps) {
         <div className="ml-auto pr-3">
           <div
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-            className={`ml-auto mt-3 transform cursor-pointer text-[28px] duration-500 ${
+            className={`ml-auto transform cursor-pointer text-[28px] duration-500 ${
               isOpen ? 'rotate-90' : 'rotate-0'
             }`}
             onClick={() => setIsOpen(!isOpen)}
