@@ -12,15 +12,17 @@ export default function FAQ({ question, answer }: FAQProps) {
     <div className="mb-5">
       <div
         className={
-          'mx-auto flex max-w-[800px] items-center border border-black p-2 pl-4 text-[24px] ' +
-          (isOpen ? 'bg-black text-white' : '')
+          'mx-auto flex max-w-[800px] items-center border border-black p-1 pl-4 text-[24px] transition-colors duration-500 ' +
+          (isOpen ? 'bg-black text-white' : 'bg-white text-black')
         }
       >
         {question}
         <div className="ml-auto pr-3">
           <div
             style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-            className="ml-auto mt-3 rotate-90 cursor-pointer text-[28px]"
+            className={`ml-auto mt-3 transform cursor-pointer text-[28px] duration-500 ${
+              isOpen ? 'rotate-90' : 'rotate-0'
+            }`}
             onClick={() => setIsOpen(!isOpen)}
           >
             {'>'}
@@ -28,7 +30,7 @@ export default function FAQ({ question, answer }: FAQProps) {
         </div>
       </div>
       <div
-        className={`transition-max-height mx-auto flex max-w-[800px] overflow-hidden duration-1000 ${
+        className={`transition-max-height mx-auto flex max-w-[800px] overflow-hidden duration-500 ${
           isOpen ? 'max-h-[500px]' : 'max-h-0'
         }`}
       >
