@@ -5,7 +5,7 @@ import Collapse from './Collapse'
 export default function AboutUs() {
   const t = useTranslations('FAQ')
   return (
-    <div className="mx-auto mb-20 mb-28 mt-60 max-w-[1280px] items-center">
+    <div className="mx-auto mb-20 mb-28 mt-60 max-w-[1280px] items-center px-4">
       <div
         className="pr-20 text-center text-[64px]"
         style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
