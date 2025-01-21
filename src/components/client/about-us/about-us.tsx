@@ -57,15 +57,15 @@ export default function AboutUs() {
       </div>
 
       <div className="flex justify-center bg-black py-20">
-        <div className="flex max-w-[1280]">
+        <div className="flex max-w-[1280] flex-col-reverse lg:flex-row">
           <Image
-            className="flex-1 pr-10"
+            className="mr-10 mt-10 w-full flex-1"
             src={'/images/oranges-in-bag.png'}
             alt="pork image"
             width={550}
             height={675}
           />
-          <div className="w-[100%] flex-1 flex-col justify-center">
+          <div className="flex-1 flex-col justify-center">
             <div
               style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
               className="text-center text-[96px] text-white"
