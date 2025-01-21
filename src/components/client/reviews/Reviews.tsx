@@ -65,31 +65,26 @@ export default function Reviews() {
   const locale: ILocale = useLocale() as ILocale
   return (
     <div className="mt-40">
-      <div className="mb-20 flex flex-col items-center">
+      <div className="mx-auto mb-20 flex max-w-[720px] flex-col">
         <div
           style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-          className="inline-block pr-60 text-[96px]"
+          className="ml-auto mr-0 text-[96px] md:ml-0 md:mr-auto"
         >
           {t('reviews')}
         </div>
-        <div className="flex flex-col pl-60">
-          <div className="inline-block flex-1 pb-3 text-[24px]">
-            {' '}
-            {t('say those')}
-          </div>
-          <div className="flex w-full">
-            <div className="pl-10"></div>
+        <div className="ml-auto flex flex-col">
+          <div className="inline-block pb-3 text-[24px]"> {t('say those')}</div>
+          <div className="ml-auto flex w-[90%]">
             <Image
-              className="flex-1"
               src={'/images/curved-line2.svg'}
               alt="pork image"
-              width={388}
+              width={500}
               height={13}
             />
           </div>
         </div>
       </div>
-      <div>
+      <div className="p-16">
         {reviewsData[locale].map((review, index) => (
           <Review
             key={index}
