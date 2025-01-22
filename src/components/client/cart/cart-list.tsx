@@ -11,7 +11,7 @@ export default function CartList() {
         <CartProductCard key={index} {...product}></CartProductCard>
       ))}
       <div
-        className="bg-green-500 cursor-pointer"
+        className="cursor-pointer bg-green"
         onClick={useCartStore((state) => state.clearCart)}
       >
         CLEAR
