@@ -11,7 +11,7 @@ export default function CartList() {
         <CartProductCard key={index} {...product}></CartProductCard>
       ))}
       <div
-        className="bg-green-500 cursor-pointer" // Додано клас для зміни кольору та курсора
+        className="bg-green-500 cursor-pointer"
         onClick={useCartStore((state) => state.clearCart)}
       >
         CLEAR

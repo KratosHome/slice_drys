@@ -1,13 +1,11 @@
-// Оголошення інтерфейсу для пропсів компонента
 interface CartProductCardProps {
-  image: string // URL зображення продукту
-  name: string // Назва продукту
-  price: number // Ціна продукту
-  weight: number // Вага продукту
-  quantity: number // Кількість продукту
+  image: string
+  name: string
+  price: number
+  weight: number
+  quantity: number
 }
 
-// Оновлений компонент з використанням інтерфейсу
 export default function CartProductCard({
   image,
   name,
