@@ -18,6 +18,7 @@ import Image from 'next/image'
 import Button from '@/components/client/ui/button'
 import { useLocale } from 'next-intl'
 import { transliterate } from '@/utils/transliterate'
+import { useCartStore } from '@/components/client/cart/cartStore'
 
 interface ProductProps {
   product: IProduct
@@ -28,8 +29,11 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
 
+  const addToCart = useCartStore((state) => state.addToCart)
+
   const handleAddToCart = () => {
     if (selectedVariable.count >= 1) {
+      if (product._id) addToCart(product._id, 1)
       alert('Товар додано до кошика!')
     } else {
       alert('Товар тимчасово відсутній на складі. Очікуємо!')
