@@ -33,7 +33,15 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     if (selectedVariable.count >= 1) {
-      if (product._id) addToCart(product._id, 1)
+      if (product._id && product.img)
+        addToCart(
+          product._id,
+          1,
+          product.img,
+          product.name,
+          selectedVariable.price,
+          selectedVariable.weight,
+        )
       alert('Товар додано до кошика!')
     } else {
       alert('Товар тимчасово відсутній на складі. Очікуємо!')
