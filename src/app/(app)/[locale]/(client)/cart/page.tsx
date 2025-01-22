@@ -5,8 +5,12 @@ export default async function Cart(props: { params: Params }) {
 
   return (
     <div>
-      {locale}
-      <CartList />
+      <div className="flex">
+        <div className="flex-1">{locale}</div>
+        <div className="flex-1 p-10">
+          <CartList />
+        </div>
+      </div>
     </div>
   )
 }

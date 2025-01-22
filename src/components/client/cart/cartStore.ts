@@ -1,13 +1,12 @@
 import { create } from 'zustand'
 
-// Оновлено тип CartItem з додатковими полями
 type CartItem = {
   id: string
   quantity: number
-  image: string // Додано поле для зображення
-  name: string // Додано поле для назви
-  price: number // Додано поле для ціни
-  weight: number // Додано поле для ваги
+  image: string
+  name: string
+  price: number
+  weight: number
 }
 
 type CartState = {
@@ -20,7 +19,8 @@ type CartState = {
     price: number,
     weight: number,
   ) => void
-  clearCart: () => void // Додано метод для очищення корзини
+  clearCart: () => void
+  removeFromCart: (id: string) => void
 }
 
 export const useCartStore = create<CartState>(function (set) {
@@ -51,6 +51,16 @@ export const useCartStore = create<CartState>(function (set) {
             { id, quantity, image, name, price, weight },
           ]
         }
+
+        localStorage.setItem('cart', JSON.stringify(updatedCart))
+        return { cart: updatedCart }
+      })
+    },
+    removeFromCart: function (id: string) {
+      set(function (state) {
+        const updatedCart = state.cart.filter(function (item) {
+          return item.id !== id
+        })
 
         localStorage.setItem('cart', JSON.stringify(updatedCart))
         return { cart: updatedCart }
