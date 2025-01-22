@@ -115,9 +115,12 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
           </div>
           <div className="mt-3 flex justify-between">
             <NumberCall className="hidden lg:flex" />
-            <Button type="button" variant="button">
-              Замовити
-            </Button>
+
+            <Link href={`/${local}/cart`}>
+              <Button type="button" variant="button">
+                Замовити
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
