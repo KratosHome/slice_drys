@@ -31,7 +31,9 @@ export default function CartList() {
       >
         CLEAR cart
       </div>
-      <div className="cursor-pointer bg-blue-400">Оформити замовлення</div>
+      <div className="mx-auto mt-3 cursor-pointer bg-black p-2 text-center text-white">
+        Оформити замовлення
+      </div>
     </div>
   )
 }
