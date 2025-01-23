@@ -8,6 +8,8 @@ interface FormData {
   surname: string
   phoneNumber: string
   email: string
+  deliveryInfo: string
+  paymentInfo: string
 }
 
 const CartForm: React.FC = () => {
@@ -23,16 +25,27 @@ const CartForm: React.FC = () => {
 
   useEffect(() => {
     if (formData) {
-      // Якщо є дані, встановлюємо їх у поля форми
       setValue('name', formData.name)
       setValue('surname', formData.surname)
       setValue('phoneNumber', formData.phoneNumber)
       setValue('email', formData.email)
+      setValue('deliveryInfo', formData.deliveryInfo)
+      setValue('paymentInfo', formData.paymentInfo)
     }
   }, [formData, setValue])
 
   const onSubmit = (data: FormData) => {
-    setFormData(data)
+    const partialData = {
+      name: data.name,
+      surname: data.surname,
+      phoneNumber: data.phoneNumber,
+      email: data.phoneNumber,
+      formStep:
+        formData && formData.formStep !== null ? formData.formStep + 1 : 1,
+      deliveryInfo: data.deliveryInfo,
+      paymentInfo: data.paymentInfo,
+    }
+    setFormData(partialData)
   }
 
   return (
@@ -75,8 +88,34 @@ const CartForm: React.FC = () => {
         />
         {errors.email && <span>This field is required</span>}
       </div>
+      {formData && formData.formStep >= 1 ? (
+        <div>
+          <input
+            className="mt-5 border border-gray-300"
+            placeholder="Delivery Details Object"
+            id="deliveryInfo"
+            {...register('deliveryInfo', { required: true })}
+          />{' '}
+          {errors.deliveryInfo && <span>This field is required</span>}
+        </div>
+      ) : (
+        ''
+      )}
+      {formData && formData.formStep >= 2 ? (
+        <div>
+          <input
+            className="mt-5 border border-gray-300"
+            placeholder="Delivery Details Object"
+            id="paymentInfo"
+            {...register('paymentInfo', { required: true })}
+          />{' '}
+          {errors.paymentInfo && <span>This field is required</span>}
+        </div>
+      ) : (
+        ''
+      )}
       <button type="submit" className="bg-black px-5 py-2 text-white">
-        Submit
+        Продовжити
       </button>
     </form>
   )

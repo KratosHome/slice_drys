@@ -5,6 +5,9 @@ interface FormData {
   surname: string
   phoneNumber: string
   email: string
+  formStep: number
+  deliveryInfo: string
+  paymentInfo: string
 }
 
 interface FormState {
