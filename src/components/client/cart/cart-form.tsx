@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import useFormStore from './formStore'
 
@@ -44,22 +44,25 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
     }
   }, [formData, setValue])
 
-  const onSubmit = (data: FormData) => {
-    const partialData = {
-      name: data.name,
-      surname: data.surname,
-      phoneNumber: data.phoneNumber,
-      email: data.email,
-      formStep:
-        formData && formData.formStep !== null ? formData.formStep + 1 : 1,
-      deliveryInfo: data.deliveryInfo,
-      paymentInfo: data.paymentInfo,
-      comment: data.comment,
-      acceptTerms: data.acceptTerms,
-      noCall: data.noCall,
-    }
-    setFormData(partialData)
-  }
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      const partialData = {
+        name: data.name,
+        surname: data.surname,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        formStep:
+          formData && formData.formStep !== null ? formData.formStep + 1 : 1,
+        deliveryInfo: data.deliveryInfo,
+        paymentInfo: data.paymentInfo,
+        comment: data.comment,
+        acceptTerms: data.acceptTerms,
+        noCall: data.noCall,
+      }
+      setFormData(partialData)
+    },
+    [formData, setFormData],
+  )
 
   useEffect(() => {
     if (onExternalSubmit) {
@@ -146,9 +149,7 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
               type="checkbox"
               {...register('acceptTerms', { required: true })}
               id="acceptTerms"
-              className={`form-check-input ${
-                errors.acceptTerms ? 'is-invalid' : ''
-              }`}
+              className="form-check-input"
             />
             <span>Я погоджуюсь з умовами використання</span>
           </label>
