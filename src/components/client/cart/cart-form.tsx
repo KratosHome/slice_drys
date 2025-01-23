@@ -10,6 +10,9 @@ interface FormData {
   email: string
   deliveryInfo: string
   paymentInfo: string
+  comment: string
+  acceptTerms: boolean
+  noCall: boolean
 }
 
 const CartForm: React.FC = () => {
@@ -21,7 +24,7 @@ const CartForm: React.FC = () => {
   } = useForm<FormData>()
 
   const setFormData = useFormStore((state) => state.setFormData)
-  const formData = useFormStore((state) => state.formData) // Отримуємо поточні дані форми з store
+  const formData = useFormStore((state) => state.formData)
 
   useEffect(() => {
     if (formData) {
@@ -31,6 +34,9 @@ const CartForm: React.FC = () => {
       setValue('email', formData.email)
       setValue('deliveryInfo', formData.deliveryInfo)
       setValue('paymentInfo', formData.paymentInfo)
+      setValue('comment', formData.comment)
+      setValue('acceptTerms', formData.acceptTerms)
+      setValue('noCall', formData.noCall)
     }
   }, [formData, setValue])
 
@@ -39,17 +45,20 @@ const CartForm: React.FC = () => {
       name: data.name,
       surname: data.surname,
       phoneNumber: data.phoneNumber,
-      email: data.phoneNumber,
+      email: data.email,
       formStep:
         formData && formData.formStep !== null ? formData.formStep + 1 : 1,
       deliveryInfo: data.deliveryInfo,
       paymentInfo: data.paymentInfo,
+      comment: data.comment,
+      acceptTerms: data.acceptTerms,
+      noCall: data.noCall,
     }
     setFormData(partialData)
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -78,7 +87,6 @@ const CartForm: React.FC = () => {
         {errors.phoneNumber && <span>This field is required</span>}
       </div>
       <div>У форматі +38(093) 123 45 67</div>
-
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -105,7 +113,7 @@ const CartForm: React.FC = () => {
         <div>
           <input
             className="mt-5 border border-gray-300"
-            placeholder="Delivery Details Object"
+            placeholder="Payment Details Object"
             id="paymentInfo"
             {...register('paymentInfo', { required: true })}
           />{' '}
@@ -114,9 +122,46 @@ const CartForm: React.FC = () => {
       ) : (
         ''
       )}
-      <button type="submit" className="bg-black px-5 py-2 text-white">
-        Продовжити
-      </button>
+      {formData && formData.formStep >= 3 ? (
+        <div>
+          <input
+            className="mt-5 border border-gray-300"
+            placeholder="comment"
+            id="comment"
+            {...register('comment', { required: true })}
+          />
+          {errors.comment && <span>This field is required</span>}
+        </div>
+      ) : (
+        ''
+      )}
+      {formData && formData.formStep >= 4 ? (
+        <div>
+          <label className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              {...register('acceptTerms', { required: true })}
+              id="acceptTerms"
+              className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`}
+            />
+            <span>Я погоджуюсь з умовами використання</span>
+          </label>
+          {errors.acceptTerms && <span>This field is required</span>}
+          <label className="flex items-center space-x-3">
+            <input type="checkbox" {...register('noCall')} id="acceptTerms" />
+            <span>Не телефонувати</span>
+          </label>
+        </div>
+      ) : (
+        ''
+      )}
+      {!formData || (formData && formData.formStep) <= 4 ? (
+        <button type="submit" className="bg-black px-5 py-2 text-white">
+          Продовжити
+        </button>
+      ) : (
+        ''
+      )}
     </form>
   )
 }

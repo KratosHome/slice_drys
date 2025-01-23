@@ -8,6 +8,9 @@ interface FormData {
   formStep: number
   deliveryInfo: string
   paymentInfo: string
+  comment: string
+  acceptTerms: boolean
+  noCall: boolean
 }
 
 interface FormState {
