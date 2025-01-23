@@ -37,7 +37,7 @@ interface ILocalizedStringArray {
 }
 
 interface INutritionalValue {
-  squirrels: string
+  proteins: string
   fats: string
   carbohydrates: string
   energyValue: string
@@ -69,7 +69,7 @@ interface IRecommendations {
   }
   currency: string[]
   weight: string[]
-  squirrels: string[]
+  proteins: string[]
   fats: string[]
   carbohydrates: string[]
   energyValue: string[]
