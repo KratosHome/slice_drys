@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import useFormStore from './formStore'
+import { useCartStore } from '@/components/client/cart/cartStore'
 
 interface FormData {
   name: string
@@ -27,8 +27,8 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
     formState: { errors },
   } = useForm<FormData>()
 
-  const setFormData = useFormStore((state) => state.setFormData)
-  const formData = useFormStore((state) => state.formData)
+  const setFormData = useCartStore((state) => state.setFormData)
+  const formData = useCartStore((state) => state.cart.formData)
 
   useEffect(() => {
     if (formData) {
@@ -160,7 +160,7 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
           </label>
         </div>
       )}
-      {!formData || (formData && formData.formStep <= 3) ? (
+      {!formData || (formData && formData.formStep <= 4) ? (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>

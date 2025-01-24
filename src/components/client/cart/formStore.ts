@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-interface FormData {
+interface CartFormData {
   name: string
   surname: string
   phoneNumber: string
@@ -14,11 +14,11 @@ interface FormData {
 }
 
 interface FormState {
-  formData: FormData | null
-  setFormData: (data: FormData) => void
+  formData: CartFormData | null
+  setFormData: (data: CartFormData) => void
 }
 
-const getInitialData = (): FormData | null => {
+const getInitialData = (): CartFormData | null => {
   const savedData = localStorage.getItem('formData')
   return savedData ? JSON.parse(savedData) : null
 }
