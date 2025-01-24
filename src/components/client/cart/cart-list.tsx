@@ -1,5 +1,5 @@
 'use client'
-import { useCartStore } from '@/components/client/cart/cartStore'
+import { useCartStore } from '@/store/cartStore'
 import CartProductCard from './cart-product-card'
 
 export default function CartList() {

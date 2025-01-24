@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { useCartStore } from '@/components/client/cart/cartStore'
+import { useCartStore } from '@/store/cartStore'
 
 interface FormData {
   name: string

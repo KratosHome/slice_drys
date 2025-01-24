@@ -18,7 +18,7 @@ import Image from 'next/image'
 import Button from '@/components/client/ui/button'
 import { useLocale } from 'next-intl'
 import { transliterate } from '@/utils/transliterate'
-import { useCartStore } from '@/components/client/cart/cartStore'
+import { useCartStore } from '@/store/cartStore'
 
 interface ProductProps {
   product: IProduct
