@@ -5,20 +5,6 @@ import CartProductCard from './cart-product-card'
 export default function CartList() {
   const cart = useCartStore((state) => state.cart)
   const clearCart = useCartStore((state) => state.clearCart)
-  const setFormData = useCartStore((state) => state.setFormData)
-
-  const formDataExample = {
-    name: 'Іван',
-    surname: 'Петренко',
-    phoneNumber: '+380501234567',
-    email: 'ivan.petrenko@example.com',
-    formStep: 1,
-    deliveryInfo: 'Адреса доставки',
-    paymentInfo: 'Інформація про оплату',
-    comment: 'Це коментар',
-    acceptTerms: true,
-    noCall: false,
-  }
 
   return (
     <div className="flex">

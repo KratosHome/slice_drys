@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'
 
@@ -15,11 +15,7 @@ interface FormData {
   noCall: boolean
 }
 
-interface CartFormProps {
-  onExternalSubmit?: (submitFn: () => void) => void
-}
-
-const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
+const CartForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -29,26 +25,6 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
 
   const setFormData = useCartStore((state) => state.setFormData)
   const formData = useCartStore((state) => state.cart.formData)
-
-  const onSubmit = useCallback(
-    (data: FormData) => {
-      const partialData = {
-        name: data.name,
-        surname: data.surname,
-        phoneNumber: data.phoneNumber,
-        email: data.email,
-        formStep:
-          formData && formData.formStep !== null ? formData.formStep + 1 : 1,
-        deliveryInfo: data.deliveryInfo,
-        paymentInfo: data.paymentInfo,
-        comment: data.comment,
-        acceptTerms: data.acceptTerms,
-        noCall: data.noCall,
-      }
-      setFormData(partialData)
-    },
-    [formData, setFormData],
-  )
 
   useEffect(() => {
     if (formData) {
@@ -62,11 +38,24 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
       setValue('acceptTerms', formData.acceptTerms)
       setValue('noCall', formData.noCall)
     }
+  }, [formData, setValue])
 
-    if (onExternalSubmit) {
-      onExternalSubmit(handleSubmit(onSubmit))
+  const onSubmit = (data: FormData) => {
+    const partialData = {
+      name: data.name,
+      surname: data.surname,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      formStep:
+        formData && formData.formStep !== null ? formData.formStep + 1 : 1,
+      deliveryInfo: data.deliveryInfo,
+      paymentInfo: data.paymentInfo,
+      comment: data.comment,
+      acceptTerms: data.acceptTerms,
+      noCall: data.noCall,
     }
-  }, [formData, setValue, handleSubmit, onSubmit, onExternalSubmit])
+    setFormData(partialData)
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -107,29 +96,33 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
         />
         {errors.email && <span>This field is required</span>}
       </div>
-      {formData && formData.formStep >= 1 && (
+      {formData && formData.formStep >= 1 ? (
         <div>
           <input
             className="mt-5 border border-gray-300"
             placeholder="Delivery Details Object"
             id="deliveryInfo"
             {...register('deliveryInfo', { required: true })}
-          />
+          />{' '}
           {errors.deliveryInfo && <span>This field is required</span>}
         </div>
+      ) : (
+        ''
       )}
-      {formData && formData.formStep >= 2 && (
+      {formData && formData.formStep >= 2 ? (
         <div>
           <input
             className="mt-5 border border-gray-300"
             placeholder="Payment Details Object"
             id="paymentInfo"
             {...register('paymentInfo', { required: true })}
-          />
+          />{' '}
           {errors.paymentInfo && <span>This field is required</span>}
         </div>
+      ) : (
+        ''
       )}
-      {formData && formData.formStep >= 3 && (
+      {formData && formData.formStep >= 3 ? (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -139,30 +132,36 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
           />
           {errors.comment && <span>This field is required</span>}
         </div>
+      ) : (
+        ''
       )}
-      {formData && formData.formStep >= 4 && (
+      {formData && formData.formStep >= 4 ? (
         <div>
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
               {...register('acceptTerms', { required: true })}
               id="acceptTerms"
-              className="form-check-input"
+              className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`}
             />
             <span>Я погоджуюсь з умовами використання</span>
           </label>
           {errors.acceptTerms && <span>This field is required</span>}
           <label className="flex items-center space-x-3">
-            <input type="checkbox" {...register('noCall')} id="noCall" />
+            <input type="checkbox" {...register('noCall')} id="acceptTerms" />
             <span>Не телефонувати</span>
           </label>
         </div>
+      ) : (
+        ''
       )}
-      {!formData || (formData && formData.formStep <= 4) ? (
+      {!formData || (formData && formData.formStep) <= 4 ? (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>
-      ) : null}
+      ) : (
+        ''
+      )}
     </form>
   )
 }
