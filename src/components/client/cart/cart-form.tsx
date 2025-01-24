@@ -52,7 +52,11 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       phoneNumber: data.phoneNumber,
       email: data.email,
       formStep:
-        formData && formData.formStep !== null ? formData.formStep + 1 : 1,
+        formData && formData.formStep !== null
+          ? formData.formStep < 4
+            ? formData.formStep + 1
+            : formData.formStep
+          : 1,
       deliveryInfo: data.deliveryInfo,
       paymentInfo: data.paymentInfo,
       comment: data.comment,
