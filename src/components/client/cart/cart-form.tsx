@@ -156,7 +156,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           </label>
         </div>
       )}
-      {(!formData || (formData && formData.formStep) <= 4) && (
+      {(!formData || (formData && formData.formStep) <= 3) && (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>
