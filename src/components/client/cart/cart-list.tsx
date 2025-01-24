@@ -42,7 +42,7 @@ export default function CartList() {
           </div>
         </div>
         <div className="cursor-pointer bg-green" onClick={clearCart}>
-          CLEAR cart-list
+          CLEAR cart
         </div>
       </div>
     </div>
