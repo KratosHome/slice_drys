@@ -165,7 +165,6 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
   )
 })
 
-// Встановлюємо displayName для компонента
 CartForm.displayName = 'CartForm'
 
 export default CartForm
