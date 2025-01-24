@@ -44,12 +44,6 @@ export default function CartList() {
         <div className="cursor-pointer bg-green" onClick={clearCart}>
           CLEAR cart-list
         </div>
-        <div
-          className="cursor-pointer bg-green"
-          onClick={() => setFormData(formDataExample)}
-        >
-          add form
-        </div>
       </div>
     </div>
   )
