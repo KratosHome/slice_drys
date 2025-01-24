@@ -1,5 +1,6 @@
 'use client'
-import React, { useEffect } from 'react'
+
+import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'
 
@@ -15,7 +16,11 @@ interface FormData {
   noCall: boolean
 }
 
-const CartForm: React.FC = () => {
+interface CartFormRef {
+  submit: () => void
+}
+
+const CartForm = forwardRef<CartFormRef>((_, ref) => {
   const {
     register,
     handleSubmit,
@@ -57,8 +62,13 @@ const CartForm: React.FC = () => {
     setFormData(partialData)
   }
 
+  useImperativeHandle(ref, () => ({
+    submit: handleSubmit(onSubmit),
+  }))
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* Ваші поля форми */}
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -96,33 +106,29 @@ const CartForm: React.FC = () => {
         />
         {errors.email && <span>This field is required</span>}
       </div>
-      {formData && formData.formStep >= 1 ? (
+      {formData && formData.formStep >= 1 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
             placeholder="Delivery Details Object"
             id="deliveryInfo"
             {...register('deliveryInfo', { required: true })}
-          />{' '}
+          />
           {errors.deliveryInfo && <span>This field is required</span>}
         </div>
-      ) : (
-        ''
       )}
-      {formData && formData.formStep >= 2 ? (
+      {formData && formData.formStep >= 2 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
             placeholder="Payment Details Object"
             id="paymentInfo"
             {...register('paymentInfo', { required: true })}
-          />{' '}
+          />
           {errors.paymentInfo && <span>This field is required</span>}
         </div>
-      ) : (
-        ''
       )}
-      {formData && formData.formStep >= 3 ? (
+      {formData && formData.formStep >= 3 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -132,10 +138,8 @@ const CartForm: React.FC = () => {
           />
           {errors.comment && <span>This field is required</span>}
         </div>
-      ) : (
-        ''
       )}
-      {formData && formData.formStep >= 4 ? (
+      {formData && formData.formStep >= 4 && (
         <div>
           <label className="flex items-center space-x-3">
             <input
@@ -152,18 +156,17 @@ const CartForm: React.FC = () => {
             <span>Не телефонувати</span>
           </label>
         </div>
-      ) : (
-        ''
       )}
-      {!formData || (formData && formData.formStep) <= 4 ? (
+      {(!formData || (formData && formData.formStep) <= 4) && (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>
-      ) : (
-        ''
       )}
     </form>
   )
-}
+})
+
+// Встановлюємо displayName для компонента
+CartForm.displayName = 'CartForm'
 
 export default CartForm
