@@ -8,10 +8,23 @@ type CartItem = {
   price: number
   weight: number
 }
+type FormData = {
+  name: string
+  surname: string
+  phoneNumber: string
+  email: string
+  formStep: number
+  deliveryInfo: string
+  paymentInfo: string
+  comment: string
+  acceptTerms: boolean
+  noCall: boolean
+}
 
 type CartState = {
   cart: CartItem[]
-  addToCart: (
+  form?: FormData
+  addToItemCart: (
     id: string,
     quantity: number,
     image: string,
@@ -20,13 +33,13 @@ type CartState = {
     weight: number,
   ) => void
   clearCart: () => void
-  removeFromCart: (id: string) => void
+  removeItemFromCart: (id: string) => void
 }
 
 export const useCartStore = create<CartState>(function (set) {
   return {
     cart: JSON.parse(localStorage.getItem('cart') || '[]'),
-    addToCart: function (
+    addToItemCart: function (
       id: string,
       quantity: number = 1,
       image: string = '',
@@ -56,7 +69,7 @@ export const useCartStore = create<CartState>(function (set) {
         return { cart: updatedCart }
       })
     },
-    removeFromCart: function (id: string) {
+    removeItemFromCart: function (id: string) {
       set(function (state) {
         const updatedCart = state.cart.filter(function (item) {
           return item.id !== id

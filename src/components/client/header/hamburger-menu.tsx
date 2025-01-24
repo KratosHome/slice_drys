@@ -12,7 +12,7 @@ import {
 import { useState } from 'react'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '../locale-change/locale-change'
-import Cart from '@/components/client/cart/cart'
+import Cart from '@/components/client/cart/cart-button'
 import Search from '@/components/client/search/search'
 
 interface HamburgerMenu {

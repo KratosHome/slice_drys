@@ -29,7 +29,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
 
-  const addToCart = useCartStore((state) => state.addToCart)
+  const addToCart = useCartStore((state) => state.addToItemCart)
 
   const handleAddToCart = () => {
     if (selectedVariable.count >= 1) {

@@ -10,7 +10,7 @@ import HamburgerMenu from './hamburger-menu'
 import { useLocale } from 'next-intl'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/locale-change/locale-change'
-import Cart from '@/components/client/cart/cart'
+import Cart from '@/components/client/cart/cart-button'
 import Search from '@/components/client/search/search'
 import NumberCall from '@/components/client/number-call/number-call'
 

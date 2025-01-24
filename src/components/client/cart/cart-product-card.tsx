@@ -37,7 +37,7 @@ export default function CartProductCard({
               width={32}
               height={32}
               className="cursor-pointer"
-              onClick={() => useCartStore.getState().removeFromCart(id)}
+              onClick={() => useCartStore.getState().removeItemFromCart(id)}
             />
           </div>
           <p className="text-sm text-gray-500"> {weight}г</p>
@@ -51,7 +51,7 @@ export default function CartProductCard({
               onClick={() =>
                 useCartStore
                   .getState()
-                  .addToCart(id, -1, image, name, price, weight)
+                  .addToItemCart(id, -1, image, name, price, weight)
               }
             >
               -
@@ -62,7 +62,7 @@ export default function CartProductCard({
               onClick={() =>
                 useCartStore
                   .getState()
-                  .addToCart(id, 1, image, name, price, weight)
+                  .addToItemCart(id, 1, image, name, price, weight)
               }
             >
               +

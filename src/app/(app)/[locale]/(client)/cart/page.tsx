@@ -1,15 +1,12 @@
-import CartList from '@/components/client/cart/cart-list'
+import Cart from '@/components/client/cart/cart'
 
-export default async function Cart(props: { params: Params }) {
+export default async function CartPage(props: { params: Params }) {
   const { locale } = await props.params
 
   return (
     <div>
       <div className="flex">
-        <div className="flex-1">{locale}</div>
-        <div className="flexflex-1 p-10">
-          <CartList />
-        </div>
+        <Cart />
       </div>
     </div>
   )
