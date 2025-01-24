@@ -151,7 +151,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           </label>
           {errors.acceptTerms && <span>This field is required</span>}
           <label className="flex items-center space-x-3">
-            <input type="checkbox" {...register('noCall')} id="acceptTerms" />
+            <input type="checkbox" {...register('noCall')} id="doNotCall" />
             <span>Не телефонувати</span>
           </label>
         </div>
