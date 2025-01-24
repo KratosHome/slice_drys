@@ -68,7 +68,6 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      {/* Ваші поля форми */}
       <div>
         <input
           className="mt-5 border border-gray-300"
