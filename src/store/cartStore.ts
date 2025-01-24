@@ -81,9 +81,11 @@ export const useCartStore = create<CartState>((set) => ({
     })
   },
   clearCart: () => {
-    const clearedCart = { ...{}, itemList: [] }
-    set({ cart: clearedCart })
-    localStorage.setItem('cart', JSON.stringify(clearedCart))
+    set((state) => {
+      const updatedCart = { ...state.cart, itemList: [] }
+      localStorage.setItem('cart', JSON.stringify(updatedCart))
+      return { cart: updatedCart }
+    })
   },
   setCartFormData: (data) => {
     set((state) => {
