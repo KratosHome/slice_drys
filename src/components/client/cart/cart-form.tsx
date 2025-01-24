@@ -30,20 +30,6 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
   const setFormData = useCartStore((state) => state.setFormData)
   const formData = useCartStore((state) => state.cart.formData)
 
-  useEffect(() => {
-    if (formData) {
-      setValue('name', formData.name)
-      setValue('surname', formData.surname)
-      setValue('phoneNumber', formData.phoneNumber)
-      setValue('email', formData.email)
-      setValue('deliveryInfo', formData.deliveryInfo)
-      setValue('paymentInfo', formData.paymentInfo)
-      setValue('comment', formData.comment)
-      setValue('acceptTerms', formData.acceptTerms)
-      setValue('noCall', formData.noCall)
-    }
-  }, [formData, setValue])
-
   const onSubmit = useCallback(
     (data: FormData) => {
       const partialData = {
@@ -65,10 +51,22 @@ const CartForm: React.FC<CartFormProps> = ({ onExternalSubmit }) => {
   )
 
   useEffect(() => {
+    if (formData) {
+      setValue('name', formData.name)
+      setValue('surname', formData.surname)
+      setValue('phoneNumber', formData.phoneNumber)
+      setValue('email', formData.email)
+      setValue('deliveryInfo', formData.deliveryInfo)
+      setValue('paymentInfo', formData.paymentInfo)
+      setValue('comment', formData.comment)
+      setValue('acceptTerms', formData.acceptTerms)
+      setValue('noCall', formData.noCall)
+    }
+
     if (onExternalSubmit) {
       onExternalSubmit(handleSubmit(onSubmit))
     }
-  }, [handleSubmit, onSubmit, onExternalSubmit])
+  }, [formData, setValue, handleSubmit, onSubmit, onExternalSubmit])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
