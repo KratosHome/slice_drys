@@ -28,7 +28,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
     formState: { errors },
   } = useForm<FormData>()
 
-  const setFormData = useCartStore((state) => state.setFormData)
+  const setFormData = useCartStore((state) => state.setCartFormData)
   const formData = useCartStore((state) => state.cart.formData)
 
   useEffect(() => {

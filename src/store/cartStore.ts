@@ -26,8 +26,8 @@ type CartState = {
     itemList?: CartItem[] | undefined
     formData?: FormData | undefined
   }
-  setFormData: (data: FormData) => void
-  addToItemCart: (
+  setCartFormData: (data: FormData) => void
+  addItemToCart: (
     id: string,
     quantity: number,
     image: string,
@@ -41,7 +41,7 @@ type CartState = {
 
 export const useCartStore = create<CartState>((set) => ({
   cart: JSON.parse(localStorage.getItem('cart') || '{}'),
-  addToItemCart: (
+  addItemToCart: (
     id: string,
     quantity: number = 1,
     image: string = '',
@@ -85,7 +85,7 @@ export const useCartStore = create<CartState>((set) => ({
     set({ cart: clearedCart })
     localStorage.setItem('cart', JSON.stringify(clearedCart))
   },
-  setFormData: (data) => {
+  setCartFormData: (data) => {
     set((state) => {
       const updatedCart = { ...state.cart, formData: data }
       localStorage.setItem('cart', JSON.stringify(updatedCart))

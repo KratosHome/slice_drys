@@ -51,7 +51,7 @@ export default function CartProductCard({
               onClick={() =>
                 useCartStore
                   .getState()
-                  .addToItemCart(id, -1, image, name, price, weight)
+                  .addItemToCart(id, -1, image, name, price, weight)
               }
             >
               -
@@ -62,7 +62,7 @@ export default function CartProductCard({
               onClick={() =>
                 useCartStore
                   .getState()
-                  .addToItemCart(id, 1, image, name, price, weight)
+                  .addItemToCart(id, 1, image, name, price, weight)
               }
             >
               +
