@@ -1,428 +1,746 @@
 const mixSubImages = [
   {
     path: '/sliders/mix/left-bottom-orange.png',
-    x: -290,
-    y: 300,
     width: 43,
     height: 43,
+    position: {
+      desktop: {
+        x: -225,
+        y: 345,
+      },
+    },
   },
   {
     path: '/sliders/mix/left-bottom-kivi.png',
-    x: -560,
-    y: 230,
     width: 69,
     height: 66,
+    position: {
+      desktop: {
+        x: -495,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/mix/left-bottom-grapefruit.png',
-    x: -665,
-    y: 70,
     width: 40,
     height: 78,
+    position: {
+      desktop: {
+        x: -600,
+        y: 115,
+      },
+    },
   },
   {
     path: '/sliders/mix/left-top-potatoes.png',
-    x: -120,
-    y: -260,
     width: 40,
     height: 34,
+    position: {
+      desktop: {
+        x: -55,
+        y: -215,
+      },
+    },
   },
   {
     path: '/sliders/mix/left-top-pineapple.png',
-    x: -650,
-    y: -610,
     width: 61,
     height: 54,
+    position: {
+      desktop: {
+        x: -585,
+        y: -565,
+      },
+    },
   },
   {
     path: '/sliders/mix/left-top-papper.png',
-    x: -610,
-    y: -340,
     width: 86,
     height: 82,
+    position: {
+      desktop: {
+        x: -545,
+        y: -295,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-top-berry.png',
-    x: 600,
-    y: -450,
     width: 71,
     height: 70,
+    position: {
+      desktop: {
+        x: 665,
+        y: -405,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-bottom-pineapple.png',
-    x: 490,
-    y: 230,
     width: 40,
     height: 40,
+    position: {
+      desktop: {
+        x: 555,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-bottom-meet.png',
-    x: 430,
-    y: 290,
     width: 115,
     height: 73,
+    position: {
+      desktop: {
+        x: 495,
+        y: 335,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-bottom-cucumber.png',
-    x: 633,
-    y: -25,
     width: 111,
     height: 99,
+    position: {
+      desktop: {
+        x: 680,
+        y: 20,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-bottom-orange-big.png',
-    x: 395,
-    y: 205,
     width: 43,
     height: 43,
+    position: {
+      desktop: {
+        x: 460,
+        y: 250,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-bottom-orange.png',
-    x: 662,
-    y: 100,
     width: 43,
     height: 43,
+    position: {
+      desktop: {
+        x: 710,
+        y: 145,
+      },
+    },
   },
   {
     path: '/sliders/mix/right-top-pumpkin.png',
-    x: 650,
-    y: -665,
     width: 65,
     height: 77,
+    position: {
+      desktop: {
+        x: 700,
+        y: -620,
+      },
+    },
   },
 ]
 
 const fruitSubImages = [
   {
     path: '/sliders/fruit/fruit-left-bottom-1.png',
-    x: -620,
-    y: -100,
     width: 88,
     height: 90,
+    position: {
+      desktop: {
+        x: -555,
+        y: -55,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-left-bottom-2.png',
-    x: -540,
-    y: 230,
     width: 66,
     height: 61,
+    position: {
+      desktop: {
+        x: -475,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-left-bottom-3.png',
-    x: -650,
-    y: 300,
     width: 55,
     height: 55,
+    position: {
+      desktop: {
+        x: -585,
+        y: 345,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-left-top-1.png',
-    x: -660,
-    y: -610,
     width: 53,
     height: 87,
+    position: {
+      desktop: {
+        x: -605,
+        y: -565,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-left-top-2.png',
-    x: -610,
-    y: -340,
     width: 36,
     height: 40,
+    position: {
+      desktop: {
+        x: -545,
+        y: -295,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-bottom-1.png',
-    x: 610,
-    y: 300,
     width: 86,
     height: 68,
+    position: {
+      desktop: {
+        x: 675,
+        y: 345,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-bottom-2.png',
-    x: 664,
-    y: -230,
     width: 39,
     height: 82,
+    position: {
+      desktop: {
+        x: 710,
+        y: -185,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-bottom-3.png',
-    x: 640,
-    y: -155,
     width: 56,
     height: 56,
+    position: {
+      desktop: {
+        x: 700,
+        y: -110,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-bottom-4.png',
-    x: 475,
-    y: 230,
     width: 60,
     height: 55,
+    position: {
+      desktop: {
+        x: 540,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-bottom-5.png',
-    x: 610,
-    y: -50,
     width: 59,
     height: 55,
+    position: {
+      desktop: {
+        x: 675,
+        y: -5,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-top-3.png',
-    x: 540,
-    y: -530,
     width: 75,
     height: 66,
+    position: {
+      desktop: {
+        x: 605,
+        y: -485,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-top-2.png',
-    x: 659,
-    y: -665,
     width: 49,
     height: 48,
+    position: {
+      desktop: {
+        x: 705,
+        y: -620,
+      },
+    },
   },
   {
     path: '/sliders/fruit/fruit-right-top-1.png',
-    x: 600,
-    y: -450,
     width: 49,
     height: 92,
+    position: {
+      desktop: {
+        x: 665,
+        y: -405,
+      },
+    },
   },
 ]
 
 const meatSubImages = [
   {
     path: '/sliders/meat/meat-left-bottom-1.png',
-    x: -490,
-    y: 160,
     width: 52,
     height: 52,
+    position: {
+      desktop: {
+        x: -425,
+        y: 205,
+      },
+      tablet: {
+        x: -270,
+        y: 200,
+      },
+      mobile: {
+        x: -115,
+        y: 125,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-left-bottom-2.png',
-    x: -560,
-    y: 230,
     width: 67,
     height: 64,
+    position: {
+      desktop: {
+        x: -495,
+        y: 275,
+      },
+      tablet: {
+        x: -320,
+        y: 110,
+      },
+      mobile: {
+        x: -130,
+        y: 75,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-left-bottom-3.png',
-    x: -630,
-    y: 70,
     width: 113,
     height: 102,
+    position: {
+      desktop: {
+        x: -565,
+        y: 115,
+      },
+      tablet: {
+        x: -255,
+        y: 100,
+      },
+      mobile: {
+        x: -70,
+        y: 160,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-left-top-1.png',
-    x: -610,
-    y: -340,
     width: 32,
     height: 32,
+    position: {
+      desktop: {
+        x: -545,
+        y: -295,
+      },
+      tablet: {
+        x: -235,
+        y: -210,
+      },
+      mobile: {
+        x: -95,
+        y: -110,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-left-top-2.png',
-    x: -650,
-    y: -610,
     width: 66,
     height: 62,
+    position: {
+      desktop: {
+        x: -585,
+        y: -565,
+      },
+      tablet: {
+        x: -290,
+        y: -150,
+      },
+      mobile: {
+        x: -120,
+        y: -70,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-bottom-1.png',
-    x: 490,
-    y: 230,
     width: 78,
     height: 74,
+    position: {
+      desktop: {
+        x: 555,
+        y: 275,
+      },
+      tablet: {
+        x: 375,
+        y: 200,
+      },
+      mobile: {
+        x: 190,
+        y: 130,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-bottom-2.png',
-    x: 610,
-    y: -100,
     width: 22,
     height: 25,
+    position: {
+      desktop: {
+        x: 675,
+        y: -55,
+      },
+      tablet: {
+        x: 310,
+        y: 140,
+      },
+      mobile: {
+        x: 210,
+        y: 90,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-bottom-3.png',
-    x: 670,
-    y: -230,
     width: 24,
     height: 95,
+    position: {
+      desktop: {
+        x: 720,
+        y: -185,
+      },
+      tablet: {
+        x: 428,
+        y: 0,
+      },
+      mobile: {
+        x: 240,
+        y: 0,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-bottom-4.png',
-    x: 640,
-    y: -155,
     width: 71,
     height: 63,
+    position: {
+      desktop: {
+        x: 690,
+        y: -110,
+      },
+      tablet: {
+        x: 330,
+        y: 40,
+      },
+      mobile: {
+        x: 195,
+        y: 50,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-bottom-5.png',
-    x: 610,
-    y: 300,
     width: 85,
     height: 88,
+    position: {
+      desktop: {
+        x: 675,
+        y: 345,
+      },
+      tablet: {
+        x: 410,
+        y: 100,
+      },
+      mobile: {
+        x: 95,
+        y: -80,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-top-1.png',
-    x: 663,
-    y: -665,
     width: 42,
     height: 92,
+    position: {
+      desktop: {
+        x: 710,
+        y: -620,
+      },
+      tablet: {
+        x: 425,
+        y: -300,
+      },
+      mobile: {
+        x: 235,
+        y: -210,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-top-2.png',
-    x: 600,
-    y: -450,
     width: 32,
     height: 30,
+    position: {
+      desktop: {
+        x: 665,
+        y: -405,
+      },
+      tablet: {
+        x: 185,
+        y: -300,
+      },
+      mobile: {
+        x: 185,
+        y: -150,
+      },
+    },
   },
   {
     path: '/sliders/meat/meat-right-top-3.png',
-    x: 540,
-    y: -530,
     width: 64,
     height: 63,
+    position: {
+      desktop: {
+        x: 605,
+        y: -485,
+      },
+      tablet: {
+        x: 315,
+        y: -200,
+      },
+      mobile: {
+        x: 0,
+        y: -200,
+      },
+    },
   },
 ]
 
 const veggieSubImages = [
   {
     path: '/sliders/veggie/left-bottom-beet-small.png',
-    x: -290,
-    y: 300,
     width: 44,
     height: 35,
+    position: {
+      desktop: {
+        x: -225,
+        y: 345,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-bottom-pumpkin.png',
-    x: -560,
-    y: 230,
     width: 66,
     height: 51,
+    position: {
+      desktop: {
+        x: -495,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-bottom-beet-big.png',
-    x: -605,
-    y: 0,
     width: 61,
     height: 48,
+    position: {
+      desktop: {
+        x: -540,
+        y: 45,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-bottom-papper.png',
-    x: -645,
-    y: 170,
     width: 40,
     height: 38,
+    position: {
+      desktop: {
+        x: -580,
+        y: 215,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-top-cucumber.png',
-    x: -640,
-    y: -590,
     width: 85,
     height: 76,
+    position: {
+      desktop: {
+        x: -575,
+        y: -545,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-top-pumpkin.png',
-    x: -195,
-    y: -130,
     width: 52,
     height: 30,
+    position: {
+      desktop: {
+        x: -130,
+        y: -85,
+      },
+    },
   },
   {
     path: '/sliders/veggie/left-top-papper.png',
-    x: -610,
-    y: -340,
     width: 35,
     height: 33,
+    position: {
+      desktop: {
+        x: -545,
+        y: -295,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-top-pumpkin.png',
-    x: 630,
-    y: -420,
     width: 33,
     height: 25,
+    position: {
+      desktop: {
+        x: 695,
+        y: -375,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-top-papper.png',
-    x: 560,
-    y: -525,
     width: 45,
     height: 42,
+    position: {
+      desktop: {
+        x: 625,
+        y: -480,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-bottom-beet-big.png',
-    x: 490,
-    y: 230,
     width: 73,
     height: 57,
+    position: {
+      desktop: {
+        x: 555,
+        y: 275,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-bottom-beet-small.png',
-    x: 625,
-    y: 40,
     width: 35,
     height: 30,
+    position: {
+      desktop: {
+        x: 690,
+        y: 85,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-bottom-cucumber.png',
-    x: 655,
-    y: -200,
     width: 50,
     height: 81,
+    position: {
+      desktop: {
+        x: 705,
+        y: -155,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-bottom-papper.png',
-    x: 570,
-    y: -100,
     width: 41,
     height: 43,
+    position: {
+      desktop: {
+        x: 635,
+        y: -55,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-bottom-pumpkin.png',
-    x: 430,
-    y: 290,
     width: 30,
     height: 35,
+    position: {
+      desktop: {
+        x: 495,
+        y: 335,
+      },
+    },
   },
   {
     path: '/sliders/veggie/right-top-beet.png',
-    x: 663,
-    y: -665,
     width: 40,
     height: 54,
+    position: {
+      desktop: {
+        x: 710,
+        y: -620,
+      },
+    },
   },
 ]
 
 const actionSubImages = [
   {
     path: '/sliders/action/left-bottom.png',
-    x: -640,
-    y: 240,
     width: 38,
     height: 60,
+    position: {
+      desktop: {
+        x: -575,
+        y: 285,
+      },
+    },
   },
   {
     path: '/sliders/action/left-top.png',
-    x: -620,
-    y: -320,
     width: 92,
     height: 28,
+    position: {
+      desktop: {
+        x: -555,
+        y: -275,
+      },
+    },
   },
   {
     path: '/sliders/action/right-top-text.png',
-    x: 440,
-    y: -425,
     width: 250,
     height: 50,
-  },
-  {
-    path: '/sliders/action/right-top-text-underline.png',
-    x: 440,
-    y: -410,
-    width: 250,
-    height: 28,
-  },
-  {
-    path: '/sliders/action/right-top.png',
-    x: 635,
-    y: -350,
-    width: 38,
-    height: 60,
+    position: {
+      desktop: {
+        x: 505,
+        y: -380,
+      },
+    },
   },
 ]
 

@@ -9,11 +9,10 @@ import SliderItem from './slider-item'
 import Arcs from './arcs'
 import { sliders, sliderLinks } from '@/data/hero-links'
 import { useLocale } from 'next-intl'
+import { IDevice } from '@/types/IDevice'
 
-export const Hero = () => {
-  const { contextSafe } = useGSAP()
-
-  const [currentIndex, setCurrentIndex] = useState(0)
+export const Hero = ({ device }: IDevice) => {
+  const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
   const locale = useLocale()
@@ -82,21 +81,13 @@ export const Hero = () => {
         const mm = gsap.matchMedia()
 
         subImagesRefs.current.forEach((el, i) => {
-          // mm.add('(min-width: 390px)', () => {
-          //   gsap.to(el, {
-          //     opacity: 1,
-          //     duration: 1.5,
-          //     x: slidersLocale[hoveredIndex]?.subImages?.[i]?.x,
-          //     y: slidersLocale[hoveredIndex]?.subImages?.[i]?.y,
-          //     ease: 'power2.out',
-          //   })
-          // })
-          mm.add('(min-width: 1200px)', () => {
+          mm.add('(min-width: 1024px)', () => {
             gsap.to(el, {
               opacity: 1,
               duration: 1.5,
-              x: slidersLocale[hoveredIndex]?.subImages?.[i]?.x,
-              y: slidersLocale[hoveredIndex]?.subImages?.[i]?.y,
+              x: slidersLocale[hoveredIndex].subImages?.[i]?.position.desktop.x,
+              y: slidersLocale[hoveredIndex]?.subImages?.[i]?.position.desktop
+                .y,
               ease: 'power2.out',
             })
           })
@@ -177,19 +168,40 @@ export const Hero = () => {
           {slidersLocale[hoveredIndex].subImages && (
             <div className="hero__animation absolute -bottom-2 right-1/2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
               <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
-                {slidersLocale[hoveredIndex].subImages.map((item, index) => (
-                  <Image
-                    key={index}
-                    src={item.path}
-                    alt="animation"
-                    className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform opacity-0"
-                    width={item.width}
-                    height={item.height}
-                    ref={(el) => {
-                      if (el) subImagesRefs.current[index] = el
-                    }}
-                  />
-                ))}
+                {slidersLocale[hoveredIndex].subImages.map((item, index) => {
+                  const top = isMobile
+                    ? isTablet
+                      ? item.position?.tablet?.y
+                      : item.position?.mobile?.y
+                    : item.position?.desktop?.y
+                  const left = isMobile
+                    ? isTablet
+                      ? item.position?.tablet?.x
+                      : item.position?.mobile?.x
+                    : item.position?.desktop?.x
+
+                  return (
+                    <Image
+                      key={index}
+                      src={item.path}
+                      alt="animation"
+                      className={cn(
+                        `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                        isMobile ? `opacity-1` : '',
+                        isDesktop ? `w-[${item.width}px]` : '',
+                      )}
+                      style={{
+                        top: isDesktop ? `0` : `${top}px`,
+                        left: isDesktop ? `0` : `${left}px`,
+                      }}
+                      width={isDesktop ? item.width : item.width / 2}
+                      height={isDesktop ? item.height : item.height / 2}
+                      ref={(el) => {
+                        if (el) subImagesRefs.current[index] = el
+                      }}
+                    />
+                  )
+                })}
               </div>
             </div>
           )}
