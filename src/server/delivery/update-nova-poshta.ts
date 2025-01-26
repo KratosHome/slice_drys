@@ -6,15 +6,6 @@ export async function createPost() {
   try {
     await connectToDb()
 
-    const NovaPoshtaData = {
-      city: 'Київ',
-      branches: [
-        'Відділення №1: вул. Хрещатик, 22',
-        'Відділення №2: проспект Перемоги, 12',
-        'Відділення №3: вул. Володимирська, 40',
-      ],
-    }
-
     async function fetchCities() {
       const response = await fetch('https://api.novaposhta.ua/v2.0/json/', {
         method: 'POST',
@@ -59,9 +50,8 @@ export async function createPost() {
     const totalPage = Math.ceil(branchesTotalCount.info.totalCount / 500)
 
     let combinedBrunchData: {
-      Description: string
-      CityRef: string
-      CityName?: string
+      Branch: string
+      City: string
     }[] = []
 
     for (let i = 1; i <= totalPage; i++) {
@@ -99,9 +89,9 @@ export async function createPost() {
 
     groupedData.forEach(async (NovaPoshtaData) => {
       await NovaPoshta.updateOne(
-        { city: NovaPoshtaData.city }, // знайти документ за назвою міста
-        { $set: NovaPoshtaData }, // оновити поле branches
-        { upsert: true }, // створити новий документ, якщо не знайдено відповідного
+        { city: NovaPoshtaData.city },
+        { $set: NovaPoshtaData },
+        { upsert: true },
       )
     })
 
