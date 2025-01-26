@@ -92,10 +92,27 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       </div>
       <div>
         <input
+          minLength={17}
+          maxLength={17}
           className="mt-5 border border-gray-300"
           placeholder="Телефон"
           id="phoneNumber"
+          type="text"
           {...register('phoneNumber', { required: true })}
+          onClick={(e) => {
+            const target = e.target as HTMLInputElement
+            target.value = target.value == '' ? '+38 (0' : target.value
+          }}
+          onInput={(e) => {
+            const target = e.target as HTMLInputElement
+            target.value =
+              '+38 (0' +
+              target.value.replace(/\D/g, '').substring(3, 5) +
+              (target.value.length > 7 ? ') ' : '') +
+              (target.value.length > 9
+                ? target.value.replace(/\D/g, '').substring(5)
+                : '')
+          }}
         />
         {errors.phoneNumber && <span>This field is required</span>}
       </div>
