@@ -49,9 +49,14 @@ export default function CartProductCard({
             <div
               className="cursor-pointer"
               onClick={() =>
-                useCartStore
-                  .getState()
-                  .addItemToCart(id, -1, image, name, price, weight)
+                useCartStore.getState().addItemToCart({
+                  id: id,
+                  quantity: -1,
+                  image: image,
+                  name: name,
+                  price: price,
+                  weight: weight,
+                })
               }
             >
               -
@@ -60,9 +65,14 @@ export default function CartProductCard({
             <div
               className="cursor-pointer"
               onClick={() =>
-                useCartStore
-                  .getState()
-                  .addItemToCart(id, 1, image, name, price, weight)
+                useCartStore.getState().addItemToCart({
+                  id: id,
+                  quantity: 1,
+                  image: image,
+                  name: name,
+                  price: price,
+                  weight: weight,
+                })
               }
             >
               +

@@ -27,28 +27,30 @@ type CartState = {
     formData?: FormData | undefined
   }
   setCartFormData: (data: FormData) => void
-  addItemToCart: (
-    id: string,
-    quantity: number,
-    image: string,
-    name: string,
-    price: number,
-    weight: number,
-  ) => void
+  addItemToCart: (props: {
+    id: string
+    quantity?: number
+    image?: string
+    name?: string
+    price?: number
+    weight?: number
+  }) => void
   clearCart: () => void
   removeItemFromCart: (id: string) => void
 }
 
 export const useCartStore = create<CartState>((set) => ({
   cart: JSON.parse(localStorage.getItem('cart') || '{}'),
-  addItemToCart: (
-    id: string,
-    quantity: number = 1,
-    image: string = '',
-    name: string = '',
-    price: number = 0,
-    weight: number = 0,
-  ) => {
+  addItemToCart: (props) => {
+    console.log(11111, props)
+    const {
+      id,
+      quantity = 1,
+      image = '',
+      name = '',
+      price = 0,
+      weight = 0,
+    } = props
     set((state) => {
       const existingItem = state.cart.itemList?.find((item) => item.id === id)
       let updatedItemList
