@@ -131,9 +131,15 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           className="mt-5 border border-gray-300"
           placeholder="E-mail"
           id="email"
-          {...register('email', { required: true })}
+          {...register('email', {
+            required: 'Це поле є обов’язковим',
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: 'Некоректний формат електронної пошти',
+            },
+          })}
         />
-        {errors.email && <span>This field is required</span>}
+        {errors.email && <span>{errors.email.message}</span>}
       </div>
       {formData && formData.formStep >= 1 && (
         <div>
