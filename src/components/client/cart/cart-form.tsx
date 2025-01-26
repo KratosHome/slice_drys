@@ -92,13 +92,22 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       </div>
       <div>
         <input
-          minLength={17}
-          maxLength={17}
           className="mt-5 border border-gray-300"
           placeholder="Телефон"
           id="phoneNumber"
           type="text"
-          {...register('phoneNumber', { required: true })}
+          maxLength={17}
+          {...register('phoneNumber', {
+            minLength: {
+              value: 17,
+              message: 'не вірна довжина номера',
+            },
+            maxLength: {
+              value: 17,
+              message: 'не вірна довжина номера',
+            },
+            required: 'Це поле є обов’язковим',
+          })}
           onClick={(e) => {
             const target = e.target as HTMLInputElement
             target.value = target.value == '' ? '+38 (0' : target.value
@@ -114,7 +123,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
                 : '')
           }}
         />
-        {errors.phoneNumber && <span>This field is required</span>}
+        {errors.phoneNumber && <span>{errors.phoneNumber?.message}</span>}
       </div>
       <div>У форматі +38(093) 123 45 67</div>
       <div>
