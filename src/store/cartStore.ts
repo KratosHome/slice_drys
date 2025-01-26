@@ -42,7 +42,6 @@ type CartState = {
 export const useCartStore = create<CartState>((set) => ({
   cart: JSON.parse(localStorage.getItem('cart') || '{}'),
   addItemToCart: (props) => {
-    console.log(11111, props)
     const {
       id,
       quantity = 1,
