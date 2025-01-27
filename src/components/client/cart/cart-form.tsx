@@ -49,7 +49,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       setValue('deliveryInfo.brunch', formData.deliveryInfo?.brunch || '')
       setValue(
         'deliveryInfo.deliveryMethod',
-        formData.deliveryInfo?.deliveryMethod || '',
+        formData.deliveryInfo?.deliveryMethod || 'novaPoshta',
       )
       setValue(
         'deliveryInfo.courierInfo',
@@ -176,7 +176,8 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             Нова пошта
             <RadioGroupItem value="Courier" id="r2" />
             Курʼєр
-            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ? (
+            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ||
+            !formData?.deliveryInfo?.deliveryMethod ? (
               <div>
                 <NovaPoshtaCities
                   city={formData?.deliveryInfo?.city || ''}
