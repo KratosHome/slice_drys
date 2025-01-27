@@ -3,7 +3,7 @@ import {
   getNovaPoshtaAllCities,
   getNovaPoshtaBranchesByCity,
 } from '@/server/delivery/get-nova-poshta'
-import { ComboboxDemo } from '@/components/client/ui/combobox'
+import { Combobox } from '@/components/client/ui/combobox'
 
 export default function NovaPoshtaCities() {
   const [cities, setCities] = useState<string[]>([])
@@ -22,7 +22,7 @@ export default function NovaPoshtaCities() {
 
   return (
     <div>
-      <ComboboxDemo
+      <Combobox
         elements={citiesToSelect}
         selectedValue={selectedCity}
         onSelect={setSelectedCity}

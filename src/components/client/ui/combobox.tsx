@@ -23,7 +23,7 @@ interface ComboboxDemoProps {
   onSelect: (value: string) => void
 }
 
-export function ComboboxDemo({
+export function Combobox({
   elements,
   selectedValue,
   onSelect,
