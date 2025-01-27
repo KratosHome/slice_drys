@@ -1,4 +1,4 @@
-import { Hero } from '@/components/client/hero/hero'
+import { Hero } from '@/components/client/main/hero/hero'
 import ProductSlider from '@/components/client/slider/productSlider'
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 
