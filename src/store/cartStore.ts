@@ -13,6 +13,7 @@ interface DeliveryInfo {
   city?: string
   brunch?: string
   deliveryMethod?: string
+  courierInfo?: string
 }
 
 interface FormData {

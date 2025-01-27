@@ -10,6 +10,7 @@ interface DeliveryInfo {
   city?: string
   brunch?: string
   deliveryMethod?: string
+  courierInfo: string
 }
 
 interface FormData {
@@ -51,6 +52,10 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       setValue(
         'deliveryInfo.deliveryMethod',
         formData.deliveryInfo?.deliveryMethod || '',
+      )
+      setValue(
+        'deliveryInfo.courierInfo',
+        formData.deliveryInfo?.courierInfo || '',
       )
 
       setValue('paymentInfo', formData.paymentInfo)
@@ -189,7 +194,16 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
                 {errors.deliveryInfo && <span>This field is required</span>}
               </div>
             ) : (
-              <div>Поле курʼєра</div>
+              <div>
+                Поле courierInfo
+                <input
+                  className="mt-5 border border-gray-300"
+                  placeholder="Payment Details Object"
+                  id="courierInfo"
+                  {...register('deliveryInfo.courierInfo', { required: true })}
+                />
+                {errors.deliveryInfo && <span>This field is required</span>}
+              </div>
             )}
           </div>
         </RadioGroup>
