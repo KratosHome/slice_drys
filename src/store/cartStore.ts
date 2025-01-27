@@ -11,6 +11,7 @@ type CartItem = {
 type DeliveryInfo = {
   city: string
   brunch: string
+  deliveryMethod: string
 }
 type FormData = {
   name: string

@@ -4,10 +4,12 @@ import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'
 import NovaPoshtaCities from './nova-poshta'
+import { RadioGroup, RadioGroupItem } from '@/components/client/ui/radio-group'
 
 interface DeliveryInfo {
   city: string
   brunch: string
+  deliveryMethod: string
 }
 
 interface FormData {
@@ -45,12 +47,21 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       setValue('email', formData.email)
       setValue('deliveryInfo.city', formData.deliveryInfo?.city || '')
       setValue('deliveryInfo.brunch', formData.deliveryInfo?.brunch || '')
+      setValue(
+        'deliveryInfo.deliveryMethod',
+        formData.deliveryInfo?.deliveryMethod || '',
+      )
+
       setValue('paymentInfo', formData.paymentInfo)
       setValue('comment', formData.comment)
       setValue('acceptTerms', formData.acceptTerms)
       setValue('noCall', formData.noCall)
     }
   }, [formData, setValue])
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value)
+  }
 
   const onSubmit = (data: FormData) => {
     const partialData = {
@@ -141,21 +152,30 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
         {errors.email && <span>{errors.email.message}</span>}
       </div>
       {formData && formData.formStep >= 1 && (
-        <div>
+        <RadioGroup onChange={handleRadioChange}>
           Оберіть відділення нової пошти
-          <NovaPoshtaCities
-            city={formData?.deliveryInfo?.city || ''}
-            brunch={formData?.deliveryInfo?.brunch || ''}
-            onCityChange={(newCity) => {
-              setValue('deliveryInfo.city', newCity)
-            }}
-            onBrunchChange={(newBrunch) => {
-              setValue('deliveryInfo.brunch', newBrunch)
-            }}
-            {...register('deliveryInfo.brunch', { required: true })}
-          />
-          {errors.deliveryInfo && <span>This field is required</span>}
-        </div>
+          <div>
+            <RadioGroupItem value="novaPoshta" id="r1" />
+            Нова пошта
+            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ? 1 : 2}
+            <NovaPoshtaCities
+              city={formData?.deliveryInfo?.city || ''}
+              brunch={formData?.deliveryInfo?.brunch || ''}
+              onCityChange={(newCity) => {
+                setValue('deliveryInfo.city', newCity)
+              }}
+              onBrunchChange={(newBrunch) => {
+                setValue('deliveryInfo.brunch', newBrunch)
+              }}
+              {...register('deliveryInfo.brunch', { required: true })}
+            />
+            {errors.deliveryInfo && <span>This field is required</span>}
+          </div>
+          <div>
+            <RadioGroupItem value="Courier" id="r2" />
+            Курʼєр
+          </div>
+        </RadioGroup>
       )}
       {formData && formData.formStep >= 2 && (
         <div>
