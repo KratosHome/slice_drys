@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/client/ui/radio-group'
 interface DeliveryInfo {
   city: string
   brunch: string
-  deliveryMethod: string
+  deliveryMethod?: string
 }
 
 interface FormData {
@@ -60,7 +60,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
   }, [formData, setValue])
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
+    setValue('deliveryInfo.deliveryMethod', event.target.value)
   }
 
   const onSubmit = (data: FormData) => {
