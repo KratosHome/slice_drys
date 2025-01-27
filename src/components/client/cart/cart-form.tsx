@@ -17,6 +17,7 @@ interface FormData {
   surname: string
   phoneNumber: string
   email: string
+  formStep: number
   deliveryInfo: DeliveryInfo
   paymentInfo: string
   comment: string
