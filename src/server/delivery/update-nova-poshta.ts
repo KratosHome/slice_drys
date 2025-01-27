@@ -52,6 +52,7 @@ export async function updateNovaPoshta() {
     let combinedBrunchData: {
       Branch: string
       City: string
+      CityRef: string
     }[] = []
 
     for (let i = 1; i <= totalPage; i++) {
@@ -66,6 +67,7 @@ export async function updateNovaPoshta() {
           return {
             Branch: brunch.Description,
             City: city ? city.Description : 'Unknown',
+            CityRef: city.Ref,
           }
         },
       )
@@ -75,15 +77,19 @@ export async function updateNovaPoshta() {
 
     const groupedData = combinedBrunchData.reduce(
       (acc, item) => {
-        const existingCity = acc.find((data) => data.city === item.City)
+        const existingCity = acc.find((data) => data.cityRef === item.CityRef)
         if (existingCity) {
           existingCity.branches.push(item.Branch)
         } else {
-          acc.push({ city: item.City, branches: [item.Branch] })
+          acc.push({
+            cityRef: item.CityRef,
+            city: item.City,
+            branches: [item.Branch],
+          })
         }
         return acc
       },
-      [] as { city: string; branches: string[] }[],
+      [] as { cityRef: string; city: string; branches: string[] }[],
     )
 
     groupedData.forEach(async (NovaPoshtaData) => {
