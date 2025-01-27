@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'

@@ -2,10 +2,6 @@ import mongoose from 'mongoose'
 
 const orderSchema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     status: {
       type: String,
       enum: [
