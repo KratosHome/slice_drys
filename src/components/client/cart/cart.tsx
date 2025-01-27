@@ -19,25 +19,25 @@ export default function Cart() {
       total: item.quantity * item.price,
     }))
     const userToSubmit = {
-      name: cart?.formData?.name,
-      surname: cart?.formData?.surname,
+      name: cart?.formData?.name || '',
+      surname: cart?.formData?.surname || '',
       id: 'mock',
-      phone: cart?.formData?.phoneNumber,
-      email: cart?.formData?.email,
+      phone: cart?.formData?.phoneNumber || '',
+      email: cart?.formData?.email || '',
     }
     const deliveryToSubmit = {
-      city: cart?.formData?.deliveryInfo?.city,
-      department: cart.formData?.deliveryInfo?.brunch,
-      phone: cart.formData?.phoneNumber,
+      city: cart?.formData?.deliveryInfo?.city || '',
+      department: cart.formData?.deliveryInfo?.brunch || '',
+      phone: cart.formData?.phoneNumber || '',
     }
 
     const OrderDataToSubmit = {
-      status: 'new',
+      status: 'new' as const,
       products: productsToSubmit,
       total: productsToSubmit?.reduce((acc, product) => acc + product.total, 0),
       delivery: deliveryToSubmit,
       user: userToSubmit,
-      payment: { method: cart.formData?.paymentInfo },
+      payment: { method: cart.formData?.paymentInfo || '' },
       comment: cart.formData?.comment,
     }
 

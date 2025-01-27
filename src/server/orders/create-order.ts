@@ -35,11 +35,11 @@ interface OrderData {
     | 'awaitingReturn'
     | 'cancelled'
     | 'failedDelivery'
-  products: Product[]
-  total: number
-  user: User
-  delivery: Delivery
-  payment: Payment
+  products?: Product[]
+  total?: number
+  user?: User
+  delivery?: Delivery
+  payment?: Payment
   comment?: string
 }
 import { connectToDb } from '@/server/connectToDb'
