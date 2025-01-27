@@ -44,21 +44,21 @@ const Help: FC<HelpProps> = ({ data }) => {
             >
               {data.img.map((slide, index) => (
                 <SplideSlide key={index}>
-                  <div className="relative h-[390px] w-full overflow-hidden rounded-lg">
+                  <div className="relative h-[290px] w-full overflow-hidden rounded-lg md:h-[390px]">
                     <Image src={slide.src} alt={slide.alt} fill={true} />
                   </div>
                 </SplideSlide>
               ))}
             </Splide>
           </div>
-          <div className="flex h-[390px] w-full flex-col justify-between rounded-lg bg-[#14131B] p-6 py-[77px] text-white md:w-1/2">
+          <div className="flex h-[230px] w-full flex-col justify-between rounded-lg bg-[#14131B] p-6 text-white md:h-[390px] md:w-1/2 md:py-[77px]">
             <div>
               <h2 className="mb-4 text-xl font-semibold">{data.subTitle}</h2>
               <p className="mb-6 pr-5 md:text-sm">{data.text}</p>
             </div>
             <Button
               variant="yellow"
-              className="max-w-[260px]"
+              className="md:max-w-[260px]"
               onClick={() => handleImageClick(data.link)}
             >
               {data.button}
