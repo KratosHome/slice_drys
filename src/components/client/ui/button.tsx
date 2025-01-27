@@ -24,7 +24,9 @@ const buttonStyles = cva(
   },
 )
 
-interface ButtonProps extends VariantProps<typeof buttonStyles> {
+interface ButtonProps
+  extends VariantProps<typeof buttonStyles>,
+    React.ButtonHTMLAttributes<HTMLButtonElement> {
   type?: 'submit' | 'reset' | 'button' | undefined
   className?: string
   children: React.ReactNode
@@ -38,12 +40,14 @@ export default function Button({
   children,
   className,
   onClick,
+  ...props
 }: ButtonProps) {
   return (
     <button
       type={type}
       className={cn(buttonStyles({ variant, size, className }))}
       onClick={onClick}
+      {...props}
     >
       {children}
     </button>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
-import { Button } from '@/components/admin/ui/button'
+import Button from '@/components/client/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -34,7 +34,6 @@ export function Combobox({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
           role="combobox"
           aria-expanded={open}
           className="w-[200px] justify-between"
