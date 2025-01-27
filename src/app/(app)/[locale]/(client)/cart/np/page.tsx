@@ -1,7 +1,7 @@
-import { createPost } from '@/server/delivery/update-nova-poshta'
+import { updateNovaPoshta as updateNovaPoshta } from '@/server/delivery/update-nova-poshta'
 
 export default async function NP() {
-  await createPost()
+  await updateNovaPoshta()
 
   return (
     <div>

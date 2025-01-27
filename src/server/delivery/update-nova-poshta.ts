@@ -2,7 +2,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { NovaPoshta } from './novaPoshtaSchema'
 
-export async function createPost() {
+export async function updateNovaPoshta() {
   try {
     await connectToDb()
 
@@ -55,7 +55,6 @@ export async function createPost() {
     }[] = []
 
     for (let i = 1; i <= totalPage; i++) {
-      //!!! totalPage
       const brunch = await fetchBrunchesByPage(i)
       const brunchData = brunch.data.map(
         (brunch: { Description: string; CityRef: string }) => {
@@ -94,7 +93,6 @@ export async function createPost() {
         { upsert: true },
       )
     })
-
     return { success: true, message: 'nova poshta data updated' }
   } catch (error) {
     return {
