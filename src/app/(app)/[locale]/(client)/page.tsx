@@ -3,12 +3,13 @@ import ProductSlider from '@/components/client/slider/productSlider'
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 import Faq from '@/components/client/main/faq/faq'
 import AboutUa from '@/components/client/main/about-ua'
-import Help from '@/components/client/main/help'
+import Help from '@/components/client/main/help/help'
 import IncreaseWithUs from '@/components/client/main/increase-with-us'
 import Reviews from '@/components/client/main/reviews'
 import Partner from '@/components/client/main/partner'
 import MoreAboutUs from '@/components/client/main/more-about-us'
 import { faqData } from '@/data/main/faq'
+import { helpData } from '@/data/main/help'
 
 export default async function Home(props: {
   params: Params
@@ -28,7 +29,7 @@ export default async function Home(props: {
       />
       <Faq data={faqData[locale]} />
       <AboutUa />
-      <Help />
+      <Help data={helpData[locale]} />
       <IncreaseWithUs />
       <Reviews />
       <Partner />

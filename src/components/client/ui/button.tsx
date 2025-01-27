@@ -12,6 +12,8 @@ const buttonStyles = cva(
           'bg-black text-white md:h-[40px] md:w-[150px] xl:h-[50px] xl:w-[180px] lg:!text-[20px] hover:skew-x-[-10deg] hover:bg-red hover:font-semibold h-[30px] w-[88px] !text-[14px] font-medium',
         icons:
           'flex items-center bg-transparent hover:scale-110 transition-transform duration-300 ease-in-out hover:bg-gray-200 max-w-max',
+        yellow:
+          'rounded-lg bg-yellow-500 px-6 py-2 font-medium text-black transition-all hover:scale-105 duration-300 hover:bg-yellow-600 hover:shadow-lg',
       },
       size: {
         xl: 'text-xl lap:text-sm',
