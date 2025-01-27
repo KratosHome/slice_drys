@@ -8,24 +8,25 @@ type CartItem = {
   price: number
   weight: number
 }
-type DeliveryInfo = {
-  city: string
-  brunch: string
-  deliveryMethod: string
-}
-type FormData = {
-  name: string
-  surname: string
-  phoneNumber: string
-  email: string
-  formStep: number
-  deliveryInfo: DeliveryInfo
-  paymentInfo: string
-  comment: string
-  acceptTerms: boolean
-  noCall: boolean
+
+interface DeliveryInfo {
+  city?: string
+  brunch?: string
+  deliveryMethod?: string
 }
 
+interface FormData {
+  name?: string
+  surname?: string
+  phoneNumber?: string
+  email?: string
+  formStep?: number
+  deliveryInfo?: DeliveryInfo
+  paymentInfo?: string
+  comment?: string
+  acceptTerms?: boolean
+  noCall?: boolean
+}
 type CartState = {
   cart: {
     itemList?: CartItem[] | undefined

@@ -7,22 +7,22 @@ import NovaPoshtaCities from './nova-poshta'
 import { RadioGroup, RadioGroupItem } from '@/components/client/ui/radio-group'
 
 interface DeliveryInfo {
-  city: string
-  brunch: string
-  deliveryMethod: string
+  city?: string
+  brunch?: string
+  deliveryMethod?: string
 }
 
 interface FormData {
-  name: string
-  surname: string
-  phoneNumber: string
-  email: string
-  formStep: number
-  deliveryInfo: DeliveryInfo
-  paymentInfo: string
-  comment: string
-  acceptTerms: boolean
-  noCall: boolean
+  name?: string
+  surname?: string
+  phoneNumber?: string
+  email?: string
+  formStep?: number
+  deliveryInfo?: DeliveryInfo
+  paymentInfo?: string
+  comment?: string
+  acceptTerms?: boolean
+  noCall?: boolean
 }
 
 interface CartFormRef {
@@ -78,7 +78,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
     const partialData = {
       ...data,
       formStep:
-        formData && formData.formStep !== null
+        formData?.formStep && formData.formStep !== null
           ? formData.formStep < 4
             ? formData.formStep + 1
             : formData.formStep
@@ -162,33 +162,39 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
         />
         {errors.email && <span>{errors.email.message}</span>}
       </div>
-      {formData && formData.formStep >= 1 && (
-        <RadioGroup onChange={handleRadioChange}>
+      {formData?.formStep && formData.formStep >= 1 && (
+        <RadioGroup
+          onChange={handleRadioChange}
+          defaultValue={formData?.deliveryInfo?.deliveryMethod || 'novaPoshta'}
+        >
           Оберіть відділення нової пошти
           <div>
             <RadioGroupItem value="novaPoshta" id="r1" />
             Нова пошта
-            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ? 1 : 2}
-            <NovaPoshtaCities
-              city={formData?.deliveryInfo?.city || ''}
-              brunch={formData?.deliveryInfo?.brunch || ''}
-              onCityChange={(newCity) => {
-                setValue('deliveryInfo.city', newCity)
-              }}
-              onBrunchChange={(newBrunch) => {
-                setValue('deliveryInfo.brunch', newBrunch)
-              }}
-              {...register('deliveryInfo.brunch', { required: true })}
-            />
-            {errors.deliveryInfo && <span>This field is required</span>}
-          </div>
-          <div>
             <RadioGroupItem value="Courier" id="r2" />
             Курʼєр
+            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ? (
+              <div>
+                <NovaPoshtaCities
+                  city={formData?.deliveryInfo?.city || ''}
+                  brunch={formData?.deliveryInfo?.brunch || ''}
+                  onCityChange={(newCity) => {
+                    setValue('deliveryInfo.city', newCity)
+                  }}
+                  onBrunchChange={(newBrunch) => {
+                    setValue('deliveryInfo.brunch', newBrunch)
+                  }}
+                  {...register('deliveryInfo.brunch', { required: true })}
+                />
+                {errors.deliveryInfo && <span>This field is required</span>}
+              </div>
+            ) : (
+              <div>Поле курʼєра</div>
+            )}
           </div>
         </RadioGroup>
       )}
-      {formData && formData.formStep >= 2 && (
+      {formData?.formStep && formData.formStep >= 2 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -199,7 +205,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           {errors.paymentInfo && <span>This field is required</span>}
         </div>
       )}
-      {formData && formData.formStep >= 3 && (
+      {formData?.formStep && formData.formStep >= 3 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -210,7 +216,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           {errors.comment && <span>This field is required</span>}
         </div>
       )}
-      {formData && formData.formStep >= 4 && (
+      {formData?.formStep && formData.formStep >= 4 && (
         <div>
           <label className="flex items-center space-x-3">
             <input
@@ -228,7 +234,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           </label>
         </div>
       )}
-      {(!formData || (formData && formData.formStep) <= 3) && (
+      {(!formData || (formData?.formStep ?? 0) <= 3) && (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>
