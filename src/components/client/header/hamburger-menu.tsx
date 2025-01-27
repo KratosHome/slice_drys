@@ -11,9 +11,9 @@ import {
 } from '@headlessui/react'
 import { useState } from 'react'
 import Button from '@/components/client/ui/button'
-import LocaleChange from '../locale-change/locale-change'
+import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/card/cart'
-import Search from '@/components/client/search/search'
+import Search from '@/components/client/header/search/search'
 
 interface HamburgerMenu {
   headerLinks: ILink[]
