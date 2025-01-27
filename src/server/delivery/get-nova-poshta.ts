@@ -1,3 +1,5 @@
+'use server'
+
 import { connectToDb } from '@/server/connectToDb'
 import { NovaPoshta } from './novaPoshtaSchema'
 

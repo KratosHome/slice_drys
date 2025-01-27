@@ -3,6 +3,7 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'
+import NovaPoshtaCities from './nova-poshta'
 
 interface FormData {
   name: string
@@ -72,6 +73,7 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <NovaPoshtaCities />
       <div>
         <input
           className="mt-5 border border-gray-300"
