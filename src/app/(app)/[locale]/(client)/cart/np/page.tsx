@@ -1,11 +1,11 @@
 import { updateNovaPoshta as updateNovaPoshta } from '@/server/delivery/update-nova-poshta'
 
 export default async function NP() {
-  await updateNovaPoshta()
+  const response = await fetch('/api/update-nova-poshta', {
+    method: 'POST',
+  })
 
-  return (
-    <div>
-      <div className="flex">111111111111</div>
-    </div>
-  )
+  if (!response.ok) {
+    throw new Error('Failed to update Nova Poshta')
+  }
 }
