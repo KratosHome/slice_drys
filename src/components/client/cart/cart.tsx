@@ -11,7 +11,7 @@ export default function Cart() {
   const cart = useCartStore((state) => state.cart)
 
   const handleSubmit = () => {
-    const productsToSubmit = cart?.itemList?.map((item) => ({
+    const productsToSubmit = (cart?.itemList || []).map((item) => ({
       id: item.id,
       name: item.name,
       count: item.quantity,
@@ -32,13 +32,16 @@ export default function Cart() {
     }
 
     const OrderDataToSubmit = {
+      id: 'unique-order-id',
       status: 'new' as const,
       products: productsToSubmit,
       total: productsToSubmit?.reduce((acc, product) => acc + product.total, 0),
       delivery: deliveryToSubmit,
       user: userToSubmit,
-      payment: { method: cart.formData?.paymentInfo || '' },
-      comment: cart.formData?.comment,
+      payment: {
+        method: (cart.formData?.paymentInfo as 'cash' | 'card') || 'cash',
+      },
+      comment: cart.formData?.comment || '',
     }
 
     createOrder(OrderDataToSubmit)
