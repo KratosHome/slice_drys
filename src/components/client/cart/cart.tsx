@@ -11,6 +11,10 @@ export default function Cart() {
   const cart = useCartStore((state) => state.cart)
 
   const handleSubmit = () => {
+    if (formRef.current) {
+      formRef.current.submit()
+    }
+
     const productsToSubmit = (cart?.itemList || []).map((item) => ({
       id: item.id,
       name: item.name,
@@ -43,12 +47,7 @@ export default function Cart() {
       },
       comment: cart.formData?.comment || '',
     }
-
     createOrder(OrderDataToSubmit)
-
-    if (formRef.current) {
-      formRef.current.submit()
-    }
   }
 
   return (
