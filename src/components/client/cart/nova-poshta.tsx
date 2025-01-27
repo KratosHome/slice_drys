@@ -5,12 +5,24 @@ import {
 } from '@/server/delivery/get-nova-poshta'
 import { Combobox } from '@/components/client/ui/combobox'
 
-export default function NovaPoshtaCities() {
+interface NovaPoshtaCitiesProps {
+  city: string
+  brunch: string
+  onCityChange: (city: string) => void
+  onBrunchChange: (brunch: string) => void
+}
+
+export default function NovaPoshtaCities({
+  city,
+  brunch,
+  onCityChange,
+  onBrunchChange,
+}: NovaPoshtaCitiesProps) {
   const [cities, setCities] = useState<string[]>([])
-  const [selectedCity, setSelectedCity] = useState<string>('')
+  const [selectedCity, setSelectedCity] = useState<string>(city)
   const [brunches, setBrunches] = useState<string[][]>([])
 
-  const [selectedBrunch, setSelectedBrunch] = useState<string>('')
+  const [selectedBrunch, setSelectedBrunch] = useState<string>(brunch)
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -19,7 +31,7 @@ export default function NovaPoshtaCities() {
     }
 
     const fetchBrunches = async () => {
-      const fetchedBrunche: string[] =
+      const fetchedBrunche: string[][] =
         await getNovaPoshtaBranchesByCity(selectedCity)
       setBrunches(fetchedBrunche)
     }
@@ -30,8 +42,7 @@ export default function NovaPoshtaCities() {
   }, [selectedCity])
 
   const citiesToSelect = cities.map((city) => ({ value: city, label: city }))
-  console.log(111, cities)
-  console.log(222, brunches)
+
   const brunchesToSelect = brunches[0]
     ? brunches[0].map((brunch) => ({
         value: brunch,
@@ -39,17 +50,27 @@ export default function NovaPoshtaCities() {
       }))
     : []
 
+  const handleCitySelect = (city: string) => {
+    setSelectedCity(city)
+    onCityChange(city)
+  }
+
+  const handleBrunchSelect = (brunch: string) => {
+    setSelectedBrunch(brunch)
+    onBrunchChange(brunch)
+  }
+
   return (
     <div>
       <Combobox
         elements={citiesToSelect}
         selectedValue={selectedCity}
-        onSelect={setSelectedCity}
+        onSelect={handleCitySelect}
       />
       <Combobox
         elements={brunchesToSelect}
         selectedValue={selectedBrunch}
-        onSelect={setSelectedBrunch}
+        onSelect={handleBrunchSelect}
       />
     </div>
   )

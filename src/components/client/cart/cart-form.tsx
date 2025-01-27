@@ -5,12 +5,17 @@ import { useForm } from 'react-hook-form'
 import { useCartStore } from '@/store/cartStore'
 import NovaPoshtaCities from './nova-poshta'
 
+interface DeliveryInfo {
+  city: string
+  brunch: string
+}
+
 interface FormData {
   name: string
   surname: string
   phoneNumber: string
   email: string
-  deliveryInfo: string
+  deliveryInfo: DeliveryInfo
   paymentInfo: string
   comment: string
   acceptTerms: boolean
@@ -38,7 +43,8 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       setValue('surname', formData.surname)
       setValue('phoneNumber', formData.phoneNumber)
       setValue('email', formData.email)
-      setValue('deliveryInfo', formData.deliveryInfo)
+      setValue('deliveryInfo.city', formData.deliveryInfo?.city || '')
+      setValue('deliveryInfo.brunch', formData.deliveryInfo?.brunch || '')
       setValue('paymentInfo', formData.paymentInfo)
       setValue('comment', formData.comment)
       setValue('acceptTerms', formData.acceptTerms)
@@ -48,21 +54,13 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
 
   const onSubmit = (data: FormData) => {
     const partialData = {
-      name: data.name,
-      surname: data.surname,
-      phoneNumber: data.phoneNumber,
-      email: data.email,
+      ...data,
       formStep:
         formData && formData.formStep !== null
           ? formData.formStep < 4
             ? formData.formStep + 1
             : formData.formStep
           : 1,
-      deliveryInfo: data.deliveryInfo,
-      paymentInfo: data.paymentInfo,
-      comment: data.comment,
-      acceptTerms: data.acceptTerms,
-      noCall: data.noCall,
     }
     setFormData(partialData)
   }
@@ -73,7 +71,6 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <NovaPoshtaCities />
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -145,11 +142,17 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
       </div>
       {formData && formData.formStep >= 1 && (
         <div>
-          <input
-            className="mt-5 border border-gray-300"
-            placeholder="Delivery Details Object"
-            id="deliveryInfo"
-            {...register('deliveryInfo', { required: true })}
+          Оберіть відділення нової пошти
+          <NovaPoshtaCities
+            city={formData?.deliveryInfo?.city || ''}
+            brunch={formData?.deliveryInfo?.brunch || ''}
+            onCityChange={(newCity) => {
+              setValue('deliveryInfo.city', newCity)
+            }}
+            onBrunchChange={(newBrunch) => {
+              setValue('deliveryInfo.brunch', newBrunch)
+            }}
+            {...register('deliveryInfo.brunch', { required: true })}
           />
           {errors.deliveryInfo && <span>This field is required</span>}
         </div>

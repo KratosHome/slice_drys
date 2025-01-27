@@ -21,7 +21,6 @@ export async function getNovaPoshtaBranchesByCity(city: string) {
     const branchesObj = await NovaPoshta.find({ city }, 'branches').lean()
 
     const branches = branchesObj.map((branchObj) => branchObj.branches)
-    console.log(111, branches)
     return branches
   } catch (error) {
     console.error(`Помилка при отриманні відділень для міста ${city}:`, error)

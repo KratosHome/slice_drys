@@ -8,13 +8,17 @@ type CartItem = {
   price: number
   weight: number
 }
+type DeliveryInfo = {
+  city: string
+  brunch: string
+}
 type FormData = {
   name: string
   surname: string
   phoneNumber: string
   email: string
   formStep: number
-  deliveryInfo: string
+  deliveryInfo: DeliveryInfo
   paymentInfo: string
   comment: string
   acceptTerms: boolean
