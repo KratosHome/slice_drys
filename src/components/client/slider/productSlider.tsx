@@ -2,17 +2,9 @@
 import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css/core'
 import '@splidejs/react-splide/css'
-import { Rubik_Doodle_Shadow } from 'next/font/google'
 import { Arrow } from '@/components/client/ui/arrow'
 import './productSlider.css'
 import Product from '@/components/client/product/product'
-
-const rubikDoodleShadow = Rubik_Doodle_Shadow({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-rubik-doodle-shadow',
-  weight: ['400'],
-})
 
 interface ProductSlider {
   products: IProduct[]
@@ -70,7 +62,7 @@ export default function ProductSlider({
     <div className="mx-auto mb-48 mt-10 max-w-6xl px-0 lg:px-4">
       <div className="px-[20px] py-16 md:py-20 lg:py-24 xl:py-[130px]">
         <h2
-          className={`${rubikDoodleShadow.className} mb-2 text-[32px] sm:mb-4 sm:text-5xl md:mb-6 md:text-6xl lg:mb-8 lg:text-7xl xl:mb-12 xl:text-8xl`}
+          className={`font-rubik mb-2 text-[32px] sm:mb-4 sm:text-5xl md:mb-6 md:text-6xl lg:mb-8 lg:text-7xl xl:mb-12 xl:text-8xl`}
         >
           {title}
         </h2>

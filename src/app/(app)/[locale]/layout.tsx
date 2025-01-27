@@ -6,6 +6,7 @@ import { Poppins, Rubik_Doodle_Shadow } from 'next/font/google'
 import { headerLinks } from '@/data/header-links'
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
+import Footer from '@/components/client/footer/footer'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -47,6 +48,7 @@ export default async function LocaleLayout(props: {
         <body>
           <Header headerLinks={headerLinksData} />
           <main>{children}</main>
+          <Footer />
           <Toaster />
         </body>
       </NextIntlClientProvider>

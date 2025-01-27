@@ -8,6 +8,10 @@ body {
   color: #0f0f0f;
 }
 
+.font-rubik {
+  font-family: var(--font-rubik-doodle-shadow), sans-serif;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

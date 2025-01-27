@@ -1,19 +1,22 @@
 {
-  "HomePage": {
-    "title": "Привіт, світ!"
+  "main": {
+    "faq": {
+      "all-about-dry-fruits": "все про сушеники",
+      "even-what-did-not-ask": "і навіть те, що не питали :)"
+    }
   },
-  "Blog": {
+  "blog": {
     "paginationButtonLeft": "Попередня",
     "paginationButtonRight": "Наступна",
     "Blog": "Блог",
     "title": "Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з нашими сушениками – від цікавих рецептів і корисних порад до просто веселих історій. Заглядай частіше, тут завжди щось смачненьке!"
   },
-  "Breadcrumbs": {
+  "breadcrumbs": {
     "Home": "Головна",
     "Blog": "Блог",
     "Page": "Сторінка"
   },
-  "Share": {
+  "share": {
     "Share": "Поділитись",
     "facebook icon": "іконка Facebook",
     "instagram icon": "іконка Instagram",
