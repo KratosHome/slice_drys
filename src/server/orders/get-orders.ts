@@ -2,14 +2,12 @@ import { connectToDb } from '@/server/connectToDb'
 import { Order } from './orderSchema'
 
 export async function getOrders(status?: string) {
-  // додаємо параметр status
   try {
     await connectToDb()
 
-    // якщо статус визначено, фільтруємо замовлення за статусом
     const filter = status ? { status } : {}
 
-    const orderDocs = await Order.find(filter) // застосовуємо фільтр
+    const orderDocs = await Order.find(filter)
 
     const orders: IOrder[] = orderDocs.map((orderDoc) => ({
       id: orderDoc._id.toString(),
@@ -46,7 +44,7 @@ export async function getOrders(status?: string) {
       comment: orderDoc.comment || '',
     }))
 
-    const totalOrders = await Order.countDocuments(filter) // враховуємо фільтр для підрахунку
+    const totalOrders = await Order.countDocuments(filter)
 
     return { success: true, orders, totalOrders }
   } catch (error) {
