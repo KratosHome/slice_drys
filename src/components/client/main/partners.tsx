@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import Image from 'next/image'
 
 interface PartnersProps {
   data: any
@@ -8,7 +9,7 @@ const Partners: FC<PartnersProps> = ({ data }) => {
   const partners = [
     {
       name: 'National Geographic',
-      logo: '/logos/national-geographic.svg',
+      logo: '/main/robin-bobbin.png',
     },
     {
       name: 'National Geographic',
@@ -30,10 +31,15 @@ const Partners: FC<PartnersProps> = ({ data }) => {
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {partners.map((partner) => (
             <div
-              key={partner.id}
-              className="flex items-center justify-center rounded-lg bg-gray-900 p-6"
+              key={partner.name}
+              className="relative flex items-center justify-center rounded-lg bg-gray-900 p-6"
             >
-              <img src={partner.logo} alt={partner.name} className="h-10" />
+              <Image
+                src={partner.logo}
+                alt={partner.name}
+                fill={true}
+                className="object-contain"
+              />
             </div>
           ))}
         </div>
