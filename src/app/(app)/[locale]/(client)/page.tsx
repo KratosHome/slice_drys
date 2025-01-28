@@ -6,7 +6,7 @@ import AboutUa from '@/components/client/main/about-ua'
 import Help from '@/components/client/main/help/help'
 import IncreaseWithUs from '@/components/client/main/increase-with-us'
 import Reviews from '@/components/client/main/reviews'
-import Partner from '@/components/client/main/partner'
+import Partners from '@/components/client/main/partners'
 import MoreAboutUs from '@/components/client/main/more-about-us'
 import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
@@ -32,7 +32,7 @@ export default async function Home(props: {
       <Help data={helpData[locale]} />
       <IncreaseWithUs />
       <Reviews />
-      <Partner />
+      <Partners />
       <MoreAboutUs />
     </div>
   )
