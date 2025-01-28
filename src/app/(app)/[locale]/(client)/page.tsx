@@ -4,7 +4,7 @@ import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.
 import { headers } from 'next/headers'
 import { detectDevice } from '@/utils/deviceDetection'
 import Faq from '@/components/client/main/faq/faq'
-import AboutUa from '@/components/client/main/about-ua'
+import AboutUs from '@/components/client/main/about-us'
 import Help from '@/components/client/main/help/help'
 import Reviews from '@/components/client/main/reviews/reviews'
 import Partners from '@/components/client/main/partners'
@@ -13,6 +13,7 @@ import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
+import { getPosts } from '@/server/posts/get-posts.server'
 
 export default async function Home(props: {
   params: Params
@@ -26,6 +27,7 @@ export default async function Home(props: {
   const device = detectDevice(userAgent)
 
   const productsData: IGetProducts = await getProductsSliderMain(locale)
+  const blogData = await getPosts({ locale, page: 1, limit: 3 })
 
   return (
     <div>
@@ -38,15 +40,10 @@ export default async function Home(props: {
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
+      <MoreAboutUs data={blogData.post} />
+      <Reviews />
+      <AboutUs />
+      <ToTheTop />
     </div>
   )
 }
-
-/*
-      <AboutUa />
-      <Help data={helpData[locale]} />
-      <Reviews />
-      <Partners />
-      <MoreAboutUs />
-      <ToTheTop />
- */

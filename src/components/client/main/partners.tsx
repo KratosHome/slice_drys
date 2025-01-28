@@ -16,17 +16,17 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
     <section aria-labelledby="partners" className="px-5 py-10">
       <div className="mx-auto max-w-6xl">
         <h1 className="mb-6 text-3xl font-bold">{t('our-partners')}</h1>
-        <div className="flex flex-wrap gap-[32px]">
+        <div className="flex flex-wrap items-center justify-center gap-[32px]">
           {data.map((partner) => (
             <div
               key={partner.name}
-              className="relative flex h-[188px] w-[352px] items-center justify-center rounded-lg bg-[#14131B] p-6"
+              className="relative flex h-[188px] w-[352px] items-center justify-center rounded-lg bg-[#14131B]"
             >
               <Image
                 src={partner.logo}
                 alt={partner.name}
                 fill={true}
-                className="object-contain"
+                className="object-contain p-[59px]"
               />
             </div>
           ))}

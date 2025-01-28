@@ -1,5 +1,12 @@
 {
   "main": {
+    "header": {
+      "free-delivery-from": "Free delivery from 1000 UAH.",
+      "blog": "Blog",
+      "wholesale": "Wholesale",
+      "contacts": "Contacts",
+      "order": "Order"
+    },
     "faq": {
       "all-about-dry-fruits": "all about dry fruits",
       "even-what-did-not-ask": "and even what did not ask :)"

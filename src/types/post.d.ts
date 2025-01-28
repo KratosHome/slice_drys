@@ -9,6 +9,7 @@ interface IPost {
   keywords: string
   visited?: number
   updatedAt: Date
+  createdAt: Date
 }
 
 interface IPostLocal {
@@ -22,6 +23,7 @@ interface IPostLocal {
   keywords: ILocalizedString
   visited?: number
   updatedAt: Date
+  createdAt: Date
 }
 
 interface IGetPost {

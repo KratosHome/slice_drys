@@ -5,19 +5,14 @@ const headerLinksUk = [
   { id: 4, name: 'Мікси', href: 'miksy' },
 ]
 
-const hamburgerLinksOtherUk = [
-  { id: 1, name: 'Блог', href: 'blog' },
-  { id: 2, name: 'Опт', href: 'opt' },
-  { id: 3, name: 'Контакти', href: 'kontakty' },
-  { id: 4, name: 'Доставка', href: 'dostavka' },
+const headerLinksEn = [
+  { id: 1, name: 'Meat', href: 'meat' },
+  { id: 2, name: 'Fruits', href: 'fruits' },
+  { id: 3, name: 'Vegetables', href: 'vegetables' },
+  { id: 4, name: 'Mixes', href: 'mixes' },
 ]
 
 export const headerLinks = {
-  en: headerLinksUk,
+  en: headerLinksEn,
   uk: headerLinksUk,
-}
-
-export const hamburgerLinksOther = {
-  en: hamburgerLinksOtherUk,
-  uk: hamburgerLinksOtherUk,
 }
