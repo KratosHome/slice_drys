@@ -9,7 +9,7 @@ export const colorConstants = {
   purple: '#b7006e',
   green: '#07c70d',
 } as const
-import { colorConstants } from '../../tailwind.config'
+
 import {
   mixSubImages,
   fruitSubImages,
