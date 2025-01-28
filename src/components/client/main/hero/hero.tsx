@@ -9,9 +9,8 @@ import SliderItem from './slider-item'
 import Arcs from './arcs'
 import { sliders, sliderLinks } from '@/data/hero-links'
 import { useLocale } from 'next-intl'
-import { IDevice } from '@/types/IDevice'
 
-export const Hero = ({ device }: IDevice) => {
+export const Hero = ({ device }) => {
   const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
