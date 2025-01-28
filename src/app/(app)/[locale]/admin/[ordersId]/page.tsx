@@ -1,5 +1,6 @@
 import * as React from 'react'
 import OrdersList from '@/components/admin/orders/orders-list'
+import { getOrders } from '@/server/orders/get-orders'
 
 export default async function ProductPage() {
   const dataOrders: IOrder[] = [
@@ -47,6 +48,8 @@ export default async function ProductPage() {
       comment: 'Urgent delivery',
     },
   ]
+  const { orders } = await getOrders(1, 1)
+  console.log(orders)
 
   return (
     <div>
