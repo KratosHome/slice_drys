@@ -354,7 +354,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
 
         return (
           <div className="flex flex-col gap-2">
-            <Button onClick={() => router.push(`/admin/orders/${order.id}`)}>
+            <Button onClick={() => router.push(`orders/${order.id}`)}>
               Деталі
             </Button>
             <DropdownMenu>
