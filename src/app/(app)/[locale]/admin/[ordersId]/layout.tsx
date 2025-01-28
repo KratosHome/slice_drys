@@ -1,8 +1,10 @@
 'use client'
 import * as React from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { tabsOrder } from '@/data/tabs-order'
+import { getOrders } from '@/server/orders/get-orders'
 
 export default function LocaleLayout({
   children,
@@ -10,6 +12,17 @@ export default function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
+  const [orders, setOrders] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const fetchedOrders = await getOrders()
+      setOrders(fetchedOrders)
+    }
+
+    fetchOrders()
+  }, [])
+
   const pathname = usePathname()
 
   const getNewOrders = [{ id: '1', status: 'new' }]
