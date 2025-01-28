@@ -8,20 +8,28 @@ import { getOrders } from '@/server/orders/get-orders'
 
 export default function LocaleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
-  params: Promise<{ locale: LanguageType }>
+  params: Promise<{ locale: LanguageType; ordersId: string }>
 }) {
   const [orders, setOrders] = useState<IOrder[] | []>([])
+  const [ordersId, setOrdersId] = useState<string>('')
 
   useEffect(() => {
+    const fetchParams = async () => {
+      const resolvedParams = await params
+      setOrdersId(resolvedParams.ordersId)
+    }
+
     const fetchOrders = async () => {
       const fetchedOrders = await getOrders()
       setOrders(fetchedOrders.orders || [])
     }
 
+    fetchParams()
     fetchOrders()
-  }, [])
+  }, [params])
 
   const pathname = usePathname()
 
@@ -76,7 +84,7 @@ export default function LocaleLayout({
               )}
 
               <Link
-                href={`${tab.value}`}
+                href={`${ordersId == 'orders' ? '../' + tab.value : tab.value}`}
                 className={`flex flex-col items-center gap-2 rounded-md border-[1px] border-black/30 px-2 py-1 ${
                   isActive ? 'border-black' : 'bg-transparent text-black'
                 }`}
