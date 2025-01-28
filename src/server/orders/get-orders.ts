@@ -3,14 +3,14 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Order } from './orderSchema'
 
-export async function getOrders(status?: string) {
+export async function getOrders(status?: string, orderId?: string) {
   try {
     await connectToDb()
 
-    const filter = status ? { status } : {}
+    const filter = orderId ? { _id: orderId } : status ? { status } : {}
+    console.log(11111, filter)
 
     const orderDocs = await Order.find(filter)
-
     const orders: IOrder[] = orderDocs.map((orderDoc) => ({
       id: orderDoc._id.toString(),
       status: orderDoc.status,
