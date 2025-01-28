@@ -1,6 +1,9 @@
 {
-  "HomePage": {
-    "title": "Hello world!"
+  "main": {
+    "faq": {
+      "all-about-dry-fruits": "all about dry fruits",
+      "even-what-did-not-ask": "and even what did not ask :)"
+    }
   },
   "Blog": {
     "paginationButtonLeft": "Previous",

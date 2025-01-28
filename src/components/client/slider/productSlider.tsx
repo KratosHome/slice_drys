@@ -7,6 +7,7 @@ import './productSlider.css'
 import Product from '@/components/client/product/product'
 import { rubikDoodleShadow } from '@/fonts/fonts'
 
+
 interface ProductSlider {
   products: IProduct[]
   title: string
@@ -63,7 +64,7 @@ export default function ProductSlider({
     <div className="mx-auto mb-48 mt-10 max-w-6xl px-0 lg:px-4">
       <div className="px-[20px] py-16 md:py-20 lg:py-24 xl:py-[130px]">
         <h2
-          className={`${rubikDoodleShadow.className} mb-2 text-[32px] sm:mb-4 sm:text-5xl md:mb-6 md:text-6xl lg:mb-8 lg:text-7xl xl:mb-12 xl:text-8xl`}
+          className={`font-rubik mb-2 text-[32px] sm:mb-4 sm:text-5xl md:mb-6 md:text-6xl lg:mb-8 lg:text-7xl xl:mb-12 xl:text-8xl`}
         >
           {title}
         </h2>
