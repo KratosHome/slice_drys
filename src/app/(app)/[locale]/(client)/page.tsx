@@ -12,6 +12,7 @@ import MoreAboutUs from '@/components/client/main/more-about-us'
 import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
 import ToTheTop from '@/components/client/ui/to-the-top'
+import { partnersData } from '@/data/main/partners'
 
 export default async function Home(props: {
   params: Params
@@ -36,6 +37,7 @@ export default async function Home(props: {
       />
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
+      <Partners data={partnersData[locale]} />
     </div>
   )
 }

@@ -10,13 +10,16 @@ const Faq: FC<IFaq> = async ({ data }) => {
   const t = await getTranslations('main.faq')
 
   return (
-    <div className="mx-auto mb-20 mt-60 max-w-[880px] items-center px-4">
-      <div className="font-rubik pr-0 text-center text-[38px] uppercase md:pr-20 md:text-[64px]">
+    <section
+      aria-labelledby="FAQ"
+      className="mx-auto mb-20 mt-60 max-w-[880px] items-center px-4"
+    >
+      <h1 className="font-rubik pr-0 text-center text-[38px] uppercase md:pr-20 md:text-[64px]">
         {t('all-about-dry-fruits')}
-      </div>
-      <div className="slider-label relative mb-24 mt-5 grid max-w-max place-content-end">
+      </h1>
+      <h2 className="slider-label relative mb-24 mt-5 grid max-w-max place-content-end">
         {t('even-what-did-not-ask')}
-      </div>
+      </h2>
       {data.map((item: Faq) => (
         <Item
           key={item.title}
@@ -24,7 +27,7 @@ const Faq: FC<IFaq> = async ({ data }) => {
           answer={item.description}
         />
       ))}
-    </div>
+    </section>
   )
 }
 export default Faq

@@ -60,7 +60,10 @@ export default function ProductSlider({
   }
 
   return (
-    <section aria-labelledby="help" className="mx-auto max-w-[1280px] px-5">
+    <section
+      aria-labelledby="popular-products"
+      className="mx-auto max-w-[1280px] px-5"
+    >
       <div className="px-[20px] md:pb-16">
         <h1 className="font-rubik text-[32px] sm:mb-4 sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
           {title}

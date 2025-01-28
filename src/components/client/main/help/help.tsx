@@ -26,7 +26,7 @@ const Help: FC<HelpProps> = ({ data }) => {
   }
 
   return (
-    <section aria-labelledby="help" className="bg-black py-8">
+    <section aria-labelledby="help" className="mt-60 bg-black py-8">
       <div className="mx-auto max-w-[1280px] px-5">
         <h1 className="mb-6 text-2xl font-bold text-white">{data.title}</h1>
         <div className="flex flex-col items-center justify-center gap-6 md:flex-row">
