@@ -8,7 +8,6 @@ export async function getOrders(status?: string, orderId?: string) {
     await connectToDb()
 
     const filter = orderId ? { _id: orderId } : status ? { status } : {}
-    console.log(11111, filter)
 
     const orderDocs = await Order.find(filter)
     const orders: IOrder[] = orderDocs.map((orderDoc) => ({
