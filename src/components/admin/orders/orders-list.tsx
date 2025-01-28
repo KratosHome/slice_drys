@@ -1,5 +1,6 @@
 'use client'
 import * as React from 'react'
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -43,6 +44,11 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createOrUpdateOrder } from '@/server/orders/create-order'
+import { getOrders } from '@/server/orders/get-orders'
+
+function kebabToCamel(str: string): string {
+  return str.replace(/-./g, (match) => match[1].toUpperCase())
+}
 
 const statusIcons = {
   new: <Clock className="text-blue-500" />,
@@ -297,8 +303,56 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       cell: ({ row }) => {
         const order = row.original
 
+        type OrderStatus =
+          | 'new'
+          | 'awaitingPayment'
+          | 'awaitingShipment'
+          | 'shipped'
+          | 'completed'
+          | 'awaitingReturn'
+          | 'cancelled'
+          | 'failedDelivery'
+
         function handleNextStatus() {
-          createOrUpdateOrder({ id: order.id, status: 'awaitingPayment' })
+          const statusOrder: OrderStatus[] = [
+            'new',
+            'awaitingPayment',
+            'awaitingShipment',
+            'shipped',
+            'completed',
+            'awaitingReturn',
+            'cancelled',
+            'failedDelivery',
+          ]
+
+          const currentIndex = statusOrder.indexOf(order.status as OrderStatus)
+          const nextStatus: OrderStatus =
+            currentIndex >= 0 && currentIndex < statusOrder.length - 1
+              ? statusOrder[currentIndex + 1]
+              : (order.status as OrderStatus)
+
+          createOrUpdateOrder({ id: order.id, status: nextStatus })
+        }
+
+        function handlePreviousStatus() {
+          const statusOrder: OrderStatus[] = [
+            'new',
+            'awaitingPayment',
+            'awaitingShipment',
+            'shipped',
+            'completed',
+            'awaitingReturn',
+            'cancelled',
+            'failedDelivery',
+          ]
+
+          const currentIndex = statusOrder.indexOf(order.status as OrderStatus)
+          const previousStatus: OrderStatus =
+            currentIndex > 0
+              ? statusOrder[currentIndex - 1]
+              : (order.status as OrderStatus)
+
+          createOrUpdateOrder({ id: order.id, status: previousStatus })
         }
 
         return (
@@ -316,7 +370,9 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
                 <DropdownMenuItem onClick={handleNextStatus}>
                   Насупний статус
                 </DropdownMenuItem>
-                <DropdownMenuItem>Попередній статус</DropdownMenuItem>
+                <DropdownMenuItem onClick={handlePreviousStatus}>
+                  Попередній статус
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

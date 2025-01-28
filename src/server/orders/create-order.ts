@@ -6,7 +6,6 @@ import { Order } from './orderSchema'
 export async function createOrUpdateOrder(orderData: Partial<IOrder>) {
   try {
     await connectToDb()
-    console.log(orderData)
     const existingOrder = await Order.findById(orderData.id)
 
     if (existingOrder) {
