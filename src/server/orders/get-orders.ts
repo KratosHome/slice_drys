@@ -10,12 +10,19 @@ export async function getOrders() {
     const orders: IOrder[] = orderDocs.map((orderDoc) => ({
       id: orderDoc._id.toString(),
       status: orderDoc.status,
-      products: orderDoc.products.map((product: any) => ({
-        id: product.id,
-        name: product.name,
-        count: product.count,
-        price: product.price,
-      })),
+      products: orderDoc.products.map(
+        (product: {
+          id: string
+          name: string
+          count: number
+          price: number
+        }) => ({
+          id: product.id,
+          name: product.name,
+          count: product.count,
+          price: product.price,
+        }),
+      ),
       total: orderDoc.total,
       user: {
         id: orderDoc.user.id,
