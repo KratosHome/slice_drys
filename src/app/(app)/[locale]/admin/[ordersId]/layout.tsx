@@ -52,6 +52,7 @@ export default function LocaleLayout({
 
   return (
     <>
+      {JSON.stringify(orders)}
       <div className="flex flex-wrap justify-between gap-1 border-gray-300 bg-transparent">
         {tabsOrder.map((tab) => {
           const isActive = pathname.includes(tab.value)
