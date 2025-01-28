@@ -11,7 +11,12 @@ const helpDataUk = {
       link: '/',
     },
     {
-      src: '/main/warrior.png',
+      src: '/main/warrior1.jpeg',
+      alt: 'help image',
+      link: '/',
+    },
+    {
+      src: '/main/warrior2.jpeg',
       alt: 'help image',
       link: '/',
     },
@@ -21,12 +26,7 @@ const helpDataUk = {
       link: '/',
     },
     {
-      src: '/main/warrior.png',
-      alt: 'help image',
-      link: '/',
-    },
-    {
-      src: '/main/warrior.png',
+      src: '/main/warrior1.jpeg',
       alt: 'help image',
       link: '/',
     },
@@ -46,7 +46,12 @@ const helpDataEn = {
       link: '/',
     },
     {
-      src: '/main/warrior.png',
+      src: '/main/warrior1.jpeg',
+      alt: 'help image',
+      link: '/',
+    },
+    {
+      src: '/main/warrior2.jpeg',
       alt: 'help image',
       link: '/',
     },
@@ -56,12 +61,7 @@ const helpDataEn = {
       link: '/',
     },
     {
-      src: '/main/warrior.png',
-      alt: 'help image',
-      link: '/',
-    },
-    {
-      src: '/main/warrior.png',
+      src: '/main/warrior1.jpeg',
       alt: 'help image',
       link: '/',
     },
