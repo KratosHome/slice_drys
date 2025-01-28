@@ -44,11 +44,6 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createOrUpdateOrder } from '@/server/orders/create-order'
-import { getOrders } from '@/server/orders/get-orders'
-
-function kebabToCamel(str: string): string {
-  return str.replace(/-./g, (match) => match[1].toUpperCase())
-}
 
 const statusIcons = {
   new: <Clock className="text-blue-500" />,
