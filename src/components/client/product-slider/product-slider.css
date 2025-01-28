@@ -3,7 +3,10 @@
 }
 
 .splide__pagination.product__pagination {
-    @apply flex justify-center gap-[5px] bottom-[-50px] md:bottom-[-100px] lg:bottom-[-150px];
+    @apply flex justify-center
+    gap-[5px]
+    bottom-[-10px]
+    lg:bottom-[-50px]
 }
 
 .splide__pagination__page.product__pagination-page {
@@ -15,7 +18,20 @@
 }
 
 .splide__arrow.product__arrow {
-    @apply bg-[#fbfbfb] rounded-none top-auto bottom-[-60px] w-[33px] h-[44px] transition-transform duration-300 ease-in-out md:w-[45px] md:h-[57px] lg:w-[50px] lg:h-[65px] md:bottom-[-110px] lg:bottom-[-160px];
+    @apply
+    bg-[#fbfbfb]
+    rounded-none
+    top-auto
+    bottom-[-20px]
+    w-[33px] h-[44px]
+    transition-transform
+    duration-300
+    ease-in-out
+    md:w-[45px]
+    md:h-[57px]
+    lg:w-[50px]
+    lg:h-[65px]
+    lg:bottom-[-60px];
 }
 
 .splide__arrow.product__arrow svg {

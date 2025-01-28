@@ -97,7 +97,7 @@ export const Hero = ({ device }) => {
   )
 
   return (
-    <div className="container overflow-x-clip sm:pt-9 xl:overflow-x-visible">
+    <div className="container mb-[255px] overflow-x-clip sm:pt-9 xl:overflow-x-visible">
       <div className="px-[20px]">
         <div
           className={cn(

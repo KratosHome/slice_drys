@@ -1,5 +1,5 @@
 import { Hero } from '@/components/client/main/hero/hero'
-import ProductSlider from '@/components/client/slider/productSlider'
+import ProductSlider from '@/components/client/product-slider/product-slider'
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 import { headers } from 'next/headers'
 import { detectDevice } from '@/utils/deviceDetection'
@@ -34,13 +34,17 @@ export default async function Home(props: {
         message={'найсмачніші кусь-топчики'}
         products={productsData.products}
       />
+      <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
+    </div>
+  )
+}
+
+/*
       <AboutUa />
       <Help data={helpData[locale]} />
       <Reviews />
       <Partners />
       <MoreAboutUs />
       <ToTheTop />
-    </div>
-  )
-}
+ */
