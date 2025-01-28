@@ -12,17 +12,12 @@ export default function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
-  const [orders, setOrders] = useState<{
-    success: boolean
-    orders?: IOrder[]
-    totalOrders?: number
-    message?: string
-  } | null>(null)
+  const [orders, setOrders] = useState<IOrder[] | []>([])
 
   useEffect(() => {
     const fetchOrders = async () => {
       const fetchedOrders = await getOrders()
-      setOrders(fetchedOrders)
+      setOrders(fetchedOrders.orders || [])
     }
 
     fetchOrders()
@@ -30,14 +25,19 @@ export default function LocaleLayout({
 
   const pathname = usePathname()
 
-  const getNewOrders = [{ id: '1', status: 'new' }]
-  const getAwaitingPaymentOrders = [
-    { id: '2', status: 'awaiting-payment' },
-    { id: '22', status: 'awaiting-payment' },
-  ]
-  const getAwaitingShipmentOrders = [{ id: '3', status: 'awaiting-shipment' }]
-  const getShippedOrders = [{ id: '4', status: 'shipped' }]
-  const getAwaitingReturnOrders = [{ id: '5', status: 'awaiting-return' }]
+  const getNewOrders = orders.filter((order) => order.status === 'new')
+  const getAwaitingPaymentOrders = orders.filter(
+    (order) => order.status === 'awaitingPayment',
+  )
+
+  const getAwaitingShipmentOrders = orders.filter(
+    (order) => order.status === 'awaitingShipment',
+  )
+
+  const getShippedOrders = orders.filter((order) => order.status === 'shipped')
+  const getAwaitingReturnOrders = orders.filter(
+    (order) => order.status === 'awaitingReturn',
+  )
 
   const statusStyles: Record<string, string> = {
     new: 'bg-red text-white',
@@ -54,10 +54,8 @@ export default function LocaleLayout({
     shipped: getShippedOrders.length,
     'awaiting-return': getAwaitingReturnOrders.length,
   }
-
   return (
     <>
-      {JSON.stringify(orders)}
       <div className="flex flex-wrap justify-between gap-1 border-gray-300 bg-transparent">
         {tabsOrder.map((tab) => {
           const isActive = pathname.includes(tab.value)
