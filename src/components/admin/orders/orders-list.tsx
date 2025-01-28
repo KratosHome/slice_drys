@@ -327,6 +327,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
               : (order.status as OrderStatus)
 
           createOrUpdateOrder({ id: order.id, status: nextStatus })
+          window.location.reload()
         }
 
         function handlePreviousStatus() {
@@ -348,6 +349,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
               : (order.status as OrderStatus)
 
           createOrUpdateOrder({ id: order.id, status: previousStatus })
+          window.location.reload()
         }
 
         return (
