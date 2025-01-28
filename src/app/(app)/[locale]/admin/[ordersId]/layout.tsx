@@ -12,7 +12,12 @@ export default function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
-  const [orders, setOrders] = useState<any>(null)
+  const [orders, setOrders] = useState<{
+    success: boolean
+    orders?: IOrder[]
+    totalOrders?: number
+    message?: string
+  } | null>(null)
 
   useEffect(() => {
     const fetchOrders = async () => {
