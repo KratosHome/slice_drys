@@ -13,7 +13,10 @@ export default function LocaleLayout({
   const pathname = usePathname()
 
   const getNewOrders = [{ id: '1', status: 'new' }]
-  const getAwaitingPaymentOrders = [{ id: '2', status: 'awaiting-payment' }]
+  const getAwaitingPaymentOrders = [
+    { id: '2', status: 'awaiting-payment' },
+    { id: '22', status: 'awaiting-payment' },
+  ]
   const getAwaitingShipmentOrders = [{ id: '3', status: 'awaiting-shipment' }]
   const getShippedOrders = [{ id: '4', status: 'shipped' }]
   const getAwaitingReturnOrders = [{ id: '5', status: 'awaiting-return' }]
