@@ -42,6 +42,7 @@ import {
   RefreshCw,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { createOrUpdateOrder } from '@/server/orders/create-order'
 
 const statusIcons = {
   new: <Clock className="text-blue-500" />,
@@ -296,6 +297,10 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       cell: ({ row }) => {
         const order = row.original
 
+        function handleNextStatus() {
+          createOrUpdateOrder({ id: order.id, status: 'awaitingPayment' })
+        }
+
         return (
           <div className="flex flex-col gap-2">
             <Button onClick={() => router.push(`/admin/orders/${order.id}`)}>
@@ -308,7 +313,9 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Дії</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Насупний статус</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleNextStatus}>
+                  Насупний статус
+                </DropdownMenuItem>
                 <DropdownMenuItem>Попередній статус</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
