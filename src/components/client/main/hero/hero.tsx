@@ -9,11 +9,10 @@ import SliderItem from './slider-item'
 import Arcs from './arcs'
 import { sliders, sliderLinks } from '@/data/hero-links'
 import { useLocale } from 'next-intl'
+import { IDevice } from '@/types/IDevice'
 
-export const Hero = () => {
-  const { contextSafe } = useGSAP()
-
-  const [currentIndex, setCurrentIndex] = useState(0)
+export const Hero = ({ device }: IDevice) => {
+  const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
   const locale = useLocale()
@@ -31,43 +30,22 @@ export const Hero = () => {
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
   const titleRef = useRef(null)
-  const handleMouseEnter = contextSafe((index: number) => {
-    if (index === currentIndex) return
+  const imgRef = useRef(null)
+  const subImagesRefs = useRef<HTMLImageElement[]>([])
 
+  const handleMainImageAnimation = (status: boolean) => {
     const tl = gsap.timeline()
 
-    tl.to(titleRef.current, {
-      duration: 0.3,
-      opacity: 0,
-      scaleX: 0.8,
-      scaleY: 0.8,
-      filter: 'blur(10px)',
-      ease: 'power2.in',
+    if (status) {
+      tl.to(imgRef.current, {
+        rotate: 35,
+        duration: 1,
+      })
+    }
+  }
 
-      onComplete: () => {
-        setCurrentIndex(index)
-
-        gsap.fromTo(
-          titleRef.current,
-          { opacity: 0, scaleX: 1.2, scaleY: 1.2, filter: 'blur(10px)' },
-          {
-            opacity: 1,
-            scaleX: 1,
-            scaleY: 1,
-            filter: 'blur(0px)',
-            duration: 0.2,
-            ease: 'power2.out',
-          },
-        )
-      },
-    })
-
-    setHoveredIndex(index)
-  })
-
-  const imgRef = useRef(null)
   useGSAP(
-    () =>
+    () => {
       gsap.fromTo(
         imgRef.current,
         {
@@ -84,7 +62,38 @@ export const Hero = () => {
           duration: 0.8,
           ease: 'expo',
         },
-      ),
+      )
+
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, scaleX: 1.2, scaleY: 1.2, filter: 'blur(10px)' },
+        {
+          opacity: 1,
+          scaleX: 1,
+          scaleY: 1,
+          filter: 'blur(0px)',
+          duration: 0.2,
+          ease: 'power2.out',
+        },
+      )
+
+      if (slidersLocale[hoveredIndex].subImages) {
+        const mm = gsap.matchMedia()
+
+        subImagesRefs.current.forEach((el, i) => {
+          mm.add('(min-width: 1024px)', () => {
+            gsap.to(el, {
+              opacity: 1,
+              duration: 1.5,
+              x: slidersLocale[hoveredIndex].subImages?.[i]?.position.desktop.x,
+              y: slidersLocale[hoveredIndex]?.subImages?.[i]?.position.desktop
+                .y,
+              ease: 'power2.out',
+            })
+          })
+        })
+      }
+    },
     { scope: imgRef, dependencies: [hoveredIndex] },
   )
 
@@ -114,7 +123,7 @@ export const Hero = () => {
           <div
             key={item.name}
             className={cn(
-              'absolute bottom-0 h-[200%] translate-y-1/2',
+              'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
 
               index === 0 && '-rotate-[50deg] lg:-rotate-[60deg]',
               index === 1 && '-rotate-[25deg] lg:-rotate-[30deg]',
@@ -129,7 +138,7 @@ export const Hero = () => {
                 'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%]',
                 'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
               )}
-              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseEnter={() => setHoveredIndex(index)}
             >
               <SliderItem
                 title={item.name}
@@ -143,15 +152,59 @@ export const Hero = () => {
         <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
           <Arcs color={hoverHexColor} />
 
-          <div className="absolute -bottom-2 right-1/2 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
+          <div className="absolute -bottom-2 right-1/2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
             <Image
               ref={imgRef}
               src={slidersLocale[hoveredIndex].image}
               alt="slider image"
               fill
               className="object-contain"
+              sizes="(max-width: 550px) 50vw, (max-width: 1100px) 100vw"
+              onMouseEnter={() => handleMainImageAnimation(true)}
+              onMouseLeave={() => handleMainImageAnimation(false)}
             />
           </div>
+
+          {slidersLocale[hoveredIndex].subImages && (
+            <div className="hero__animation absolute -bottom-2 right-1/2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
+              <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
+                {slidersLocale[hoveredIndex].subImages.map((item, index) => {
+                  const top = isMobile
+                    ? isTablet
+                      ? item.position?.tablet?.y
+                      : item.position?.mobile?.y
+                    : item.position?.desktop?.y
+                  const left = isMobile
+                    ? isTablet
+                      ? item.position?.tablet?.x
+                      : item.position?.mobile?.x
+                    : item.position?.desktop?.x
+
+                  return (
+                    <Image
+                      key={index}
+                      src={item.path}
+                      alt="animation"
+                      className={cn(
+                        `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                        isMobile ? `opacity-1` : '',
+                        isDesktop ? `w-[${item.width}px]` : '',
+                      )}
+                      style={{
+                        top: isDesktop ? `0` : `${top}px`,
+                        left: isDesktop ? `0` : `${left}px`,
+                      }}
+                      width={isDesktop ? item.width : item.width / 2}
+                      height={isDesktop ? item.height : item.height / 2}
+                      ref={(el) => {
+                        if (el) subImagesRefs.current[index] = el
+                      }}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </div>

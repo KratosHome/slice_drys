@@ -1,6 +1,8 @@
 import { Hero } from '@/components/client/main/hero/hero'
 import ProductSlider from '@/components/client/slider/productSlider'
 import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
+import { headers } from 'next/headers'
+import { detectDevice } from '@/utils/deviceDetection'
 import Faq from '@/components/client/main/faq/faq'
 import AboutUa from '@/components/client/main/about-ua'
 import Help from '@/components/client/main/help/help'
@@ -15,14 +17,19 @@ import ToTheTop from '@/components/client/ui/to-the-top'
 export default async function Home(props: {
   params: Params
   searchParams: ISearchParams
+  isMobile: boolean
+  isTablet: boolean
+  isDesktop: boolean
 }) {
   const { locale } = await props.params
+  const userAgent = (await headers()).get('user-agent') || ''
+  const device = detectDevice(userAgent)
 
-  const productsData = await getProductsSliderMain(locale)
+  const productsData: IGetProducts = await getProductsSliderMain(locale)
 
   return (
     <div>
-      <Hero />
+      <Hero device={device} />
       <ProductSlider
         title={'ТОПОВІ СУШЕНИКИ'}
         message={'найсмачніші кусь-топчики'}
