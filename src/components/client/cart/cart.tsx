@@ -8,12 +8,13 @@ import { useCartStore } from '@/store/cartStore'
 
 export default function Cart() {
   const formRef = useRef<HTMLFormElement>(null)
-  const cart = useCartStore((state) => state.cart)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formRef.current) {
-      formRef.current.submit()
+      await formRef.current.submit()
     }
+
+    const cart = useCartStore.getState().cart
 
     const productsToSubmit = (cart?.itemList || []).map((item) => ({
       id: item.id,
