@@ -9,7 +9,7 @@ import { useCartStore } from '@/store/cartStore'
 export default function Cart() {
   const formRef = useRef<HTMLFormElement>(null)
   const cart = useCartStore((state) => state.cart)
-  const clearCart = useCartStore((state) => state.clearCart)
+  const clearCart = useCartStore((state) => state.clearCartItems)
 
   const handleSubmit = () => {
     if (formRef.current) {

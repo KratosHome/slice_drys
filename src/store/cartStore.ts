@@ -42,7 +42,7 @@ type CartState = {
     price?: number
     weight?: number
   }) => void
-  clearCart: () => void
+  clearCartItems: () => void
   removeItemFromCart: (id: string) => void
 }
 
@@ -88,7 +88,7 @@ export const useCartStore = create<CartState>((set) => ({
       return { cart: updatedCart }
     })
   },
-  clearCart: () => {
+  clearCartItems: () => {
     set((state) => {
       const updatedCart = { ...state.cart, itemList: [] }
       localStorage.setItem('cart', JSON.stringify(updatedCart))
