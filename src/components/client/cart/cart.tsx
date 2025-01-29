@@ -4,11 +4,12 @@ import React, { useRef } from 'react'
 import CartForm from '@/components/client/cart/cart-form'
 import CartList from '@/components/client/cart/cart-list'
 import { createOrUpdateOrder } from '@/server/orders/create-order'
-import { useCartStore, clearCart } from '@/store/cartStore'
+import { useCartStore } from '@/store/cartStore'
 
 export default function Cart() {
   const formRef = useRef<HTMLFormElement>(null)
   const cart = useCartStore((state) => state.cart)
+  const clearCart = useCartStore((state) => state.clearCart)
 
   const handleSubmit = () => {
     if (formRef.current) {
@@ -47,6 +48,7 @@ export default function Cart() {
       comment: cart.formData?.comment || '',
     }
     createOrUpdateOrder(OrderDataToSubmit)
+    clearCart()
   }
 
   return (
