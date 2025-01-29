@@ -6,7 +6,10 @@ import { Order } from './orderSchema'
 export async function createOrUpdateOrder(orderData: Partial<IOrder>) {
   try {
     await connectToDb()
-    const existingOrder = await Order.findById(orderData.id)
+
+    const existingOrder = orderData.id
+      ? await Order.findById(orderData.id)
+      : false
 
     if (existingOrder) {
       Object.assign(existingOrder, orderData)
@@ -15,6 +18,7 @@ export async function createOrUpdateOrder(orderData: Partial<IOrder>) {
       return { success: true, message: 'Order updated' }
     } else {
       const order = new Order(orderData)
+
       await order.save()
 
       return { success: true, message: 'Order created' }

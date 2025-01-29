@@ -3,8 +3,8 @@
 import React, { useRef } from 'react'
 import CartForm from '@/components/client/cart/cart-form'
 import CartList from '@/components/client/cart/cart-list'
-import { createOrder } from '@/server/orders/create-order'
-import { useCartStore } from '@/store/cartStore'
+import { createOrUpdateOrder } from '@/server/orders/create-order'
+import { useCartStore, clearCart } from '@/store/cartStore'
 
 export default function Cart() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -14,7 +14,6 @@ export default function Cart() {
     if (formRef.current) {
       formRef.current.submit()
     }
-
     const productsToSubmit = (cart?.itemList || []).map((item) => ({
       id: item.id,
       name: item.name,
@@ -36,7 +35,7 @@ export default function Cart() {
     }
 
     const OrderDataToSubmit = {
-      id: 'unique-order-id',
+      id: '',
       status: 'new' as const,
       products: productsToSubmit,
       total: productsToSubmit?.reduce((acc, product) => acc + product.total, 0),
@@ -47,7 +46,7 @@ export default function Cart() {
       },
       comment: cart.formData?.comment || '',
     }
-    createOrder(OrderDataToSubmit)
+    createOrUpdateOrder(OrderDataToSubmit)
   }
 
   return (
