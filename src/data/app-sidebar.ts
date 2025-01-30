@@ -1,9 +1,10 @@
 import {
   Home,
-  FolderKanban,
+  Tag,
   Rss,
   StickyNote,
   CircleUser,
+  FolderKanban,
   TrendingUp,
 } from 'lucide-react'
 
@@ -16,30 +17,36 @@ export const appSidebarData = [
   },
   {
     id: 2,
+    name: 'Категорії',
+    icon: Tag, // Актуальна іконка для категорій
+    link: 'admin/categories',
+  },
+  {
+    id: 3,
     name: 'Товари',
     icon: FolderKanban,
     link: 'admin/products',
   },
   {
-    id: 3,
+    id: 4,
     name: 'Блог',
     icon: Rss,
     link: 'admin/blog',
   },
   {
-    id: 4,
+    id: 5,
     name: 'Сторінки',
     icon: StickyNote,
     link: 'admin/pages',
   },
   {
-    id: 5,
+    id: 6,
     name: 'Клієнти',
     icon: CircleUser,
     link: 'admin/clients',
   },
   {
-    id: 6,
+    id: 7,
     name: 'Статистика',
     icon: TrendingUp,
     link: 'admin/statistics',

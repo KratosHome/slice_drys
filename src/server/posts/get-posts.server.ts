@@ -20,6 +20,7 @@ const getSelectedFields = (locale: ILocale) => ({
   slug: 1,
   visited: 1,
   updatedAt: 1,
+  createdAt: 1,
 })
 
 const formatPost = (post: IPostLocal, locale: ILocale) => ({
@@ -33,6 +34,7 @@ const formatPost = (post: IPostLocal, locale: ILocale) => ({
   keywords: post.keywords[locale],
   visited: post.visited,
   updatedAt: post.updatedAt,
+  createdAt: post.createdAt,
 })
 
 export async function getPosts({
@@ -62,7 +64,6 @@ export async function getPosts({
       return {
         success: true,
         post: [formatPost(post, locale)],
-        postAll: [],
         totalPosts: 0,
         message: 'Products retrieved',
       }
@@ -70,7 +71,7 @@ export async function getPosts({
 
     const pagination = page && limit ? { skip: (page - 1) * limit, limit } : {}
 
-    const [posts, totalPostsCount, allPosts] = await Promise.all([
+    const [posts, totalPostsCount] = await Promise.all([
       Post.find({}, getSelectedFields(locale))
         .sort({ createdAt: -1 })
         .skip(pagination.skip ?? 0)
@@ -83,7 +84,6 @@ export async function getPosts({
     return {
       success: true,
       post: posts.map((p: IPostLocal) => formatPost(p, locale)),
-      postAll: allPosts.map((p) => ({ ...p, _id: p._id?.toString() })),
       totalPosts: totalPostsCount,
       message: 'Products retrieved',
     }
@@ -91,7 +91,6 @@ export async function getPosts({
     return {
       success: false,
       post: [],
-      postAll: [],
       totalPosts: 0,
       message: `Can't retrieve posts ${error}`,
     }

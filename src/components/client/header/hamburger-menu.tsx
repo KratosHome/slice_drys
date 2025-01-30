@@ -11,9 +11,8 @@ import {
 } from '@headlessui/react'
 import { useState } from 'react'
 import Button from '@/components/client/ui/button'
-import LocaleChange from '../locale-change/locale-change'
-import Cart from '@/components/client/card/cart'
-import Search from '@/components/client/search/search'
+import LocaleChange from '@/components/client/header/locale-change/locale-change'
+import Cart from '@/components/client/header/card/cart'
 
 interface HamburgerMenu {
   headerLinks: ILink[]
@@ -29,6 +28,10 @@ export default function HamburgerMenu({
   const closeMenu = () => setIsOpen(!isOpen)
 
   const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
+
+  const openInNewTab = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
 
   return (
     <Menu>
@@ -81,19 +84,19 @@ export default function HamburgerMenu({
                   width={39}
                   height={46}
                 />
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
               </Link>
             </MenuItem>
             <MenuItem>
               <div className="group relative w-fit justify-self-center">
                 <LocaleChange />
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
               </div>
             </MenuItem>
             <MenuItem>
               <div className="group relative w-fit">
                 <Cart />
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
               </div>
             </MenuItem>
           </MenuSection>
@@ -108,7 +111,7 @@ export default function HamburgerMenu({
                     href={link.href}
                   >
                     {link.name}
-                    <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                    <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
                   </Link>
                 </MenuItem>
               )
@@ -123,7 +126,7 @@ export default function HamburgerMenu({
                 <MenuItem key={link.id}>
                   <Link href="#" className="group relative block w-min py-4">
                     {link.name}
-                    <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                    <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
                   </Link>
                 </MenuItem>
               )
@@ -132,7 +135,12 @@ export default function HamburgerMenu({
 
           <MenuSection className="flex justify-center gap-x-5 pt-5">
             <MenuItem>
-              <Link href="#" className="group relative w-fit">
+              <Link
+                href="https://www.facebook.com/slicedrys/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-fit"
+              >
                 <Image
                   src={'/icons/facebook.svg'}
                   alt="facebook icon"
@@ -140,11 +148,15 @@ export default function HamburgerMenu({
                   height={32}
                   className="cursor-pointer"
                 />
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
               </Link>
             </MenuItem>
             <MenuItem>
-              <Link href="#" className="group relative w-fit">
+              <Link
+                href="https://www.instagram.com/slicedrys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative w-fit"
+              >
                 <Image
                   src={'/icons/instagram.svg'}
                   alt="insta icon"
@@ -152,7 +164,6 @@ export default function HamburgerMenu({
                   height={32}
                   className="cursor-pointer"
                 />
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
               </Link>
             </MenuItem>
           </MenuSection>
@@ -170,21 +181,8 @@ export default function HamburgerMenu({
                 className="group relative font-medium"
               >
                 +380123456789
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+                <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
               </Link>
-            </MenuItem>
-          </MenuSection>
-
-          <MenuSection className="px-8 pt-5">
-            <Search />
-            <MenuItem>
-              <button
-                type="submit"
-                className="group relative block h-8 w-[88px] bg-black text-sm text-white"
-              >
-                Шукати
-                <div className="absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
-              </button>
             </MenuItem>
           </MenuSection>
         </MenuItems>

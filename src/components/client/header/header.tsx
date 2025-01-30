@@ -7,18 +7,18 @@ import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Button from '@/components/client/ui/button'
-import LocaleChange from '@/components/client/locale-change/locale-change'
-import Cart from '@/components/client/card/cart'
-import Search from '@/components/client/search/search'
-import NumberCall from '@/components/client/number-call/number-call'
+import LocaleChange from '@/components/client/header/locale-change/locale-change'
+import Cart from '@/components/client/header/card/cart'
+import NumberCall from '@/components/client/header/number-call/number-call'
 
 interface HeaderP {
   headerLinks: ILink[]
 }
 
 const Header: FC<HeaderP> = ({ headerLinks }) => {
+  const t = useTranslations('main.header')
   const local = useLocale()
   const headerRef = useRef<HTMLDivElement>(null)
 
@@ -35,9 +35,13 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
     )
   })
 
+  const openInNewTab = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <header>
-      <Info title="Безкоштовна доставка від 1000 грн." />
+      <Info title={`${t('free-delivery-from')}`} />
       <div
         ref={headerRef}
         className="mx-auto mt-6 box-border flex max-w-[1280px] items-center justify-between px-5 opacity-0"
@@ -48,7 +52,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
               <Link
                 key={link.id}
                 href={`/${local}/${link.href}`}
-                className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red"
+                className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
               >
                 {link.name}
               </Link>
@@ -56,7 +60,12 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
           </nav>
           <HamburgerMenu headerLinks={headerLinks} hamburgerLinksOther={[]} />
           <div className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex">
-            <Button variant={'icons'}>
+            <Button
+              variant={'icons'}
+              onClick={() =>
+                openInNewTab('https://www.facebook.com/slicedrys/')
+              }
+            >
               <Image
                 src={'/icons/facebook.svg'}
                 alt="facebook icon"
@@ -65,7 +74,12 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                 className="cursor-pointer"
               />
             </Button>
-            <Button variant={'icons'}>
+            <Button
+              variant={'icons'}
+              onClick={() =>
+                openInNewTab('https://www.instagram.com/slicedrys')
+              }
+            >
               <Image
                 src={'/icons/instagram.svg'}
                 alt="insta icon"
@@ -90,33 +104,33 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             <nav className="mr-[52px] hidden gap-x-3 text-[20px] lg:flex">
               <Link
                 href={`/${local}/blog`}
-                className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red"
+                className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
               >
-                Блог
+                {t('blog')}
               </Link>
               <Link
                 href={`/${local}/opt`}
-                className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red"
+                className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
               >
-                Опт
+                {t('wholesale')}
               </Link>
               <Link
                 href={`/${local}/contacts`}
-                className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red"
+                className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
               >
-                Контакти
+                {t('contacts')}
               </Link>
             </nav>
             <div className="flex items-center gap-x-4">
               <LocaleChange className="hidden lg:block" />
-              <Search />
+              <div />
               <Cart />
             </div>
           </div>
           <div className="mt-3 flex justify-between">
             <NumberCall className="hidden lg:flex" />
             <Button type="button" variant="button">
-              Замовити
+              {t('order')}
             </Button>
           </div>
         </div>
