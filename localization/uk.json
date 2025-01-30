@@ -14,6 +14,15 @@
     "Page": "Сторінка",
     "Contacts": "Контакти"
   },
+  "Contacts": {
+    "Contacts": "Контакти",
+    "email": "slice&drys@gmail.com",
+    "phone": "+380123456789",
+    "address": "м. Черкаси, вул. Надпільна 248А.",
+    "openTime": "10:00",
+    "closeTime": "19:00",
+    "title": "Інформація"
+  },
   "Share": {
     "Share": "Поділитись",
     "facebook icon": "іконка Facebook",

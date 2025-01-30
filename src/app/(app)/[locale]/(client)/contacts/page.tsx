@@ -1,3 +1,4 @@
+import ContactsTitle from '@/components/client/contact/contacts-title'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,49 +8,53 @@ import {
 } from '@/components/client/ui/breadcrumbs'
 import React from 'react'
 
-export type ContactPageProps = {
+type Props = {
   params: Promise<{ locale: ILocale }>
-  searchParams: Promise<{ page?: string }>
 }
 
 const translations = {
   en: {
     title: 'Contacts',
     description: 'This is the contact page.',
-    keywords: ['blog', 'articles', 'news'],
+    keywords: ['contacts', 'address', 'phone'],
   },
   uk: {
     title: 'Контакти',
     description: 'Це сторінка контактів.',
-    keywords: ['блог', 'статті', 'новини'],
+    keywords: ['контакти', 'адреса', 'телефон'],
   },
 }
 
-export async function generateMetadata({ params }: ContactPageProps) {
+export async function generateMetadata({ params }: Props) {
   const { locale } = await params
 
   return translations[locale]
 }
 
-export default async function Contacts({ params }: ContactPageProps) {
+export default async function Contacts({ params }: Props) {
   const { locale } = await params
 
   return (
-    <div className="pl-5 pt-7">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/${locale}/contacts`}
-              localizationKey="Contacts"
-            ></BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <div className="mx-auto max-w-[1280px] p-5">
+      <div className="pl-5 pt-7">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/${locale}/contacts`}
+                localizationKey="Contacts"
+              ></BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <div className="">
+        <ContactsTitle />
+      </div>
     </div>
   )
 }
