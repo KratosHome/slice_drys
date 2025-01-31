@@ -29,6 +29,7 @@ interface FormData {
   noCall?: boolean
 }
 type CartState = {
+  openCart: boolean
   cart: {
     itemList?: CartItem[] | undefined
     formData?: FormData | undefined
@@ -44,10 +45,13 @@ type CartState = {
   }) => void
   clearCart: () => void
   removeItemFromCart: (id: string) => void
+  setOpenCart: (openCart: boolean) => void
 }
 
 export const useCartStore = create<CartState>((set) => ({
   cart: JSON.parse(localStorage.getItem('cart') || '{}'),
+  openCart: false,
+  setOpenCart: (openCart: boolean) => set({ openCart }),
   addItemToCart: (props) => {
     const {
       id,
