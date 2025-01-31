@@ -26,25 +26,21 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({ product }) => {
   const locale = useLocale() as ILocale
 
-  const addToCart = useCartStore((state) => state.addItemToCart)
+  const { addItemToCart, setOpenCart } = useCartStore((state) => state)
 
   const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
 
   const handleAddToCart = () => {
-    if (selectedVariable.count >= 1) {
-      if (product._id && product.img)
-        addToCart({
-          id: product._id,
-          quantity: 1,
-          image: product.img,
-          name: product.name,
-          price: selectedVariable.price,
-          weight: selectedVariable.weight,
-        })
-      alert('Товар додано до кошика!')
-    } else {
-      alert('Товар тимчасово відсутній на складі. Очікуємо!')
-    }
+    if (product._id && product.img)
+      addItemToCart({
+        id: product._id,
+        quantity: 1,
+        image: product.img,
+        name: product.name,
+        price: selectedVariable.price,
+        weight: selectedVariable.weight,
+      })
+    setOpenCart(true)
   }
 
   const handleVariableChange = (value: number | string) => {
