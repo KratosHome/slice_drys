@@ -1,5 +1,4 @@
 'use client'
-import { useState } from 'react'
 import Image from 'next/image'
 import Button from '@/components/client/ui/button'
 import {
@@ -9,35 +8,8 @@ import {
 } from '@/components/client/ui/popover'
 import { useCartStore } from '@/store/cartStore'
 
-const initialCartItems: any[] = [
-  {
-    id: 1,
-    name: 'КУРКА СУШЕНА',
-    price: 130,
-    weight: '30 г',
-    quantity: 1,
-    image: '/images/chicken.jpg',
-  },
-  {
-    id: 2,
-    name: 'КУРКА СУШЕНА',
-    price: 130,
-    weight: '30 г',
-    quantity: 1,
-    image: '/images/chicken.jpg',
-  },
-  {
-    id: 3,
-    name: 'КУРКА СУШЕНА',
-    price: 260,
-    weight: '30 г',
-    quantity: 2,
-    image: '/images/chicken.jpg',
-  },
-]
-
 export default function Cart() {
-  const { openCart, setOpenCart } = useCartStore((state) => state)
+  const { openCart, setOpenCart, cart } = useCartStore((state) => state)
 
   return (
     <div className="relative inline-block">
@@ -46,19 +18,19 @@ export default function Cart() {
           <Button variant="icons">
             <Image src={'/icons/bin.svg'} width={32} height={32} alt="cart" />
             <span className="absolute -right-1 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
-              {initialCartItems.length}
+              {cart.itemList?.length}
             </span>
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-full max-w-md rounded-lg bg-white p-4">
+        <PopoverContent className="mr-0 w-full max-w-md rounded-lg bg-white p-4 md:!mr-32">
           <div className="flex items-center justify-between border-b pb-2">
             <h2 className="text-lg font-bold">КОШИК</h2>
           </div>
           <div className="max-h-[400px] space-y-4 overflow-y-auto">
-            {initialCartItems.map((item) => (
+            {cart.itemList?.map((item) => (
               <div key={item.id} className="flex items-center gap-4 p-2">
-                vx cv xcv
+                <div className="capitalize"> {item.name}</div>
               </div>
             ))}
           </div>
