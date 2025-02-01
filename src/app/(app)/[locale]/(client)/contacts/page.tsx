@@ -1,4 +1,5 @@
 import ContactBreadcrumbs from '@/components/client/contact/contact-breadcrumbs'
+import ContactInfo from '@/components/client/contact/contact-info'
 import ContactTitle from '@/components/client/contact/contact-title'
 
 type Props = {
@@ -33,6 +34,9 @@ export default async function Contacts({ params }: Props) {
       </div>
       <div>
         <ContactTitle />
+      </div>
+      <div>
+        <ContactInfo />
       </div>
     </div>
   )

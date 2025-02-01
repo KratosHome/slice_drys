@@ -4,16 +4,10 @@ const ContactTitle = () => {
   const t = useTranslations('Contacts')
   return (
     <div className="w-full">
-      <div
-        className="display: mt-8 block pl-[21px] text-5xl lg:text-9xl"
-        style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-      >
+      <div className="font-rubikDouble mt-8 block pl-[21px] text-5xl lg:text-9xl">
         {t('Contacts')}
       </div>
-      <div
-        className="pr-5 pt-[27px] text-right text-base font-medium"
-        style={{ fontFamily: 'var(--font-poppins)' }}
-      >
+      <div className="pr-5 pt-[27px] text-right font-poppins text-base font-medium">
         <p>{t('description')}</p>
       </div>
       <div className="flex w-full pt-1">

@@ -23,6 +23,7 @@ const config: Config = {
       }),
       fontFamily: {
         poppins: 'var(--font-poppins)',
+        rubikDouble: 'var(--font-rubik-doodle-shadow)',
       },
       screens: {
         lap: {
