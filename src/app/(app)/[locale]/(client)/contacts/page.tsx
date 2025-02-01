@@ -31,7 +31,7 @@ export default async function Contacts({ params }: Props) {
       <div className="pl-5">
         <ContactBreadcrumbs locale={locale} />
       </div>
-      <div className="mt-8">
+      <div>
         <ContactTitle />
       </div>
     </div>
