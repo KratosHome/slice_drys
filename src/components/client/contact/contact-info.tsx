@@ -1,4 +1,9 @@
-import { Clock3, House, Mail, Phone } from 'lucide-react'
+import {
+  AddressIcon,
+  ClockIcon,
+  EmailIcon,
+  PhoneIcon,
+} from '@/components/client/contact/contact-icons'
 import { useTranslations } from 'next-intl'
 
 const ContactInfo = () => {
@@ -11,25 +16,25 @@ const ContactInfo = () => {
         </p>
         <p className="flex pt-8">
           <span className="mr-3">
-            <Mail />
+            <EmailIcon />
           </span>
           <span>{t('email')}</span>
         </p>
         <p className="flex pt-8">
           <span className="mr-3">
-            <Phone />
+            <PhoneIcon />
           </span>
           <span>{t('phone')}</span>
         </p>
         <p className="flex pt-8">
           <span className="mr-3">
-            <House />
+            <AddressIcon />
           </span>
           <span>{t('address')}</span>
         </p>
         <p className="flex pt-8">
           <span className="mr-3">
-            <Clock3 />
+            <ClockIcon />
           </span>
           <span>
             {t('openTime')} - {t('closeTime')}
