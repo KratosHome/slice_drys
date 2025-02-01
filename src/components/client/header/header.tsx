@@ -24,89 +24,90 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
   const t = useTranslations('main.header')
   const local = useLocale()
   const headerRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLImageElement>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const socialRef = useRef<HTMLDivElement>(null)
   const cullRef = useRef<HTMLDivElement>(null)
-  const dividerRef = useRef<HTMLDivElement>(null)
+  const curtRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: headerRef.current,
-        start: 'top top',
-        end: '+=200px',
-        scrub: true,
-        toggleActions: 'play none none reverse',
-      },
+    const mm = gsap.matchMedia()
+
+    mm.add('(min-width: 1024px)', () => {
+      const tl = gsap.timeline({
+        defaults: { duration: 0.5, ease: 'power1.out' },
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top top',
+          end: '+=200px',
+          scrub: true,
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      tl.to(
+        headerRef.current,
+        {
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(10px)',
+          height: '60px',
+          marginTop: '0px',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          duration: 0.5,
+          minWidth: '100vw',
+          ease: 'power1.out',
+        },
+        0,
+      )
+
+      tl.to(menuRef.current, { padding: '0px 20px' }, '<')
+
+      tl.to(logoRef.current, { scale: 0.3, y: -30 }, '<')
+
+      tl.to(socialRef.current, { opacity: 0, y: -30 }, '<')
+      tl.to(cullRef.current, { opacity: 0, y: -30 }, '<')
     })
 
-    tl.to(
-      headerRef.current,
-      {
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(10px)',
-        height: '60px',
-        marginTop: '0px',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      0,
-    )
+    mm.add('(max-width: 1023px)', () => {
+      const tl = gsap.timeline({
+        defaults: { duration: 0.4, ease: 'power1.out' },
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top top',
+          end: '+=200px',
+          scrub: true,
+          toggleActions: 'play none none reverse',
+        },
+      })
 
-    tl.to(
-      dividerRef.current,
-      {
-        marginTop: '-55px',
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      0,
-    )
+      tl.to(
+        headerRef.current,
+        {
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(5px)',
+          marginTop: '0px',
+          boxShadow: '0px 3px 8px rgba(0, 0, 0, 0.08)',
+          duration: 0.5,
+          ease: 'power1.out',
+        },
+        0,
+      )
 
-    tl.to(
-      menuRef.current,
-      {
-        padding: '0px 20px',
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      '<',
-    )
+      tl.to(
+        curtRef.current,
+        {
+          marginTop: '10px',
+        },
+        0,
+      )
 
-    tl.to(
-      logoRef.current,
-      {
-        scale: 0.3,
-        y: -30,
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      '<',
-    )
+      tl.to(logoRef.current, { x: -20 }, '<')
 
-    tl.to(
-      socialRef.current,
-      {
-        opacity: 0,
-        y: -30,
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      '<',
-    )
+      tl.to(menuRef.current, { padding: '0px 10px' }, '<')
 
-    tl.to(
-      cullRef.current,
-      {
-        opacity: 0,
-        y: -30,
-        duration: 0.5,
-        ease: 'power1.out',
-      },
-      '<',
-    )
+      tl.to(socialRef.current, { opacity: 0, y: -15 }, '<')
+      tl.to(cullRef.current, { opacity: 0, display: 'none', y: -15 }, '<')
+    })
   })
 
   return (
@@ -114,7 +115,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
       <Info title={`${t('free-delivery-from')}`} />
       <header
         ref={headerRef}
-        className="fixed left-0 top-0 z-50 mt-6 w-full transition-all"
+        className="fixed left-1/2 top-0 z-50 mt-6 w-full max-w-[1240px] -translate-x-1/2 border-b-[1px] border-[#E4E4E4] transition-all lg:pb-6"
       >
         <div
           ref={menuRef}
@@ -175,9 +176,12 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
               </Button>
             </div>
           </div>
-          <Link href={`/${local}`} className="ml-[55px]">
+          <Link
+            ref={logoRef}
+            href={`/${local}`}
+            className="ml-[55px] py-3 lg:py-0"
+          >
             <Image
-              ref={logoRef}
               src={'/icons/logo.svg'}
               alt="slice drus icon"
               className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
@@ -207,7 +211,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                   {t('contacts')}
                 </Link>
               </nav>
-              <div className="flex items-center gap-x-4">
+              <div ref={curtRef} className="flex items-center gap-x-4">
                 <LocaleChange className="hidden lg:block" />
                 <Cart />
               </div>
@@ -220,10 +224,6 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             </div>
           </div>
         </div>
-        <div
-          ref={dividerRef}
-          className="mx-auto mt-6 h-[1px] w-full max-w-[1240px] bg-[#E4E4E4]"
-        />
       </header>
     </>
   )
