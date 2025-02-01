@@ -60,7 +60,7 @@ const reviewsData = {
 const variants = ['grey', 'black', 'grey-white']
 
 export default function Reviews() {
-  const t = useTranslations('Reviews')
+  const t = useTranslations('main.reviews')
 
   const locale: ILocale = useLocale() as ILocale
   return (
@@ -73,7 +73,7 @@ export default function Reviews() {
           {t('reviews')}
         </div>
         <div className="ml-auto flex flex-col">
-          <div className="inline-block pb-3 text-[24px]"> {t('say those')}</div>
+          <div className="inline-block pb-3 text-[24px]"> {t('say-those')}</div>
           <div className="ml-auto flex w-[90%]">
             <Image
               src={'/images/curved-line2.svg'}

@@ -14,13 +14,13 @@ export async function getProductsSliderMain(locale: ILocale) {
     const formattedProducts: IProduct[] = products.map(
       (product: IProductLocal) => ({
         ...product,
-        _id: product._id as string,
+        _id: product._id?.toString(),
         name: product.name[locale],
         description: product.description[locale],
         category: product.category[locale],
         menu: product.menu[locale],
         composition: product.composition[locale],
-        variables: product.variables,
+        variables: JSON.parse(JSON.stringify(product.variables)),
         statusLabel: product.statusLabel,
         nutritionalValue: product.nutritionalValue,
       }),
@@ -35,7 +35,7 @@ export async function getProductsSliderMain(locale: ILocale) {
     return {
       success: false,
       products: [],
-      message: error,
+      message: `${error}`,
     }
   }
 }

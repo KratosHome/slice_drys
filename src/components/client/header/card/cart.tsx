@@ -1,26 +1,34 @@
 'use client'
 import Image from 'next/image'
-import Button from '@/components/client/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/client/ui/popover'
 import { useCartStore } from '@/store/cartStore'
+import { useEffect, useState } from 'react'
 
 export default function Cart() {
   const { openCart, setOpenCart, cart } = useCartStore((state) => state)
+
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <div className="relative inline-block">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
-          <Button variant="icons">
+          <div>
             <Image src={'/icons/bin.svg'} width={32} height={32} alt="cart" />
-            <span className="absolute -right-1 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
-              {cart.itemList?.length}
-            </span>
-          </Button>
+            {isClient && cart.itemList?.length ? (
+              <span className="absolute -right-1 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
+                {cart.itemList.length}
+              </span>
+            ) : null}
+          </div>
         </PopoverTrigger>
 
         <PopoverContent className="mr-0 w-full max-w-md rounded-lg bg-white p-4 md:!mr-32">
@@ -39,8 +47,8 @@ export default function Cart() {
             <p className="text-lg font-bold">грн</p>
           </div>
           <div className="flex gap-2">
-            <Button>Продовжити покупки</Button>
-            <Button className="bg-black text-white">Оформити замовлення</Button>
+            <div>Продовжити покупки</div>
+            <div className="bg-black text-white">Оформити замовлення</div>
           </div>
         </PopoverContent>
       </Popover>

@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 
+const isBrowser = typeof window !== 'undefined'
+
 type CartItem = {
   id: string
   quantity: number
@@ -49,7 +51,7 @@ type CartState = {
 }
 
 export const useCartStore = create<CartState>((set) => ({
-  cart: JSON.parse(localStorage.getItem('cart') || '{}'),
+  cart: isBrowser ? JSON.parse(localStorage.getItem('cart') || '{}') : {},
   openCart: false,
   setOpenCart: (openCart: boolean) => set({ openCart }),
   addItemToCart: (props) => {
