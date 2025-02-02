@@ -183,7 +183,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
           >
             <Image
               src={'/icons/logo.svg'}
-              alt={`${t('logo-slice-drys')}`}
+              alt={`${t('logo')}`}
               className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
               width={86}
               height={100}

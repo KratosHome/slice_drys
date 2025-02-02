@@ -9,7 +9,8 @@
       "facebook-icon": "facebook icon",
       "instagram-icon": "instagram icon",
       "logo-slice-drys": "logo slice drys",
-      "telephone-icon": "telephone icon"
+      "telephone-icon": "telephone icon",
+      "logo": "logo"
     },
     "faq": {
       "all-about-dry-fruits": "all about dry fruits",
@@ -22,7 +23,18 @@
     "our-partners": "Our partners"
   },
   "cart": {
-    "basket": "Basket"
+    "basket": "Basket",
+    "close": "Close",
+    "cart-empty": "Cart is empty.",
+    "added": "Added",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "delete": "Delete",
+    "g": "g.",
+    "uah": "UAH",
+    "total": "Total",
+    "minimum-order-amount": "Minimum order amount",
+    "continue-shopping": "Continue shopping",
+    "order": "Order"
   },
   "Blog": {
     "paginationButtonLeft": "Previous",
