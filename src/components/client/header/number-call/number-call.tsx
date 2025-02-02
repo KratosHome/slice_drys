@@ -2,12 +2,15 @@ import React, { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/utils/cn'
+import { useTranslations } from 'next-intl'
 
 interface NumberCallProps {
   className?: string
 }
 
 const NumberCall: FC<NumberCallProps> = ({ className }) => {
+  const t = useTranslations('main.header')
+
   return (
     <div
       className={cn(
@@ -16,11 +19,16 @@ const NumberCall: FC<NumberCallProps> = ({ className }) => {
       )}
     >
       <div className="transform duration-300 group-hover:skew-x-[-5deg] group-hover:scale-110">
-        <Image src={'/icons/tel.svg'} alt="tel icon" width={24} height={24} />
+        <Image
+          src={'/icons/tel.svg'}
+          alt={`${t('telephone-icon')}`}
+          width={24}
+          height={24}
+        />
       </div>
       <Link
         href="tel:+380123456789"
-        className="block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red"
+        className="group-hover:text-red block duration-300 group-hover:skew-x-[-10deg]"
       >
         +380123456789
       </Link>

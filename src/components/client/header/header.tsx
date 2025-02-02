@@ -150,7 +150,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
               >
                 <Image
                   src={'/icons/facebook.svg'}
-                  alt="facebook icon"
+                  alt={`${t('facebook-icon')}`}
                   width={32}
                   height={32}
                   className="cursor-pointer"
@@ -168,7 +168,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
               >
                 <Image
                   src={'/icons/instagram.svg'}
-                  alt="insta icon"
+                  alt={`${t('instagram-icon')}`}
                   width={32}
                   height={32}
                   className="cursor-pointer"
@@ -183,7 +183,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
           >
             <Image
               src={'/icons/logo.svg'}
-              alt="slice drus icon"
+              alt={`${t('logo-slice-drys')}`}
               className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
               width={86}
               height={100}
