@@ -74,6 +74,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       metaDescription: { en: '', uk: '' },
     },
   })
+
   useEffect(() => {
     let url: string | null = null
 

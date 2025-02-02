@@ -71,7 +71,7 @@ export async function getPosts({
 
     const pagination = page && limit ? { skip: (page - 1) * limit, limit } : {}
 
-    const [posts, totalPostsCount] = await Promise.all([
+    const [posts, totalPostsCount, allPosts] = await Promise.all([
       Post.find({}, getSelectedFields(locale))
         .sort({ createdAt: -1 })
         .skip(pagination.skip ?? 0)
@@ -84,12 +84,14 @@ export async function getPosts({
     return {
       success: true,
       post: posts.map((p: IPostLocal) => formatPost(p, locale)),
+      postAll: allPosts.map((p) => ({ ...p, _id: p._id?.toString() })),
       totalPosts: totalPostsCount,
       message: 'Products retrieved',
     }
   } catch (error) {
     return {
       success: false,
+      postAll: [],
       post: [],
       totalPosts: 0,
       message: `Can't retrieve posts ${error}`,
