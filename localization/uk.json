@@ -5,7 +5,12 @@
       "blog": "Блог",
       "wholesale": "Опт",
       "contacts": "Контакти",
-      "order": "Замовити"
+      "order": "Замовити",
+      "facebook-icon": "facebook іконка",
+      "instagram-icon": "instagram іконка",
+      "logo-slice-drys": "логтип slice drys",
+      "telephone-icon": "telephone іконка",
+      "logo": "логотип"
     },
     "faq": {
       "all-about-dry-fruits": "все про сушеники",
@@ -16,6 +21,20 @@
       "say-those": "кажуть ті, хто вже скуштував сушеники "
     },
     "our-partners": "Наші партнери"
+  },
+  "cart": {
+    "basket": "Кошик",
+    "close": "Закрити",
+    "cart-empty": "Кошик порожній.",
+    "added": "Додано",
+    "itemCount": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товарів}}",
+    "delete": "Видалити",
+    "g": "г.",
+    "uah": "грн",
+    "total": "До сплати",
+    "minimum-order-amount": "Мінімальна сума замовлення",
+    "continue-shopping": "Продовжити покупки",
+    "order": "Оформити замовлення"
   },
   "blog": {
     "paginationButtonLeft": "Попередня",

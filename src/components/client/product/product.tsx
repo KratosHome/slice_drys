@@ -39,6 +39,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         name: product.name,
         price: selectedVariable.price,
         weight: selectedVariable.weight,
+        maxQuantity: selectedVariable.count,
       })
     setOpenCart(true)
   }

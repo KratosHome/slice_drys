@@ -9,6 +9,7 @@ type CartItem = {
   name: string
   price: number
   weight: number
+  maxQuantity: number
 }
 
 interface DeliveryInfo {
@@ -32,6 +33,8 @@ interface FormData {
 }
 type CartState = {
   openCart: boolean
+  totalPrice?: number
+  minOrderAmount: number
   cart: {
     itemList?: CartItem[] | undefined
     formData?: FormData | undefined
@@ -39,12 +42,18 @@ type CartState = {
   setCartFormData: (data: FormData) => void
   addItemToCart: (props: {
     id: string
-    quantity?: number
+    quantity: number
+    maxQuantity: number
     image?: string
     name?: string
     price?: number
     weight?: number
   }) => void
+  updateItemQuantity: (
+    id: string,
+    quantity: number,
+    maxQuantity: number,
+  ) => void
   clearCart: () => void
   removeItemFromCart: (id: string) => void
   setOpenCart: (openCart: boolean) => void
@@ -53,6 +62,7 @@ type CartState = {
 export const useCartStore = create<CartState>((set) => ({
   cart: isBrowser ? JSON.parse(localStorage.getItem('cart') || '{}') : {},
   openCart: false,
+  minOrderAmount: 300,
   setOpenCart: (openCart: boolean) => set({ openCart }),
   addItemToCart: (props) => {
     const {
@@ -62,6 +72,7 @@ export const useCartStore = create<CartState>((set) => ({
       name = '',
       price = 0,
       weight = 0,
+      maxQuantity = 0,
     } = props
     set((state) => {
       const existingItem = state.cart.itemList?.find((item) => item.id === id)
@@ -69,13 +80,13 @@ export const useCartStore = create<CartState>((set) => ({
       if (existingItem) {
         updatedItemList = state.cart.itemList?.map((item) =>
           item.id === id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: item.quantity + quantity, maxQuantity }
             : item,
         )
       } else {
         updatedItemList = [
           ...(state.cart.itemList ?? []),
-          { id, quantity, image, name, price, weight },
+          { id, quantity, image, name, price, weight, maxQuantity },
         ]
       }
 
@@ -84,6 +95,20 @@ export const useCartStore = create<CartState>((set) => ({
       return { cart: updatedCart }
     })
   },
+
+  updateItemQuantity: (id, quantity, maxQuantity) => {
+    set((state) => {
+      const newQuantity = Math.min(Math.max(quantity, 1), maxQuantity)
+      const updatedItemList = state.cart.itemList?.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item,
+      )
+
+      const updatedCart = { ...state.cart, itemList: updatedItemList }
+      localStorage.setItem('cart', JSON.stringify(updatedCart))
+      return { cart: updatedCart }
+    })
+  },
+
   removeItemFromCart: (id: string) => {
     set((state) => {
       const updatedItemList =
