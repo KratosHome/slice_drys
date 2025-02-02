@@ -33,11 +33,16 @@
     "Contacts": "Contacts",
     "email": "slice&drys@gmail.com",
     "phone": "+380123456789",
-    "address": "Cherkasy city, str. Nadpilna, 248A",
+    "location": "Cherkasy city, str. Nadpilna, 248A",
     "openTime": "10:00",
     "closeTime": "19:00",
-    "title": "Information",
-    "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help."
+    "addressTitle": "Information",
+    "contactDescription": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
+    "sendDescription": "Do you want us to call?",
+    "sendButton": "Send",
+    "inputDescription": "Phone",
+    "inputHint": "In the format +38 (093) 12 34 567",
+    "adverbTitle": "Join our community!"
   },
   "Share": {
     "Share": "Share",

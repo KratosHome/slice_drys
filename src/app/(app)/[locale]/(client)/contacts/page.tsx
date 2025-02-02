@@ -1,5 +1,7 @@
+import ContactAdverb from '@/components/client/contact/contact-adverb'
 import ContactBreadcrumbs from '@/components/client/contact/contact-breadcrumbs'
 import ContactInfo from '@/components/client/contact/contact-info'
+import ContactSendPhone from '@/components/client/contact/contact-send-phone'
 import ContactTitle from '@/components/client/contact/contact-title'
 
 type Props = {
@@ -29,15 +31,21 @@ export default async function Contacts({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-screen-xl">
-      <div className="pl-5">
+      <section className="pl-5">
         <ContactBreadcrumbs locale={locale} />
-      </div>
-      <div>
+      </section>
+      <section>
         <ContactTitle />
-      </div>
-      <div>
+      </section>
+      <section>
         <ContactInfo />
-      </div>
+      </section>
+      <section>
+        <ContactSendPhone />
+      </section>
+      <section>
+        <ContactAdverb />
+      </section>
     </div>
   )
 }
