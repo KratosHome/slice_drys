@@ -13,6 +13,17 @@ import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog'
+import { Label } from '@/components/admin/ui/label'
+import { Input } from '@/components/admin/ui/input'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -218,9 +229,36 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             </div>
             <div ref={cullRef} className="mt-3 flex justify-between">
               <NumberCall className="hidden lg:flex" />
-              <Button type="button" variant="button">
-                {t('order')}
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button type="button" variant="button">
+                    {t('order')}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Зворотній дзвінок</DialogTitle>
+                    <DialogDescription>
+                      Залигте номер і ми вам перетелефонуємо
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="flex flex-col items-start">
+                      <Label htmlFor="phone" className="text-right">
+                        Номер телефону
+                      </Label>
+                      <Input
+                        id="phone"
+                        value="Pedro Duarte"
+                        className="col-span-3"
+                      />
+                    </div>
+                  </div>
+                  <Button type="button" variant="button">
+                    Save changes
+                  </Button>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>

@@ -78,7 +78,7 @@ export default function Cart() {
             </div>
           </div>
           {cart.itemList?.length === 0 ? (
-            <div className="mt-4 text-center text-[20px]">
+            <div className="mt-4 h-[300px] pt-[150px] text-center text-[20px] md:pt-[190px]">
               {t('cart-empty')}
             </div>
           ) : (
