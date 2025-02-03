@@ -2,8 +2,9 @@ import ContactAdvert from '@/components/client/contact/contact-advert'
 import ContactBreadcrumbs from '@/components/client/contact/contact-breadcrumbs'
 import ContactInfo from '@/components/client/contact/contact-info'
 import ContactSendPhone from '@/components/client/contact/contact-send-phone'
+import ContactSocial from '@/components/client/contact/contact-social'
 import ContactTitle from '@/components/client/contact/contact-title'
-import ToTheTop from '@/components/client/contact/to-the-top'
+import ContactToTop from '@/components/client/contact/contact-to-top'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -39,6 +40,9 @@ export default async function Contacts({ params }: Props) {
         <ContactTitle />
       </section>
       <section>
+        <ContactSocial />
+      </section>
+      <section>
         <ContactInfo />
       </section>
       <section>
@@ -48,8 +52,8 @@ export default async function Contacts({ params }: Props) {
         <ContactAdvert />
       </section>
       <div className={'flex items-center justify-center pt-[185]'}>
-        <div className={'w-[375]'}>
-          <ToTheTop />
+        <div className={'w-[375] pr-[20]'}>
+          <ContactToTop />
         </div>
       </div>
     </div>

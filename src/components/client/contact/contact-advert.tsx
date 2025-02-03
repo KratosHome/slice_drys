@@ -4,14 +4,14 @@ import React from 'react'
 import imageDesktop1x from '../../../../public/contact/contact-desktop-1x.png'
 import imageMobile1x from '../../../../public/contact/contact-mobile-1x.png'
 
-const images = {
-  imageDesktop1x: '/public/contact/contact-desktop-1.png',
-  imageDesktop2x: '/contact/contact-desktop-2.png',
-  imageDesktop3x: '/contact/contact-desktop-3.png',
-  imageMobile1x: '/contact/contact-mobile-1.png',
-  imageMobile2x: '/contact/contact-mobile-2.png',
-  imageMobile3x: '/contact/contact-mobile-3.png',
-}
+// const images = {
+//   imageDesktop1x: '/public/contact/contact-desktop-1.png',
+//   imageDesktop2x: '/contact/contact-desktop-2.png',
+//   imageDesktop3x: '/contact/contact-desktop-3.png',
+//   imageMobile1x: '/contact/contact-mobile-1.png',
+//   imageMobile2x: '/contact/contact-mobile-2.png',
+//   imageMobile3x: '/contact/contact-mobile-3.png',
+// }
 
 const ContactAdvert = () => {
   const t = useTranslations('Contacts')
