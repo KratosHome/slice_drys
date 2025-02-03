@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,29 +13,12 @@ import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import { callMeBack } from '@/server/info/call-me-back'
-import { useForm, Controller } from 'react-hook-form'
-import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+import CallMe from '@/components/client/header/call-me'
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
   headerLinks: ILink[]
-}
-
-interface FormData {
-  name: string
-  phoneNumber: string
 }
 
 const Header: FC<HeaderP> = ({ headerLinks }) => {
@@ -47,30 +30,6 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
   const socialRef = useRef<HTMLDivElement>(null)
   const cullRef = useRef<HTMLDivElement>(null)
   const curtRef = useRef<HTMLDivElement>(null)
-
-  const [isCallOpen, setIsCallOpen] = useState(false)
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({
-    defaultValues: {
-      name: '',
-      phoneNumber: '+38 (0',
-    },
-  })
-
-  const sendCall = async (data: FormData) => {
-    await callMeBack({
-      name: data.name,
-      phoneNumber: data.phoneNumber,
-    })
-    reset()
-    setIsCallOpen(false)
-  }
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -249,111 +208,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             </div>
             <div ref={cullRef} className="mt-3 flex justify-between">
               <NumberCall className="hidden lg:flex" />
-              <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
-                <DialogTrigger asChild>
-                  <Button type="button" variant="button">
-                    {t('order')}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Зворотній дзвінок</DialogTitle>
-                    <DialogDescription>
-                      Залиште свої дані і ми вам перетелефонуємо
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form
-                    onSubmit={handleSubmit(sendCall)}
-                    className="grid gap-4 py-4"
-                  >
-                    <div className="flex flex-col items-start">
-                      <Label htmlFor="name" className="text-right">
-                        Ваше імя
-                      </Label>
-                      <Input
-                        id="name"
-                        placeholder="Введіть ваше ім'я"
-                        {...register('name', { required: "Введіть ім'я" })}
-                      />
-                      {errors.name && (
-                        <p className="text-sm text-red-500">
-                          {errors.name.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <Label htmlFor="phoneNumber" className="text-right">
-                        Номер телефону
-                      </Label>
-                      <Controller
-                        control={control}
-                        name="phoneNumber"
-                        rules={{
-                          required: 'Введіть номер телефону',
-                          validate: (value: string) =>
-                            value && value.length === 18
-                              ? true
-                              : 'Введіть повний номер телефону',
-                        }}
-                        render={({
-                          field: { onChange, onBlur, value, ref },
-                        }) => {
-                          const prefix = '+38 (0'
-                          const handleChange = (
-                            e: React.ChangeEvent<HTMLInputElement>,
-                          ) => {
-                            let newVal = e.target.value
-                            if (!newVal.startsWith(prefix)) {
-                              newVal = prefix
-                            }
-                            onChange(newVal)
-                          }
-                          return (
-                            <ForwardedMaskedInput
-                              id="phoneNumber"
-                              mask={[
-                                '+',
-                                /\d/,
-                                /\d/,
-                                ' ',
-                                '(',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                ')',
-                                ' ',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                '-',
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                                /\d/,
-                              ]}
-                              placeholder={prefix}
-                              guide={false}
-                              onBlur={onBlur}
-                              onChange={handleChange}
-                              value={value}
-                              ref={ref}
-                              className="h-[48px] w-full rounded-[8px] border-[1px] border-black bg-transparent px-[8px] py-[14px] text-[16px] text-black placeholder-black dark:border-white dark:text-[white] dark:placeholder-[#FAFAFA]"
-                            />
-                          )
-                        }}
-                      />
-                      {errors.phoneNumber && (
-                        <p className="text-sm text-red-500">
-                          {errors.phoneNumber.message}
-                        </p>
-                      )}
-                    </div>
-                    <Button type="submit" variant="button">
-                      {t('order')}
-                    </Button>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <CallMe />
             </div>
           </div>
         </div>
