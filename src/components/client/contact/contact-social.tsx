@@ -7,7 +7,7 @@ import Bag from '../../../../public/contact/shop-bag.png'
 
 export default function ContactSocial() {
   return (
-    <>
+    <div className={'pt-[17]'}>
       <h2
         className={
           'clip-path-inset-50 absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0'
@@ -15,19 +15,29 @@ export default function ContactSocial() {
       >
         Social network links
       </h2>
-      <div className="mx-auto flex w-[375]">
+      <div className="mx-auto flex w-[375] flex-row-reverse items-start justify-between px-5">
         <div className={'flex w-24 items-center justify-center'}>
-          <div className={'mr-4'}>
+          <a
+            className={'mr-4 cursor-pointer'}
+            href="https://www.facebook.com/slicedrys/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FacebookIcon rotation={0} width={40} height={40} />
-          </div>
-          <div>
+          </a>
+          <a
+            className={'cursor-pointer'}
+            href="https://www.instagram.com/slicedrys/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <InstagramIcon rotation={0} width={40} height={40} />
-          </div>
+          </a>
         </div>
         <div className={'h-[143] w-[160]'}>
           <Image src={Bag} alt={'Shopping Bag'} className={'h-full w-full'} />
         </div>
       </div>
-    </>
+    </div>
   )
 }
