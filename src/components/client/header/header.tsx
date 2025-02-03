@@ -1,5 +1,5 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,18 +17,25 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog'
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
+import { callMeBack } from '@/server/info/call-me-back'
+import { useForm, Controller } from 'react-hook-form'
+import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
   headerLinks: ILink[]
+}
+
+interface FormData {
+  name: string
+  phoneNumber: string
 }
 
 const Header: FC<HeaderP> = ({ headerLinks }) => {
@@ -40,6 +47,30 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
   const socialRef = useRef<HTMLDivElement>(null)
   const cullRef = useRef<HTMLDivElement>(null)
   const curtRef = useRef<HTMLDivElement>(null)
+
+  const [isCallOpen, setIsCallOpen] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      phoneNumber: '+38 (0',
+    },
+  })
+
+  const sendCall = async (data: FormData) => {
+    await callMeBack({
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+    })
+    reset()
+    setIsCallOpen(false)
+  }
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -72,9 +103,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
       )
 
       tl.to(menuRef.current, { padding: '0px 20px' }, '<')
-
       tl.to(logoRef.current, { scale: 0.3, y: -30 }, '<')
-
       tl.to(socialRef.current, { opacity: 0, y: -30 }, '<')
       tl.to(cullRef.current, { opacity: 0, y: -30 }, '<')
     })
@@ -104,18 +133,9 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
         0,
       )
 
-      tl.to(
-        curtRef.current,
-        {
-          marginTop: '10px',
-        },
-        0,
-      )
-
+      tl.to(curtRef.current, { marginTop: '10px' }, 0)
       tl.to(logoRef.current, { x: -20 }, '<')
-
       tl.to(menuRef.current, { padding: '0px 10px' }, '<')
-
       tl.to(socialRef.current, { opacity: 0, y: -15 }, '<')
       tl.to(cullRef.current, { opacity: 0, display: 'none', y: -15 }, '<')
     })
@@ -229,7 +249,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             </div>
             <div ref={cullRef} className="mt-3 flex justify-between">
               <NumberCall className="hidden lg:flex" />
-              <Dialog>
+              <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
                 <DialogTrigger asChild>
                   <Button type="button" variant="button">
                     {t('order')}
@@ -239,24 +259,99 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                   <DialogHeader>
                     <DialogTitle>Зворотній дзвінок</DialogTitle>
                     <DialogDescription>
-                      Залигте номер і ми вам перетелефонуємо
+                      Залиште свої дані і ми вам перетелефонуємо
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="grid gap-4 py-4">
+                  <form
+                    onSubmit={handleSubmit(sendCall)}
+                    className="grid gap-4 py-4"
+                  >
                     <div className="flex flex-col items-start">
-                      <Label htmlFor="phone" className="text-right">
-                        Номер телефону
+                      <Label htmlFor="name" className="text-right">
+                        Ваше імя
                       </Label>
                       <Input
-                        id="phone"
-                        value="Pedro Duarte"
-                        className="col-span-3"
+                        id="name"
+                        placeholder="Введіть ваше ім'я"
+                        {...register('name', { required: "Введіть ім'я" })}
                       />
+                      {errors.name && (
+                        <p className="text-sm text-red-500">
+                          {errors.name.message}
+                        </p>
+                      )}
                     </div>
-                  </div>
-                  <Button type="button" variant="button">
-                    Save changes
-                  </Button>
+                    <div className="flex flex-col items-start">
+                      <Label htmlFor="phoneNumber" className="text-right">
+                        Номер телефону
+                      </Label>
+                      <Controller
+                        control={control}
+                        name="phoneNumber"
+                        rules={{
+                          required: 'Введіть номер телефону',
+                          validate: (value: string) =>
+                            value && value.length === 18
+                              ? true
+                              : 'Введіть повний номер телефону',
+                        }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => {
+                          const prefix = '+38 (0'
+                          const handleChange = (
+                            e: React.ChangeEvent<HTMLInputElement>,
+                          ) => {
+                            let newVal = e.target.value
+                            if (!newVal.startsWith(prefix)) {
+                              newVal = prefix
+                            }
+                            onChange(newVal)
+                          }
+                          return (
+                            <ForwardedMaskedInput
+                              id="phoneNumber"
+                              mask={[
+                                '+',
+                                /\d/,
+                                /\d/,
+                                ' ',
+                                '(',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                ')',
+                                ' ',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                '-',
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                              ]}
+                              placeholder={prefix}
+                              guide={false}
+                              onBlur={onBlur}
+                              onChange={handleChange}
+                              value={value}
+                              ref={ref}
+                              className="h-[48px] w-full rounded-[8px] border-[1px] border-black bg-transparent px-[8px] py-[14px] text-[16px] text-black placeholder-black dark:border-white dark:text-[white] dark:placeholder-[#FAFAFA]"
+                            />
+                          )
+                        }}
+                      />
+                      {errors.phoneNumber && (
+                        <p className="text-sm text-red-500">
+                          {errors.phoneNumber.message}
+                        </p>
+                      )}
+                    </div>
+                    <Button type="submit" variant="button">
+                      {t('order')}
+                    </Button>
+                  </form>
                 </DialogContent>
               </Dialog>
             </div>
