@@ -34,7 +34,7 @@ export default function ContactSocial() {
             <InstagramIcon rotation={0} width={40} height={40} />
           </a>
         </div>
-        <div className={'h-[143] w-[160]'}>
+        <div className={'h-[143] w-[160] xl:h-full xl:w-full'}>
           <Image src={Bag} alt={'Shopping Bag'} className={'h-full w-full'} />
         </div>
       </div>

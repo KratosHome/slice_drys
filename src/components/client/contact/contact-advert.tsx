@@ -17,26 +17,16 @@ const ContactAdvert = () => {
   const t = useTranslations('Contacts')
 
   return (
-    <div className="flex justify-center pt-[205]">
-      <div className={'h-[406] w-[375] bg-gray-950 xl:bg-gray-500'}>
+    <div className="mx-auto pt-[205] xl:pt-[229]">
+      <div className={'h-[406] w-[375] xl:h-full xl:w-full'}>
         <h2 className="clip-path-inset-50 absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0">
           {t('advertTitle')}
         </h2>
-        <div className="hidden lg:block">
-          <Image
-            src={imageDesktop1x}
-            alt={t('advertTitle')}
-            // width={1200}
-            // height={800}
-          />
+        <div className="max-w-screen-[1440] hidden xl:block">
+          <Image src={imageDesktop1x} alt={t('advertTitle')} />
         </div>
-        <div className="block xl:hidden">
-          <Image
-            src={imageMobile1x}
-            alt={t('advertTitle')}
-            // width={400}
-            // height={300}
-          />
+        <div className="max-w-screen-[375] block xl:hidden">
+          <Image src={imageMobile1x} alt={t('advertTitle')} />
         </div>
       </div>
     </div>

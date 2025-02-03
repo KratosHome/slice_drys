@@ -3,15 +3,12 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 import React from 'react'
 
-type Props = {
-  locale: string
-}
-
-export default function ContactBreadcrumbs({ locale }: Props) {
+export default function ContactBreadcrumbs() {
   return (
     <>
       <Breadcrumb>
@@ -21,10 +18,7 @@ export default function ContactBreadcrumbs({ locale }: Props) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/${locale}/contacts`}
-              localizationKey="Contacts"
-            ></BreadcrumbLink>
+            <BreadcrumbPage localizationKey="Contacts" />
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

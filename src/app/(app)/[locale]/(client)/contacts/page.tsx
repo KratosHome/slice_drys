@@ -28,31 +28,35 @@ export async function generateMetadata({ params }: Props) {
   return translations[locale]
 }
 
-export default async function Contacts({ params }: Props) {
-  const { locale } = await params
-
+export default async function Contacts() {
   return (
     <div className="mx-auto max-w-screen-xl">
-      <section className="pl-5">
-        <ContactBreadcrumbs locale={locale} />
-      </section>
-      <section>
-        <ContactTitle />
-      </section>
-      <section>
-        <ContactSocial />
-      </section>
-      <section>
-        <ContactInfo />
-      </section>
-      <section>
+      <div className="pl-5 xl:m-auto xl:pt-10 xl:font-poppins xl:text-xl xl:font-normal">
+        <ContactBreadcrumbs />
+      </div>
+      <div className="justify-between xl:flex">
+        <div className={'xl:mr-[156px]'}>
+          <div>
+            <ContactTitle />
+          </div>
+          <div>
+            <ContactSocial />
+          </div>
+        </div>
+        <div>
+          <ContactInfo />
+        </div>
+      </div>
+      <div>
         <ContactSendPhone />
-      </section>
-      <section>
+      </div>
+      <div>
         <ContactAdvert />
-      </section>
-      <div className={'flex items-center justify-center pt-[185]'}>
-        <div className={'w-[375] pr-[20]'}>
+      </div>
+      <div
+        className={'flex items-center justify-center pt-[185] xl:justify-end'}
+      >
+        <div>
           <ContactToTop />
         </div>
       </div>
