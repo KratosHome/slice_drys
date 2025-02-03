@@ -13,17 +13,7 @@ import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
+import CallMe from '@/components/client/header/call-me'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -72,9 +62,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
       )
 
       tl.to(menuRef.current, { padding: '0px 20px' }, '<')
-
       tl.to(logoRef.current, { scale: 0.3, y: -30 }, '<')
-
       tl.to(socialRef.current, { opacity: 0, y: -30 }, '<')
       tl.to(cullRef.current, { opacity: 0, y: -30 }, '<')
     })
@@ -104,18 +92,9 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
         0,
       )
 
-      tl.to(
-        curtRef.current,
-        {
-          marginTop: '10px',
-        },
-        0,
-      )
-
+      tl.to(curtRef.current, { marginTop: '10px' }, 0)
       tl.to(logoRef.current, { x: -20 }, '<')
-
       tl.to(menuRef.current, { padding: '0px 10px' }, '<')
-
       tl.to(socialRef.current, { opacity: 0, y: -15 }, '<')
       tl.to(cullRef.current, { opacity: 0, display: 'none', y: -15 }, '<')
     })
@@ -229,36 +208,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
             </div>
             <div ref={cullRef} className="mt-3 flex justify-between">
               <NumberCall className="hidden lg:flex" />
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button type="button" variant="button">
-                    {t('order')}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Зворотній дзвінок</DialogTitle>
-                    <DialogDescription>
-                      Залигте номер і ми вам перетелефонуємо
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="flex flex-col items-start">
-                      <Label htmlFor="phone" className="text-right">
-                        Номер телефону
-                      </Label>
-                      <Input
-                        id="phone"
-                        value="Pedro Duarte"
-                        className="col-span-3"
-                      />
-                    </div>
-                  </div>
-                  <Button type="button" variant="button">
-                    Save changes
-                  </Button>
-                </DialogContent>
-              </Dialog>
+              <CallMe />
             </div>
           </div>
         </div>

@@ -12,6 +12,16 @@
       "telephone-icon": "telephone іконка",
       "logo": "логотип"
     },
+    "call-me": {
+      "call-back": "Передзвонити",
+      "leave-your-details-and-we-will-call-you-back": "Залиште свої дані і ми вам передзвонимо.",
+      "your-name": "Ваше ім'я",
+      "enter-your-name": "Введіть ваше ім'я",
+      "enter-name": "Введіть ім'я",
+      "phone-number": "Номер телефону",
+      "enter-phone-number": "Введіть номер телефону",
+      "enter-full-phone-number": "Введіть повний номер телефону"
+    },
     "faq": {
       "all-about-dry-fruits": "все про сушеники",
       "even-what-did-not-ask": "і навіть те, що не питали :)"

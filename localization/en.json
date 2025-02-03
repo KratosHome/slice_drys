@@ -12,6 +12,16 @@
       "telephone-icon": "telephone icon",
       "logo": "logo"
     },
+    "call-me": {
+      "call-back": "Call back",
+      "leave-your-details-and-we-will-call-you-back": "Leave your details and we will call you back.",
+      "your-name": "Your name",
+      "enter-your-name": "Enter your name",
+      "enter-name": "Enter name",
+      "phone-number": "Phone number",
+      "enter-phone-number": "Enter phone number",
+      "enter-full-phone-number": "Enter full phone number"
+    },
     "faq": {
       "all-about-dry-fruits": "all about dry fruits",
       "even-what-did-not-ask": "and even what did not ask :)"

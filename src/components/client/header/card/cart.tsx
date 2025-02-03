@@ -83,7 +83,7 @@ export default function Cart() {
             </div>
           ) : (
             <>
-              <div className="absolute left-0 top-[140px] w-full bg-white px-6 text-right text-[16px]">
+              <div className="absolute left-0 top-[75px] w-full bg-white px-6 text-right text-[16px] md:top-[140px]">
                 <span className="mr-[24px] font-semibold text-[#7D7D7D]">
                   {t('added')}
                 </span>
@@ -93,7 +93,7 @@ export default function Cart() {
                   })}
                 </span>
               </div>
-              <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[50px] md:pt-[150px]">
+              <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[70px] md:pt-[150px]">
                 {cart.itemList?.map((item) => (
                   <div
                     key={item.id}
