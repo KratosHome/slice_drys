@@ -7,6 +7,7 @@ type FormValues = {
   example: string
   exampleRequired: string
   phone: string
+  onSubmit: (values: FormValues) => void
 }
 
 export default function ContactPhoneInput() {
@@ -18,8 +19,26 @@ export default function ContactPhoneInput() {
     mode: 'onBlur',
   })
 
-  const onSubmit = (data: FormValues) => {
-    alert(`Phone number submitted: ${data.phone}`)
+  const onSubmit = async (data: { phone: string }) => {
+    console.log('Submitting form with data:', data)
+    try {
+      const response = await fetch('/api/send-to-telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ phone: data.phone }),
+      })
+      console.log('Response:', response)
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+
+      console.log('Message sent successfully')
+    } catch (error) {
+      console.error('Form submission error:', error)
+      console.error('Error:', error)
+    }
   }
 
   const t = useTranslations('Contacts')
