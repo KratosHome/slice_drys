@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 type FormValues = {
   example: string
   exampleRequired: string
+  phone: string
 }
 
 export default function ContactPhoneInput() {
