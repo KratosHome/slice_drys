@@ -1,4 +1,4 @@
-import ContactAdverb from '@/components/client/contact/contact-adverb'
+import ContactAdvert from '@/components/client/contact/contact-advert'
 import ContactBreadcrumbs from '@/components/client/contact/contact-breadcrumbs'
 import ContactInfo from '@/components/client/contact/contact-info'
 import ContactSendPhone from '@/components/client/contact/contact-send-phone'
@@ -44,7 +44,7 @@ export default async function Contacts({ params }: Props) {
         <ContactSendPhone />
       </section>
       <section>
-        <ContactAdverb />
+        <ContactAdvert />
       </section>
     </div>
   )

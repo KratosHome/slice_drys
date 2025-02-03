@@ -49,7 +49,7 @@
     "Contacts": "Contacts"
   },
   "Contacts": {
-    "Contacts": "Contacts",
+    "pageTitle": "Contacts",
     "email": "slice&drys@gmail.com",
     "phone": "+380123456789",
     "location": "Cherkasy city, str. Nadpilna, 248A",
@@ -61,7 +61,7 @@
     "sendButton": "Send",
     "inputDescription": "Phone",
     "inputHint": "In the format +38 (093) 12 34 567",
-    "adverbTitle": "Join our community!"
+    "advertTitle": "Join our community!"
   },
   "Share": {
     "Share": "Share",
