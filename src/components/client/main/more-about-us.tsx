@@ -1,7 +1,7 @@
 'use client'
 
-import { FC } from 'react'
 import { formatDate } from '@/utils/format-date'
+import { FC } from 'react'
 
 interface MoreAboutUsProps {
   data: IPost[]

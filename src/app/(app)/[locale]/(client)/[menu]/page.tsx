@@ -1,9 +1,7 @@
-import React from 'react'
-import Link from 'next/link'
-import { getProducts } from '@/server/products/get-products.server'
-import Product from '@/components/client/product/product'
+import { Button } from '@/components/admin/ui/button'
 import ProductMenu from '@/components/client/product-menu/product-menu'
 import ProductSidebar from '@/components/client/product-sidebar/product-sidebar'
+import Product from '@/components/client/product/product'
 import {
   Dialog,
   DialogContent,
@@ -12,9 +10,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/client/ui/dialog'
-import { Button } from '@/components/admin/ui/button'
+import { getProducts } from '@/server/products/get-products.server'
 import { capitalize } from '@/utils/capitalize'
 import { menuToUk } from '@/utils/menuToUk'
+import Link from 'next/link'
+import React from 'react'
 
 export default async function MenuPage(props: {
   params: Promise<{ locale: string; menu: string; category: string }>

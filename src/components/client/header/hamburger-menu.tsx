@@ -1,5 +1,6 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import Cart from '@/components/client/header/card/cart'
+import LocaleChange from '@/components/client/header/locale-change/locale-change'
+import Button from '@/components/client/ui/button'
 import {
   Menu,
   MenuButton,
@@ -9,10 +10,9 @@ import {
   MenuSeparator,
   Transition,
 } from '@headlessui/react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
-import Button from '@/components/client/ui/button'
-import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Cart from '@/components/client/header/card/cart'
 
 interface HamburgerMenu {
   headerLinks: ILink[]
@@ -28,7 +28,7 @@ export default function HamburgerMenu({
   const closeMenu = () => setIsOpen(!isOpen)
 
   const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
-
+  // eslint-disable-next-line
   const openInNewTab = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer')
   }

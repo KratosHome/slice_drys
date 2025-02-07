@@ -1,11 +1,11 @@
 import {
+  AlertCircle,
   CheckCircle,
   Clock,
+  Package,
   RefreshCw,
   Truck,
   XCircle,
-  AlertCircle,
-  Package,
 } from 'lucide-react'
 
 export const tabsOrder = [
@@ -21,12 +21,12 @@ export const tabsOrder = [
   },
   {
     value: 'awaiting-shipment',
-    icon: <Package className="text-purple-500 h-5 w-5" />,
+    icon: <Package className="h-5 w-5 text-purple-500" />,
     label: 'Очікує відправки',
   },
   {
     value: 'shipped',
-    icon: <Truck className="text-green-500 h-5 w-5" />,
+    icon: <Truck className="h-5 w-5 text-green-500" />,
     label: 'Відправлено',
   },
   {
@@ -36,17 +36,17 @@ export const tabsOrder = [
   },
   {
     value: 'awaiting-return',
-    icon: <RefreshCw className="text-orange-500 h-5 w-5" />,
+    icon: <RefreshCw className="h-5 w-5 text-orange-500" />,
     label: 'Очікує повернення',
   },
   {
     value: 'cancelled',
-    icon: <XCircle className="text-red-500 h-5 w-5" />,
+    icon: <XCircle className="h-5 w-5 text-red-500" />,
     label: 'Скасовано',
   },
   {
     value: 'failed-delivery',
-    icon: <AlertCircle className="text-red-700 h-5 w-5" />,
+    icon: <AlertCircle className="h-5 w-5 text-red-700" />,
     label: 'Не доставлено',
   },
 ]
