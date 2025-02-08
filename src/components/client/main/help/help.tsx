@@ -2,25 +2,38 @@
 import './help.scss'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Button from '@/components/client/ui/button'
+import { helpData } from '@/data/main/help'
+import { getBlockSettings } from '@/server/blocks/block-actions.server'
 
 interface HelpProps {
-  data: {
+  locale: 'uk' | 'en'
+}
+
+const Help: FC<HelpProps> = ({ locale }) => {
+  const [data, setData] = useState<{
     title: string
     subTitle: string
     text: string
     button: string
     link: string
-    img: {
-      src: string
-      alt: string
-      link: string
-    }[]
-  }
-}
+    img: { src: string; alt: string; link: string }[]
+  } | null>(null)
 
-const Help: FC<HelpProps> = ({ data }) => {
+  useEffect(() => {
+    const images = helpData[locale].img
+
+    async function fetchData() {
+      const settings = await getBlockSettings('help')
+      if (settings) {
+        setData({ ...settings[locale], img: images })
+      }
+    }
+
+    fetchData()
+  }, [locale])
+
   const handleImageClick = (link: string) => {
     window.open(link, '_blank')
   }
@@ -28,7 +41,7 @@ const Help: FC<HelpProps> = ({ data }) => {
   return (
     <section aria-labelledby="help" className="mt-60 bg-black py-8">
       <div className="mx-auto max-w-[1280px] px-5">
-        <h1 className="mb-6 text-2xl font-bold text-white">{data.title}</h1>
+        <h1 className="mb-6 text-2xl font-bold text-white">{data?.title}</h1>
         <div className="flex flex-col items-center justify-center gap-6 md:flex-row">
           <div className="w-full md:w-1/2">
             <Splide
@@ -42,7 +55,7 @@ const Help: FC<HelpProps> = ({ data }) => {
               }}
               className="custom-splide mt-6"
             >
-              {data.img.map((slide, index) => (
+              {helpData[locale].img.map((slide, index) => (
                 <SplideSlide key={index}>
                   <div className="relative h-[290px] w-full overflow-hidden rounded-lg md:h-[390px]">
                     <Image src={slide.src} alt={slide.alt} fill={true} />
@@ -53,15 +66,15 @@ const Help: FC<HelpProps> = ({ data }) => {
           </div>
           <div className="flex h-[230px] w-full flex-col justify-between rounded-lg bg-[#14131B] p-6 text-white md:h-[390px] md:w-1/2 md:py-[77px]">
             <div>
-              <h2 className="mb-4 text-xl font-semibold">{data.subTitle}</h2>
-              <p className="mb-6 pr-5 md:text-sm">{data.text}</p>
+              <h2 className="mb-4 text-xl font-semibold">{data?.subTitle}</h2>
+              <p className="mb-6 pr-5 md:text-sm">{data?.text}</p>
             </div>
             <Button
               variant="yellow"
               className="md:max-w-[260px]"
-              onClick={() => handleImageClick(data.link)}
+              onClick={() => handleImageClick(data?.link ?? '')}
             >
-              {data.button}
+              {data?.button}
             </Button>
           </div>
         </div>
