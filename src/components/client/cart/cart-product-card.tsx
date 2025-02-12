@@ -1,5 +1,5 @@
-import Image from 'next/image'
 import { useCartStore } from '@/store/cartStore'
+import Image from 'next/image'
 
 interface CartProductCardProps {
   id: string

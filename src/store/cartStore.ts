@@ -43,7 +43,7 @@ type CartState = {
   addItemToCart: (props: {
     id: string
     quantity: number
-    maxQuantity: number
+    maxQuantity?: number
     image?: string
     name?: string
     price?: number

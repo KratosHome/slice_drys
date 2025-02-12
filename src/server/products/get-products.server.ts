@@ -4,9 +4,9 @@ import { Product } from '@/server/products/productSchema'
 export async function getProducts(
   page = 1,
   limit = 10,
-  composition = [],
-  menu = [],
-  category = [],
+  composition: string[] = [],
+  menu: string[] = [],
+  category: string[] = [],
   locale: string,
   fetchAll = false,
 ) {

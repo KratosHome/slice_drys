@@ -9,7 +9,7 @@ const connection: Connection = {}
 export const connectToDb = async () => {
   try {
     if (connection.isConnected) {
-      console.log('Using existing connection')
+      console.log('Using existing connection') //eslint-disable-line
       return
     }
     const db = await mongoose.connect(`${process.env.NEXT_MONGO_DB}`)
