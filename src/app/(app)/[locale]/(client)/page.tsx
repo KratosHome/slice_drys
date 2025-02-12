@@ -26,8 +26,15 @@ export default async function Home(props: {
   const userAgent = (await headers()).get('user-agent') || ''
   const device = detectDevice(userAgent)
 
-  const productsData: IGetProducts = await getProductsSliderMain(locale)
-  const blogData = await getPosts({ locale, page: 1, limit: 3 })
+  const [productsData, blogData] = await Promise.all([
+    fetch(`http://localhost:3000/api/products/get-products-slider-main`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+
+    fetch(`http://localhost:3000/api/post?locale=${locale}&page=1&limit=3`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ])
 
   return (
     <div>
