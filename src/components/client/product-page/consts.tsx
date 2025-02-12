@@ -6,32 +6,7 @@ export const mockSliders = [
   '/sliders/promo.png',
 ]
 
-export const mockProduct: IProduct = {
-  name: 'Курка сушена',
-  description:
-    'Сушене куряче м’ясо, приготовлене з ретельно відібраних спецій та трав. Ідеальний перекус для активних людей та поціновувачів натуральних продуктів.',
-  img: '',
-  variables: [
-    {
-      weight: 30,
-      price: 130,
-      currency: 'грн',
-      count: 1,
-    },
-  ],
-  category: ["М'ясо", 'Сушені продукти'],
-  menu: ['Перекус', 'Обід'],
-  composition: ['Куряче м’ясо', 'Спеції', 'Трави'],
-  statusLabel: ['В наявності'],
-  nutritionalValue: {
-    proteins: '45 г',
-    fats: '15 г',
-    carbohydrates: '0 г',
-    energyValue: '15 г',
-  },
-}
-
-export const accordions = [
+export const infoAccordions = [
   {
     title: 'Інформація про продукт',
     fields: [
@@ -42,21 +17,6 @@ export const accordions = [
       {
         label: 'Строк придатності',
         value: '12 місяців від дня виготовлення. Дата вказана на упаковці',
-      },
-    ],
-  },
-  {
-    title: 'Поживна (харчова) цінність на 100 г продукту',
-    fields: [
-      { label: 'Білки', value: mockProduct.nutritionalValue.proteins },
-      { label: 'Жири', value: mockProduct.nutritionalValue.fats },
-      {
-        label: 'Вуглеводи',
-        value: mockProduct.nutritionalValue.carbohydrates,
-      },
-      {
-        label: 'Енергетична цінність',
-        value: mockProduct.nutritionalValue.energyValue,
       },
     ],
   },
