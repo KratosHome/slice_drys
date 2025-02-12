@@ -53,7 +53,7 @@ export default function Cart() {
           </motion.div>
         </PopoverTrigger>
 
-        <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px] md:!mr-2">
+        <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
           <div className="absolute right-0 top-0 z-20 w-full bg-white px-5 pt-5">
             <div className="flex w-full items-center justify-between border-b bg-black p-[12px] text-white md:px-[48px] md:py-[32px]">
               <div className="font-rubik p-0 text-[32px] uppercase leading-[0.9] md:text-[64px]">
