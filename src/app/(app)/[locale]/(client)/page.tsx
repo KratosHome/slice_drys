@@ -1,6 +1,5 @@
-import { Hero } from '@/components/client/main/hero/hero'
+import { Hero } from '@/components/client/main/hero'
 import ProductSlider from '@/components/client/product-slider/product-slider'
-import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 import { headers } from 'next/headers'
 import { detectDevice } from '@/utils/deviceDetection'
 import Faq from '@/components/client/main/faq/faq'
@@ -13,18 +12,14 @@ import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
-import { getPosts } from '@/server/posts/get-posts.server'
 
 export default async function Home(props: {
   params: Params
   searchParams: ISearchParams
-  isMobile: boolean
-  isTablet: boolean
-  isDesktop: boolean
 }) {
   const { locale } = await props.params
-  const userAgent = (await headers()).get('user-agent') || ''
-  const device = detectDevice(userAgent)
+  const userAgent: string = (await headers()).get('user-agent') || ''
+  const device: IDevice = detectDevice(userAgent)
 
   const [productsData, blogData] = await Promise.all([
     fetch(`http://localhost:3000/api/products/get-products-slider-main`, {

@@ -1,4 +1,24 @@
-const mixSubImages = [
+interface IHeroAnimationImage {
+  path: string
+  width: number
+  height: number
+  position: {
+    desktop: {
+      x: number
+      y: number
+    }
+    tablet: {
+      x: number
+      y: number
+    }
+    mobile: {
+      x: number
+      y: number
+    }
+  }
+}
+
+const mixSubImages: IHeroAnimationImage[] = [
   {
     path: '/sliders/mix/left-bottom-orange.png',
     width: 43,
@@ -7,6 +27,14 @@ const mixSubImages = [
       desktop: {
         x: -225,
         y: 345,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -19,6 +47,14 @@ const mixSubImages = [
         x: -495,
         y: 275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -29,6 +65,14 @@ const mixSubImages = [
       desktop: {
         x: -600,
         y: 115,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -41,6 +85,14 @@ const mixSubImages = [
         x: -55,
         y: -215,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -51,6 +103,14 @@ const mixSubImages = [
       desktop: {
         x: -585,
         y: -565,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -63,6 +123,14 @@ const mixSubImages = [
         x: -545,
         y: -295,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -73,6 +141,14 @@ const mixSubImages = [
       desktop: {
         x: 665,
         y: -405,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -85,6 +161,14 @@ const mixSubImages = [
         x: 555,
         y: 275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -95,6 +179,14 @@ const mixSubImages = [
       desktop: {
         x: 495,
         y: 335,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -107,6 +199,14 @@ const mixSubImages = [
         x: 680,
         y: 20,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -117,6 +217,14 @@ const mixSubImages = [
       desktop: {
         x: 460,
         y: 250,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -129,6 +237,14 @@ const mixSubImages = [
         x: 710,
         y: 145,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -140,11 +256,19 @@ const mixSubImages = [
         x: 700,
         y: -620,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
 ]
 
-const fruitSubImages = [
+const fruitSubImages: IHeroAnimationImage[] = [
   {
     path: '/sliders/fruit/fruit-left-bottom-1.png',
     width: 88,
@@ -153,6 +277,14 @@ const fruitSubImages = [
       desktop: {
         x: -555,
         y: -55,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -165,6 +297,14 @@ const fruitSubImages = [
         x: -475,
         y: 275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -175,6 +315,14 @@ const fruitSubImages = [
       desktop: {
         x: -585,
         y: 345,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -187,6 +335,14 @@ const fruitSubImages = [
         x: -605,
         y: -565,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -197,6 +353,14 @@ const fruitSubImages = [
       desktop: {
         x: -545,
         y: -295,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -209,6 +373,14 @@ const fruitSubImages = [
         x: 675,
         y: 345,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -219,6 +391,14 @@ const fruitSubImages = [
       desktop: {
         x: 710,
         y: -185,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -231,6 +411,14 @@ const fruitSubImages = [
         x: 700,
         y: -110,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -241,6 +429,14 @@ const fruitSubImages = [
       desktop: {
         x: 540,
         y: 275,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -253,6 +449,14 @@ const fruitSubImages = [
         x: 675,
         y: -5,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -263,6 +467,14 @@ const fruitSubImages = [
       desktop: {
         x: 605,
         y: -485,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -275,6 +487,14 @@ const fruitSubImages = [
         x: 705,
         y: -620,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -286,11 +506,19 @@ const fruitSubImages = [
         x: 665,
         y: -405,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
 ]
 
-const meatSubImages = [
+const meatSubImages: IHeroAnimationImage[] = [
   {
     path: '/sliders/meat/meat-left-bottom-1.png',
     width: 52,
@@ -540,7 +768,7 @@ const meatSubImages = [
   },
 ]
 
-const veggieSubImages = [
+const veggieSubImages: IHeroAnimationImage[] = [
   {
     path: '/sliders/veggie/left-bottom-beet-small.png',
     width: 44,
@@ -549,6 +777,14 @@ const veggieSubImages = [
       desktop: {
         x: -225,
         y: 345,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -561,6 +797,14 @@ const veggieSubImages = [
         x: -495,
         y: 275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -571,6 +815,14 @@ const veggieSubImages = [
       desktop: {
         x: -540,
         y: 45,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -583,6 +835,14 @@ const veggieSubImages = [
         x: -580,
         y: 215,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -593,6 +853,14 @@ const veggieSubImages = [
       desktop: {
         x: -575,
         y: -545,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -605,6 +873,14 @@ const veggieSubImages = [
         x: -130,
         y: -85,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -615,6 +891,14 @@ const veggieSubImages = [
       desktop: {
         x: -545,
         y: -295,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -627,6 +911,14 @@ const veggieSubImages = [
         x: 695,
         y: -375,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -637,6 +929,14 @@ const veggieSubImages = [
       desktop: {
         x: 625,
         y: -480,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -649,6 +949,14 @@ const veggieSubImages = [
         x: 555,
         y: 275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -659,6 +967,14 @@ const veggieSubImages = [
       desktop: {
         x: 690,
         y: 85,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -671,6 +987,14 @@ const veggieSubImages = [
         x: 705,
         y: -155,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -681,6 +1005,14 @@ const veggieSubImages = [
       desktop: {
         x: 635,
         y: -55,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -693,6 +1025,14 @@ const veggieSubImages = [
         x: 495,
         y: 335,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -704,11 +1044,19 @@ const veggieSubImages = [
         x: 710,
         y: -620,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
 ]
 
-const actionSubImages = [
+const actionSubImages: IHeroAnimationImage[] = [
   {
     path: '/sliders/action/left-bottom.png',
     width: 38,
@@ -717,6 +1065,14 @@ const actionSubImages = [
       desktop: {
         x: -575,
         y: 285,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },
@@ -729,6 +1085,14 @@ const actionSubImages = [
         x: -555,
         y: -275,
       },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
+      },
     },
   },
   {
@@ -739,6 +1103,14 @@ const actionSubImages = [
       desktop: {
         x: 505,
         y: -380,
+      },
+      tablet: {
+        x: 0,
+        y: 0,
+      },
+      mobile: {
+        x: 0,
+        y: 0,
       },
     },
   },

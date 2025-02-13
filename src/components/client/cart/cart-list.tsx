@@ -27,7 +27,7 @@ export default function CartList() {
             грн.
           </div>
         </div>
-        <div className="cursor-pointer bg-green" onClick={clearCart}>
+        <div className="bg-green·cursor-pointer" onClick={clearCart}>
           CLEAR cart
         </div>
       </div>
