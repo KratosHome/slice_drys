@@ -1,6 +1,7 @@
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+
 import { cn } from '@/utils/cn'
-import { cva, VariantProps } from 'class-variance-authority'
-import React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 const buttonStyles = cva(
   'group relative cursor-pointer font-semibold transition duration-300',
@@ -26,10 +27,12 @@ const buttonStyles = cva(
   },
 )
 
-interface ButtonProps extends VariantProps<typeof buttonStyles> {
+interface ButtonProps
+  extends VariantProps<typeof buttonStyles>,
+    ButtonHTMLAttributes<HTMLButtonElement> {
   type?: 'submit' | 'reset' | 'button' | undefined
   className?: string
-  children: React.ReactNode
+  children: ReactNode
   onClick?: () => void
 }
 

@@ -29,10 +29,6 @@ export default function HamburgerMenu({
 
   const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
 
-  const openInNewTab = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
-
   return (
     <Menu>
       {isOpen && (
