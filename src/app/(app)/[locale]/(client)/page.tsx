@@ -17,16 +17,17 @@ export default async function Home(props: {
   params: Params
   searchParams: ISearchParams
 }) {
+  const url = process.env.NEXT_URL
   const { locale } = await props.params
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
   const [productsData, blogData] = await Promise.all([
-    fetch(`http://localhost:3000/api/products/get-products-slider-main`, {
+    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
       next: { revalidate: 60 },
     }).then((res) => res.json()),
 
-    fetch(`http://localhost:3000/api/post?locale=${locale}&page=1&limit=3`, {
+    fetch(`${url}/api/post?locale=${locale}&page=1&limit=3`, {
       next: { revalidate: 60 },
     }).then((res) => res.json()),
   ])
