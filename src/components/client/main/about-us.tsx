@@ -1,4 +1,5 @@
 'use client'
+
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 const images = [

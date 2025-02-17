@@ -21,7 +21,7 @@ import SliderWithThumbnails from './slider'
 import { mockProduct, mockSliders } from './consts'
 
 export const ProductInfo = () => (
-  <section className="mb-20 mt-10 flex flex-col gap-10 pb-10 lg:mt-[6.25rem] lg:flex-row lg:border lg:border-light_gray">
+  <section className="lg:border-light_gray·mb-20·mt-10·flex·flex-col·gap-10·pb-10·lg:mt-[6.25rem]·lg:flex-row·lg:border">
     <div className="absolute grid gap-0.5">
       <TopLabel />
       <NewLabel />
@@ -52,7 +52,7 @@ export const Title = ({
   statusLabel: string[]
 }) => {
   const InStockLabel = () => (
-    <div className="absolute right-0 top-0 bg-red px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
+    <div className="bg-red absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
       {statusLabel.join(', ')}
     </div>
   )
@@ -96,7 +96,7 @@ export const WeightSelect = ({
       <SelectTrigger className="relative">
         <label
           htmlFor="weight"
-          className="absolute -top-6 left-0 text-base font-normal text-dark_gray"
+          className="text-dark_gray absolute -top-6 left-0 text-base font-normal"
         >
           Обрати вагу
         </label>
@@ -115,7 +115,7 @@ export const WeightSelect = ({
       </SelectContent>
     </Select>
 
-    <div className="content-center rounded-sm border bg-light_gray px-8 py-2 text-2xl font-medium">
+    <div className="bg-light_gray content-center rounded-sm border px-8 py-2 text-2xl font-medium">
       {variables[0].weight} г
     </div>
   </div>
@@ -144,7 +144,7 @@ export const PriceControl = ({
 
       <button
         type="button"
-        className="text-nowrap bg-red px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
+        className="bg-red text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
       >
         До кошика
       </button>
@@ -160,14 +160,14 @@ export const Certifications = () => (
 )
 
 export const TopLabel = () => (
-  <div className="flex w-fit items-center gap-2.5 rounded-[2px] bg-orange px-2 py-0.5 text-[0.6875rem] font-medium text-white sm:text-base">
+  <div className="bg-orange flex w-fit items-center gap-2.5 rounded-[2px] px-2 py-0.5 text-[0.6875rem] font-medium text-white sm:text-base">
     <TopIcon />
     <div className="pt-0.5">ТОП</div>
   </div>
 )
 
 export const NewLabel = () => (
-  <div className="flex items-center gap-2.5 rounded-[2px] bg-green px-2 py-0.5 text-[0.6875rem] font-medium text-white sm:text-base">
+  <div className="bg-green flex items-center gap-2.5 rounded-[2px] px-2 py-0.5 text-[0.6875rem] font-medium text-white sm:text-base">
     <NewIcon />
     <div className="pt-1">Новинка</div>
   </div>

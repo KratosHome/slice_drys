@@ -1,16 +1,19 @@
 'use client'
+
+import { sliders, sliderLinks } from '@/data/hero-links'
+
+import Image from 'next/image'
+import Link from 'next/link'
+import SliderItem from './slider-item'
+import Arcs from './arcs'
+
 import { cn } from '@/utils/cn'
 import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRef, useState } from 'react'
-import SliderItem from './slider-item'
-import Arcs from './arcs'
-import { sliders, sliderLinks } from '@/data/hero-links'
 import { useLocale } from 'next-intl'
 
-export const Hero = ({ device }) => {
+export const Hero = ({ device }: { device: IDevice }) => {
   const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 

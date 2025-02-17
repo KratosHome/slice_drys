@@ -1,19 +1,22 @@
 'use client'
-import { useRef } from 'react'
-import { FC } from 'react'
+
+import type { FC } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
-import { useLocale, useTranslations } from 'next-intl'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
+
+import { useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { useLocale, useTranslations } from 'next-intl'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,7 +26,7 @@ interface HeaderP {
 
 const Header: FC<HeaderP> = ({ headerLinks }) => {
   const t = useTranslations('main.header')
-  const local = useLocale()
+  const local: string = useLocale()
   const headerRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLAnchorElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
