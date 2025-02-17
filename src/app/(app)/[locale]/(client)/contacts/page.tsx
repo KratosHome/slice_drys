@@ -36,27 +36,15 @@ export default async function Contacts() {
       </div>
       <div className="justify-between xl:flex">
         <div className={'xl:mr-[156px]'}>
-          <div>
-            <ContactTitle />
-          </div>
-          <div>
-            <ContactSocial />
-          </div>
-        </div>
-        <div>
+          <ContactTitle />
+          <ContactSocial />
           <ContactInfo />
+          <ContactSendPhone />
+          <ContactAdvert />
         </div>
-      </div>
-      <div>
-        <ContactSendPhone />
-      </div>
-      <div>
-        <ContactAdvert />
-      </div>
-      <div
-        className={'flex items-center justify-center pt-[185] xl:justify-end'}
-      >
-        <div>
+        <div
+          className={'flex items-center justify-center pt-[185] xl:justify-end'}
+        >
           <ContactToTop />
         </div>
       </div>

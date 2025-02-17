@@ -7,8 +7,7 @@ interface FormData {
   phoneNumber: string
 }
 
-export async function callMeBack(formData: FormData) {
-  'use server'
+export async function contactUs(formData: FormData) {
   try {
     const formattedDate = formatDate(new Date())
     const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
@@ -20,6 +19,7 @@ export async function callMeBack(formData: FormData) {
       chatId,
       `
       Час відправки: ${formattedDate},
+      Імя: ${formData.name}, 
       Номер: ${formData.phoneNumber},
     `,
     )

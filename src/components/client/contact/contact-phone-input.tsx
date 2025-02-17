@@ -1,7 +1,7 @@
-'use client'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import {contactUs} from '@/server/contacts/contacts-us'
 
 type FormValues = {
   example: string
@@ -20,7 +20,6 @@ export default function ContactPhoneInput() {
   })
 
   const onSubmit = async (data: { phone: string }) => {
-    console.log('Submitting form with data:', data)
     try {
       const response = await fetch('/api/send-to-telegram', {
         method: 'POST',
@@ -29,12 +28,9 @@ export default function ContactPhoneInput() {
         },
         body: JSON.stringify({ phone: data.phone }),
       })
-      console.log('Response:', response)
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-
-      console.log('Message sent successfully')
     } catch (error) {
       console.error('Form submission error:', error)
       console.error('Error:', error)
