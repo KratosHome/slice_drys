@@ -1,6 +1,5 @@
-import { Hero } from '@/components/client/main/hero/hero'
+import { Hero } from '@/components/client/main/hero'
 import ProductSlider from '@/components/client/product-slider/product-slider'
-import { getProductsSliderMain } from '@/server/products/get-productsSliderMain.server'
 import { headers } from 'next/headers'
 import { detectDevice } from '@/utils/deviceDetection'
 import Faq from '@/components/client/main/faq/faq'
@@ -13,21 +12,25 @@ import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
-import { getPosts } from '@/server/posts/get-posts.server'
 
 export default async function Home(props: {
   params: Params
   searchParams: ISearchParams
-  isMobile: boolean
-  isTablet: boolean
-  isDesktop: boolean
 }) {
+  const url = process.env.NEXT_URL
   const { locale } = await props.params
-  const userAgent = (await headers()).get('user-agent') || ''
-  const device = detectDevice(userAgent)
+  const userAgent: string = (await headers()).get('user-agent') || ''
+  const device: IDevice = detectDevice(userAgent)
 
-  const productsData: IGetProducts = await getProductsSliderMain(locale)
-  const blogData = await getPosts({ locale, page: 1, limit: 3 })
+  const [productsData, blogData] = await Promise.all([
+    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+
+    fetch(`${url}/api/post?locale=${locale}&page=1&limit=3`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ])
 
   return (
     <div>

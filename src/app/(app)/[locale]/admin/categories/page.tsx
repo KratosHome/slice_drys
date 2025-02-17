@@ -1,9 +1,3 @@
-export default async function Products({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-
+export default async function Products() {
   return <div className="px-5">sdf s</div>
 }

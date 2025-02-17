@@ -1,5 +1,5 @@
-import { updateNovaPoshta } from '../../../../slice_drys/src/server/delivery/update-nova-poshta'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { updateNovaPoshta } from '@/server/delivery/update-nova-poshta'
 
 export default async function handler(
   req: NextApiRequest,

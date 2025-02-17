@@ -1,16 +1,17 @@
+'use server'
+
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 
 export async function getProducts(
-  page = 1,
-  limit = 10,
-  composition = [],
-  menu = [],
-  category = [],
+  page: number = 1,
+  limit: number = 10,
+  composition: string[] = [],
+  menu: string[] = [],
+  category: string[] = [],
   locale: string,
-  fetchAll = false,
+  fetchAll: boolean = false,
 ) {
-  'use server'
   try {
     await connectToDb()
 
