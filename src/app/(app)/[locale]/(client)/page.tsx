@@ -44,7 +44,7 @@ export default async function Home(props: {
         products={productsData.products}
       />
       <Help locale={locale} />
-      <Faq data={faqData[locale]} />
+      <Faq locale={locale} />
       <Partners data={partnersData[locale]} />
       <MoreAboutUs data={blogData.post} />
       <Reviews />

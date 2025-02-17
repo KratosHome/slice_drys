@@ -9,8 +9,6 @@ export async function createBlockSettings(blockSettings: IBlockSettings) {
   try {
     await connectToDb()
 
-    console.log('blockSettings 13', blockSettings)
-
     const block = new Block(blockSettings)
     await block.save()
 

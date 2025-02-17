@@ -13,6 +13,7 @@ export async function updateBlockSettings(
   settings: { uk: Record<string, unknown>; en: Record<string, unknown> },
 ) {
   'use server'
+
   try {
     await Block.findByIdAndUpdate(blockId, { settings })
 
