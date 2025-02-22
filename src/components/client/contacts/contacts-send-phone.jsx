@@ -1,9 +1,9 @@
-import { ArrowButtonIcon } from '@/components/client/contact/contact-icons'
-import ContactPhoneInput from '@/components/client/contact/contact-phone-input'
+import { ArrowButtonIcon } from '@/components/client/contacts/contacts-icons.js'
+import ContactsPhoneInput from '@/components/client/contacts/contacts-phone-input.js'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 
-function ContactSendPhone() {
+function ContactsSendPhone() {
   const t = useTranslations('Contacts')
 
   return (
@@ -17,10 +17,10 @@ function ContactSendPhone() {
         <ArrowButtonIcon rotation={0} width={50} height={60} />
       </div>
       <div>
-        <ContactPhoneInput />
+        <ContactsPhoneInput />
       </div>
     </>
   )
 }
 
-export default ContactSendPhone
+export default ContactsSendPhone

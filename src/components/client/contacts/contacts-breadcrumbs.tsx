@@ -8,7 +8,7 @@ import {
 } from '@/components/client/ui/breadcrumbs'
 import React from 'react'
 
-export default function ContactBreadcrumbs() {
+export default function ContactsBreadcrumbs() {
   return (
     <>
       <Breadcrumb>

@@ -1,7 +1,7 @@
-import { UnderlineIcon } from '@/components/client/contact/contact-icons'
+import { UnderlineIcon } from '@/components/client/contacts/contacts-icons'
 import { useTranslations } from 'next-intl'
 
-const ContactTitle = () => {
+const ContactsTitle = () => {
   const t = useTranslations('Contacts')
   return (
     <div className={'mx-auto'}>
@@ -30,4 +30,4 @@ const ContactTitle = () => {
   )
 }
 
-export default ContactTitle
+export default ContactsTitle

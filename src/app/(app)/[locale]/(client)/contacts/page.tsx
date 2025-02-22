@@ -1,10 +1,10 @@
-import ContactAdvert from '@/components/client/contact/contact-advert'
-import ContactBreadcrumbs from '@/components/client/contact/contact-breadcrumbs'
-import ContactInfo from '@/components/client/contact/contact-info'
-import ContactSendPhone from '@/components/client/contact/contact-send-phone'
-import ContactSocial from '@/components/client/contact/contact-social'
-import ContactTitle from '@/components/client/contact/contact-title'
-import ContactToTop from '@/components/client/contact/contact-to-top'
+import ContactsAdvert from '@/components/client/contacts/contacts-advert'
+import ContactsBreadcrumbs from '@/components/client/contacts/contacts-breadcrumbs'
+import ContactsInfo from '@/components/client/contacts/contacts-info'
+import ContactsSendPhone from '@/components/client/contacts/contacts-send-phone'
+import ContactsSocial from '@/components/client/contacts/contacts-social'
+import ContactsTitle from '@/components/client/contacts/contacts-title'
+import ContactstoTop from '@/components/client/contacts/contactsto-top'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -32,20 +32,20 @@ export default async function Contacts() {
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="pl-5 xl:m-auto xl:pt-10 xl:font-poppins xl:text-xl xl:font-normal">
-        <ContactBreadcrumbs />
+        <ContactsBreadcrumbs />
       </div>
       <div className="justify-between xl:flex">
         <div className={'xl:mr-[156px]'}>
-          <ContactTitle />
-          <ContactSocial />
-          <ContactInfo />
-          <ContactSendPhone />
-          <ContactAdvert />
+          <ContactsTitle />
+          <ContactsSocial />
+          <ContactsInfo />
+          <ContactsSendPhone />
+          <ContactsAdvert />
         </div>
         <div
           className={'flex items-center justify-center pt-[185] xl:justify-end'}
         >
-          <ContactToTop />
+          <ContactstoTop />
         </div>
       </div>
     </div>

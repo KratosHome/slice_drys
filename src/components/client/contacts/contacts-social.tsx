@@ -1,11 +1,11 @@
 import {
   FacebookIcon,
   InstagramIcon,
-} from '@/components/client/contact/contact-icons'
+} from '@/components/client/contacts/contacts-icons'
 import Image from 'next/image'
 import Bag from '../../../../public/contact/shop-bag.png'
 
-export default function ContactSocial() {
+export default function ContactsSocial() {
   return (
     <div className={'pt-[17]'}>
       <h2

@@ -13,7 +13,7 @@ import imageMobile1x from '../../../../public/contact/contact-mobile-1x.png'
 //   imageMobile3x: '/contact/contact-mobile-3.png',
 // }
 
-const ContactAdvert = () => {
+const ContactsAdvert = () => {
   const t = useTranslations('Contacts')
 
   return (
@@ -33,4 +33,4 @@ const ContactAdvert = () => {
   )
 }
 
-export default ContactAdvert
+export default ContactsAdvert

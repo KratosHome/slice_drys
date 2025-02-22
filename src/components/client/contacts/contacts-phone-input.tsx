@@ -1,54 +1,38 @@
+'use client'
 import { useTranslations } from 'next-intl'
-import React from 'react'
 import { useForm } from 'react-hook-form'
-import {contactUs} from '@/server/contacts/contacts-us'
+import { contactUs } from '@/server/contact/contact-us'
 
 type FormValues = {
-  example: string
-  exampleRequired: string
-  phone: string
+  phoneNumber: string
   onSubmit: (values: FormValues) => void
 }
 
-export default function ContactPhoneInput() {
+export default function ContactsPhoneInput() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
+    defaultValues: { phoneNumber: '+38 (0' },
     mode: 'onBlur',
   })
-
-  const onSubmit = async (data: { phone: string }) => {
-    try {
-      const response = await fetch('/api/send-to-telegram', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone: data.phone }),
-      })
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      console.error('Error:', error)
-    }
-  }
 
   const t = useTranslations('Contacts')
   const phoneRegex = /^\+\d{2}\s?\d{3}\s?\d{2}\s?\d{2}\s?\d{3}$/
 
   return (
     <div className="flex flex-col items-center justify-center pt-[62]">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-80 rounded bg-white">
+      <form
+        onSubmit={handleSubmit((data) => contactUs(data))}
+        className="w-80 rounded bg-white"
+      >
         <label htmlFor="phone" className="mb-2 block text-gray-700">
           Телефон
         </label>
         <input
           id="phone"
-          {...register('phone', {
+          {...register('phoneNumber', {
             required: "Телефон обов'язковий",
             pattern: {
               value: phoneRegex,
@@ -57,11 +41,13 @@ export default function ContactPhoneInput() {
           })}
           placeholder="+38 (093) 12 34 567"
           className={`w-full border ${
-            errors.phone ? 'border-red-500' : 'border-gray-300'
+            errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
           } mb-2 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
         />
-        {errors.phone && (
-          <p className="mb-2 text-sm text-red-500">{errors.phone.message}</p>
+        {errors.phoneNumber && (
+          <p className="mb-2 text-sm text-red-500">
+            {errors.phoneNumber.message}
+          </p>
         )}
         <p className="mb-4 text-sm text-gray-500">
           У форматі +38 (093) 12 34 567

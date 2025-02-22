@@ -3,10 +3,10 @@ import {
   ClockIcon,
   EmailIcon,
   PhoneIcon,
-} from '@/components/client/contact/contact-icons'
+} from '@/components/client/contacts/contacts-icons'
 import { useTranslations } from 'next-intl'
 
-const ContactInfo = () => {
+const ContactsInfo = () => {
   const t = useTranslations('Contacts')
   return (
     <div className="mt-[50px] w-full">
@@ -49,4 +49,4 @@ const ContactInfo = () => {
   )
 }
 
-export default ContactInfo
+export default ContactsInfo
