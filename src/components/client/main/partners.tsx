@@ -1,6 +1,10 @@
 import { FC } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+
+import { Marquee } from '../ui/marque'
+import { AspectRatio } from '../ui/aspect-ratio'
 
 interface PartnersProps {
   data: {
@@ -13,24 +17,31 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
   const t = await getTranslations('main')
 
   return (
-    <section aria-labelledby="partners" className="px-5 py-10">
+    <section aria-labelledby="partners" className="section px-5">
       <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-3xl font-bold">{t('our-partners')}</h1>
-        <div className="flex flex-wrap items-center justify-center gap-[32px]">
+        <h2 className="text-center font-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] font-normal leading-[1.2]">
+          {t('our-partners')}
+        </h2>
+
+        <Marquee className="mt-8 md:mt-[60px]">
           {data.map((partner) => (
-            <div
+            <Link
+              className="mr-[20px] block w-[150px] transition-all duration-300 will-change-transform hover:scale-105"
+              href={`https://letmegooglethat.com/?q=${partner.name}%20супермаркет`}
+              target="_blank"
               key={partner.name}
-              className="relative flex h-[188px] w-[352px] items-center justify-center rounded-lg bg-[#14131B]"
             >
-              <Image
-                src={partner.logo}
-                alt={partner.name}
-                fill={true}
-                className="object-contain p-[59px]"
-              />
-            </div>
+              <AspectRatio ratio={352 / 188}>
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill={true}
+                  className="object-contain"
+                />
+              </AspectRatio>
+            </Link>
           ))}
-        </div>
+        </Marquee>
       </div>
     </section>
   )

@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
-import '../globals.css'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Poppins, Rubik_Doodle_Shadow } from 'next/font/google'
-import { headerLinks } from '@/data/header-links'
+
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
-import Footer from '@/components/client/footer/footer'
+import Footer from '@/components/client/footer/Footer'
+
+import { productLinks } from '@/data/main/nav-links'
+import '../globals.css'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,7 +39,7 @@ export default async function LocaleLayout(props: {
   const { children } = props
 
   const messages = await getMessages()
-  const headerLinksData = headerLinks[locale]
+  const productLinksData = productLinks[locale]
 
   return (
     <html
@@ -45,9 +47,9 @@ export default async function LocaleLayout(props: {
       className={`${poppins.variable} ${rubikDoodleShadow.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
-        <body className="!pt-[180px]">
-          <Header headerLinks={headerLinksData} />
-          <main>{children}</main>
+        <body className="flex min-h-svh flex-col !pt-[180px]">
+          <Header productLinks={productLinksData} />
+          <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
         </body>

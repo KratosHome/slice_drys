@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
-import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
@@ -17,16 +16,18 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
+import { pageLinks } from '@/data/main/nav-links'
+import Socials from '../ui/Socials'
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
-  headerLinks: ILink[]
+  productLinks: ILink[]
 }
 
-const Header: FC<HeaderP> = ({ headerLinks }) => {
+const Header: FC<HeaderP> = ({ productLinks }) => {
   const t = useTranslations('main.header')
-  const local: string = useLocale()
+  const locale = useLocale() as ILocale
   const headerRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLAnchorElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -116,62 +117,30 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
         >
           <div>
             <nav className="hidden gap-3 lg:flex">
-              {headerLinks?.map((link: ILink) => (
+              {productLinks?.map((link: ILink) => (
                 <Link
                   key={link.id}
-                  href={`/${local}/${link.href}`}
-                  className="hover:text-red pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
+                  href={`/${locale}/${link.href}`}
+                  className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
                   {link.name}
                 </Link>
               ))}
             </nav>
-            <HamburgerMenu headerLinks={headerLinks} hamburgerLinksOther={[]} />
+            <HamburgerMenu
+              productLinks={productLinks}
+              hamburgerLinksOther={[]}
+            />
             <div
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
             >
-              <Button
-                variant={'icons'}
-                onClick={() =>
-                  window.open(
-                    'https://www.facebook.com/slicedrys/',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                <Image
-                  src={'/icons/facebook.svg'}
-                  alt={`${t('facebook-icon')}`}
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Button>
-              <Button
-                variant={'icons'}
-                onClick={() =>
-                  window.open(
-                    'https://www.instagram.com/slicedrys',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                <Image
-                  src={'/icons/instagram.svg'}
-                  alt={`${t('instagram-icon')}`}
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Button>
+              <Socials variant="dark" />
             </div>
           </div>
           <Link
             ref={logoRef}
-            href={`/${local}`}
+            href={`/${locale}`}
             className="ml-[55px] py-3 lg:py-0"
           >
             <Image
@@ -185,24 +154,15 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
           <div>
             <div className="flex justify-center lg:justify-end">
               <nav className="mr-[52px] hidden gap-x-3 text-[20px] lg:flex">
-                <Link
-                  href={`/${local}/blog`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('blog')}
-                </Link>
-                <Link
-                  href={`/${local}/opt`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('wholesale')}
-                </Link>
-                <Link
-                  href={`/${local}/contacts`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('contacts')}
-                </Link>
+                {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
+                  <Link
+                    key={link.id}
+                    href={`/${locale}/${link.href}`}
+                    className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
               </nav>
               <div ref={curtRef} className="flex items-center gap-x-4">
                 <LocaleChange className="hidden lg:block" />

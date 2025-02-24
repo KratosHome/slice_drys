@@ -285,7 +285,9 @@ const EditorProduct: FC<ICrateProduct> = ({
                       })}
                     />
                     {errors.name?.uk && (
-                      <span className="text-red">{errors.name.uk.message}</span>
+                      <span className="text-red-700">
+                        {errors.name.uk.message}
+                      </span>
                     )}
                   </div>
 
@@ -298,7 +300,9 @@ const EditorProduct: FC<ICrateProduct> = ({
                       })}
                     />
                     {errors.name?.en && (
-                      <span className="text-red">{errors.name.en.message}</span>
+                      <span className="text-red-700">
+                        {errors.name.en.message}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -609,7 +613,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                         ))}
                       </datalist>
                       {errors.nutritionalValue?.proteins && (
-                        <span className="text-red">
+                        <span className="text-red-700">
                           {errors.nutritionalValue.proteins.message}
                         </span>
                       )}
@@ -629,7 +633,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                         ))}
                       </datalist>
                       {errors.nutritionalValue?.fats && (
-                        <span className="text-red">
+                        <span className="text-red-700">
                           {errors.nutritionalValue.fats.message}
                         </span>
                       )}
@@ -653,7 +657,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                         )}
                       </datalist>
                       {errors.nutritionalValue?.carbohydrates && (
-                        <span className="text-red">
+                        <span className="text-red-700">
                           {errors.nutritionalValue.carbohydrates.message}
                         </span>
                       )}
@@ -675,7 +679,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                         ))}
                       </datalist>
                       {errors.nutritionalValue?.energyValue && (
-                        <span className="text-red">
+                        <span className="text-red-700">
                           {errors.nutritionalValue.energyValue.message}
                         </span>
                       )}
@@ -692,7 +696,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                     })}
                   />
                   {errors.description?.uk && (
-                    <span className="text-red">
+                    <span className="text-red-700">
                       {errors.description.uk.message}
                     </span>
                   )}
@@ -707,7 +711,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                     })}
                   />
                   {errors.description?.en && (
-                    <span className="text-red">
+                    <span className="text-red-700">
                       {errors.description.en.message}
                     </span>
                   )}
@@ -792,7 +796,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           })}
                         />
                         {errors.variables?.[index]?.weight && (
-                          <span className="text-red">
+                          <span className="text-red-700">
                             {errors.variables[index].weight.message}
                           </span>
                         )}
@@ -807,7 +811,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           })}
                         />
                         {errors.variables?.[index]?.price && (
-                          <span className="text-red">
+                          <span className="text-red-700">
                             {errors.variables[index].price.message}
                           </span>
                         )}
@@ -833,7 +837,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           })}
                         />
                         {errors.variables?.[index]?.currency && (
-                          <span className="text-red">
+                          <span className="text-red-700">
                             {errors.variables[index].currency.message}
                           </span>
                         )}
@@ -850,7 +854,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           })}
                         />
                         {errors.variables?.[index]?.count && (
-                          <span className="text-red">
+                          <span className="text-red-700">
                             {errors.variables[index].count.message}
                           </span>
                         )}

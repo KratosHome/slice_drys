@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useLocale } from 'next-intl'
 import {
   Menu,
   MenuButton,
@@ -9,22 +10,26 @@ import {
   MenuSeparator,
   Transition,
 } from '@headlessui/react'
-import { useState } from 'react'
+import { useState, Children } from 'react'
+
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
+import Socials from '../ui/Socials'
+
+import { contacts } from '@/data/main/contacts'
 
 interface HamburgerMenu {
-  headerLinks: ILink[]
+  productLinks: ILink[]
   hamburgerLinksOther: ILink[]
 }
 
 export default function HamburgerMenu({
-  headerLinks,
+  productLinks,
   hamburgerLinksOther,
 }: HamburgerMenu) {
   const [isOpen, setIsOpen] = useState(false)
-
+  const locale = useLocale()
   const closeMenu = () => setIsOpen(!isOpen)
 
   const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
@@ -99,12 +104,12 @@ export default function HamburgerMenu({
 
           <MenuSection className="px-8 pt-5">
             <div className="pb-4 font-semibold">Каталог</div>
-            {headerLinks?.map((link: ILink) => {
+            {productLinks?.map((link: ILink) => {
               return (
                 <MenuItem key={link.id}>
                   <Link
                     className="group relative block w-min py-4"
-                    href={link.href}
+                    href={`/${locale}/${link.href}`}
                   >
                     {link.name}
                     <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
@@ -130,38 +135,11 @@ export default function HamburgerMenu({
           </MenuSection>
 
           <MenuSection className="flex justify-center gap-x-5 pt-5">
-            <MenuItem>
-              <Link
-                href="https://www.facebook.com/slicedrys/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative w-fit"
-              >
-                <Image
-                  src={'/icons/facebook.svg'}
-                  alt="facebook icon"
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                href="https://www.instagram.com/slicedrys"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative w-fit"
-              >
-                <Image
-                  src={'/icons/instagram.svg'}
-                  alt="insta icon"
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Link>
-            </MenuItem>
+            {Children.toArray(<Socials variant="dark" />).map(
+              (child, index) => (
+                <MenuItem key={index}>{child}</MenuItem>
+              ),
+            )}
           </MenuSection>
 
           <MenuSection className="flex justify-center gap-x-3 pt-5">
@@ -173,10 +151,10 @@ export default function HamburgerMenu({
             />
             <MenuItem>
               <Link
-                href="tel:+380123456789"
+                href={`tel:${contacts.phone}`}
                 className="group relative font-medium"
               >
-                +380123456789
+                {contacts.phone}
                 <div className="group-data-[focus]:bg-red absolute bottom-0 left-0 right-0 top-0 group-data-[focus]:blur-2xl"></div>
               </Link>
             </MenuItem>
