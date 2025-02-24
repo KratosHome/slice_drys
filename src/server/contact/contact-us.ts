@@ -6,7 +6,7 @@ interface FormData {
   phoneNumber: string
 }
 
-export async function contactUs(data: FormData) {
+export async function contactUs(formData: FormData) {
   const telegramBotToken: string | undefined = process.env.TELEGRAM_BOT_TOKEN
   const telegramBotChatId: string | undefined = process.env.TELEGRAM_BOT_CHAT_ID
 
@@ -22,7 +22,7 @@ export async function contactUs(data: FormData) {
         `
         'Зі сторінки Контактів',
         Дата відправки: ${formattedDate},
-        Номер: ${data.phoneNumber},
+        Номер: ${formData.phoneNumber},
       `,
       )
       return { success: true }

@@ -3,7 +3,7 @@ import {
   InstagramIcon,
 } from '@/components/client/contacts/contacts-icons'
 import Image from 'next/image'
-import Bag from '../../../../public/contact/shop-bag.png'
+import Bag from '@/assets/images/contact/shop-bag.png'
 
 export default function ContactsSocial() {
   return (

@@ -1,8 +1,8 @@
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import React from 'react'
-import imageDesktop1x from '../../../../public/contact/contact-desktop-1x.png'
-import imageMobile1x from '../../../../public/contact/contact-mobile-1x.png'
+import imageDesktop1x from '@/assets/images/contact/contact-desktop-1x.png'
+import imageMobile1x from '@/assets/images/contact/contact-mobile-1x.png'
 
 // const images = {
 //   imageDesktop1x: '/public/contact/contact-desktop-1.png',

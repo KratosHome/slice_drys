@@ -4,7 +4,7 @@ import ContactsInfo from '@/components/client/contacts/contacts-info'
 import ContactsSendPhone from '@/components/client/contacts/contacts-send-phone'
 import ContactsSocial from '@/components/client/contacts/contacts-social'
 import ContactsTitle from '@/components/client/contacts/contacts-title'
-import ContactstoTop from '@/components/client/contacts/contactsto-top'
+import ToTheTop from '@/components/client/ui/to-the-top'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -31,23 +31,11 @@ export async function generateMetadata({ params }: Props) {
 export default async function Contacts() {
   return (
     <div className="mx-auto max-w-screen-xl">
-      <div className="pl-5 xl:m-auto xl:pt-10 xl:font-poppins xl:text-xl xl:font-normal">
-        <ContactsBreadcrumbs />
-      </div>
-      <div className="justify-between xl:flex">
-        <div className={'xl:mr-[156px]'}>
-          <ContactsTitle />
-          <ContactsSocial />
-          <ContactsInfo />
-          <ContactsSendPhone />
-          <ContactsAdvert />
-        </div>
-        <div
-          className={'flex items-center justify-center pt-[185] xl:justify-end'}
-        >
-          <ContactstoTop />
-        </div>
-      </div>
+      <ContactsBreadcrumbs />
+      <ContactsInfo />
+      <ContactsSendPhone />
+      <ContactsAdvert />
+      <ToTheTop />
     </div>
   )
 }

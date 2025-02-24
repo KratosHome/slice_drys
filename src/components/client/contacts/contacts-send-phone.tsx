@@ -1,5 +1,5 @@
-import { ArrowButtonIcon } from '@/components/client/contacts/contacts-icons.js'
-import ContactsPhoneInput from '@/components/client/contacts/contacts-phone-input.js'
+import { ArrowButtonIcon } from '@/components/client/contacts/contacts-icons'
+import ContactsPhoneInput from '@/components/client/contacts/contacts-phone-input'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 

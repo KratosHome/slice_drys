@@ -1,7 +1,7 @@
 'use client'
-import { ArrowButtonIcon } from '@/components/client/contacts/contacts-icons.js'
+import { ArrowButtonIcon } from '@/components/client/contacts/contacts-icons'
 
-export default function ContactstoTop() {
+export default function ContactsToTop() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
