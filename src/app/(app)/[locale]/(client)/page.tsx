@@ -9,7 +9,6 @@ import Reviews from '@/components/client/main/reviews/reviews'
 import Partners from '@/components/client/main/partners'
 import MoreAboutUs from '@/components/client/main/more-about-us'
 import { faqData } from '@/data/main/faq'
-import { helpData } from '@/data/main/help'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
 
@@ -40,8 +39,8 @@ export default async function Home(props: {
         message={'найсмачніші кусь-топчики'}
         products={productsData.products}
       />
-      <Help data={helpData[locale]} />
-      <Faq data={faqData[locale]} />
+      <Help locale={locale} />
+      <Faq locale={locale} />
       <Partners data={partnersData[locale]} />
       <MoreAboutUs data={blogData.post} />
       <Reviews />

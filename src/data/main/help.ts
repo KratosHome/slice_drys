@@ -4,7 +4,7 @@ const helpDataUk = {
   text: 'Кожен внесок має значення. Підтримуючи нас, ви допомагаєте реалізувати важливі проєкти, які змінюють життя. Разом ми сильніші!',
   button: 'Підтримати внеском',
   link: '/',
-  img: [
+  images: [
     {
       src: '/main/warrior.png',
       alt: 'help image',
@@ -39,7 +39,7 @@ const helpDataEn = {
   text: 'Every contribution makes a difference. By supporting us, you help bring to life important projects that change lives. Together, we are stronger!',
   button: 'Support with a contribution',
   link: '/',
-  img: [
+  images: [
     {
       src: '/main/warrior.png',
       alt: 'help image',
