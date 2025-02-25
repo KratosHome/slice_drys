@@ -5,10 +5,10 @@ import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
 
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
-import Footer from '@/components/client/footer/Footer'
 
 import { productLinks } from '@/data/main/nav-links'
 import '../globals.css'
+import Footer from '@/components/client/footer/footer'
 
 const poppins = Poppins({
   subsets: ['latin'],
