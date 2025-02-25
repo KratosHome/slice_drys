@@ -39,10 +39,16 @@ const Help: FC<HelpProps> = ({ data }) => {
               arrowPath: Arrow(),
               type: 'loop',
               perPage: 1,
-              pagination: isMobile ? false : true,
-              arrows: isMobile ? false : true,
+              pagination: true,
+              arrows: true,
               autoplay: true,
               interval: 3000,
+              breakpoints: {
+                768: {
+                  pagination: false,
+                  arrows: false,
+                },
+              },
               classes: {
                 arrows: 'splide__arrows help__arrows',
                 arrow: 'splide__arrow help__arrow',
@@ -60,6 +66,7 @@ const Help: FC<HelpProps> = ({ data }) => {
                     src={slide.src}
                     alt={slide.alt}
                     fill={true}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="rounded-lg object-cover"
                   />
                 </AspectRatio>

@@ -25,6 +25,7 @@ const config: Config = {
       fontFamily: {
         poppins: 'var(--font-poppins)',
         rubik: ['var(--font-rubik-doodle-shadow)', 'sans-serif'],
+        dmsans: ['var(--font-dm-sans)', 'sans-serif'],
       },
       screens: {
         lap: {

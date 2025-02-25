@@ -117,7 +117,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         >
           <div>
             <nav className="hidden gap-3 lg:flex">
-              {productLinks?.map((link: ILink) => (
+              {productLinks.slice(0, 4)?.map((link: ILink) => (
                 <Link
                   key={link.id}
                   href={`/${locale}/${link.href}`}
@@ -128,7 +128,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               ))}
             </nav>
             <HamburgerMenu
-              productLinks={productLinks}
+              productLinks={productLinks.slice(0, 4)}
               hamburgerLinksOther={[]}
             />
             <div

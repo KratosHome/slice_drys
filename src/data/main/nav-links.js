@@ -20,17 +20,19 @@ export const pageLinks = {
 }
 
 const productLinksUk = [
-  { id: 1, name: 'М’ясо', href: 'meat' },
-  { id: 2, name: 'Фрукти', href: 'fruits' },
-  { id: 3, name: 'Овочі', href: 'vegetables' },
-  { id: 4, name: 'Мікси', href: 'mixes' },
+  { id: 1, name: 'М’ясо', href: 'products/meat' },
+  { id: 2, name: 'Фрукти', href: 'products/fruits' },
+  { id: 3, name: 'Овочі', href: 'products/vegetables' },
+  { id: 4, name: 'Мікси', href: 'products/mix' },
+  { id: 5, name: 'Акція', href: 'products/promo' },
 ]
 
 const productLinksEn = [
-  { id: 1, name: 'Meat', href: 'meat' },
-  { id: 2, name: 'Fruits', href: 'fruits' },
-  { id: 3, name: 'Vegetables', href: 'vegetables' },
-  { id: 4, name: 'Mixes', href: 'mixes' },
+  { id: 1, name: 'Meat', href: 'products/meat' },
+  { id: 2, name: 'Fruits', href: 'products/fruits' },
+  { id: 3, name: 'Vegetables', href: 'products/vegetables' },
+  { id: 4, name: 'Mixes', href: 'products/mix' },
+  { id: 5, name: 'Promo', href: 'products/promo' },
 ]
 
 export const productLinks = {

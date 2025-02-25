@@ -3,9 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-gutter: stable;
+}
 body {
   margin: 0;
-  background-color: white;
+  background-color: #FBFBFB;
   color: #0f0f0f;
 }
 

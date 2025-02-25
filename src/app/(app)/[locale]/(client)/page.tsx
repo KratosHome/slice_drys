@@ -4,11 +4,11 @@ import { Hero } from '@/components/client/main/hero'
 import ProductSlider from '@/components/client/product-slider/product-slider'
 import { detectDevice } from '@/utils/deviceDetection'
 import Faq from '@/components/client/main/faq/faq'
-import AboutUs from '@/components/client/main/about-us'
+import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import Help from '@/components/client/main/help/help'
 import Reviews from '@/components/client/main/reviews/reviews'
 import Partners from '@/components/client/main/partners'
-import MoreAboutUs from '@/components/client/main/reviews/about-us/more-about-us'
+import BlogSection from '@/components/client/main/blog/blog'
 import ToTheTop from '@/components/client/ui/to-the-top'
 
 import { partnersData } from '@/data/main/partners'
@@ -24,12 +24,16 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, blogData] = await Promise.all([
+  const [productsData, blogData, instaPosts] = await Promise.all([
     fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
       next: { revalidate: 60 },
     }).then((res) => res.json()),
 
     fetch(`${url}/api/post?locale=${locale}&page=1&limit=12`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+
+    fetch(`${url}/api/instagram?limit=6`, {
       next: { revalidate: 60 },
     }).then((res) => res.json()),
   ])
@@ -45,9 +49,9 @@ export default async function Home(props: {
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
-      <MoreAboutUs data={blogData.post} />
+      <BlogSection data={blogData.post} />
       <Reviews />
-      <AboutUs />
+      <InstaFeed data={instaPosts} />
       <ToTheTop />
     </div>
   )

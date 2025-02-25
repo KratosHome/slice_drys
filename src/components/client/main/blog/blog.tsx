@@ -8,17 +8,17 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 import { Arrow } from '@/components/client/ui/arrow'
 import { formatDate } from '@/utils/format-date'
-import { AspectRatio } from '../../../ui/aspect-ratio'
+import { AspectRatio } from '@/components/client/ui/aspect-ratio'
 import { UnderlinedLink } from '@/components/client/ui/underlined-link'
 import { useIsMobile } from '@/hooks/use-mobile'
 
-import './more-about-us.css'
+import './blog.css'
 
-interface MoreAboutUsProps {
+interface BlogSectionProps {
   data: IPost[]
 }
 
-const MoreAboutUs: FC<MoreAboutUsProps> = ({ data }) => {
+const BlogSection: FC<BlogSectionProps> = ({ data }) => {
   const t = useTranslations('main.more-about-us')
   const locale = useLocale()
   const isMobile = useIsMobile()
@@ -94,4 +94,4 @@ const MoreAboutUs: FC<MoreAboutUsProps> = ({ data }) => {
   )
 }
 
-export default MoreAboutUs
+export default BlogSection
