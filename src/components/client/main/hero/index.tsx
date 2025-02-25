@@ -22,14 +22,6 @@ export const Hero = ({ device }: { device: IDevice }) => {
   const sliderLinksLocale = productLinks[locale]
   const slidersLocale = sliders[locale]
 
-  // if (locale === 'uk' || locale === 'en') {
-  //   sliderLinksLocale = sliderLinks[locale]
-  //   slidersLocale = sliders[locale]
-  // } else {
-  //   sliderLinksLocale = sliderLinks['uk']
-  //   slidersLocale = sliders['uk']
-  // }
-
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
   const titleRef = useRef(null)
@@ -165,7 +157,6 @@ export const Hero = ({ device }: { device: IDevice }) => {
               sizes="(max-width: 550px) 100vw, 50vw"
               onMouseEnter={() => {
                 handleMainImageAnimation(true)
-                console.log('mouse Enter')
               }}
               onMouseLeave={() => handleMainImageAnimation(false)}
             />

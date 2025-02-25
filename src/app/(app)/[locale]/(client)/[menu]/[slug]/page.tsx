@@ -2,9 +2,16 @@ import { ProductInfo } from '@/components/client/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 import { getProductBySlug } from '@/server/products/get-product-by-slug.server'
+import NotFoundPage from '@/components/not-found'
 
-export default async function ProductPage({ params }: IPage) {
-  const { slug, locale } = params
+type Params = Promise<{ locale: ILocale; slug: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+export default async function Page(props: {
+  params: Params
+  searchParams: SearchParams
+}) {
+  const { slug, locale } = await props.params
 
   const productJSON = await getProductBySlug({
     slug,
@@ -14,7 +21,7 @@ export default async function ProductPage({ params }: IPage) {
   const res = JSON.parse(productJSON)
 
   if (!res.success) {
-    return <>Product not found</>
+    return <NotFoundPage />
   }
 
   const { product } = res
