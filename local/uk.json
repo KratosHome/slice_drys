@@ -62,5 +62,21 @@
     "facebook icon": "іконка Facebook",
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
+  },
+
+  "not_found_page": {
+    "fruitAlt": "Декоративні фрукти",
+    "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
+    "goHome": "“кусь”!",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
   }
+
 }
