@@ -1,5 +1,6 @@
 interface IPage {
   params: {
-    locale: string
+    locale: ILocale
+    slug: string
   }
 }

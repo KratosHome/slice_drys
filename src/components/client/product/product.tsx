@@ -55,7 +55,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <Link
-      href={`${locale}/products/slug?weight=${selectedVariable.weight}`}
+      href={`${locale}/products/${product.slug}?weight=${selectedVariable.weight}`}
       className="block px-2 py-8 sm:px-3 md:px-4"
     >
       <CardContainer className="relative h-full w-full rounded-sm">
