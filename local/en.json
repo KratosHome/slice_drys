@@ -62,5 +62,19 @@
     "facebook icon": "facebook icon",
     "instagram icon": "instagram icon",
     "telegram icon": "telegram icon"
+  },
+  "not_found_page": {
+    "fruitAlt": "Fruit decoration",
+    "notFoundMessage": "What a tragedy! Let's rush to prepare something for you",
+    "goHome": "“nom-nom”!",
+    "fruit": {
+      "orange": "Orange",
+      "mango": "Mango",
+      "pear": "Pear",
+      "pineapple": "Pineapple",
+      "ginger": "Ginger",
+      "grapefruit": "Grapefruit",
+      "kiwi": "Kiwi"
+    }
   }
 }

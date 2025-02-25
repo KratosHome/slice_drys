@@ -37,31 +37,31 @@ const sliderLinksEn = [
 const slidersUk = [
   {
     title: "М'ясні сушені",
-    image: '/sliders/meat.png',
+    image: '/slider/meat.png',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
     title: 'Фруктові сушені',
-    image: '/sliders/fruit.png',
+    image: '/slider/fruit.png',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
     title: 'Овочеві сушені',
-    image: '/sliders/veggie.png',
+    image: '/slider/veggie.png',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
     title: 'Мікс сушені',
     subImages: mixSubImages,
-    image: '/sliders/mix.png',
+    image: '/slider/mix.png',
     color: colorConstants.purple,
   },
   {
     title: 'Акційна пропозиція',
-    image: '/sliders/promo.png',
+    image: '/slider/promo.png',
     subImages: actionSubImages,
     color: colorConstants.red,
   },
@@ -70,31 +70,31 @@ const slidersUk = [
 const slidersEn = [
   {
     title: 'Meat drys',
-    image: '/sliders/meat.png',
+    image: '/slider/meat.png',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
     title: 'Fruit drys',
-    image: '/sliders/fruit.png',
+    image: '/slider/fruit.png',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
     title: 'Veggie drys',
-    image: '/sliders/veggie.png',
+    image: '/slider/veggie.png',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
     title: 'Mixed drys',
-    image: '/sliders/mix.png',
+    image: '/slider/mix.png',
     subImages: mixSubImages,
     color: colorConstants.purple,
   },
   {
     title: 'Special offer',
-    image: '/sliders/promo.png',
+    image: '/slider/promo.png',
     subImages: actionSubImages,
     color: colorConstants.red,
   },

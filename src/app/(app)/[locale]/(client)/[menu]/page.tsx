@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/admin/ui/button'
 import { capitalize } from '@/utils/capitalize'
 import { menuToUk } from '@/utils/menuToUk'
+import NotFound from '@/components/not-found'
 
 export default async function MenuPage(props: {
   params: Promise<{ locale: string; menu: string; category: string }>
@@ -53,6 +54,10 @@ export default async function MenuPage(props: {
   const filteredMenus = translatedMenus.filter(
     (menuItem) => menuItem.key !== menu,
   )
+
+  if (products.length === 0) {
+    return <NotFound />
+  }
 
   return (
     <main className="mx-auto max-w-[1280px] px-5">
