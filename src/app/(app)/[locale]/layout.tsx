@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
-import '../globals.css'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Poppins, Rubik_Doodle_Shadow } from 'next/font/google'
-import { headerLinks } from '@/data/header-links'
+import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
+
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
+
+import { productLinks } from '@/data/main/nav-links'
+import '../globals.css'
 import Footer from '@/components/client/footer/footer'
 
 const poppins = Poppins({
@@ -19,6 +21,13 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-rubik-doodle-shadow',
+  weight: ['400'],
+})
+
+const DMSans = DM_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-dm-sans',
   weight: ['400'],
 })
 
@@ -37,17 +46,17 @@ export default async function LocaleLayout(props: {
   const { children } = props
 
   const messages = await getMessages()
-  const headerLinksData = headerLinks[locale]
+  const productLinksData = productLinks[locale]
 
   return (
     <html
       lang={locale}
-      className={`${poppins.variable} ${rubikDoodleShadow.variable}`}
+      className={`${poppins.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
-        <body className="!pt-[180px]">
-          <Header headerLinks={headerLinksData} />
-          <main>{children}</main>
+        <body className="flex min-h-svh flex-col !pt-[180px]">
+          <Header productLinks={productLinksData} />
+          <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
         </body>

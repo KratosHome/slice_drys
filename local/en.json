@@ -12,6 +12,11 @@
       "telephone-icon": "telephone icon",
       "logo": "logo"
     },
+    "footer": {
+      "CTA-socials":"join our social networks",
+      "public-offer": "public offer",
+      "privacy-policy": "privacy policy"
+    },
     "call-me": {
       "call-back": "Call back",
       "leave-your-details-and-we-will-call-you-back": "Leave your details and we will call you back.",
@@ -27,10 +32,17 @@
       "even-what-did-not-ask": "and even what did not ask :)"
     },
     "reviews": {
-      "reviews": "reviews",
+      "title": "Reviews",
       "say-those": "say those who have already tasted sushennyk"
     },
-    "our-partners": "Our partners"
+    "our-partners": "Our partners",
+    "more-about-us": {
+      "title": "Blog about dry fruits",
+      "more-btn": "Learn more"
+    },
+    "instafeed": {
+      "title": "Travel with us"
+    }
   },
   "cart": {
     "basket": "Basket",
@@ -62,5 +74,19 @@
     "facebook icon": "facebook icon",
     "instagram icon": "instagram icon",
     "telegram icon": "telegram icon"
+  },
+  "not_found_page": {
+    "fruitAlt": "Fruit decoration",
+    "notFoundMessage": "What a tragedy! Let's rush to prepare something for you",
+    "goHome": "“nom-nom”!",
+    "fruit": {
+      "orange": "Orange",
+      "mango": "Mango",
+      "pear": "Pear",
+      "pineapple": "Pineapple",
+      "ginger": "Ginger",
+      "grapefruit": "Grapefruit",
+      "kiwi": "Kiwi"
+    }
   }
 }

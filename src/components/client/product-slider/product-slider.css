@@ -10,16 +10,23 @@
 }
 
 .splide__pagination__page.product__pagination-page {
-    @apply w-[13px] h-[11px] rounded-none opacity-100 bg-[#fbfbfb] bg-[url('/icons/slider-bullet.svg')] bg-center bg-cover bg-no-repeat transition-transform duration-300 ease-in-out hover:scale-125 md:w-[20px] md:h-[17px] lg:w-[24px] lg:h-[21px] xl:w-[29px] xl:h-[25px];
+    @apply w-[13px] h-[11px] rounded-none opacity-100 bg-[url('/icons/slider-bullet.svg')] bg-center bg-cover bg-no-repeat transition-transform duration-300 ease-in-out hover:scale-125 md:w-[20px] md:h-[17px] lg:w-[24px] lg:h-[21px] xl:w-[29px] xl:h-[25px];
 }
 
 .splide__pagination__page.product__pagination-page.is-active {
     @apply bg-[url('/icons/slider-bullet-active.svg')] bg-contain scale-100;
 }
 
+.splide__arrow,
+.splide__pagination__page {
+    svg {
+        fill: currentColor;
+    }
+    @apply bg-[transparent]
+}
+
 .splide__arrow.product__arrow {
     @apply
-    bg-[#fbfbfb]
     rounded-none
     top-auto
     bottom-[-20px]

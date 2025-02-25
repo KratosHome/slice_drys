@@ -6,6 +6,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.css',
   ],
   theme: {
     extend: {
@@ -23,11 +24,14 @@ const config: Config = {
       }),
       fontFamily: {
         poppins: 'var(--font-poppins)',
+        rubik: ['var(--font-rubik-doodle-shadow)', 'sans-serif'],
+        dmsans: ['var(--font-dm-sans)', 'sans-serif'],
       },
       screens: {
         lap: {
           min: '991px',
         },
+        1440: '1440px',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -109,10 +113,19 @@ const config: Config = {
             height: '0',
           },
         },
+        marquee: {
+          '0%': {
+            transform: 'translateX(0)',
+          },
+          '100%': {
+            transform: 'translateX(-50%)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        marquee: '30s marquee linear infinite',
       },
     },
   },

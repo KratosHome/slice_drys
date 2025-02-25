@@ -4,11 +4,14 @@ import Link from 'next/link'
 import { cn } from '@/utils/cn'
 import { useTranslations } from 'next-intl'
 
+import { contacts } from '@/data/main/contacts'
+
 interface NumberCallProps {
   className?: string
+  variant?: 'light' | 'dark'
 }
 
-const NumberCall: FC<NumberCallProps> = ({ className }) => {
+const NumberCall: FC<NumberCallProps> = ({ className, variant = 'dark' }) => {
   const t = useTranslations('main.header')
 
   return (
@@ -18,7 +21,12 @@ const NumberCall: FC<NumberCallProps> = ({ className }) => {
         className,
       )}
     >
-      <div className="transform duration-300 group-hover:skew-x-[-5deg] group-hover:scale-110">
+      <div
+        className={cn(
+          'shrink-0 transform duration-300 group-hover:skew-x-[-5deg] group-hover:scale-110',
+          variant === 'light' ? '[filter:invert(1)]' : '[filter:invert(0)]',
+        )}
+      >
         <Image
           src={'/icons/tel.svg'}
           alt={`${t('telephone-icon')}`}
@@ -27,10 +35,10 @@ const NumberCall: FC<NumberCallProps> = ({ className }) => {
         />
       </div>
       <Link
-        href="tel:+380123456789"
-        className="group-hover:text-red block duration-300 group-hover:skew-x-[-10deg]"
+        href={`tel:${contacts.phone}`}
+        className="block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500"
       >
-        +380123456789
+        {contacts.phone}
       </Link>
     </div>
   )

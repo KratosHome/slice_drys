@@ -1,16 +1,20 @@
+@import '@splidejs/react-splide/css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-gutter: stable;
+}
 body {
   margin: 0;
-  background-color: white;
+  background-color: #FBFBFB;
   color: #0f0f0f;
 }
 
-.font-rubik {
+/* .font-rubik {
   font-family: var(--font-rubik-doodle-shadow), sans-serif;
-}
+} */
 
 @layer base {
   :root {
@@ -82,6 +86,23 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+@layer utilities {
+  .title-rubik {
+    @apply font-normal font-rubik leading-[1.2];
+  }
+}
+@layer utilities {
+  .title-rubik {
+    @apply font-normal font-rubik leading-[1.2];
+  }
+  .title-section {
+    @apply title-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] 
+      uppercase;
+  }
+  .section {
+    @apply mx-auto mt-[80px] lg:mt-[133px];
   }
 }
 
