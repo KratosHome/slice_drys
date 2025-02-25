@@ -12,6 +12,11 @@
       "telephone-icon": "telephone іконка",
       "logo": "логотип"
     },
+    "footer": {
+      "CTA-socials":"приєднуйся до наших соцмереж",
+      "public-offer": "Публічна оферта",
+      "privacy-policy": "Політика конфіденційності"
+    },
     "call-me": {
       "call-back": "Передзвонити",
       "leave-your-details-and-we-will-call-you-back": "Залиште свої дані і ми вам передзвонимо.",
@@ -27,10 +32,19 @@
       "even-what-did-not-ask": "і навіть те, що не питали :)"
     },
     "reviews": {
-      "reviews": "відгуки",
+      "title": "відгуки",
       "say-those": "кажуть ті, хто вже скуштував сушеники "
     },
-    "our-partners": "Наші партнери"
+    "our-partners": "Наші партнери",
+    "more-about-us": {
+      "title": "Блог про сушеники",
+      "more-btn": "Дізнатися більше"
+    },
+    "instafeed": {
+      "title-md": "Подорожуйте з нами",
+      "title": "Мандруйте разом з нами"
+
+    }
   },
   "cart": {
     "basket": "Кошик",

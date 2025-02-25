@@ -1,0 +1,82 @@
+/*слайдер*/
+
+.about-us {
+  .about__wrapper {
+    @apply mx-auto flex flex-col items-center md:block
+      px-[20px] py-[32px] lg:py-[52px] md:px-[clamp(20px,calc(20px+85*(100vw-768px)/672),105px)] 
+  }
+
+  .about__card {
+    @apply relative h-full rounded-xl 
+    bg-gray-900 transition-all duration-300 ease-in-out will-change-transform 
+    lg:hover:-translate-y-1 lg:hover:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)]
+    active:-translate-y-1 active:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)]
+  }
+  .card__link {
+    @apply text-balance text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] 
+    font-medium before:absolute before:inset-0 before:cursor-pointer
+  }
+
+  .splide__pagination.about__pagination {
+    @apply -bottom-[80px] flex justify-center gap-[3px];
+  }
+
+  .splide__pagination__page.about__pagination-page {
+    @apply m-0 h-[13px] w-[15px] rounded-none 
+    bg-[url('/icons/slider-bullet-light.svg')] bg-cover bg-center bg-no-repeat 
+    opacity-100 transition-transform duration-300 ease-in-out hover:scale-125;
+  }
+
+  .splide__pagination__page.about__pagination-page.is-active {
+    @apply scale-100 bg-[url('/icons/slider-bullet-active-light.svg')] bg-contain;
+  }
+  @media (width >= 768px) {
+  .splide__slide:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 0px;
+    height: 100%;
+    border-right: 1px dashed white;
+  }
+}
+  @media (width >= 1024px) {
+    .splide__slide:not(:last-child)::after {
+      border-right: 2px dashed white;
+      right: -2px;
+    }
+  }
+  .splide__slide {
+    @apply relative md:mr-[1px] lg:mr-[2px] items-stretch md:px-[10px] lg:px-[18px];
+  }
+  .splide__track {
+    @apply mb-[130px] md:mb-[100px] overflow-visible overflow-x-clip; 
+  }
+
+  .splide__arrow.about__arrow {
+    @apply -bottom-[90px] top-auto h-[44px] w-[33px] rounded-none transition-transform duration-300 ease-in-out;
+  }
+  .splide__arrow,
+  .splide__pagination__page {
+    svg {
+      fill: currentColor;
+    }
+    @apply bg-[transparent];
+  }
+  .splide__arrow.about__arrow svg {
+    @apply h-full w-full;
+  }
+
+  .splide__arrow--prev.about__arrow-prev {
+    @apply left-1/2 translate-x-[-100px] 
+    transform transition-transform duration-300 ease-in-out 
+    active:translate-x-[-105px] lg:hover:translate-x-[-105px];
+  }
+
+  .splide__arrow--next.about__arrow-next {
+    @apply right-1/2 translate-x-[100px] 
+    transform transition-transform duration-300 ease-in-out 
+    active:translate-x-[105px] lg:hover:translate-x-[105px];
+  }
+}

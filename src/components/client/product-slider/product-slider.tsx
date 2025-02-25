@@ -1,10 +1,10 @@
 'use client'
 import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
-import '@splidejs/react-splide/css/core'
-import '@splidejs/react-splide/css'
+
 import { Arrow } from '@/components/client/ui/arrow'
-import './product-slider.css'
 import Product from '@/components/client/product/product'
+
+import './product-slider.css'
 
 interface ProductSlider {
   products: IProduct[]
@@ -64,8 +64,8 @@ export default function ProductSlider({
       aria-labelledby="popular-products"
       className="mx-auto max-w-[1280px] px-5"
     >
-      <div className="px-[20px] md:pb-16">
-        <h1 className="font-rubik text-[32px] sm:mb-4 sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+      <div className="md:px-[20px] md:pb-16">
+        <h1 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] sm:mb-4">
           {title}
         </h1>
         <h2 className="slider-label relative grid place-content-start text-base sm:place-content-end md:text-lg lg:text-xl xl:text-2xl">
@@ -76,7 +76,7 @@ export default function ProductSlider({
         <Splide
           aria-labelledby="Main slider"
           options={splideOptions}
-          className="mb-28 h-full w-full"
+          className="mb-14 h-full w-full lg:mb-20"
         >
           {products.map((product) => (
             <SplideSlide

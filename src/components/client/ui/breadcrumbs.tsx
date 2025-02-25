@@ -49,7 +49,7 @@ const BreadcrumbLink = React.forwardRef<
 >(({ asChild, className, localizationKey, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a'
 
-  const t = useTranslations('Breadcrumbs')
+  const t = useTranslations('breadcrumbs')
   const localization = t(localizationKey)
 
   return (
@@ -71,7 +71,7 @@ const BreadcrumbPage = React.forwardRef<
     localizationKey?: string
   }
 >(({ className, localizationKey, ...props }, ref) => {
-  const t = useTranslations('Breadcrumbs')
+  const t = useTranslations('breadcrumbs')
   const translation = t(localizationKey)
 
   return (

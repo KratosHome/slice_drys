@@ -1,72 +1,42 @@
+import { cn } from '@/utils/cn'
+
 interface ReviewsProps {
   text: string
   author: string
   variant: string
 }
 
+const quotesStyle =
+  'after:leading-[1] after:block before:block before:leading-[1] relative before:absolute before:font-rubik before:left-0 before:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] before:content-["“"] after:absolute after:left-full after:bottom-0 after:font-rubik after:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] after:content-["”"]'
+
 export default function ReviewsItem({ text, author, variant }: ReviewsProps) {
-  return variant === 'grey' ? (
-    <div className="mx-5 mx-auto my-10 max-w-[900px] pr-16">
-      <div className="w-full border border-black bg-[#E4E4E4]">
-        <div
-          className="h-0 -translate-x-7 -translate-y-5 text-[96px]"
-          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+  return (
+    <li className="mx-auto my-10 w-[70%] max-w-[900px] lg:w-full">
+      <div
+        className={cn(
+          'w-full',
+          variant === 'grey' &&
+            `border border-black bg-[#E4E4E4] px-[clamp(16px,calc(16px+32*(100vw-375px)/1065),48px)] py-[clamp(12px,calc(12px+12*(100vw-375px)/1065),24px)] before:-top-[clamp(12px,calc(12px+12*(100vw-375px)/1065),24px)] before:translate-x-[-50%] after:translate-x-[-50%] after:translate-y-[calc(-1*clamp(6px,calc(6px+6*(100vw-375px)/1065),12px)+50%)] md:w-[92%] md:border-none ${quotesStyle}`,
+          variant === 'black' &&
+            'flex items-center justify-between bg-black px-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] py-[24px] text-white',
+          variant === 'white' &&
+            `border-[clamp(8px,calc(8px+8*(100vw-375px)/1065),16px)] border-[#E4E4E4] px-[clamp(8px,calc(8px+4*(100vw-375px)/1065),12px)] py-[clamp(4px,calc(4px+4*(100vw-375px)/1065),8px)] md:w-[89%] ${quotesStyle} before:-top-[clamp(12px,calc(12px+12*(100vw-375px)/1065),24px)] before:translate-x-[calc(-1*clamp(12px,calc(12px+8*(100vw-375px)/1065),20px)-50%)] after:translate-x-[calc(-50%+clamp(8px,calc(8px+4*(100vw-375px)/1065),12px))] after:translate-y-[calc(50%-clamp(2px,calc(2px+2*(100vw-375px)/1065),4px))]`,
+        )}
+      >
+        <div>
+          <p className="mb-[10px] font-bold">{author}</p>
+
+          <p>{text}</p>
+        </div>
+        <span
+          className={cn(
+            'hidden translate-y-[50%] font-rubik text-[clamp(128px,calc(128px+72*(100vw-375px)/1065),200px)] leading-[0.5]',
+            variant === 'black' && 'block',
+          )}
         >
           “
-        </div>
-
-        <div className="px-10 py-5">
-          <div className="pb-2 font-bold">{author}</div>
-
-          <div>{text}</div>
-        </div>
-        <div
-          className="h-0 -translate-y-20 translate-x-7 text-end text-[96px]"
-          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-        >
-          “
-        </div>
+        </span>
       </div>
-    </div>
-  ) : variant === 'black' ? (
-    <div className="mx-5 mx-auto my-10 max-w-[900px]">
-      <div className="w-full border border-black bg-black text-white">
-        <div className="px-10 py-5 pr-40">
-          <div className="pb-2 font-bold">{author}</div>
-          <div>{text}</div>
-        </div>
-        <div
-          className="h-0 -translate-x-5 -translate-y-40 text-end text-[200px]"
-          style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-        >
-          “
-        </div>
-      </div>
-    </div>
-  ) : variant === 'grey-white' ? (
-    <div className="mx-5 mx-auto my-10 max-w-[900px] pr-20">
-      <div className="w-full bg-[#E4E4E4] p-3">
-        <div className="w-full bg-white p-2">
-          <div
-            className="h-0 -translate-x-16 -translate-y-12 text-[96px]"
-            style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-          >
-            “
-          </div>
-
-          <div className="px-2">
-            <div className="pb-2 font-bold">{author}</div>
-
-            <div>{text}</div>
-          </div>
-          <div
-            className="h-0 -translate-y-14 translate-x-16 text-end text-[96px]"
-            style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
-          >
-            “
-          </div>
-        </div>
-      </div>
-    </div>
-  ) : null
+    </li>
+  )
 }

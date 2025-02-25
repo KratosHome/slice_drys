@@ -1,7 +1,7 @@
 const helpDataUk = {
-  title: 'Ваша допомога важлива',
-  subTitle: 'Підтримати проєкт внеском',
-  text: 'Кожен внесок має значення. Підтримуючи нас, ви допомагаєте реалізувати важливі проєкти, які змінюють життя. Разом ми сильніші!',
+  title: 'Твоя допомога має значення',
+  subTitle: 'Приєднуйтесь - разом ми сильніші!',
+  text: 'Ваша підтримка допомагає реалізовувати важливі проєкти, які змінюють життя на краще. Разом ми можемо більше.',
   button: 'Підтримати внеском',
   link: '/',
   img: [
@@ -35,8 +35,8 @@ const helpDataUk = {
 
 const helpDataEn = {
   title: 'Your help matters',
-  subTitle: 'Support the project with a contribution',
-  text: 'Every contribution makes a difference. By supporting us, you help bring to life important projects that change lives. Together, we are stronger!',
+  subTitle: 'Together, we are stronger!',
+  text: 'Your support helps us implement important projects that change lives for the better. Together we can do more.',
   button: 'Support with a contribution',
   link: '/',
   img: [
