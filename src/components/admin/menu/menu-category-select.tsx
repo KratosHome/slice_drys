@@ -1,11 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/admin/ui/tabs'
+import { TabsContent } from '@/components/admin/ui/tabs'
 import {
   Select,
   SelectContent,
@@ -14,6 +9,8 @@ import {
   SelectValue,
 } from '@/components/admin/ui/select'
 import { ICategory } from '@/types/ICategory'
+import { Button } from '@/components/admin/ui/button'
+import { Input } from '@/components/admin/ui/input'
 
 const MenuCategorySelect = ({
   menu,
@@ -41,6 +38,13 @@ const MenuCategorySelect = ({
             ))}
           </SelectContent>
         </Select>
+        <div>
+          <Input className="mt-2" placeholder="slug" />
+        </div>
+        <div className="mt-2 flex gap-2">
+          <Button>Save</Button>
+          <Button variant="destructive">Delete</Button>
+        </div>
       </TabsContent>
     </>
   )

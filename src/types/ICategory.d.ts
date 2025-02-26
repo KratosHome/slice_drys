@@ -1,5 +1,3 @@
-import { Types } from 'mongoose'
-
 interface ICategory {
   _id: string
   name: ILocalizedString

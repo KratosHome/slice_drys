@@ -2,7 +2,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Menu } from '@/server/menu/menu-schema'
 
-export async function getMenus(locale: string) {
+export async function getMenus() {
   'use server'
   try {
     await connectToDb()

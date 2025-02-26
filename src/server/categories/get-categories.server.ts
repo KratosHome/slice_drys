@@ -3,7 +3,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 import { ICategory } from '@/types/ICategory'
 
-export async function getCategories(locale: string) {
+export async function getCategories() {
   'use server'
   try {
     await connectToDb()

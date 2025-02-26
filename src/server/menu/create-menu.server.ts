@@ -2,7 +2,16 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Menu } from '@/server/menu/menu-schema'
 
-export async function createMenu(data: IMenu) {
+interface IMenuData {
+  name: {
+    en: string
+    uk: string
+  }
+  slug: string
+  categories: string[]
+}
+
+export async function createMenu(data: IMenuData) {
   'use server'
   try {
     await connectToDb()
