@@ -70,7 +70,7 @@ const MenuCreateDialog: FC<MenuProps> = ({ categories }) => {
     } else {
       toast({
         variant: 'destructive',
-        title: 'Error',
+        title: result.message,
         description: result.message,
       })
     }
@@ -145,7 +145,17 @@ const MenuCreateDialog: FC<MenuProps> = ({ categories }) => {
             <Label htmlFor="slug">Slug</Label>
             <Input
               id="slug"
-              {...register('slug', { required: 'Slug is required' })}
+              {...register('slug', {
+                required: 'Slug не може бути порожнім',
+                minLength: {
+                  value: 3,
+                  message: 'Slug повинен містити мінімум 3 символи',
+                },
+                pattern: {
+                  value: /^[a-z0-9-]+$/,
+                  message: 'Slug може містити лише малі літери, цифри та дефіс',
+                },
+              })}
             />
             {errors.slug && (
               <p className="text-sm text-red-500">{errors.slug.message}</p>

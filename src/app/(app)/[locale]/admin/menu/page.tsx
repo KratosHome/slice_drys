@@ -4,7 +4,11 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/admin/ui/tabs'
 import MenuCategorySelect from '@/components/admin/menu/menu-category-select'
 import MenuCreate from '@/components/admin/menu/menu-create'
 
-export default async function Menu() {
+type Params = Promise<{ locale: ILocale }>
+
+export default async function Menu({ params }: { params: Params }) {
+  const { locale } = await params
+
   const dataMenu: IResult<IMenu> = await getMenus()
   const dataCategory: IResult<ICategory> = await getCategories()
 
@@ -15,7 +19,7 @@ export default async function Menu() {
         <TabsList>
           {dataMenu.data.map((menu) => (
             <TabsTrigger key={menu.slug} value={menu.slug}>
-              {menu.name['en'] ?? 'Unknown'}
+              {menu.name[locale] ?? 'Unknown'}
             </TabsTrigger>
           ))}
         </TabsList>
