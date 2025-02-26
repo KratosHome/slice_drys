@@ -28,6 +28,8 @@ interface ICrateProduct {
   buttonTitle: string
   product?: IProductLocal
   recommendations: IRecommendations
+  categories: ICategory[]
+  menu: IMenu[]
 }
 
 interface IResult {
@@ -39,6 +41,8 @@ const EditorProduct: FC<ICrateProduct> = ({
   buttonTitle,
   product,
   recommendations,
+  categories,
+  menu,
 }) => {
   const {
     register,
@@ -51,7 +55,6 @@ const EditorProduct: FC<ICrateProduct> = ({
       name: { en: '', uk: '' },
       description: { en: '', uk: '' },
       category: { en: [], uk: [] },
-      menu: { en: [], uk: [] },
       composition: { en: [], uk: [] },
       img: '',
       slug: '',
@@ -83,17 +86,7 @@ const EditorProduct: FC<ICrateProduct> = ({
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
 
-  const [categoriesInput, setCategoriesInput] = useState({ en: '', uk: '' })
-  const [categories, setCategories] = useState({
-    en: product?.category?.en || [],
-    uk: product?.category?.uk || [],
-  })
-
-  const [menuInput, setMenuInput] = useState({ en: '', uk: '' })
-  const [menu, setMenu] = useState({
-    en: product?.menu?.en || [],
-    uk: product?.menu?.uk || [],
-  })
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   const [compositionInput, setCompositionInput] = useState({ en: '', uk: '' })
   const [composition, setComposition] = useState({
@@ -169,8 +162,6 @@ const EditorProduct: FC<ICrateProduct> = ({
 
     const newData = {
       ...data,
-      category: categories,
-      menu,
       composition,
       visited: 0,
       variables: data.variables.map((variable) => ({
@@ -222,6 +213,39 @@ const EditorProduct: FC<ICrateProduct> = ({
 
     router.refresh()
     setLoading(false)
+  }
+
+  const handleCategoryChange = (categoryId: string, checked: boolean) => {
+    setSelectedCategories((prev) =>
+      checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId),
+    )
+  }
+
+  useEffect(() => {
+    setValue('category.uk', selectedCategories)
+  }, [selectedCategories, setValue])
+
+  const renderCategoryTree = (categories: ICategory[]) => {
+    return (
+      <ul className="ml-4 space-y-2">
+        {categories.map((category) => (
+          <li key={category._id} className="flex flex-col space-y-1">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id={category._id}
+                checked={selectedCategories.includes(category._id)}
+                onCheckedChange={(checked) =>
+                  handleCategoryChange(category._id, checked)
+                }
+              />
+              <label htmlFor={category._id}>{category.name.uk}</label>
+            </div>
+            {category.children.length > 0 &&
+              renderCategoryTree(category.children)}
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   const ConfirmDeletePopup = () => (
@@ -345,176 +369,8 @@ const EditorProduct: FC<ICrateProduct> = ({
                 )}
 
                 <div>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                      <div>
-                        <Label htmlFor="menuInputUk">Меню (UK)</Label>
-                        <Input
-                          id="menuInputUk"
-                          list="menu-suggestions-uk"
-                          value={menuInput.uk}
-                          onChange={(e) =>
-                            setMenuInput((prev) => ({
-                              ...prev,
-                              uk: e.target.value,
-                            }))
-                          }
-                        />
-                        <datalist id="menu-suggestions-uk">
-                          {recommendations.menu.uk.map((item: string) => (
-                            <option key={item} value={item} />
-                          ))}
-                        </datalist>
-                      </div>
-                      <div>
-                        <Label htmlFor="menuInputEn">Menu (EN)</Label>
-                        <Input
-                          id="menuInputEn"
-                          list="menu-suggestions-en"
-                          value={menuInput.en}
-                          onChange={(e) =>
-                            setMenuInput((prev) => ({
-                              ...prev,
-                              en: e.target.value,
-                            }))
-                          }
-                        />
-                        <datalist id="menu-suggestions-en">
-                          {recommendations.menu.en.map((item: string) => (
-                            <option key={item} value={item} />
-                          ))}
-                        </datalist>
-                      </div>
-                      <Button
-                        className="mt-5"
-                        type="button"
-                        onClick={() => {
-                          setMenu((prev) => ({
-                            en: [...prev.en, menuInput.en],
-                            uk: [...prev.uk, menuInput.uk],
-                          }))
-                          setMenuInput({ en: '', uk: '' })
-                        }}
-                      >
-                        Додати
-                      </Button>
-                    </div>
-
-                    {menu.uk.length > 0 && (
-                      <div className="mt-4">
-                        {menu.uk.map((itemUk, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center justify-between gap-2 rounded-md border p-2 py-1"
-                          >
-                            <div>
-                              uk: {itemUk} / en: {menu.en[index]}
-                            </div>
-                            <Button
-                              variant="destructive"
-                              type="button"
-                              size="sm"
-                              onClick={() => {
-                                setMenu((prev) => ({
-                                  en: prev.en.filter((_, i) => i !== index),
-                                  uk: prev.uk.filter((_, i) => i !== index),
-                                }))
-                              }}
-                            >
-                              Видалити
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <h3>Категорії</h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                      <div>
-                        <Label htmlFor="categoryInputUk">Категорія (UK)</Label>
-                        <Input
-                          id="categoryInputUk"
-                          list="category-suggestions-uk"
-                          value={categoriesInput.uk}
-                          onChange={(e) =>
-                            setCategoriesInput((prev) => ({
-                              ...prev,
-                              uk: e.target.value,
-                            }))
-                          }
-                        />
-                        <datalist id="category-suggestions-uk">
-                          {recommendations.category.uk.map((item: string) => (
-                            <option key={item} value={item} />
-                          ))}
-                        </datalist>
-                      </div>
-                      <div>
-                        <Label htmlFor="categoryInputEn">Category (EN)</Label>
-                        <Input
-                          id="categoryInputEn"
-                          list="category-suggestions-en"
-                          value={categoriesInput.en}
-                          onChange={(e) =>
-                            setCategoriesInput((prev) => ({
-                              ...prev,
-                              en: e.target.value,
-                            }))
-                          }
-                        />
-                        <datalist id="category-suggestions-en">
-                          {recommendations.category.en.map((item: string) => (
-                            <option key={item} value={item} />
-                          ))}
-                        </datalist>
-                      </div>
-                      <Button
-                        className="mt-6"
-                        type="button"
-                        onClick={() => {
-                          setCategories((prev) => ({
-                            en: [...prev.en, categoriesInput.en],
-                            uk: [...prev.uk, categoriesInput.uk],
-                          }))
-                          setCategoriesInput({ en: '', uk: '' })
-                        }}
-                      >
-                        Додати
-                      </Button>
-                    </div>
-
-                    {categories.uk.length > 0 && (
-                      <div className="mt-4">
-                        {categories.uk.map((itemUk, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center justify-between gap-2 rounded-md border p-2 py-1"
-                          >
-                            <div>
-                              uk: {itemUk} / en: {categories.en[index]}
-                            </div>
-                            <Button
-                              variant="destructive"
-                              type="button"
-                              size="sm"
-                              onClick={() => {
-                                setCategories((prev) => ({
-                                  en: prev.en.filter((_, i) => i !== index),
-                                  uk: prev.uk.filter((_, i) => i !== index),
-                                }))
-                              }}
-                            >
-                              Видалити
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <Label>Категорії</Label>
+                  {renderCategoryTree(categories)}
                 </div>
 
                 <div>

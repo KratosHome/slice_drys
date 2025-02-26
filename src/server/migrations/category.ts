@@ -4,8 +4,6 @@ import { Menu } from '@/server/menu/menu-schema'
 
 export const seedCategories = async () => {
   try {
-    await connectToDb()
-
     const count = await Category.countDocuments()
 
     if (count === 0) {
@@ -20,12 +18,55 @@ export const seedCategories = async () => {
 
       const categoriesData = [
         {
+          name: { en: 'Meat', uk: 'М’ясо' },
+          slug: 'meat',
+          description: { en: 'All types of meat', uk: 'Всі види м’яса' },
+          metaTitle: { en: 'Meat', uk: 'М’ясо' },
+          metaDescription: { en: 'Everything about meat', uk: 'Все про м’ясо' },
+          metaKeywords: {
+            en: 'meat, beef, pork',
+            uk: 'м’ясо, яловичина, свинина',
+          },
+          menu: menus.find((m) => m.name.en === 'Meat')?._id,
+        },
+        {
+          name: { en: 'Fruits', uk: 'Фрукти' },
+          slug: 'fruits',
+          description: { en: 'All types of fruits', uk: 'Всі види фруктів' },
+          metaTitle: { en: 'Fruits', uk: 'Фрукти' },
+          metaDescription: {
+            en: 'Everything about fruits',
+            uk: 'Все про фрукти',
+          },
+          metaKeywords: { en: 'fruits, apples', uk: 'фрукти, яблука' },
+          menu: menus.find((m) => m.name.en === 'Fruits')?._id,
+        },
+        {
+          name: { en: 'Vegetables', uk: 'Овочі' },
+          slug: 'vegetables',
+          description: { en: 'All types of vegetables', uk: 'Всі види овочів' },
+          metaTitle: { en: 'Vegetables', uk: 'Овочі' },
+          metaDescription: {
+            en: 'Everything about vegetables',
+            uk: 'Все про овочі',
+          },
+          metaKeywords: { en: 'vegetables, tomatoes', uk: 'овочі, помідори' },
+          menu: menus.find((m) => m.name.en === 'Vegetables')?._id,
+        },
+      ]
+
+      const createdCategories = await Category.create(categoriesData)
+
+      const subCategoriesData = [
+        {
           name: { en: 'Beef', uk: 'Яловичина' },
           slug: 'beef',
           description: { en: 'Beef products', uk: 'Продукти з яловичини' },
           metaTitle: { en: 'Beef', uk: 'Яловичина' },
           metaDescription: { en: 'All about beef', uk: 'Все про яловичину' },
           metaKeywords: { en: 'beef, meat', uk: 'яловичина, м’ясо' },
+          parentCategory: createdCategories.find((cat) => cat.slug === 'meat')
+            ?._id,
           menu: menus.find((m) => m.name.en === 'Meat')?._id,
         },
         {
@@ -35,6 +76,8 @@ export const seedCategories = async () => {
           metaTitle: { en: 'Pork', uk: 'Свинина' },
           metaDescription: { en: 'All about pork', uk: 'Все про свинину' },
           metaKeywords: { en: 'pork, meat', uk: 'свинина, м’ясо' },
+          parentCategory: createdCategories.find((cat) => cat.slug === 'meat')
+            ?._id,
           menu: menus.find((m) => m.name.en === 'Meat')?._id,
         },
         {
@@ -47,6 +90,8 @@ export const seedCategories = async () => {
             uk: 'Кращі сорти яблук',
           },
           metaKeywords: { en: 'apples, fruits', uk: 'яблука, фрукти' },
+          parentCategory: createdCategories.find((cat) => cat.slug === 'fruits')
+            ?._id,
           menu: menus.find((m) => m.name.en === 'Fruits')?._id,
         },
         {
@@ -59,33 +104,41 @@ export const seedCategories = async () => {
             uk: 'Кращі сорти помідорів',
           },
           metaKeywords: { en: 'tomatoes, vegetables', uk: 'помідори, овочі' },
+          parentCategory: createdCategories.find(
+            (cat) => cat.slug === 'vegetables',
+          )?._id,
           menu: menus.find((m) => m.name.en === 'Vegetables')?._id,
         },
       ]
 
-      const createdCategories = await Category.create(categoriesData)
+      const createdSubCategories = await Category.create(subCategoriesData)
 
       await Promise.all(
-        createdCategories.map(async (cat) => {
-          if (cat.menu) {
-            await Menu.findByIdAndUpdate(
-              cat.menu,
-              { $push: { categories: cat._id } },
+        createdSubCategories.map(async (subCategory) => {
+          if (subCategory.parentCategory) {
+            await Category.findByIdAndUpdate(
+              subCategory.parentCategory,
+              { $push: { children: subCategory._id } },
               { new: true },
             )
           }
         }),
       )
+
+      return {
+        success: true,
+        message: 'Categories and subcategories seeded successfully',
+      }
     }
 
     return {
-      success: true,
-      message: 'Categories seeded successfully',
+      success: false,
+      message: 'Categories already exist. No changes were made.',
     }
   } catch (error) {
     return {
       success: false,
-      message: `${error}`,
+      message: `Error: ${error}`,
     }
   }
 }

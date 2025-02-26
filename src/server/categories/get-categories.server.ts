@@ -9,6 +9,7 @@ export async function getCategories() {
 
     const categories = await Category.find()
       .populate('parentCategory')
+      .populate('children')
       .populate('menu')
       .lean<ICategory[]>()
 

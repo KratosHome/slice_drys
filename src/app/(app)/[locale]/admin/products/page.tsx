@@ -2,6 +2,8 @@ import EditorProduct from '@/components/admin/editor-product/editor-product'
 import { ProductList } from '@/components/admin/product-list/product-list'
 import { findProductInfoItems } from '@/server/products/find-product-info-items.server'
 import { getProducts } from '@/server/products/get-products.server'
+import { getCategories } from '@/server/categories/get-categories.server'
+import { getMenus } from '@/server/menu/get-menus.server'
 
 export default async function Home({
   params,
@@ -20,6 +22,8 @@ export default async function Home({
     true,
   )
   const recommendations: IRecommendations = await findProductInfoItems()
+  const dataCategories: IResult<ICategory> = await getCategories()
+  const dataMenu: IResult<IMenu> = await getMenus()
 
   return (
     <div className="px-5">
@@ -28,9 +32,16 @@ export default async function Home({
         <EditorProduct
           buttonTitle="створити"
           recommendations={recommendations}
+          categories={dataCategories.data}
+          menu={dataMenu.data}
         />
       </div>
-      <ProductList data={products} recommendations={recommendations} />
+      <ProductList
+        data={products}
+        recommendations={recommendations}
+        categories={dataCategories.data}
+        menu={dataMenu.data}
+      />
     </div>
   )
 }

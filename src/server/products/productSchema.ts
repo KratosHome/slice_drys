@@ -137,11 +137,9 @@ const productSchema = new mongoose.Schema(
         maxlength: 255,
       },
     },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true,
-    },
+    categories: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    ],
   },
   { timestamps: true },
 )

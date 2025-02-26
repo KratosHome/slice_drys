@@ -39,9 +39,16 @@ import EditorProduct from '@/components/admin/editor-product/editor-product'
 interface IProductList {
   data: IGetProduct
   recommendations: IRecommendations
+  categories: ICategory[]
+  menu: IMenu[]
 }
 
-export const ProductList: FC<IProductList> = ({ data, recommendations }) => {
+export const ProductList: FC<IProductList> = ({
+  data,
+  recommendations,
+  categories,
+  menu,
+}) => {
   const columns: ColumnDef<IProduct>[] = [
     {
       id: 'select',
@@ -176,6 +183,8 @@ export const ProductList: FC<IProductList> = ({ data, recommendations }) => {
               buttonTitle="редагувати"
               product={fineProduct}
               recommendations={recommendations}
+              categories={categories}
+              menu={menu}
             />
           </>
         )
