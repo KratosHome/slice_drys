@@ -1,5 +1,5 @@
-import { cn } from '@/utils/cn'
 import { useEffect, useRef, useState } from 'react'
+import { cn } from '@/utils/cn'
 
 const SliderItem = ({
   title,
@@ -10,15 +10,15 @@ const SliderItem = ({
   hoverHexColor: string
   isHovered: boolean
 }) => {
-  const textRef = useRef<SVGTextElement>(null);
-  const [textWidth, setTextWidth] = useState(190);
+  const textRef = useRef<SVGTextElement>(null)
+  const [textWidth, setTextWidth] = useState(190)
 
   useEffect(() => {
     if (textRef.current) {
-      const width = textRef.current.getBBox().width;
-      setTextWidth(Math.max(width, 190));
+      const width = textRef.current.getBBox().width
+      setTextWidth(Math.max(width, 190))
     }
-  }, [title, isHovered]);
+  }, [title, isHovered])
 
   const Text = () => (
     <div
@@ -30,7 +30,7 @@ const SliderItem = ({
       <svg
         viewBox={`0 95 ${textWidth + 150} 50`}
         height="70"
-        className="w-[80px] sm:w-[100px] md:w-[250px]"
+        className="w-[200px] sm:w-[220px] md:w-[250px]"
       >
         <path
           stroke="transparent"

@@ -63,9 +63,17 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         0,
       )
 
-      tl.to(logoRef.current, { height: 55, }, '<')
-      tl.to(socialRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
-      tl.to(callRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        socialRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
+      tl.to(
+        callRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
 
     mm.add('(max-width: 1023px)', () => {
@@ -93,8 +101,12 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         0,
       )
 
-      tl.to(logoRef.current, { height: 55, }, '<')
-      tl.to(callRef.current, { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        callRef.current,
+        { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
   })
 
@@ -132,11 +144,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               <Socials variant="dark" />
             </div>
           </div>
-          <Link
-            ref={logoRef}
-            href={`/${locale}`}
-            className="h-full self-start"
-          >
+          <Link ref={logoRef} href={`/${locale}`} className="h-full self-start">
             <Image
               src={'/icons/logo.svg'}
               alt={`${t('logo')}`}
@@ -147,7 +155,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
           </Link>
 
           <div className="justify-self-end">
-            <div className="flex justify-end lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)] lg:justify-between">
+            <div className="flex justify-end lg:justify-between lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)]">
               <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
                 {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
                   <Link
@@ -169,7 +177,10 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               </div>
             </div>
 
-            <div ref={callRef} className="flex justify-between origin-top-right">
+            <div
+              ref={callRef}
+              className="flex origin-top-right justify-between"
+            >
               <NumberCall className="hidden lg:flex" />
               <CallMe />
             </div>

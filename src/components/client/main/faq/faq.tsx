@@ -1,8 +1,9 @@
 'use client'
-import { FC, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/all'
 
 import { Item } from '@/components/client/main/faq/item'
 
@@ -14,6 +15,12 @@ const Faq: FC<IFaq> = ({ data }) => {
   const t = useTranslations('main.faq')
   const faqRef = useRef<HTMLDivElement[]>([])
 
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh(true)
+    }, 1)
+  }, [])
+
   useGSAP(() => {
     gsap.from(faqRef.current, {
       autoAlpha: 0,
@@ -23,8 +30,11 @@ const Faq: FC<IFaq> = ({ data }) => {
       scrollTrigger: {
         trigger: faqRef.current[0],
         start: 'top 80%',
+        end: '400px top',
+        toggleActions: 'play reset play reset',
       },
     })
+    ScrollTrigger.refresh(true)
   })
 
   return (

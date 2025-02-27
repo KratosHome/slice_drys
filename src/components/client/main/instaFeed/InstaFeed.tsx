@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
@@ -14,10 +15,57 @@ type Props = Readonly<{ data: InstaFeed[] }>
 
 export default function InstaFeed({ data }: Props) {
   const t = useTranslations('main.instafeed')
+  useEffect(() => {
+    const target = document.querySelector('.insta-slider')
+    if (!target) return
+    const handleResize = () => {
+      let k: number
+      switch (true) {
+        case window.innerWidth >= 1280:
+          k = 35
+          break
+        case window.innerWidth >= 1024:
+          k = 30
+          break
+        case window.innerWidth >= 768:
+          k = 28
+          break
+        case window.innerWidth < 768:
+          k = 23
+          break
+        default:
+          k = 30
+      }
+      const x = data.length * k
+      const prev = document.querySelector(
+        '.insta-slider .splide__arrow--prev.custom__arrow-prev',
+      ) as HTMLElement
+      const next = document.querySelector(
+        '.insta-slider .splide__arrow--next.custom__arrow-next',
+      ) as HTMLElement
+
+      if (prev && next) {
+        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
+        next.style.setProperty('--tw-arrow-translate', `${x}px`)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(handleResize)
+
+    if (target) {
+      resizeObserver.observe(target)
+    }
+
+    return () => {
+      if (target) {
+        resizeObserver.unobserve(target)
+      }
+    }
+  }, [data])
   return (
     <section className="section instafeed px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
-        <div className="flex items-center justify-center md:justify-end gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)]">
+        <div className="flex items-center justify-center gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)] md:justify-end">
           <h2 className="title-section text-balance text-center md:text-start">
             <span className="block md:hidden">{t('title')}</span>
             <span className="hidden md:block">{t('title-md')}</span>
@@ -45,15 +93,15 @@ export default function InstaFeed({ data }: Props) {
               768: { perPage: 1 },
             },
             classes: {
-              arrows: 'splide__arrows insta__arrows',
-              arrow: 'splide__arrow insta__arrow',
-              prev: 'splide__arrow--prev insta__arrow-prev',
-              next: 'splide__arrow--next insta__arrow-next',
-              pagination: 'splide__pagination insta__pagination',
-              page: 'splide__pagination__page insta__pagination-page',
+              arrows: 'splide__arrows custom__arrows',
+              arrow: 'splide__arrow custom__arrow',
+              prev: 'splide__arrow--prev custom__arrow-prev',
+              next: 'splide__arrow--next custom__arrow-next',
+              pagination: 'splide__pagination custom__pagination',
+              page: 'splide__pagination__page custom__pagination-page',
             },
           }}
-          className="mt-[clamp(32px,calc(32px+68*(100vw-375px)/1065),100px)] w-full"
+          className="insta-slider mt-[clamp(32px,calc(32px+68*(100vw-375px)/1065),100px)]"
         >
           {data.map((post, index) => (
             <SplideSlide key={index} className="flex flex-col items-center">

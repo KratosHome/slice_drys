@@ -3,7 +3,7 @@
 .about-us {
   .about__wrapper {
     @apply mx-auto flex flex-col items-center md:block
-      px-[20px] py-[32px] lg:py-[52px] md:px-[clamp(20px,calc(20px+85*(100vw-768px)/672),105px)] 
+      px-[20px] py-[32px] lg:py-[52px] md:px-[clamp(20px,calc(20px+80*(100vw-768px)/672),100px)]  max-w-[1440px]
   }
 
   .about__card {
@@ -17,19 +17,7 @@
     font-medium before:absolute before:inset-0 before:cursor-pointer
   }
 
-  .splide__pagination.about__pagination {
-    @apply -bottom-[80px] flex justify-center gap-[3px];
-  }
-
-  .splide__pagination__page.about__pagination-page {
-    @apply m-0 h-[13px] w-[15px] rounded-none 
-    bg-[url('/icons/slider-bullet-light.svg')] bg-cover bg-center bg-no-repeat 
-    opacity-100 transition-transform duration-300 ease-in-out hover:scale-125;
-  }
-
-  .splide__pagination__page.about__pagination-page.is-active {
-    @apply scale-100 bg-[url('/icons/slider-bullet-active-light.svg')] bg-contain;
-  }
+  
   @media (width >= 768px) {
   .splide__slide:not(:last-child)::after {
     content: '';
@@ -47,6 +35,21 @@
       right: -2px;
     }
   }
+
+  .splide__pagination.custom__pagination {
+    @apply bottom-[-80px] 
+    gap-[3px]
+    md:bottom-[-77px]
+    xl:bottom-[-79px];
+  }
+
+  .splide__pagination__page.custom__pagination-page {
+    @apply bg-[url('/icons/slider-bullet-light.svg')];
+  }
+
+  .splide__pagination__page.custom__pagination-page.is-active {
+    @apply bg-[url('/icons/slider-bullet-active-light.svg')];
+  }
   .splide__slide {
     @apply relative md:mr-[1px] lg:mr-[2px] items-stretch md:px-[10px] lg:px-[18px];
   }
@@ -54,29 +57,8 @@
     @apply mb-[130px] md:mb-[100px] overflow-visible overflow-x-clip; 
   }
 
-  .splide__arrow.about__arrow {
-    @apply -bottom-[90px] top-auto h-[44px] w-[33px] rounded-none transition-transform duration-300 ease-in-out;
-  }
-  .splide__arrow,
-  .splide__pagination__page {
-    svg {
-      fill: currentColor;
-    }
-    @apply bg-[transparent];
-  }
-  .splide__arrow.about__arrow svg {
-    @apply h-full w-full;
+  .splide__arrow.custom__arrow {
+    @apply -bottom-[90px] top-auto;
   }
 
-  .splide__arrow--prev.about__arrow-prev {
-    @apply left-1/2 translate-x-[-100px] 
-    transform transition-transform duration-300 ease-in-out 
-    active:translate-x-[-105px] lg:hover:translate-x-[-105px];
-  }
-
-  .splide__arrow--next.about__arrow-next {
-    @apply right-1/2 translate-x-[100px] 
-    transform transition-transform duration-300 ease-in-out 
-    active:translate-x-[105px] lg:hover:translate-x-[105px];
-  }
 }
