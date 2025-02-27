@@ -1,14 +1,31 @@
-import { FC } from 'react'
-import { getTranslations } from 'next-intl/server'
+'use client'
+import { FC, useRef } from 'react'
+import { useTranslations } from 'next-intl'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
-import Item from '@/components/client/main/faq/item'
+import { Item } from '@/components/client/main/faq/item'
 
 interface IFaq {
   data: Faq[]
 }
 
-const Faq: FC<IFaq> = async ({ data }) => {
-  const t = await getTranslations('main.faq')
+const Faq: FC<IFaq> = ({ data }) => {
+  const t = useTranslations('main.faq')
+  const faqRef = useRef<HTMLDivElement[]>([])
+
+  useGSAP(() => {
+    gsap.from(faqRef.current, {
+      autoAlpha: 0,
+      duration: 0.6,
+      stagger: 0.2,
+      ease: 'power1.out',
+      scrollTrigger: {
+        trigger: faqRef.current[0],
+        start: 'top 80%',
+      },
+    })
+  })
 
   return (
     <section
@@ -23,8 +40,13 @@ const Faq: FC<IFaq> = async ({ data }) => {
           {t('even-what-did-not-ask')}
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data.map((item: Faq) => (
+          {data?.map((item: Faq) => (
             <Item
+              ref={(el) => {
+                if (el) {
+                  faqRef.current.push(el)
+                }
+              }}
               key={item.title}
               question={item.title}
               answer={item.description}

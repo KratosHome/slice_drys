@@ -39,13 +39,9 @@ export default async function Home(props: {
   ])
 
   return (
-    <div>
+    <>
       <Hero device={device} />
-      <ProductSlider
-        title={'ТОПОВІ СУШЕНИКИ'}
-        message={'найсмачніші кусь-топчики'}
-        products={productsData.products}
-      />
+      <ProductSlider products={productsData.products} />
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
@@ -53,6 +49,6 @@ export default async function Home(props: {
       <Reviews />
       <InstaFeed data={instaPosts} />
       <ToTheTop />
-    </div>
+    </>
   )
 }

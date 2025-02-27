@@ -17,8 +17,8 @@ const UnderlinedLink = React.forwardRef<
       className={cn(
         'group relative flex items-center justify-start gap-3 bg-transparent px-6 py-2 text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] font-medium transition-all duration-300 ease-in-out lg:hover:bg-transparent',
         locale === 'uk'
-          ? 'min-w-[260px] lg:min-w-[280px]'
-          : 'min-w-[200px] lg:min-w-[220px]',
+          ? 'min-w-[260px] lg:min-w-[290px]'
+          : 'min-w-[220px] lg:min-w-[240px]',
         className,
       )}
       {...restProps}

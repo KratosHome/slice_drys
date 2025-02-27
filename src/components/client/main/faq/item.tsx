@@ -1,16 +1,24 @@
 'use client'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
+
 import { cn } from '@/utils/cn'
 
 interface FAQProps {
   question: string
   answer: string
 }
-export default function Item({ question, answer }: FAQProps) {
+export const Item = forwardRef<HTMLDivElement, FAQProps>(function Item(
+  { question, answer },
+  ref,
+) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="mb-5 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+    <div
+      className="mb-5 cursor-pointer"
+      onClick={() => setIsOpen(!isOpen)}
+      ref={ref}
+    >
       <div
         className={cn(
           'mx-auto flex max-w-[800px] items-center border border-black p-1 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] transition-all duration-500',
@@ -39,10 +47,10 @@ export default function Item({ question, answer }: FAQProps) {
           isOpen ? 'max-h-[500px]' : 'max-h-0',
         )}
       >
-        <div className="w-full items-center border border-dotted border-black p-2 pl-4 text-[24px]">
+        <div className="w-full items-center border border-dotted border-black p-2 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)]">
           {answer}
         </div>
       </div>
     </div>
   )
-}
+})

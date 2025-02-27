@@ -19,7 +19,7 @@ export default function LocaleLayout({
   const getAwaitingReturnOrders = [{ id: '5', status: 'awaiting-return' }]
 
   const statusStyles: Record<string, string> = {
-    new: 'bg-red text-white',
+    new: 'bg-red-500 text-white',
     'awaiting-payment': '!bg-amber-400 text-white',
     'awaiting-shipment': 'bg-blue-500 text-white',
     shipped: 'bg-green-500 text-whit e',

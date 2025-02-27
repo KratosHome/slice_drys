@@ -10,6 +10,7 @@ body {
   margin: 0;
   background-color: #FBFBFB;
   color: #0f0f0f;
+  font-family: var(--font-poppins), sans-serif;
 }
 
 /* .font-rubik {
@@ -88,12 +89,11 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+
 @layer utilities {
   .title-rubik {
     @apply font-normal font-rubik leading-[1.2];
   }
-}
-@layer utilities {
   .title-rubik {
     @apply font-normal font-rubik leading-[1.2];
   }

@@ -8,9 +8,13 @@
       "order": "Замовити",
       "facebook-icon": "facebook іконка",
       "instagram-icon": "instagram іконка",
-      "logo-slice-drys": "логтип slice drys",
+      "logo-slice-drys": "логотип slice drys",
       "telephone-icon": "telephone іконка",
       "logo": "логотип"
+    },
+    "products-slider": {
+      "title": "ТОПОВІ СУШЕНИКИ",
+      "message": "найсмачніші кусь-топчики"
     },
     "footer": {
       "CTA-socials":"приєднуйся до наших соцмереж",
@@ -43,7 +47,9 @@
     "instafeed": {
       "title-md": "Подорожуйте з нами",
       "title": "Мандруйте разом з нами"
-
+    },
+    "burger-menu": {
+      "catalog": "Каталог"
     }
   },
   "cart": {
