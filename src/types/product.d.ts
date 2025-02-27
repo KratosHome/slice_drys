@@ -28,16 +28,6 @@ interface IProductLocal {
   nutritionalValue: INutritionalValue
 }
 
-interface ILocalizedString {
-  en: string
-  uk: string
-}
-
-interface ILocalizedStringArray {
-  en: string[]
-  uk: string[]
-}
-
 interface INutritionalValue {
   proteins: string
   fats: string

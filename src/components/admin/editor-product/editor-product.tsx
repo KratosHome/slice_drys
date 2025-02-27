@@ -23,6 +23,7 @@ import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import Image from 'next/image'
 import { deleteProduct } from '@/server/products/delete-product.server'
+import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
 
 interface ICrateProduct {
   buttonTitle: string
@@ -221,29 +222,6 @@ const EditorProduct: FC<ICrateProduct> = ({
     setValue('category.uk', selectedCategories)
   }, [selectedCategories, setValue])
 
-  const renderCategoryTree = (categories: ICategory[]) => {
-    return (
-      <ul className="ml-4 space-y-2">
-        {categories.map((category) => (
-          <li key={category._id} className="flex flex-col space-y-1">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id={category._id}
-                checked={selectedCategories.includes(category._id)}
-                onCheckedChange={(checked) =>
-                  handleCategoryChange(category._id, !!checked)
-                }
-              />
-              <label htmlFor={category._id}>{category.name.uk}</label>
-            </div>
-            {category.children.length > 0 &&
-              renderCategoryTree(category.children)}
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
   const ConfirmDeletePopup = () => (
     <AlertDialog
       open={isConfirmDeleteOpen}
@@ -366,7 +344,13 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label>Категорії</Label>
-                  {renderCategoryTree(categories)}
+                  <div className="max-h-[300px] overflow-auto border">
+                    <CategoryTreeCheckbox
+                      categories={categories}
+                      selectedCategories={selectedCategories}
+                      onCategoryChange={handleCategoryChange}
+                    />
+                  </div>
                 </div>
 
                 <div>

@@ -17,7 +17,6 @@ const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
-  console.log(categories)
   return (
     <div className="flex flex-col gap-6 p-6 md:flex-row">
       <div className="w-full rounded-lg border bg-white p-4 shadow md:w-1/3">
