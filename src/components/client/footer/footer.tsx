@@ -4,14 +4,19 @@ import Link from 'next/link'
 import NumberCall from '../header/number-call/number-call'
 import Socials from '../ui/Socials'
 
-import { pageLinks, productLinks } from '@/data/main/nav-links'
+import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
 import Image from 'next/image'
+import { FC } from 'react'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
 
-const Footer = () => {
+interface FooterP {
+  productLinks: ICategory[]
+}
+
+const Footer: FC<FooterP> = ({ productLinks }) => {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
   return (
@@ -25,9 +30,11 @@ const Footer = () => {
           ))}
         </ul>
         <ul className="flex flex-col gap-[19px] justify-self-start md:hidden">
-          {productLinks[locale]?.map((link: ILink) => (
-            <li key={link.id} className={linkStyle}>
-              <Link href={`/${locale}/${link.href}`}>{link.name}</Link>
+          {productLinks.map((link) => (
+            <li key={link.slug} className={linkStyle}>
+              <Link key={link.slug} href={`/${locale}/${link.slug}`}>
+                {link.name[locale]}
+              </Link>
             </li>
           ))}
         </ul>

@@ -22,7 +22,7 @@ import Socials from '../ui/Socials'
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
-  productLinks: ILink[]
+  productLinks: ICategory[]
 }
 
 const Header: FC<HeaderP> = ({ productLinks }) => {
@@ -123,18 +123,18 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         >
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
-              {productLinks?.slice(0, 4)?.map((link: ILink) => (
+              {productLinks.slice(0, 4)?.map((link) => (
                 <Link
-                  key={link.id}
-                  href={`/${locale}/${link.href}`}
+                  key={link.slug}
+                  href={`/${locale}/${link.slug}`}
                   className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
-                  {link.name}
+                  {link.name[locale]}
                 </Link>
               ))}
             </nav>
             <HamburgerMenu
-              productLinks={productLinks?.slice(0, 4)}
+              productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
             <div
