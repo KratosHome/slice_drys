@@ -6,8 +6,7 @@ interface ICategory {
   metaTitle?: ILocalizedString
   metaDescription?: ILocalizedString
   metaKeywords?: ILocalizedString
-  subcategory?: Types.ObjectId | null
   image?: string
-  menu: Types.ObjectId
   children: ICategory[]
+  parentCategory?: string
 }

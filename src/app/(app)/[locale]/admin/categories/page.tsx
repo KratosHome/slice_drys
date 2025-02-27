@@ -7,7 +7,7 @@ export default async function Categories() {
 
   return (
     <div className="px-5">
-      <CreateCategories />
+      <CreateCategories categories={dataCategories.data} />
       <CategoriesTree categories={dataCategories.data} />
     </div>
   )

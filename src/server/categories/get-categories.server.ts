@@ -7,11 +7,9 @@ export async function getCategories() {
   try {
     await connectToDb()
 
-    const categories = await Category.find()
-      .populate('parentCategory')
+    const categories = await Category.find({ parentCategory: null })
       .populate('children')
-      .populate('menu')
-      .lean<ICategory[]>()
+      .lean()
 
     const plainCategories = JSON.parse(JSON.stringify(categories))
 
