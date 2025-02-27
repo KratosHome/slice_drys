@@ -12,14 +12,18 @@ import Arcs from './arcs'
 import { cn } from '@/utils/cn'
 
 import { sliders } from '@/data/hero-links'
-import { productLinks } from '@/data/main/nav-links'
 
-export const Hero = ({ device }: { device: IDevice }) => {
+export const Hero = ({
+  device,
+  productLinks,
+}: {
+  device: IDevice
+  productLinks: ICategory[]
+}) => {
   const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
   const locale = useLocale() as ILocale
-  const sliderLinksLocale = productLinks[locale]
   const slidersLocale = sliders[locale]
 
   const hoverHexColor = slidersLocale[hoveredIndex].color
@@ -114,9 +118,9 @@ export const Hero = ({ device }: { device: IDevice }) => {
       </div>
 
       <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
-        {sliderLinksLocale.map((item, index) => (
+        {productLinks.map((item, index) => (
           <div
-            key={item.name}
+            key={item.slug}
             className={cn(
               'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
 
@@ -128,15 +132,15 @@ export const Hero = ({ device }: { device: IDevice }) => {
             )}
           >
             <Link
-              href={`${locale}/${item.href}`}
+              href={`${locale}/${item.slug}`}
               className={cn(
-                'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%]',
+                'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
                 'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
               )}
               onMouseEnter={() => setHoveredIndex(index)}
             >
               <SliderItem
-                title={item.name}
+                title={item.name[locale]}
                 hoverHexColor={hoverHexColor}
                 isHovered={hoveredIndex === index}
               />

@@ -18,7 +18,7 @@ export const appSidebarData = [
   {
     id: 2,
     name: 'Категорії',
-    icon: Tag, // Актуальна іконка для категорій
+    icon: Tag,
     link: 'admin/categories',
   },
   {

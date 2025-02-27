@@ -25,12 +25,12 @@ export async function getProductBySlug({
       name: product.name[locale],
       description: product.description[locale],
       variables: product.variables,
-      category: product.category[locale],
       menu: product.category[locale],
       slug: product.slug,
       composition: product.composition[locale],
       statusLabel: product.statusLabel,
       nutritionalValue: product.nutritionalValue,
+      categories: product.categories ?? [],
     }
 
     // BUG: JSON because NextJS shows error: RangeError: Maximum call stack size exceeded

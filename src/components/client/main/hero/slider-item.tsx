@@ -10,15 +10,15 @@ const SliderItem = ({
   hoverHexColor: string
   isHovered: boolean
 }) => {
-  const textRef = useRef<SVGTextElement>(null);
-  const [textWidth, setTextWidth] = useState(190);
+  const textRef = useRef<SVGTextElement>(null)
+  const [textWidth, setTextWidth] = useState(190)
 
   useEffect(() => {
     if (textRef.current) {
-      const width = textRef.current.getBBox().width;
-      setTextWidth(Math.max(width, 190));
+      const width = textRef.current.getBBox().width
+      setTextWidth(Math.max(width, 190))
     }
-  }, [title, isHovered]);
+  }, [title, isHovered])
 
   const Text = () => (
     <div

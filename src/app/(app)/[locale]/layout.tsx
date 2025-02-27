@@ -6,9 +6,9 @@ import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
 
-import { productLinks } from '@/data/main/nav-links'
 import '../globals.css'
 import Footer from '@/components/client/footer/footer'
+import { seedCategories } from '@/server/seed/category'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -40,13 +40,21 @@ export default async function LocaleLayout(props: {
   children: React.ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
+  const url = process.env.NEXT_URL
   const params = await props.params
 
   const { locale } = params
   const { children } = props
 
   const messages = await getMessages()
-  const productLinksData = productLinks[locale]
+
+  const categoriesData = await fetch(`${url}/api/categories`, {
+    next: { revalidate: 60 },
+  }).then((res) => res.json())
+
+  if (process.env.NODE_ENV === 'development') {
+    await seedCategories()
+  }
 
   return (
     <html
@@ -55,9 +63,9 @@ export default async function LocaleLayout(props: {
     >
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
-          <Header productLinks={productLinksData} />
+          <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
-          <Footer />
+          <Footer productLinks={categoriesData.data} />
           <Toaster />
         </body>
       </NextIntlClientProvider>

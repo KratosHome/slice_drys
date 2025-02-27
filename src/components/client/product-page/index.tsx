@@ -56,8 +56,8 @@ export const Title = ({
   isStock: boolean
 }) => {
   const InStockLabel = () => (
-    <div className="bg-red-500 absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
-      {statusLabel.join(', ')}
+    <div className="bg-red absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
+      В наявності
     </div>
   )
 
@@ -155,15 +155,16 @@ export const PriceControl = ({
           </button>
         </div>
 
-      <button
-        type="button"
-        className="bg-red-500 text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
-      >
-        До кошика
-      </button>
+        <button
+          type="button"
+          className="bg-red text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
+        >
+          До кошика
+        </button>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const Certifications = () => (
   <div className="flex flex-col items-center gap-4 px-4 sm:items-end sm:justify-end">

@@ -7,7 +7,7 @@ type Props = { post: InstaFeed }
 function InstaCard({ post }: Props) {
   return (
     <div className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white shadow-xl transition-all duration-300 will-change-transform active:translate-y-1 active:shadow-2xl md:max-w-none md:hover:-translate-y-1 md:hover:shadow-2xl">
-      <div className="font-dmsans grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px]">
+      <div className="grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px] font-dmsans">
         <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px]">
           <Image
             src={'/icons/logo-white.svg'}
