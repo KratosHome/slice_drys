@@ -1,9 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import { getProducts } from '@/server/products/get-products.server'
 import Product from '@/components/client/product/product'
-import ProductMenu from '@/components/client/product-menu/product-menu'
-import ProductSidebar from '@/components/client/product-sidebar/product-sidebar'
+import ProductSidebar from '@/components/client/prodcut-list/product-sidebar'
 import {
   Dialog,
   DialogContent,
@@ -13,41 +11,30 @@ import {
   DialogTrigger,
 } from '@/components/client/ui/dialog'
 import { Button } from '@/components/admin/ui/button'
-import { capitalize } from '@/utils/capitalize'
-import { menuToUk } from '@/utils/menuToUk'
 import NotFound from '@/components/not-found'
+import { getProductsList } from '@/server/products/get-products-list.server'
+import { getCategories } from '@/server/categories/get-categories.server'
+
+type Params = Promise<{ locale: ILocale; menu: string; category: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 export default async function MenuPage(props: {
-  params: Promise<{ locale: string; menu: string; category: string }>
+  params: Params
+  SearchParams: SearchParams
 }) {
-  const { params } = props
-  const { locale, menu, category } = await params
-  const menuToLocale = locale === 'uk' ? menuToUk(menu) : menu
-  const categoryArray = category ? category.split(',') : []
+  const { locale, menu, category } = await props.params
 
-  const productsData = await getProducts(
-    1,
-    100,
-    [],
-    [menuToLocale],
-    categoryArray,
+  const productsData = await getProductsList({
+    page: 1,
+    limit: 30,
     locale,
-    false,
-  )
+    menu: menu,
+  })
 
-  const { product: products } = productsData
+  const categoriesData = await getCategories(menu)
 
-  const allMenus = ['meat', 'fruits', 'vegetables', 'mix']
-  const translatedMenus = allMenus.map((menu) => ({
-    key: menu,
-    label: locale === 'uk' ? menuToUk(menu) : menu,
-  }))
-
-  const filteredMenus = translatedMenus.filter(
-    (menuItem) => menuItem.key !== menu,
-  )
-
-  if (products.length === 0) {
+  console.log('categoriesData', categoriesData)
+  if (productsData.data.length === 0) {
     return <NotFound />
   }
 
@@ -60,23 +47,18 @@ export default async function MenuPage(props: {
         >
           Головна
         </Link>
-        <p className="text-base font-semibold sm:text-lg md:text-xl">
-          {capitalize(menuToLocale)}
-        </p>
+        <p className="text-base font-semibold sm:text-lg md:text-xl">{menu}</p>
       </div>
-      <ProductMenu
-        menuToLocale={menuToLocale}
-        filteredMenus={filteredMenus}
-        locale={locale}
-        capitalize={capitalize}
-      />
+      <div className="flex items-end justify-between border border-[#E4E4E4] p-5">
+        <h2 className="text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
+          {menu}
+        </h2>
+      </div>
       <div className="flex items-center gap-2 px-[22px] py-[16px]">
         <div className={`hidden text-xl sm:text-2xl md:block`}>Фільтр</div>
-        <div className="hidden md:block">rr</div>
         <Dialog>
           <DialogTrigger className="flex items-center gap-2 md:hidden">
             <div className={`text-xl sm:text-2xl`}>Фільтр</div>
-            rrr
           </DialogTrigger>
           <DialogContent className="max-h-[90vh] overflow-y-auto">
             <DialogHeader>
@@ -111,19 +93,14 @@ export default async function MenuPage(props: {
         </div>
         <div className="w-full min-w-[67%]">
           <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-            {products.length > 0 ? (
-              products.map((product: IProduct) => (
+            {productsData.data.length > 0 ? (
+              productsData.data.map((product: IProduct) => (
                 <Product key={product._id} product={product} />
               ))
             ) : (
               <div>No products found in this menu.</div>
             )}
           </div>
-          {products.length > 10 ? (
-            <div className="py-10 text-center text-3xl">
-              Pagination - coming soon
-            </div>
-          ) : null}
         </div>
       </div>
     </main>
