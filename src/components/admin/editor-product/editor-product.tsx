@@ -149,8 +149,6 @@ const EditorProduct: FC<ICrateProduct> = ({
   }
 
   const onSubmit = async (data: IProductLocal) => {
-    // Prevent submit if ConfirmDeletePopup is opened,
-    // Otherwise it refreshes a page, which closes all popups.
     if (isConfirmDeleteOpen) return
 
     setLoading(true)
