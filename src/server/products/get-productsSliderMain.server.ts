@@ -17,7 +17,7 @@ export async function getProductsSliderMain(locale: ILocale) {
         _id: product._id?.toString(),
         name: product.name[locale],
         description: product.description[locale],
-        category: product.category[locale],
+        categories: product.categories ?? [],
         menu: product.menu[locale],
         composition: product.composition[locale],
         variables: JSON.parse(JSON.stringify(product.variables)),

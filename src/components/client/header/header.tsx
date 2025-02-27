@@ -22,11 +22,10 @@ import Socials from '../ui/Socials'
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
-  productLinks: ILink[]
-  links: ICategory[]
+  productLinks: ICategory[]
 }
 
-const Header: FC<HeaderP> = ({ productLinks, links }) => {
+const Header: FC<HeaderP> = ({ productLinks }) => {
   const t = useTranslations('main.header')
   const locale = useLocale() as ILocale
   const headerRef = useRef<HTMLDivElement>(null)
@@ -64,9 +63,17 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
         0,
       )
 
-      tl.to(logoRef.current, { height: 55, }, '<')
-      tl.to(socialRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
-      tl.to(callRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        socialRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
+      tl.to(
+        callRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
 
     mm.add('(max-width: 1023px)', () => {
@@ -94,8 +101,12 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
         0,
       )
 
-      tl.to(logoRef.current, { height: 55, }, '<')
-      tl.to(callRef.current, { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        callRef.current,
+        { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
   })
 
@@ -112,7 +123,7 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
         >
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
-              {links.slice(0, 4)?.map((link) => (
+              {productLinks.slice(0, 4)?.map((link) => (
                 <Link
                   key={link.slug}
                   href={`/${locale}/${link.slug}`}
@@ -123,7 +134,7 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
               ))}
             </nav>
             <HamburgerMenu
-              productLinks={productLinks?.slice(0, 4)}
+              productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
             <div
@@ -133,11 +144,7 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
               <Socials variant="dark" />
             </div>
           </div>
-          <Link
-            ref={logoRef}
-            href={`/${locale}`}
-            className="h-full self-start"
-          >
+          <Link ref={logoRef} href={`/${locale}`} className="h-full self-start">
             <Image
               src={'/icons/logo.svg'}
               alt={`${t('logo')}`}
@@ -148,7 +155,7 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
           </Link>
 
           <div className="justify-self-end">
-            <div className="flex justify-end lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)] lg:justify-between">
+            <div className="flex justify-end lg:justify-between lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)]">
               <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
                 {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
                   <Link
@@ -170,7 +177,10 @@ const Header: FC<HeaderP> = ({ productLinks, links }) => {
               </div>
             </div>
 
-            <div ref={callRef} className="flex justify-between origin-top-right">
+            <div
+              ref={callRef}
+              className="flex origin-top-right justify-between"
+            >
               <NumberCall className="hidden lg:flex" />
               <CallMe />
             </div>

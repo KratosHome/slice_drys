@@ -17,7 +17,7 @@ export default function InstaFeed({ data }: Props) {
   return (
     <section className="section instafeed px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
-        <div className="flex items-center justify-center md:justify-end gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)]">
+        <div className="flex items-center justify-center gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)] md:justify-end">
           <h2 className="title-section text-balance text-center md:text-start">
             <span className="block md:hidden">{t('title')}</span>
             <span className="hidden md:block">{t('title-md')}</span>

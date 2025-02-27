@@ -14,7 +14,7 @@ import { contacts } from '@/data/main/contacts'
 import { cn } from '@/utils/cn'
 
 interface HamburgerMenu {
-  productLinks: ILink[]
+  productLinks: ICategory[]
   hamburgerLinksOther: ILink[]
 }
 
@@ -23,12 +23,14 @@ export default function HamburgerMenu({
   hamburgerLinksOther,
 }: HamburgerMenu) {
   const [isOpen, setIsOpen] = useState(false)
-  const locale = useLocale()
+  const locale = useLocale() as ILocale
+
   const t = useTranslations('main.burger-menu')
   const closeMenu = () => setIsOpen(!isOpen)
   const pathname = usePathname()
 
   const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
+
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('overflow-hidden')
@@ -101,20 +103,21 @@ export default function HamburgerMenu({
 
                 <div className="mt-5 px-8 text-base">
                   <div className="py-2 font-semibold">{t('catalog')}</div>
-                  {productLinks?.map((link) => (
+                  {productLinks.slice(0, 4)?.map((link) => (
                     <Link
-                      key={link.id}
-                      href={`/${locale}/${link.href}`}
+                      key={link.slug}
+                      href={`/${locale}/${link.slug}`}
                       onClick={closeMenu}
                       className={cn(
                         'block py-2 transition active:translate-x-2 active:text-red-700',
-                        pathname.includes(link.href) &&
+                        pathname.includes(link.slug) &&
                           'translate-x-2 text-red-700',
                       )}
                     >
-                      {link.name}
+                      {link.name[locale]}
                     </Link>
                   ))}
+
                   <Separator
                     orientation="horizontal"
                     className="my-[26px] bg-black"

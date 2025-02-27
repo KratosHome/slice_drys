@@ -24,23 +24,28 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, blogData, instaPosts] = await Promise.all([
-    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
+  const [productsData, blogData, instaPosts, categoriesData] =
+    await Promise.all([
+      fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
 
-    fetch(`${url}/api/post?locale=${locale}&page=1&limit=12`, {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
+      fetch(`${url}/api/post?locale=${locale}&page=1&limit=12`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
 
-    fetch(`${url}/api/instagram?limit=6`, {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
-  ])
+      fetch(`${url}/api/instagram?limit=6`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+
+      await fetch(`${url}/api/categories`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+    ])
 
   return (
     <>
-      <Hero device={device} />
+      <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider products={productsData.products} />
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />

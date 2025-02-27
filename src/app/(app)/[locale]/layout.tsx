@@ -6,7 +6,6 @@ import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
 
-import { productLinks } from '@/data/main/nav-links'
 import '../globals.css'
 import Footer from '@/components/client/footer/footer'
 import { seedCategories } from '@/server/seed/category'
@@ -48,7 +47,6 @@ export default async function LocaleLayout(props: {
   const { children } = props
 
   const messages = await getMessages()
-  const productLinksData = productLinks[locale]
 
   const categoriesData = await fetch(`${url}/api/categories`, {
     next: { revalidate: 60 },
@@ -64,10 +62,10 @@ export default async function LocaleLayout(props: {
       className={`${poppins.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
-        <body className="flex min-h-svh flex-col !pt-[180px]">
-          <Header productLinks={productLinksData} links={categoriesData.data} />
+        <body className="flex min-h-svh flex-col">
+          <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
-          <Footer />
+          <Footer productLinks={categoriesData.data} />
           <Toaster />
         </body>
       </NextIntlClientProvider>
