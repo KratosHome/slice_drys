@@ -9,7 +9,7 @@ import { Toaster } from '@/components/admin/ui/toaster'
 import { productLinks } from '@/data/main/nav-links'
 import '../globals.css'
 import Footer from '@/components/client/footer/footer'
-import { seedMenus } from '@/server/migrations/menu'
+import { seedCategories } from '@/server/seed/category'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -50,7 +50,7 @@ export default async function LocaleLayout(props: {
   const productLinksData = productLinks[locale]
 
   if (process.env.NODE_ENV === 'development') {
-    await seedMenus()
+    await seedCategories()
   }
 
   return (

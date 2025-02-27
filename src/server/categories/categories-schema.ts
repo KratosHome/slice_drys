@@ -35,7 +35,6 @@ const categoriesSchema = new mongoose.Schema(
       },
     ],
     image: { type: String, maxlength: 255 },
-    menu: { type: mongoose.Schema.Types.ObjectId, ref: 'Menu', required: true },
   },
   { timestamps: true },
 )

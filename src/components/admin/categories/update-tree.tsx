@@ -3,13 +3,7 @@ import React, { FC } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 interface UpdateTreeProps {
-  selectedCategory: {
-    name: { uk: string }
-    metaTitle: { uk: string }
-    description: { uk: string }
-    metaKeywords: { uk: string }
-    metaDescription: { uk: string }
-  }
+  selectedCategory: ICategory
 }
 
 interface FormData {
@@ -27,22 +21,20 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      name: selectedCategory.name.uk,
-      metaTitle: selectedCategory.metaTitle.uk,
-      description: selectedCategory.description.uk,
-      metaKeywords: selectedCategory.metaKeywords.uk,
-      metaDescription: selectedCategory.metaDescription.uk,
+      name: selectedCategory.name?.uk ?? '',
+      metaTitle: selectedCategory.metaTitle?.uk ?? '',
+      description: selectedCategory.description?.uk ?? '',
+      metaKeywords: selectedCategory.metaKeywords?.uk ?? '',
+      metaDescription: selectedCategory.metaDescription?.uk ?? '',
     },
   })
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log('Це апдейт:', data)
+    console.error('Це апдейт:', data)
   }
-  console.log(selectedCategory)
 
   return (
     <div>
-      <div>Меню: {selectedCategory.menu.name.en}</div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 rounded-lg border p-4"

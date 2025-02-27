@@ -29,7 +29,6 @@ interface ICrateProduct {
   product?: IProductLocal
   recommendations: IRecommendations
   categories: ICategory[]
-  menu: IMenu[]
 }
 
 interface IResult {
@@ -42,7 +41,6 @@ const EditorProduct: FC<ICrateProduct> = ({
   product,
   recommendations,
   categories,
-  menu,
 }) => {
   const {
     register,
@@ -235,7 +233,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                 id={category._id}
                 checked={selectedCategories.includes(category._id)}
                 onCheckedChange={(checked) =>
-                  handleCategoryChange(category._id, checked)
+                  handleCategoryChange(category._id, !!checked)
                 }
               />
               <label htmlFor={category._id}>{category.name.uk}</label>

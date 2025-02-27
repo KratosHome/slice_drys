@@ -1,21 +1,13 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
-import { Menu } from '@/server/menu/menu-schema'
 
 export const seedCategories = async () => {
   try {
+    await connectToDb()
+
     const count = await Category.countDocuments()
 
     if (count === 0) {
-      const menus = await Menu.find()
-
-      if (menus.length === 0) {
-        return {
-          success: false,
-          message: 'No menus found. Please seed menus first.',
-        }
-      }
-
       const categoriesData = [
         {
           name: { en: 'Meat', uk: 'М’ясо' },
@@ -27,7 +19,6 @@ export const seedCategories = async () => {
             en: 'meat, beef, pork',
             uk: 'м’ясо, яловичина, свинина',
           },
-          menu: menus.find((m) => m.name.en === 'Meat')?._id,
         },
         {
           name: { en: 'Fruits', uk: 'Фрукти' },
@@ -39,7 +30,6 @@ export const seedCategories = async () => {
             uk: 'Все про фрукти',
           },
           metaKeywords: { en: 'fruits, apples', uk: 'фрукти, яблука' },
-          menu: menus.find((m) => m.name.en === 'Fruits')?._id,
         },
         {
           name: { en: 'Vegetables', uk: 'Овочі' },
@@ -51,7 +41,6 @@ export const seedCategories = async () => {
             uk: 'Все про овочі',
           },
           metaKeywords: { en: 'vegetables, tomatoes', uk: 'овочі, помідори' },
-          menu: menus.find((m) => m.name.en === 'Vegetables')?._id,
         },
       ]
 
@@ -67,7 +56,6 @@ export const seedCategories = async () => {
           metaKeywords: { en: 'beef, meat', uk: 'яловичина, м’ясо' },
           parentCategory: createdCategories.find((cat) => cat.slug === 'meat')
             ?._id,
-          menu: menus.find((m) => m.name.en === 'Meat')?._id,
         },
         {
           name: { en: 'Pork', uk: 'Свинина' },
@@ -78,7 +66,6 @@ export const seedCategories = async () => {
           metaKeywords: { en: 'pork, meat', uk: 'свинина, м’ясо' },
           parentCategory: createdCategories.find((cat) => cat.slug === 'meat')
             ?._id,
-          menu: menus.find((m) => m.name.en === 'Meat')?._id,
         },
         {
           name: { en: 'Apples', uk: 'Яблука' },
@@ -92,7 +79,6 @@ export const seedCategories = async () => {
           metaKeywords: { en: 'apples, fruits', uk: 'яблука, фрукти' },
           parentCategory: createdCategories.find((cat) => cat.slug === 'fruits')
             ?._id,
-          menu: menus.find((m) => m.name.en === 'Fruits')?._id,
         },
         {
           name: { en: 'Tomatoes', uk: 'Помідори' },
@@ -107,7 +93,6 @@ export const seedCategories = async () => {
           parentCategory: createdCategories.find(
             (cat) => cat.slug === 'vegetables',
           )?._id,
-          menu: menus.find((m) => m.name.en === 'Vegetables')?._id,
         },
       ]
 

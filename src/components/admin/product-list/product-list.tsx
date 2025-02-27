@@ -40,14 +40,12 @@ interface IProductList {
   data: IGetProduct
   recommendations: IRecommendations
   categories: ICategory[]
-  menu: IMenu[]
 }
 
 export const ProductList: FC<IProductList> = ({
   data,
   recommendations,
   categories,
-  menu,
 }) => {
   const columns: ColumnDef<IProduct>[] = [
     {
@@ -184,7 +182,6 @@ export const ProductList: FC<IProductList> = ({
               product={fineProduct}
               recommendations={recommendations}
               categories={categories}
-              menu={menu}
             />
           </>
         )

@@ -6,7 +6,6 @@ import {
   CircleUser,
   FolderKanban,
   TrendingUp,
-  UtensilsCrossed,
 } from 'lucide-react'
 
 export const appSidebarData = [
@@ -15,12 +14,6 @@ export const appSidebarData = [
     name: 'Замовлення',
     icon: Home,
     link: 'admin/new',
-  },
-  {
-    id: 2,
-    name: 'Меню',
-    icon: UtensilsCrossed,
-    link: 'admin/menu',
   },
   {
     id: 2,
