@@ -24,7 +24,7 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
         href={getLocalizedPath('uk')}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
-          locale === 'uk' && 'text-red-500',
+          locale === 'uk' && 'text-red-700',
         )}
       >
         UK
@@ -36,7 +36,7 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
         href={getLocalizedPath('en')}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
-          locale === 'en' && 'text-red-500',
+          locale === 'en' && 'text-red-700',
         )}
       >
         EN

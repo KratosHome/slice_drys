@@ -32,8 +32,8 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
   const logoRef = useRef<HTMLAnchorElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const socialRef = useRef<HTMLDivElement>(null)
-  const cullRef = useRef<HTMLDivElement>(null)
-  const curtRef = useRef<HTMLDivElement>(null)
+  const callRef = useRef<HTMLDivElement>(null)
+  const cartRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -55,20 +55,17 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           backdropFilter: 'blur(10px)',
-          height: '60px',
-          marginTop: '0px',
+          height: '80px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
           duration: 0.5,
-          minWidth: '100vw',
           ease: 'power1.out',
         },
         0,
       )
 
-      tl.to(menuRef.current, { padding: '0px 20px' }, '<')
-      tl.to(logoRef.current, { scale: 0.3, y: -30 }, '<')
-      tl.to(socialRef.current, { opacity: 0, y: -30 }, '<')
-      tl.to(cullRef.current, { opacity: 0, y: -30 }, '<')
+      tl.to(logoRef.current, { height: 55, }, '<')
+      tl.to(socialRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
+      tl.to(callRef.current, { autoAlpha: 0, display: 'none',  marginTop: -30, scale: 0.5 }, '<')
     })
 
     mm.add('(max-width: 1023px)', () => {
@@ -96,11 +93,8 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         0,
       )
 
-      tl.to(curtRef.current, { marginTop: '10px' }, 0)
-      tl.to(logoRef.current, { x: -20 }, '<')
-      tl.to(menuRef.current, { padding: '0px 10px' }, '<')
-      tl.to(socialRef.current, { opacity: 0, y: -15 }, '<')
-      tl.to(cullRef.current, { opacity: 0, display: 'none', y: -15 }, '<')
+      tl.to(logoRef.current, { height: 55, }, '<')
+      tl.to(callRef.current, { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 }, '<')
     })
   })
 
@@ -109,15 +103,15 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
       <Info title={`${t('free-delivery-from')}`} />
       <header
         ref={headerRef}
-        className="fixed left-1/2 top-0 z-50 mt-6 w-full max-w-[1240px] -translate-x-1/2 border-b-[1px] border-[#E4E4E4] transition-all lg:pb-6"
+        className="sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
       >
         <div
           ref={menuRef}
-          className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-3"
+          className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3"
         >
-          <div>
+          <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
-              {productLinks.slice(0, 4)?.map((link: ILink) => (
+              {productLinks?.slice(0, 4)?.map((link: ILink) => (
                 <Link
                   key={link.id}
                   href={`/${locale}/${link.href}`}
@@ -128,8 +122,8 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               ))}
             </nav>
             <HamburgerMenu
-              productLinks={productLinks.slice(0, 4)}
-              hamburgerLinksOther={[]}
+              productLinks={productLinks?.slice(0, 4)}
+              hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
             <div
               ref={socialRef}
@@ -141,19 +135,20 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
           <Link
             ref={logoRef}
             href={`/${locale}`}
-            className="ml-[55px] py-3 lg:py-0"
+            className="h-full self-start"
           >
             <Image
               src={'/icons/logo.svg'}
               alt={`${t('logo')}`}
-              className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
+              className="h-full"
               width={86}
               height={100}
             />
           </Link>
-          <div>
-            <div className="flex justify-center lg:justify-end">
-              <nav className="mr-[52px] hidden gap-x-3 text-[20px] lg:flex">
+
+          <div className="justify-self-end">
+            <div className="flex justify-end lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)] lg:justify-between">
+              <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
                 {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
                   <Link
                     key={link.id}
@@ -164,12 +159,17 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
                   </Link>
                 ))}
               </nav>
-              <div ref={curtRef} className="flex items-center gap-x-4">
+
+              <div
+                ref={cartRef}
+                className="flex items-center justify-center gap-x-4 lg:justify-between"
+              >
                 <LocaleChange className="hidden lg:block" />
                 <Cart />
               </div>
             </div>
-            <div ref={cullRef} className="mt-3 flex justify-between">
+
+            <div ref={callRef} className="flex justify-between origin-top-right">
               <NumberCall className="hidden lg:flex" />
               <CallMe />
             </div>

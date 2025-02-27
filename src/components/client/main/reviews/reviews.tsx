@@ -1,7 +1,11 @@
+'use client'
 import { useLocale } from 'next-intl'
 import { useTranslations } from 'next-intl'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 
-import ReviewsItem from '@/components/client/main/reviews/reviews-item'
+import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
 
 import { reviewsData } from '@/data/main/reviews'
 
@@ -9,8 +13,25 @@ const variants = ['grey', 'black', 'white']
 
 export default function Reviews() {
   const t = useTranslations('main.reviews')
-
+  const reviewsRef = useRef<HTMLLIElement[]>([])
   const locale: ILocale = useLocale() as ILocale
+
+  useGSAP(() => {
+    reviewsRef.current.forEach((r, i) => {
+      gsap.from(r, {
+        x: i % 2 ? 200 : -200,
+        autoAlpha: 0,
+        duration: 1,
+        delay: 0.2,
+        ease: 'power1.out',
+        scrollTrigger: {
+          trigger: r,
+          start: 'top 80%',
+        },
+      })
+    })
+  })
+
   return (
     <section
       aria-labelledby="reviews"
@@ -25,6 +46,9 @@ export default function Reviews() {
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
           {reviewsData[locale].map((review, index) => (
             <ReviewsItem
+              ref={(el) => {
+                if (el) reviewsRef.current[index] = el
+              }}
               key={index}
               author={review.author}
               text={review.text}

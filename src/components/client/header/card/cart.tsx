@@ -40,7 +40,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="relative inline-block">
+    <div className="relative flex flex-col justify-center">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
           <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">

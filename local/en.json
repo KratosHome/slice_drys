@@ -12,6 +12,10 @@
       "telephone-icon": "telephone icon",
       "logo": "logo"
     },
+    "products-slider": {
+      "title": "top-notch dried sushennyky",
+      "message": "the most delicious kus-topchiki"
+    },
     "footer": {
       "CTA-socials":"join our social networks",
       "public-offer": "public offer",
@@ -41,7 +45,11 @@
       "more-btn": "Learn more"
     },
     "instafeed": {
-      "title": "Travel with us"
+      "title": "Travel with us",
+      "title-md": "Travel with us"
+    },
+    "burger-menu": {
+      "catalog": "Catalog"
     }
   },
   "cart": {
