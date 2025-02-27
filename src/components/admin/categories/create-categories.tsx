@@ -212,16 +212,8 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                 </div>
               ))}
             </div>
-            <button
-              type="submit"
-              className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            >
-              Зберегти
-            </button>
+            <Button type="submit">Зберегти</Button>
           </form>
-          <DialogFooter>
-            <Button type="submit">Save changes</Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

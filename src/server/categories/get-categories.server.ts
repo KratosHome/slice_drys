@@ -8,7 +8,12 @@ export async function getCategories() {
     await connectToDb()
 
     const categories = await Category.find({ parentCategory: null })
-      .populate('children')
+      .populate({
+        path: 'children',
+        populate: {
+          path: 'children', // третій рівень
+        },
+      })
       .lean()
 
     const plainCategories = JSON.parse(JSON.stringify(categories))
