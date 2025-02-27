@@ -52,7 +52,7 @@ export const Title = ({
   statusLabel: string[]
 }) => {
   const InStockLabel = () => (
-    <div className="bg-red absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
+    <div className="bg-red-500 absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
       {statusLabel.join(', ')}
     </div>
   )
@@ -144,7 +144,7 @@ export const PriceControl = ({
 
       <button
         type="button"
-        className="bg-red text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
+        className="bg-red-500 text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
       >
         До кошика
       </button>

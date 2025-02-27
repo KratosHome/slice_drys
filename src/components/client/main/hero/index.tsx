@@ -165,7 +165,6 @@ export const Hero = ({ device }: { device: IDevice }) => {
               sizes="(max-width: 550px) 100vw, 50vw"
               onMouseEnter={() => {
                 handleMainImageAnimation(true)
-                console.log('mouse Enter')
               }}
               onMouseLeave={() => handleMainImageAnimation(false)}
             />

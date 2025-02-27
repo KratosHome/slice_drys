@@ -70,7 +70,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                       src={post.img}
                       alt={post.title}
                       fill
-                      className="rounded-xl object-cover"
+                      className="rounded-[12px_12px_0_0] object-cover"
                     />
                   </AspectRatio>
                   <div className="p-4">
@@ -79,7 +79,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                     </p>
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="card_link"
+                      className="card__link"
                     >
                       {post.title}
                     </Link>

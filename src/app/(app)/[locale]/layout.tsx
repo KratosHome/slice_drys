@@ -54,7 +54,7 @@ export default async function LocaleLayout(props: {
       className={`${poppins.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
-        <body className="flex min-h-svh flex-col !pt-[180px]">
+        <body className="flex min-h-svh flex-col">
           <Header productLinks={productLinksData} />
           <main className="flex-1">{children}</main>
           <Footer />

@@ -24,7 +24,7 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
         </h2>
 
         <Marquee className="mt-8 md:mt-[60px]">
-          {data.map((partner) => (
+          {data?.map((partner) => (
             <Link
               className="mr-[20px] block w-[150px] transition-all duration-300 will-change-transform hover:scale-105"
               href={`https://letmegooglethat.com/?q=${partner.name}%20супермаркет`}
