@@ -11,7 +11,7 @@ export async function getCategories() {
       .populate({
         path: 'children',
         populate: {
-          path: 'children', // третій рівень
+          path: 'children',
         },
       })
       .lean()

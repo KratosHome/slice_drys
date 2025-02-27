@@ -54,7 +54,7 @@ export async function getProducts(
       _id: product._id as string,
       name: product.name[locale],
       description: product.description[locale],
-      category: product.category[locale],
+      categories: product.category ?? [],
       menu: product.menu[locale],
       composition: product.composition[locale],
       variables: product.variables,

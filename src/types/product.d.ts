@@ -4,7 +4,6 @@ interface IProduct {
   description: string
   img?: string
   variables: IVariableProduct[]
-  category: string[]
   menu: string[]
   slug: string
   composition: string[]
@@ -20,7 +19,6 @@ interface IProductLocal {
   description: ILocalizedString
   img?: string
   variables: IVariableProduct[]
-  category: ILocalizedStringArray
   menu: ILocalizedStringArray
   composition: ILocalizedStringArray
   statusLabel: string[]
@@ -58,5 +56,18 @@ interface IRecommendations {
   fats: string[]
   carbohydrates: string[]
   energyValue: string[]
+  message: string
+}
+
+interface IGetProduct {
+  product: IProduct[]
+  productAll?: IProductLocal[]
+  success: boolean
+  message: string
+}
+
+interface IGetProducts {
+  products: IProduct[]
+  success: boolean
   message: string
 }

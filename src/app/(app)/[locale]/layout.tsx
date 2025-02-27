@@ -41,6 +41,7 @@ export default async function LocaleLayout(props: {
   children: React.ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
+  const url = process.env.NEXT_URL
   const params = await props.params
 
   const { locale } = params
@@ -48,6 +49,10 @@ export default async function LocaleLayout(props: {
 
   const messages = await getMessages()
   const productLinksData = productLinks[locale]
+
+  const categoriesData = await fetch(`${url}/api/categories`, {
+    next: { revalidate: 60 },
+  }).then((res) => res.json())
 
   if (process.env.NODE_ENV === 'development') {
     await seedCategories()
@@ -60,7 +65,7 @@ export default async function LocaleLayout(props: {
     >
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col !pt-[180px]">
-          <Header productLinks={productLinksData} />
+          <Header productLinks={productLinksData} links={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />

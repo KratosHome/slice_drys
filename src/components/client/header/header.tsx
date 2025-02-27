@@ -23,9 +23,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
   productLinks: ILink[]
+  links: ICategory[]
 }
 
-const Header: FC<HeaderP> = ({ productLinks }) => {
+const Header: FC<HeaderP> = ({ productLinks, links }) => {
   const t = useTranslations('main.header')
   const locale = useLocale() as ILocale
   const headerRef = useRef<HTMLDivElement>(null)
@@ -117,13 +118,13 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
         >
           <div>
             <nav className="hidden gap-3 lg:flex">
-              {productLinks.slice(0, 4)?.map((link: ILink) => (
+              {links.slice(0, 4)?.map((link) => (
                 <Link
-                  key={link.id}
-                  href={`/${locale}/${link.href}`}
+                  key={link.slug}
+                  href={`/${locale}/${link.slug}`}
                   className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
-                  {link.name}
+                  {link.name[locale]}
                 </Link>
               ))}
             </nav>
