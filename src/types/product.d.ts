@@ -10,6 +10,7 @@ interface IProduct {
   composition: string[]
   statusLabel: string[]
   visited?: number
+  categories: string[]
   nutritionalValue: INutritionalValue
 }
 
@@ -25,6 +26,7 @@ interface IProductLocal {
   statusLabel: string[]
   visited?: number
   slug: string
+  categories: string[]
   nutritionalValue: INutritionalValue
 }
 
@@ -47,35 +49,14 @@ interface IVariableProduct {
 
 interface IRecommendations {
   success: boolean
-  composition: {
-    en: string[]
-    uk: string[]
-  }
-  menu: {
-    en: string[]
-    uk: string[]
-  }
-  category: {
-    en: string[]
-    uk: string[]
-  }
+  composition: ILocalizedStringArray
+  menu: ILocalizedStringArray
+  category: ILocalizedStringArray
   currency: string[]
   weight: string[]
   proteins: string[]
   fats: string[]
   carbohydrates: string[]
   energyValue: string[]
-  message: string
-}
-
-interface IGetProduct {
-  product: IProduct[]
-  productAll?: IProductLocal[]
-  success: boolean
-  message: string
-}
-interface IGetProducts {
-  products: IProduct[]
-  success: boolean
   message: string
 }

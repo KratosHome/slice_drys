@@ -75,7 +75,6 @@ const EditorProduct: FC<ICrateProduct> = ({
       },
     },
   })
-
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -115,6 +114,12 @@ const EditorProduct: FC<ICrateProduct> = ({
       setImagePreviewUrl(null)
     }
   }, [imageFile, product?.img])
+
+  useEffect(() => {
+    if (product && product.categories) {
+      setSelectedCategories(product.categories)
+    }
+  }, [product])
 
   useEffect(() => {
     if (product) {
@@ -161,6 +166,7 @@ const EditorProduct: FC<ICrateProduct> = ({
       ...data,
       composition,
       visited: 0,
+      categories: selectedCategories,
       variables: data.variables.map((variable) => ({
         ...variable,
         weight: Number(variable.weight),
@@ -170,6 +176,8 @@ const EditorProduct: FC<ICrateProduct> = ({
         sold: 0,
       })),
     }
+
+    console.log(newData)
 
     if (product?._id) {
       result = await editProduct(product._id, newData, image)
