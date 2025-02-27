@@ -53,7 +53,7 @@ const EditorProduct: FC<ICrateProduct> = ({
     defaultValues: {
       name: { en: '', uk: '' },
       description: { en: '', uk: '' },
-      category: { en: [], uk: [] },
+      categories: [],
       composition: { en: [], uk: [] },
       img: '',
       slug: '',
@@ -177,8 +177,6 @@ const EditorProduct: FC<ICrateProduct> = ({
       })),
     }
 
-    console.log(newData)
-
     if (product?._id) {
       result = await editProduct(product._id, newData, image)
     } else {
@@ -227,7 +225,8 @@ const EditorProduct: FC<ICrateProduct> = ({
   }
 
   useEffect(() => {
-    setValue('category.uk', selectedCategories)
+    setValue('categories', selectedCategories)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategories, setValue])
 
   const ConfirmDeletePopup = () => (
