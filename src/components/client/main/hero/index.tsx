@@ -22,14 +22,6 @@ export const Hero = ({ device }: { device: IDevice }) => {
   const sliderLinksLocale = productLinks[locale]
   const slidersLocale = sliders[locale]
 
-  // if (locale === 'uk' || locale === 'en') {
-  //   sliderLinksLocale = sliderLinks[locale]
-  //   slidersLocale = sliders[locale]
-  // } else {
-  //   sliderLinksLocale = sliderLinks['uk']
-  //   slidersLocale = sliders['uk']
-  // }
-
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
   const titleRef = useRef(null)

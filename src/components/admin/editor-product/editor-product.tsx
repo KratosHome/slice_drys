@@ -54,6 +54,7 @@ const EditorProduct: FC<ICrateProduct> = ({
       menu: { en: [], uk: [] },
       composition: { en: [], uk: [] },
       img: '',
+      slug: '',
       statusLabel: [],
       variables: [
         {
@@ -126,6 +127,7 @@ const EditorProduct: FC<ICrateProduct> = ({
   useEffect(() => {
     if (product) {
       setValue('name', product.name)
+      setValue('slug', product.slug)
       setValue('description', product.description)
       setValue('statusLabel', product.statusLabel)
 
@@ -275,7 +277,7 @@ const EditorProduct: FC<ICrateProduct> = ({
             </AlertDialogHeader>
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
-                <div className="flex justify-between">
+                <div className="flex flex-col justify-between">
                   <div>
                     <Label htmlFor="name-uk">Назва (UK)</Label>
                     <Input
@@ -303,6 +305,19 @@ const EditorProduct: FC<ICrateProduct> = ({
                       <span className="text-red-700">
                         {errors.name.en.message}
                       </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="slug">URL-ідентифікатор (Slug)</Label>
+                    <Input
+                      id="slug"
+                      {...register('slug', {
+                        required: 'Це поле є обов’язковим',
+                      })}
+                    />
+                    {errors.slug && (
+                      <span className="text-red">{errors.slug.message}</span>
                     )}
                   </div>
                 </div>

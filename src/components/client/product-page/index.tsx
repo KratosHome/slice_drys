@@ -18,13 +18,14 @@ import {
   TopIcon,
 } from './icons'
 import SliderWithThumbnails from './slider'
-import { mockProduct, mockSliders } from './consts'
+import { mockSliders } from './consts'
+import React from 'react'
 
-export const ProductInfo = () => (
-  <section className="lg:border-light_gray·mb-20·mt-10·flex·flex-col·gap-10·pb-10·lg:mt-[6.25rem]·lg:flex-row·lg:border">
+export const ProductInfo = ({ product }: { product: IProduct }) => (
+  <section className="lg:border-light_gray mb-20 mt-10 flex flex-col gap-10 pb-10 lg:mt-[6.25rem] lg:flex-row lg:border">
     <div className="absolute grid gap-0.5">
-      <TopLabel />
-      <NewLabel />
+      {product.statusLabel.includes('top') && <TopLabel />}
+      {product.statusLabel.includes('new') && <NewLabel />}
     </div>
 
     <div className="flex justify-center lg:w-1/2">
@@ -32,13 +33,16 @@ export const ProductInfo = () => (
     </div>
 
     <div className="lg:w-1/2">
-      <Title name={mockProduct.name} statusLabel={mockProduct.statusLabel} />
-      <Description
-        description={mockProduct.description}
-        composition={mockProduct.composition}
+      <Title
+        name={product.name}
+        isStock={product.statusLabel.includes('sale')}
       />
-      <WeightSelect variables={mockProduct.variables} />
-      <PriceControl variables={mockProduct.variables} />
+      <Description
+        description={product.description}
+        composition={product.composition}
+      />
+      <WeightSelect variables={product.variables} />
+      <PriceControl variables={product.variables} />
       <Certifications />
     </div>
   </section>
@@ -46,10 +50,10 @@ export const ProductInfo = () => (
 
 export const Title = ({
   name,
-  statusLabel,
+  isStock,
 }: {
   name: string
-  statusLabel: string[]
+  isStock: boolean
 }) => {
   const InStockLabel = () => (
     <div className="bg-red-500 absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
@@ -64,7 +68,7 @@ export const Title = ({
         'before:absolute before:-left-6 before:top-0 before:h-full before:translate-x-[1px] before:bg-black before:content-[""] lg:before:w-6',
       )}
     >
-      <InStockLabel />
+      {isStock && <InStockLabel />}
       {name}
     </h2>
   )
@@ -125,22 +129,31 @@ export const PriceControl = ({
   variables,
 }: {
   variables: { price: number; currency: string; count: number }[]
-}) => (
-  <div className="flex flex-col items-center justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
-    <div>
-      {variables[0].price} {variables[0].currency}
-    </div>
+}) => {
+  const [counter, setCounter] = React.useState(1)
 
-    <div className="flex items-stretch gap-4 pr-4">
-      <div className="flex items-center gap-5 bg-black px-2.5 font-bold text-white">
-        <button>
-          <MinusIcon />
-        </button>
-        {variables[0].count}
-        <button>
-          <PlusIcon />
-        </button>
+  return (
+    <div className="flex flex-col items-center justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
+      <div>
+        {variables[0].price * counter} {variables[0].currency}
       </div>
+
+      <div className="flex items-stretch gap-4 pr-4">
+        <div className="flex items-center gap-5 bg-black px-2.5 font-bold text-white">
+          <button
+            disabled={counter === 0}
+            onClick={() => setCounter((prev) => prev - 1)}
+          >
+            <MinusIcon />
+          </button>
+          {counter}
+          <button
+            disabled={counter === variables[0].count}
+            onClick={() => setCounter((prev) => prev + 1)}
+          >
+            <PlusIcon />
+          </button>
+        </div>
 
       <button
         type="button"

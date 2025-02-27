@@ -60,6 +60,7 @@ export async function getProducts(
       variables: product.variables,
       statusLabel: product.statusLabel,
       nutritionalValue: product.nutritionalValue,
+      slug: product.slug,
     }))
 
     const allProducts: IProductLocal[] = fetchAll

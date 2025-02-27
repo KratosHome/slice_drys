@@ -10,7 +10,7 @@ export async function findProductInfoItems() {
     const uniqueCompositionsEn: string[] =
       await Product.distinct('composition.en')
     const uniqueCompositionsUk: string[] =
-      await Product.distinct('composition.en')
+      await Product.distinct('composition.uk')
 
     const uniqueMenusEn: string[] = await Product.distinct('menu.en')
     const uniqueMenusUk: string[] = await Product.distinct('menu.uk')

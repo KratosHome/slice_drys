@@ -6,6 +6,7 @@ interface IProduct {
   variables: IVariableProduct[]
   category: string[]
   menu: string[]
+  slug: string
   composition: string[]
   statusLabel: string[]
   visited?: number
@@ -23,6 +24,7 @@ interface IProductLocal {
   composition: ILocalizedStringArray
   statusLabel: string[]
   visited?: number
+  slug: string
   nutritionalValue: INutritionalValue
 }
 
