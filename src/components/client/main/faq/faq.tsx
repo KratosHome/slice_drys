@@ -22,16 +22,32 @@ const Faq: FC<IFaq> = ({ data }) => {
   }, [])
 
   useGSAP(() => {
-    gsap.from(faqRef.current, {
-      autoAlpha: 0,
-      duration: 0.6,
-      stagger: 0.2,
-      ease: 'power1.out',
-      scrollTrigger: {
-        trigger: faqRef.current[0],
-        start: 'top 80%',
-        end: '400px top',
-        toggleActions: 'play reset play reset',
+    ScrollTrigger.create({
+      trigger: faqRef.current[0],
+      start: 'top 80%',
+      end: '400px 10%',
+      markers: true,
+      toggleActions: 'play reset play reset',
+      preventOverlaps: true,
+      onToggle: (self) => {
+        if (!self.isActive) {
+          gsap.set(faqRef.current, { autoAlpha: 0 })
+        } else {
+          gsap.fromTo(
+            faqRef.current,
+            { autoAlpha: 0, y: self.direction === -1 ? -50 : 50 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.6,
+              stagger: {
+                each: 0.2,
+                from: self.direction === -1 ? 'end' : 'start',
+              },
+              ease: 'power1.out',
+            },
+          )
+        }
       },
     })
     ScrollTrigger.refresh(true)
