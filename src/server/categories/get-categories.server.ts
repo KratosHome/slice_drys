@@ -2,7 +2,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 
-export async function getCategories(slug?: string) {
+export async function getCategories(slug?: string, locale?: ILocale) {
   'use server'
   try {
     await connectToDb()
@@ -26,6 +26,7 @@ export async function getCategories(slug?: string) {
       }
 
       return {
+        name: locale ? category.name?.[locale] : '',
         data: category.children || [],
         success: true,
         message: 'Category children retrieved successfully',

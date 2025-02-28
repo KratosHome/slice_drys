@@ -8,7 +8,7 @@ interface IGetProductsParams {
   limit: number
   menu: string
   locale: ILocale
-  weight?: string
+  weight?: string[å]
 }
 
 export async function getProductsList({
