@@ -10,9 +10,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import ToTheTop from '@/components/client/ui/to-the-top'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+const mockData = {
+  title: 'М’ясні джерки',
+  content: `Шукаєте смачний, поживний і натуральний перекус? М’ясні джерки – це ідеальне рішення для тих, хто цінує якість, смак та здорове харчування.\n\n**Що таке м’ясні джерки?**\nМ’ясні джерки — це в’ялене м’ясо, приготовлене за спеціальною технологією сушіння. Завдяки цьому зберігається максимум користі та смаку без зайвих консервантів.\n\n**Чому обирають наші джерки?**\n- 100% натуральний склад – без штучних добавок та ГМО\n- Високий вміст білка – ідеально для спортсменів та активних людей\n- Зручність – легкі, компактні, не потребують зберігання в холодильнику\n- Різноманіття смаків – класичні, гострі, пряні, BBQ\n\n**Для кого підходять м’ясні джерки?**\n- Спортсменів і людей, які стежать за харчуванням\n- Мандрівників та туристів\n- Водіїв, офісних працівників, студентів\n- Усіх, хто любить якісні м’ясні закуски`,
+}
 
 export default async function MenuPage(props: {
   params: Params
@@ -21,6 +27,9 @@ export default async function MenuPage(props: {
   const { locale, menu } = await props.params
 
   const { categories, minWeight, maxWeight } = await props.searchParams
+
+  const text = mockData.content
+  const isLongText = text.length > 500
 
   const url = process.env.NEXT_URL
 
@@ -59,7 +68,7 @@ export default async function MenuPage(props: {
 
   return (
     <main className="mx-auto max-w-[1280px] px-5">
-      <Breadcrumb>
+      <Breadcrumb className="my-2">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -96,9 +105,26 @@ export default async function MenuPage(props: {
         </div>
       </div>
       <div>
-        <h2>fvsdfvsd</h2>
-        <div>vsfdvdfv</div>
+        <div className="mx-auto max-w-5xl p-6">
+          <h1 className="mb-6 text-center text-3xl font-bold">
+            {mockData.title}
+          </h1>
+          <div
+            className={`grid gap-6 ${isLongText ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+          >
+            {isLongText ? (
+              text.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="text-lg leading-relaxed">
+                  {paragraph}
+                </p>
+              ))
+            ) : (
+              <p className="text-lg leading-relaxed">{text}</p>
+            )}
+          </div>
+        </div>
       </div>
+      <ToTheTop />
     </main>
   )
 }

@@ -116,16 +116,16 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         <div className="hidden w-full max-w-80 grow md:block">
           <Accordion type="single" collapsible defaultValue="item-1">
             <AccordionItem value="item-1">
-              <AccordionTrigger className="flex w-full items-center justify-between gap-2.5 bg-[#0F0F0F] p-4 text-4xl text-[#FBFBFB]">
+              <AccordionTrigger className="font-rubik !text-[36px]">
                 Вид
               </AccordionTrigger>
-              <AccordionContent className="relative z-0 flex flex-col">
+              <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto">
                 {categories.length > 0 ? (
                   categories.map((category) => (
                     <label
                       key={category.slug}
                       htmlFor={category.slug}
-                      className="relative z-0 flex cursor-pointer items-center gap-6"
+                      className="flex cursor-pointer items-center gap-[24px]"
                     >
                       <CheckboxPrimitive.Root
                         id={category.slug}
@@ -133,14 +133,16 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         onCheckedChange={() =>
                           handleToggleCategory(category.slug)
                         }
-                        className="relative z-0 py-3"
+                        className="relative z-0 py-2"
                       >
                         <CheckboxRoot />
                         <CheckboxPrimitive.Indicator>
                           <CheckboxIndicator />
                         </CheckboxPrimitive.Indicator>
                       </CheckboxPrimitive.Root>
-                      <span className="text-xl">{category.name[locale]}</span>
+                      <span className="font-poppins text-[20px] text-xl font-normal uppercase">
+                        {category.name[locale]}
+                      </span>
                     </label>
                   ))
                 ) : (
@@ -154,10 +156,10 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             type="single"
             collapsible
             defaultValue="item-2"
-            className="mt-4"
+            className="mt-[60px]"
           >
             <AccordionItem value="item-2">
-              <AccordionTrigger className="flex w-full items-center justify-between gap-2.5 bg-[#0F0F0F] p-4 text-4xl text-[#FBFBFB]">
+              <AccordionTrigger className="font-rubik !text-[36px]">
                 Вага
               </AccordionTrigger>
               <AccordionContent>
