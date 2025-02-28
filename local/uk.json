@@ -17,7 +17,7 @@
       "message": "найсмачніші кусь-топчики"
     },
     "footer": {
-      "CTA-socials":"приєднуйся до наших соцмереж",
+      "CTA-socials": "приєднуйся до наших соцмереж",
       "public-offer": "Публічна оферта",
       "privacy-policy": "Політика конфіденційності"
     },
@@ -49,7 +49,8 @@
       "title": "Мандруйте разом з нами"
     },
     "burger-menu": {
-      "catalog": "Каталог"
+      "catalog": "Каталог",
+      "logo": "логотип"
     }
   },
   "cart": {
@@ -83,7 +84,6 @@
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
   },
-
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",
     "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
@@ -98,5 +98,4 @@
       "kiwi": "Ківі"
     }
   }
-
 }

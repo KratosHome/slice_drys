@@ -49,7 +49,8 @@
       "title-md": "Travel with us"
     },
     "burger-menu": {
-      "catalog": "Catalog"
+      "catalog": "Catalog",
+      "logo": "logo"
     }
   },
   "cart": {

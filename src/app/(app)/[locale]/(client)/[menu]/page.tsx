@@ -11,8 +11,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 
-export const dynamic = 'force-dynamic'
-
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
@@ -61,20 +59,24 @@ export default async function MenuPage(props: {
 
   return (
     <main className="mx-auto max-w-[1280px] px-5">
-      <Breadcrumb className="my-5">
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/" localizationKey="Home" />
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{categoriesData.name}</BreadcrumbPage>
+            <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       <div className="flex items-end justify-between border border-[#E4E4E4]">
-        <h2 className="text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
+        <h2 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
           {categoriesData.name}
         </h2>
       </div>
