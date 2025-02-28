@@ -1,5 +1,5 @@
 'use client'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import Image from 'next/image'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
@@ -30,6 +30,53 @@ const Help: FC<HelpProps> = ({ data }) => {
     window.open(link, '_blank')
   }
   const isMobile = useIsMobile()
+  useEffect(() => {
+    const target = document.querySelector('.products-slider')
+    if (!target) return
+    const handleResize = () => {
+      let k: number
+      switch (true) {
+        case window.innerWidth >= 1280:
+          k = 35
+          break
+        case window.innerWidth >= 1024:
+          k = 30
+          break
+        case window.innerWidth >= 768:
+          k = 28
+          break
+        case window.innerWidth < 768:
+          k = 23
+          break
+        default:
+          k = 30
+      }
+      const x = data.img.length * k
+      const prev = document.querySelector(
+        '.help .splide__arrow--prev.custom__arrow-prev',
+      ) as HTMLElement
+      const next = document.querySelector(
+        '.help .splide__arrow--next.custom__arrow-next',
+      ) as HTMLElement
+
+      if (prev && next) {
+        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
+        next.style.setProperty('--tw-arrow-translate', `${x}px`)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(handleResize)
+
+    if (target) {
+      resizeObserver.observe(target)
+    }
+
+    return () => {
+      if (target) {
+        resizeObserver.unobserve(target)
+      }
+    }
+  }, [data])
   return (
     <section aria-labelledby="help" className="help section">
       <div className="help__wrapper">
@@ -50,12 +97,12 @@ const Help: FC<HelpProps> = ({ data }) => {
                 },
               },
               classes: {
-                arrows: 'splide__arrows help__arrows',
-                arrow: 'splide__arrow help__arrow',
-                prev: 'splide__arrow--prev help__arrow-prev',
-                next: 'splide__arrow--next help__arrow-next',
-                pagination: 'splide__pagination help__pagination',
-                page: 'splide__pagination__page help__pagination-page',
+                arrows: 'splide__arrows custom__arrows',
+                arrow: 'splide__arrow custom__arrow',
+                prev: 'splide__arrow--prev custom__arrow-prev',
+                next: 'splide__arrow--next custom__arrow-next',
+                pagination: 'splide__pagination custom__pagination',
+                page: 'splide__pagination__page custom__pagination-page',
               },
             }}
           >

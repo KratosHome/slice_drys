@@ -1,53 +1,15 @@
 /*слайдер*/
 
 .instafeed {
- 
-  
-    .splide__pagination.insta__pagination {
-      @apply -bottom-[80px] flex justify-center gap-[3px];
+    .splide__pagination.custom__pagination {
+      @apply bottom-[-33px] md:bottom-[-43px] lg:bottom-[-50px]
     }
   
-    .splide__pagination__page.insta__pagination-page {
-      @apply m-0 h-[13px] w-[15px] rounded-none 
-      bg-[url('/icons/slider-bullet.svg')] bg-cover bg-center bg-no-repeat 
-      opacity-100 transition-transform duration-300 ease-in-out hover:scale-125;
-    }
-  
-    .splide__pagination__page.insta__pagination-page.is-active {
-      @apply scale-100 bg-[url('/icons/slider-bullet-active.svg')] bg-contain;
-    }
-   
     .splide__slide {
       @apply relative md:mr-[1px] lg:mr-[2px] items-stretch md:px-[10px] lg:px-[18px];
     }
     .splide__track {
-      @apply mb-[130px] md:mb-[100px] overflow-visible overflow-x-clip; 
-    }
-  
-    .splide__arrow.insta__arrow {
-      @apply -bottom-[90px] top-auto h-[44px] w-[33px] rounded-none transition-transform duration-300 ease-in-out;
-    }
-    .splide__arrow,
-    .splide__pagination__page {
-      svg {
-        fill: currentColor;
-      }
-      @apply bg-[transparent];
-    }
-    .splide__arrow.insta__arrow svg {
-      @apply h-full w-full;
-    }
-  
-    .splide__arrow--prev.insta__arrow-prev {
-      @apply left-1/2 translate-x-[-100px] 
-      transform transition-transform duration-300 ease-in-out 
-      active:translate-x-[-105px] lg:hover:translate-x-[-105px];
-    }
-  
-    .splide__arrow--next.insta__arrow-next {
-      @apply right-1/2 translate-x-[100px] 
-      transform transition-transform duration-300 ease-in-out 
-      active:translate-x-[105px] lg:hover:translate-x-[105px];
+      @apply pb-[70px] overflow-visible overflow-x-clip; 
     }
   }
   

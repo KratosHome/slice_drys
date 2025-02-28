@@ -44,7 +44,7 @@ function InstaCard({ post }: Props) {
         />
         <Dots number={'children' in post ? post.children.data.length : 0} />
       </div>
-      <p className="line-clamp-2 overflow-hidden overflow-ellipsis text-wrap px-[17px] pt-[12px] text-[14px] md:text-[16px]">
+      <p className="line-clamp-2 overflow-hidden overflow-ellipsis text-wrap px-[17px] pt-[12px] text-[14px] lg:text-[16px]">
         {'children' in post
           ? post?.caption || post.children.data[0]?.caption
           : post.caption}

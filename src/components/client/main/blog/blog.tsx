@@ -1,6 +1,6 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
@@ -23,6 +23,54 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
   const locale = useLocale()
   const isMobile = useIsMobile()
 
+  useEffect(() => {
+    const target = document.querySelector('.blog-slider')
+    if (!target) return
+    const handleResize = () => {
+      let k: number
+      switch (true) {
+        case window.innerWidth >= 1280:
+          k = 35
+          break
+        case window.innerWidth >= 1024:
+          k = 30
+          break
+        case window.innerWidth >= 768:
+          k = 28
+          break
+        case window.innerWidth < 768:
+          k = 23
+          break
+        default:
+          k = 30
+      }
+      const x = data.length * k
+      const prev = document.querySelector(
+        '.blog-slider .splide__arrow--prev.custom__arrow-prev',
+      ) as HTMLElement
+      const next = document.querySelector(
+        '.blog-slider .splide__arrow--next.custom__arrow-next',
+      ) as HTMLElement
+
+      if (prev && next) {
+        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
+        next.style.setProperty('--tw-arrow-translate', `${x}px`)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(handleResize)
+
+    if (target) {
+      resizeObserver.observe(target)
+    }
+
+    return () => {
+      if (target) {
+        resizeObserver.unobserve(target)
+      }
+    }
+  }, [data])
+
   return (
     <section
       aria-labelledby="more about us"
@@ -42,6 +90,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
         </div>
         <div className="mt-[40px] w-full max-w-[400px] md:mt-[80px] md:max-w-none">
           <Splide
+            className="blog-slider"
             options={{
               arrowPath: Arrow(),
               type: 'loop',
@@ -53,12 +102,12 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
               interval: 3000,
               focus: 'center',
               classes: {
-                arrows: 'splide__arrows about__arrows',
-                arrow: 'splide__arrow about__arrow',
-                prev: 'splide__arrow--prev about__arrow-prev',
-                next: 'splide__arrow--next about__arrow-next',
-                pagination: 'splide__pagination about__pagination',
-                page: 'splide__pagination__page about__pagination-page',
+                arrows: 'splide__arrows custom__arrows',
+                arrow: 'splide__arrow custom__arrow',
+                prev: 'splide__arrow--prev custom__arrow-prev',
+                next: 'splide__arrow--next custom__arrow-next',
+                pagination: 'splide__pagination custom__pagination',
+                page: 'splide__pagination__page custom__pagination-page',
               },
             }}
           >
