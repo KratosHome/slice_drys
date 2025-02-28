@@ -10,7 +10,7 @@ import React from 'react'
 
 export default function ContactsBreadcrumbs() {
   return (
-    <div className="pl-5 lg:m-auto lg:pt-10 lg:font-poppins lg:text-xl lg:font-normal">
+    <div className="ml-auto mr-auto pl-5 lg:ml-auto lg:mr-0 lg:pt-10 lg:font-poppins lg:text-xl lg:font-normal">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

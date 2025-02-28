@@ -18,20 +18,20 @@ const ContactsInfo = () => {
       <div className={'mx-auto'}>
         <h1
           className={
-            'mt-8 block pl-[21px] text-left font-rubikDouble text-5xl lg:text-9xl'
+            'mt-8 block pl-[21px] text-left font-rubikDouble text-5xl lg:text-[96px]'
           }
         >
           {t('pageTitle')}
         </h1>
-        <div
+        <p
           className={
             'mt-[27px] pr-5 text-right font-poppins text-base font-medium lg:mt-4'
           }
         >
-          <p>{t('contactDescription')}</p>
-        </div>
-        <div className="flex w-full pt-1">
-          <div className="ml-auto pr-[15px]">
+          {t('contactDescription')}
+        </p>
+        <div className={'flex w-full pt-1'}>
+          <div className={'ml-auto pr-[15px]'}>
             <UnderlineIcon />
           </div>
         </div>
@@ -44,7 +44,11 @@ const ContactsInfo = () => {
         >
           Social network links
         </h2>
-        <div className="mx-auto flex w-[375] flex-row-reverse items-start justify-between px-5">
+        <div
+          className={
+            'mx-auto flex w-[375] flex-row-reverse items-start justify-between px-5'
+          }
+        >
           <div className={'flex w-24 items-center justify-center'}>
             <a
               className={'mr-4 cursor-pointer'}
@@ -68,25 +72,29 @@ const ContactsInfo = () => {
           </div>
         </div>
       </div>
-      <div className="mt-[50px] w-full">
-        <div className="mx-auto w-[338px] bg-black px-3 py-6 text-left font-poppins text-base font-medium text-white drop-shadow-[16px_-16px_0px_#A90909]">
-          <h2 className="font-rubik text-center text-4xl font-medium">
+      <div className={'mt-[50px] w-full'}>
+        <div
+          className={
+            'mx-auto w-[338px] bg-black px-3 py-6 text-left font-poppins text-base font-medium text-white drop-shadow-[16px_-16px_0px_#A90909]'
+          }
+        >
+          <h2 className={'font-rubik text-center text-4xl font-medium'}>
             {t('addressTitle')}
           </h2>
-          <a className="flex pt-8" href={`mailto:${t('email')}`}>
+          <a className={'flex pt-8'} href={`mailto:${t('email')}`}>
             <span className="mr-3">
               <EmailIcon />
             </span>
             <span>{t('email')}</span>
           </a>
-          <a className="flex pt-8" href={`tel:${t('phone')}`}>
+          <a className={'flex pt-8'} href={`tel:${t('phone')}`}>
             <span className="mr-3">
               <PhoneIcon />
             </span>
             <span>{t('phone')}</span>
           </a>
           <a
-            className="flex pt-8"
+            className={'flex pt-8'}
             href={`https://www.google.com/maps?q=${t('location')}`}
             target={'_blank'}
           >
@@ -95,7 +103,7 @@ const ContactsInfo = () => {
             </span>
             <span>{t('location')}</span>
           </a>
-          <p className="flex pt-8">
+          <p className={'flex pt-8'}>
             <span className="mr-3">
               <ClockIcon />
             </span>

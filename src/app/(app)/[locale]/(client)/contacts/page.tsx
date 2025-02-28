@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function Contacts() {
   return (
     <>
-      <div className="mx-auto w-full max-w-[375px] lg:max-w-[1024px]">
+      <div className="mx-auto w-full max-w-[375px] lg:max-w-screen-xl">
         <ContactsBreadcrumbs />
         <ContactsInfo />
         <ContactsSendPhone />
