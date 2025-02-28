@@ -8,21 +8,24 @@ interface IGetProductsParams {
   limit: number
   menu: string
   locale: ILocale
-  weight?: string[å]
+  categories?: string[]
+  minWeight?: string
+  maxWeight?: string
 }
 
 export async function getProductsList({
   page,
   limit,
   menu,
-  weight,
   locale,
+  categories,
+  minWeight,
+  maxWeight,
 }: IGetProductsParams) {
   try {
     await connectToDb()
 
     const categoryDoc = await Category.findOne({ slug: menu })
-
     if (!categoryDoc) {
       return {
         data: [],
@@ -34,6 +37,18 @@ export async function getProductsList({
     const query: IQueryType = {}
 
     query.categories = categoryDoc._id
+
+    if (categories && categories.length > 0) {
+      const categoryDocs = await Category.find({ slug: { $in: categories } })
+      const categoryIds = categoryDocs.map((cat) => cat._id)
+      query.categories = { $in: categoryIds }
+    }
+
+    if (minWeight || maxWeight) {
+      query['variables.weight'] = {}
+      if (minWeight) query['variables.weight'].$gte = Number(minWeight)
+      if (maxWeight) query['variables.weight'].$lte = Number(maxWeight)
+    }
 
     const skip = (page - 1) * limit
     const products = await Product.find(query).skip(skip).limit(limit).lean()

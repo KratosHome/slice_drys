@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from 'next-intl'
 import {
   Dialog,
@@ -11,7 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/client/ui/dialog'
-import ProductSidebar from '@/components/client/prodcut-list/product-sidebar'
 import { Button } from '@/components/admin/ui/button'
 import {
   Accordion,
@@ -33,6 +32,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   weights,
   categories,
 }) => {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const locale = useLocale() as ILocale
 
@@ -68,6 +68,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   const updateUrlParams = (params: URLSearchParams) => {
     const newUrl = `?${params.toString()}`
     window.history.replaceState(null, '', newUrl)
+    router.refresh()
   }
 
   const updateCategoriesQuery = (updatedCategories: string[]) => {
@@ -188,7 +189,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             <DialogHeader>
               <DialogTitle className="text-[32px]">Фільтр</DialogTitle>
               <DialogDescription>
-                <ProductSidebar locale={locale} menu={''} categories={[]} />
                 <div className="flex items-center justify-between pb-[40px] pt-[60px]">
                   <Button
                     className="rounded-none text-base"

@@ -1,8 +1,6 @@
 import React from 'react'
 import Product from '@/components/client/product/product'
 import NotFound from '@/components/not-found'
-import { getProductsList } from '@/server/products/get-products-list.server'
-import { getCategories } from '@/server/categories/get-categories.server'
 import ProductFilters from '@/components/client/prodcut-list/product-filters'
 import {
   Breadcrumb,
@@ -12,33 +10,54 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
-import { getProductWeights } from '@/server/products/get-product-weights'
+
+export const dynamic = 'force-dynamic'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 export default async function MenuPage(props: {
   params: Params
-  SearchParams: SearchParams
+  searchParams: SearchParams
 }) {
   const { locale, menu } = await props.params
 
-  const productsData = await getProductsList({
-    page: 1,
-    limit: 30,
-    locale,
-    menu: menu,
-  })
+  const { categories, minWeight, maxWeight } = await props.searchParams
 
-  const weightData = await getProductWeights(menu)
+  const url = process.env.NEXT_URL
 
-  const categoriesData = await getCategories(menu, locale)
+  const params = new URLSearchParams({ locale: String(locale) })
 
-  console.log('weightData', weightData.data)
+  if (menu) params.append('menu', String(menu))
+  if (categories) params.append('categories', String(categories))
+  if (minWeight) params.append('minWeight', String(minWeight))
+  if (maxWeight) params.append('maxWeight', String(maxWeight))
+
+  const [productsData, weightData, categoriesData] = await Promise.all([
+    fetch(`${url}/api/products/get-list?${params.toString()}`, {}).then((res) =>
+      res.json(),
+    ),
+
+    fetch(`${url}/api/products/get-weight?${params.toString()}`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+
+    fetch(`${url}/api/products/get-categories?${params.toString()}`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ])
 
   if (productsData.data.length === 0) {
     return <NotFound />
   }
+
+  const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
+    product.variables.map((variant: IVariableProduct) => ({
+      ...product,
+      variant,
+      key: `${product.slug}-${variant._id ?? variant.weight}`,
+    })),
+  )
 
   return (
     <main className="mx-auto max-w-[1280px] px-5">
@@ -66,11 +85,17 @@ export default async function MenuPage(props: {
         />
         <div className="w-full min-w-[67%]">
           <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-            {productsData.data.map((product: IProduct) => (
-              <Product key={product._id} product={product} />
+            {flattenedProducts.map((product: IProduct) => (
+              <>
+                <Product key={product.slug} product={product} />
+              </>
             ))}
           </div>
         </div>
+      </div>
+      <div>
+        <h2>fvsdfvsd</h2>
+        <div>vsfdvdfv</div>
       </div>
     </main>
   )

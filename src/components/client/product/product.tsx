@@ -28,7 +28,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
 
   const { addItemToCart, setOpenCart } = useCartStore((state) => state)
 
-  const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
+  const [selectedVariable, setSelectedVariable] = useState(
+    product.variant ?? product.variables[0],
+  )
 
   const handleAddToCart = () => {
     if (product._id && product.img)
@@ -195,7 +197,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               <div onClick={(e) => e.stopPropagation()}>
                 <Select
                   onValueChange={handleVariableChange}
-                  defaultValue={String(product.variables[0]._id)}
+                  value={String(selectedVariable._id)}
                 >
                   <SelectTrigger className="w-fit border-none shadow-none outline-none">
                     <SelectValue
