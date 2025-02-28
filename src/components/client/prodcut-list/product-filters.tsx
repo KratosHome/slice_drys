@@ -1,5 +1,8 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDebounce } from 'use-debounce'
+import { useSearchParams } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import {
   Dialog,
   DialogContent,
@@ -10,7 +13,6 @@ import {
 } from '@/components/client/ui/dialog'
 import ProductSidebar from '@/components/client/prodcut-list/product-sidebar'
 import { Button } from '@/components/admin/ui/button'
-import { useLocale } from 'next-intl'
 import {
   Accordion,
   AccordionContent,
@@ -20,7 +22,6 @@ import {
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import CheckboxRoot from '@/components/client/ui/checkbox-root'
 import CheckboxIndicator from '@/components/client/ui/checkbox-indicator'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { Slider } from '@/components/client/ui/slider'
 
 interface ProductFiltersProps {
@@ -34,9 +35,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 }) => {
   const searchParams = useSearchParams()
   const locale = useLocale() as ILocale
-  const router = useRouter()
-
-  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
   const numericWeights = weights.map(Number)
 
@@ -55,16 +53,22 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>(getInitialCategories)
-
   const [sliderValue, setSliderValue] = useState<number[]>(
     getInitialSliderValues,
   )
+
+  const [debouncedSliderValue] = useDebounce(sliderValue, 300)
 
   useEffect(() => {
     setSelectedCategories(getInitialCategories())
     setSliderValue(getInitialSliderValues())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
+
+  const updateUrlParams = (params: URLSearchParams) => {
+    const newUrl = `?${params.toString()}`
+    window.history.replaceState(null, '', newUrl)
+  }
 
   const updateCategoriesQuery = (updatedCategories: string[]) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
@@ -73,7 +77,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     } else {
       params.delete('categories')
     }
-    router.push(`?${params.toString()}`)
+    // Заміна router.push на window.history.replaceState для уникнення перезавантаження
+    updateUrlParams(params)
   }
 
   const handleToggleCategory = (category: string) => {
@@ -85,34 +90,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     updateCategoriesQuery(updatedCategories)
   }
 
-  // Оновлення параметрів `minWeight` та `maxWeight`
+  // Оновлення параметрів minWeight та maxWeight без перезавантаження сторінки
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
+
+    if (
+      debouncedSliderValue[0] !== numericWeights[0] ||
+      debouncedSliderValue[1] !== numericWeights[numericWeights.length - 1]
+    ) {
+      params.set('minWeight', debouncedSliderValue[0].toString())
+      params.set('maxWeight', debouncedSliderValue[1].toString())
+    } else {
+      params.delete('minWeight')
+      params.delete('maxWeight')
     }
 
-    debounceRef.current = setTimeout(() => {
-      const params = new URLSearchParams(Array.from(searchParams.entries()))
-      if (
-        sliderValue[0] !== numericWeights[0] ||
-        sliderValue[1] !== numericWeights[numericWeights.length - 1]
-      ) {
-        params.set('minWeight', sliderValue[0].toString())
-        params.set('maxWeight', sliderValue[1].toString())
-      } else {
-        params.delete('minWeight')
-        params.delete('maxWeight')
-      }
-      router.push(`?${params.toString()}`)
-    }, 300)
-
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current)
-      }
-    }
+    updateUrlParams(params)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sliderValue])
+  }, [debouncedSliderValue])
 
   return (
     <div className="relative w-full max-w-none grow">
