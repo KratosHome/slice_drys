@@ -8,9 +8,18 @@
       "order": "Замовити",
       "facebook-icon": "facebook іконка",
       "instagram-icon": "instagram іконка",
-      "logo-slice-drys": "логтип slice drys",
+      "logo-slice-drys": "логотип slice drys",
       "telephone-icon": "telephone іконка",
       "logo": "логотип"
+    },
+    "products-slider": {
+      "title": "ТОПОВІ СУШЕНИКИ",
+      "message": "найсмачніші кусь-топчики"
+    },
+    "footer": {
+      "CTA-socials":"приєднуйся до наших соцмереж",
+      "public-offer": "Публічна оферта",
+      "privacy-policy": "Політика конфіденційності"
     },
     "call-me": {
       "call-back": "Передзвонити",
@@ -27,10 +36,21 @@
       "even-what-did-not-ask": "і навіть те, що не питали :)"
     },
     "reviews": {
-      "reviews": "відгуки",
+      "title": "відгуки",
       "say-those": "кажуть ті, хто вже скуштував сушеники "
     },
-    "our-partners": "Наші партнери"
+    "our-partners": "Наші партнери",
+    "more-about-us": {
+      "title": "Блог про сушеники",
+      "more-btn": "Дізнатися більше"
+    },
+    "instafeed": {
+      "title-md": "Подорожуйте з нами",
+      "title": "Мандруйте разом з нами"
+    },
+    "burger-menu": {
+      "catalog": "Каталог"
+    }
   },
   "cart": {
     "basket": "Кошик",
@@ -78,5 +98,21 @@
     "facebook icon": "іконка Facebook",
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
+  },
+
+  "not_found_page": {
+    "fruitAlt": "Декоративні фрукти",
+    "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
+    "goHome": "“кусь”!",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
   }
+
 }

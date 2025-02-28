@@ -22,7 +22,7 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
         <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
@@ -32,7 +32,7 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
         <Link href="https://www.google.com/" className="w-fit" target="_blank">
           <Image
@@ -42,7 +42,7 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red group-data-[focus]:blur-2xl"></div>
+          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
       </div>
     </div>

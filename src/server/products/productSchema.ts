@@ -16,6 +16,11 @@ const productSchema = new mongoose.Schema(
         maxlength: 255,
       },
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     description: {
       en: {
         type: String,
@@ -99,20 +104,6 @@ const productSchema = new mongoose.Schema(
       minlength: 1,
       maxlength: 255,
     },
-    category: {
-      en: {
-        type: [String],
-        required: true,
-        minlength: 1,
-        maxlength: 255,
-      },
-      uk: {
-        type: [String],
-        required: true,
-        minlength: 1,
-        maxlength: 255,
-      },
-    },
     visited: {
       type: Number,
       required: false,
@@ -146,6 +137,9 @@ const productSchema = new mongoose.Schema(
         maxlength: 255,
       },
     },
+    categories: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    ],
   },
   { timestamps: true },
 )

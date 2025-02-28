@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/admin/ui/button'
 import { capitalize } from '@/utils/capitalize'
 import { menuToUk } from '@/utils/menuToUk'
+import NotFound from '@/components/not-found'
 
 export default async function MenuPage(props: {
   params: Promise<{ locale: string; menu: string; category: string }>
@@ -36,14 +37,6 @@ export default async function MenuPage(props: {
 
   const { product: products } = productsData
 
-  const categories = Array.from(
-    new Set(
-      productsData.product
-        .filter((product) => product.menu)
-        .flatMap((product) => product.category),
-    ),
-  ).filter(Boolean)
-
   const allMenus = ['meat', 'fruits', 'vegetables', 'mix']
   const translatedMenus = allMenus.map((menu) => ({
     key: menu,
@@ -53,6 +46,10 @@ export default async function MenuPage(props: {
   const filteredMenus = translatedMenus.filter(
     (menuItem) => menuItem.key !== menu,
   )
+
+  if (products.length === 0) {
+    return <NotFound />
+  }
 
   return (
     <main className="mx-auto max-w-[1280px] px-5">
@@ -85,11 +82,7 @@ export default async function MenuPage(props: {
             <DialogHeader>
               <DialogTitle className={`text-[32px]`}>Фільтр</DialogTitle>
               <DialogDescription>
-                <ProductSidebar
-                  locale={locale}
-                  menu={menu}
-                  categories={categories}
-                />
+                <ProductSidebar locale={locale} menu={menu} categories={[]} />
                 <div className="flex items-center justify-between pb-[40px] pt-[60px]">
                   <Button
                     className="rounded-none text-base"
@@ -114,7 +107,7 @@ export default async function MenuPage(props: {
       </div>
       <div className="my-10 flex w-full gap-4 lg:gap-8 xl:gap-12">
         <div className="hidden w-full max-w-80 grow md:block">
-          <ProductSidebar locale={locale} menu={menu} categories={categories} />
+          <ProductSidebar locale={locale} menu={menu} categories={[]} />
         </div>
         <div className="w-full min-w-[67%]">
           <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">

@@ -1,33 +1,30 @@
 'use client'
 
-import { sliders, sliderLinks } from '@/data/hero-links'
-
 import Image from 'next/image'
 import Link from 'next/link'
-import SliderItem from './slider-item'
-import Arcs from './arcs'
-
-import { cn } from '@/utils/cn'
-import { useGSAP } from '@gsap/react'
-import { gsap } from 'gsap'
 import { useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
 
-export const Hero = ({ device }: { device: IDevice }) => {
+import SliderItem from './slider-item'
+import Arcs from './arcs'
+import { cn } from '@/utils/cn'
+
+import { sliders } from '@/data/hero-links'
+
+export const Hero = ({
+  device,
+  productLinks,
+}: {
+  device: IDevice
+  productLinks: ICategory[]
+}) => {
   const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
-  const locale = useLocale()
-  let sliderLinksLocale
-  let slidersLocale
-
-  if (locale === 'uk' || locale === 'en') {
-    sliderLinksLocale = sliderLinks[locale]
-    slidersLocale = sliders[locale]
-  } else {
-    sliderLinksLocale = sliderLinks['uk']
-    slidersLocale = sliders['uk']
-  }
+  const locale = useLocale() as ILocale
+  const slidersLocale = sliders[locale]
 
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
@@ -121,9 +118,9 @@ export const Hero = ({ device }: { device: IDevice }) => {
       </div>
 
       <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
-        {sliderLinksLocale.map((item, index) => (
+        {productLinks.map((item, index) => (
           <div
-            key={item.name}
+            key={item.slug}
             className={cn(
               'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
 
@@ -135,15 +132,15 @@ export const Hero = ({ device }: { device: IDevice }) => {
             )}
           >
             <Link
-              href={item.link}
+              href={`${locale}/${item.slug}`}
               className={cn(
-                'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%]',
+                'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
                 'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
               )}
               onMouseEnter={() => setHoveredIndex(index)}
             >
               <SliderItem
-                title={item.name}
+                title={item.name[locale]}
                 hoverHexColor={hoverHexColor}
                 isHovered={hoveredIndex === index}
               />
@@ -161,8 +158,10 @@ export const Hero = ({ device }: { device: IDevice }) => {
               alt="slider image"
               fill
               className="object-contain"
-              sizes="(max-width: 550px) 50vw, (max-width: 1100px) 100vw"
-              onMouseEnter={() => handleMainImageAnimation(true)}
+              sizes="(max-width: 550px) 100vw, 50vw"
+              onMouseEnter={() => {
+                handleMainImageAnimation(true)
+              }}
               onMouseLeave={() => handleMainImageAnimation(false)}
             />
           </div>
@@ -183,25 +182,28 @@ export const Hero = ({ device }: { device: IDevice }) => {
                     : item.position?.desktop?.x
 
                   return (
-                    <Image
-                      key={index}
-                      src={item.path}
-                      alt="animation"
-                      className={cn(
-                        `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
-                        isMobile ? `opacity-1` : '',
-                        isDesktop ? `w-[${item.width}px]` : '',
-                      )}
-                      style={{
-                        top: isDesktop ? `0` : `${top}px`,
-                        left: isDesktop ? `0` : `${left}px`,
-                      }}
-                      width={isDesktop ? item.width : item.width / 2}
-                      height={isDesktop ? item.height : item.height / 2}
-                      ref={(el) => {
-                        if (el) subImagesRefs.current[index] = el
-                      }}
-                    />
+                    <>
+                      <Image
+                        key={index}
+                        src={item.path}
+                        alt="animation"
+                        className={cn(
+                          `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                          isMobile ? `opacity-1` : '',
+                          isDesktop ? `w-[${item.width}px]` : '',
+                        )}
+                        style={{
+                          top: isDesktop ? `0` : `${top}px`,
+                          left: isDesktop ? `0` : `${left}px`,
+                          transform: `rotate(${item.rotate || 0}deg)`,
+                        }}
+                        width={isDesktop ? item.width : item.width / 2}
+                        height={isDesktop ? item.height : item.height / 2}
+                        ref={(el) => {
+                          if (el) subImagesRefs.current[index] = el
+                        }}
+                      />
+                    </>
                   )
                 })}
               </div>

@@ -2,6 +2,7 @@ interface IHeroAnimationImage {
   path: string
   width: number
   height: number
+  rotate?: number
   position: {
     desktop: {
       x: number
@@ -20,7 +21,7 @@ interface IHeroAnimationImage {
 
 const mixSubImages: IHeroAnimationImage[] = [
   {
-    path: '/sliders/mix/left-bottom-orange.png',
+    path: '/slider/fruit/orange.png',
     width: 43,
     height: 43,
     position: {
@@ -39,7 +40,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/left-bottom-kivi.png',
+    path: '/slider/fruit/kiwi.png',
     width: 69,
     height: 66,
     position: {
@@ -58,7 +59,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/left-bottom-grapefruit.png',
+    path: '/slider/fruit/grapefruit.png',
     width: 40,
     height: 78,
     position: {
@@ -77,7 +78,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/left-top-potatoes.png',
+    path: '/slider/fruit/ginger.png',
     width: 40,
     height: 34,
     position: {
@@ -96,7 +97,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/left-top-pineapple.png',
+    path: '/slider/fruit/pineapple.png',
     width: 61,
     height: 54,
     position: {
@@ -115,7 +116,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/left-top-papper.png',
+    path: '/slider/fruit/pineapple.png',
     width: 86,
     height: 82,
     position: {
@@ -134,7 +135,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-top-berry.png',
+    path: '/slider/fruit/pineapple.png',
     width: 71,
     height: 70,
     position: {
@@ -153,7 +154,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-bottom-pineapple.png',
+    path: '/slider/fruit/pineapple.png',
     width: 40,
     height: 40,
     position: {
@@ -172,7 +173,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-bottom-meet.png',
+    path: '/slider/meat/meet.png',
     width: 115,
     height: 73,
     position: {
@@ -191,7 +192,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-bottom-cucumber.png',
+    path: '/slider/veggie/lemon.png',
     width: 111,
     height: 99,
     position: {
@@ -210,7 +211,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-bottom-orange-big.png',
+    path: '/slider/fruit/orange.png',
     width: 43,
     height: 43,
     position: {
@@ -229,7 +230,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-bottom-orange.png',
+    path: '/slider/fruit/orange.png',
     width: 43,
     height: 43,
     position: {
@@ -248,7 +249,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/mix/right-top-pumpkin.png',
+    path: '/slider/veggie/cucumber.png',
     width: 65,
     height: 77,
     position: {
@@ -270,7 +271,7 @@ const mixSubImages: IHeroAnimationImage[] = [
 
 const fruitSubImages: IHeroAnimationImage[] = [
   {
-    path: '/sliders/fruit/fruit-left-bottom-1.png',
+    path: '/slider/fruit/pear.png',
     width: 88,
     height: 90,
     position: {
@@ -289,7 +290,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-left-bottom-2.png',
+    path: '/slider/fruit/pineapple.png',
     width: 66,
     height: 61,
     position: {
@@ -308,7 +309,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-left-bottom-3.png',
+    path: '/slider/fruit/kiwi.png',
     width: 55,
     height: 55,
     position: {
@@ -327,7 +328,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-left-top-1.png',
+    path: '/slider/fruit/orange.png',
     width: 53,
     height: 87,
     position: {
@@ -346,7 +347,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-left-top-2.png',
+    path: '/slider/fruit/mango.png',
     width: 36,
     height: 40,
     position: {
@@ -365,7 +366,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-bottom-1.png',
+    path: '/slider/fruit/kiwi.png',
     width: 86,
     height: 68,
     position: {
@@ -384,7 +385,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-bottom-2.png',
+    path: '/slider/fruit/kiwi.png',
     width: 39,
     height: 82,
     position: {
@@ -403,7 +404,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-bottom-3.png',
+    path: '/slider/fruit/orange.png',
     width: 56,
     height: 56,
     position: {
@@ -422,7 +423,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-bottom-4.png',
+    path: '/slider/fruit/pineapple.png',
     width: 60,
     height: 55,
     position: {
@@ -441,7 +442,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-bottom-5.png',
+    path: '/slider/fruit/pear.png',
     width: 59,
     height: 55,
     position: {
@@ -460,7 +461,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-top-3.png',
+    path: '/slider/fruit/ginger.png',
     width: 75,
     height: 66,
     position: {
@@ -479,7 +480,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-top-2.png',
+    path: '/slider/fruit/grapefruit.png',
     width: 49,
     height: 48,
     position: {
@@ -498,7 +499,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/fruit/fruit-right-top-1.png',
+    path: '/slider/fruit/mango.png',
     width: 49,
     height: 92,
     position: {
@@ -520,7 +521,8 @@ const fruitSubImages: IHeroAnimationImage[] = [
 
 const meatSubImages: IHeroAnimationImage[] = [
   {
-    path: '/sliders/meat/meat-left-bottom-1.png',
+    path: '/slider/meat/meet.png',
+    rotate: 90,
     width: 52,
     height: 52,
     position: {
@@ -539,8 +541,9 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-left-bottom-2.png',
+    path: '/slider/meat/meet.png',
     width: 67,
+    rotate: -60,
     height: 64,
     position: {
       desktop: {
@@ -558,8 +561,9 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-left-bottom-3.png',
+    path: '/slider/meat/meet.png',
     width: 113,
+    rotate: 120,
     height: 102,
     position: {
       desktop: {
@@ -577,8 +581,9 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-left-top-1.png',
+    path: '/slider/meat/meet.png',
     width: 32,
+    rotate: 130,
     height: 32,
     position: {
       desktop: {
@@ -596,8 +601,9 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-left-top-2.png',
+    path: '/slider/meat/meet.png',
     width: 66,
+    rotate: 50,
     height: 62,
     position: {
       desktop: {
@@ -615,8 +621,9 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-bottom-1.png',
+    path: '/slider/meat/meet.png',
     width: 78,
+    rotate: 60,
     height: 74,
     position: {
       desktop: {
@@ -634,7 +641,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-bottom-2.png',
+    path: '/slider/meat/meet.png',
     width: 22,
     height: 25,
     position: {
@@ -653,9 +660,10 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-bottom-3.png',
+    path: '/slider/meat/meet.png',
     width: 24,
     height: 95,
+    rotate: -60,
     position: {
       desktop: {
         x: 720,
@@ -672,9 +680,10 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-bottom-4.png',
+    path: '/slider/meat/meet.png',
     width: 71,
     height: 63,
+    rotate: -110,
     position: {
       desktop: {
         x: 690,
@@ -691,9 +700,10 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-bottom-5.png',
+    path: '/slider/meat/meet.png',
     width: 85,
     height: 88,
+    rotate: 20,
     position: {
       desktop: {
         x: 675,
@@ -710,9 +720,10 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-top-1.png',
+    path: '/slider/meat/meet.png',
     width: 42,
     height: 92,
+    rotate: 60,
     position: {
       desktop: {
         x: 710,
@@ -729,7 +740,8 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-top-2.png',
+    path: '/slider/meat/meet.png',
+    rotate: -60,
     width: 32,
     height: 30,
     position: {
@@ -748,7 +760,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/meat/meat-right-top-3.png',
+    path: '/slider/meat/meet.png',
     width: 64,
     height: 63,
     position: {
@@ -770,7 +782,7 @@ const meatSubImages: IHeroAnimationImage[] = [
 
 const veggieSubImages: IHeroAnimationImage[] = [
   {
-    path: '/sliders/veggie/left-bottom-beet-small.png',
+    path: '/slider/veggie/beet.png',
     width: 44,
     height: 35,
     position: {
@@ -789,7 +801,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-bottom-pumpkin.png',
+    path: '/slider/veggie/cucumber.png',
     width: 66,
     height: 51,
     position: {
@@ -808,7 +820,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-bottom-beet-big.png',
+    path: '/slider/veggie/beet.png',
     width: 61,
     height: 48,
     position: {
@@ -827,7 +839,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-bottom-papper.png',
+    path: '/slider/veggie/tomato.png',
     width: 40,
     height: 38,
     position: {
@@ -846,7 +858,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-top-cucumber.png',
+    path: '/slider/veggie/lemon.png',
     width: 85,
     height: 76,
     position: {
@@ -865,7 +877,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-top-pumpkin.png',
+    path: '/slider/veggie/cucumber.png',
     width: 52,
     height: 30,
     position: {
@@ -884,7 +896,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/left-top-papper.png',
+    path: '/slider/veggie/tomato.png',
     width: 35,
     height: 33,
     position: {
@@ -903,7 +915,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-top-pumpkin.png',
+    path: '/slider/veggie/cucumber.png',
     width: 33,
     height: 25,
     position: {
@@ -922,7 +934,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-top-papper.png',
+    path: '/slider/veggie/tomato.png',
     width: 45,
     height: 42,
     position: {
@@ -941,7 +953,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-bottom-beet-big.png',
+    path: '/slider/veggie/beet.png',
     width: 73,
     height: 57,
     position: {
@@ -960,7 +972,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-bottom-beet-small.png',
+    path: '/slider/veggie/beet.png',
     width: 35,
     height: 30,
     position: {
@@ -979,7 +991,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-bottom-cucumber.png',
+    path: '/slider/veggie/cucumber.png',
     width: 50,
     height: 81,
     position: {
@@ -998,7 +1010,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-bottom-papper.png',
+    path: '/slider/veggie/tomato.png',
     width: 41,
     height: 43,
     position: {
@@ -1017,7 +1029,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-bottom-pumpkin.png',
+    path: '/slider/veggie/cucumber.png',
     width: 30,
     height: 35,
     position: {
@@ -1036,7 +1048,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/veggie/right-top-beet.png',
+    path: '/slider/veggie/beet.png',
     width: 40,
     height: 54,
     position: {
@@ -1058,7 +1070,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
 
 const actionSubImages: IHeroAnimationImage[] = [
   {
-    path: '/sliders/action/left-bottom.png',
+    path: '/slider/action/left-bottom.png',
     width: 38,
     height: 60,
     position: {
@@ -1077,7 +1089,7 @@ const actionSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/action/left-top.png',
+    path: '/slider/action/left-top.png',
     width: 92,
     height: 28,
     position: {
@@ -1096,7 +1108,7 @@ const actionSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/sliders/action/right-top-text.png',
+    path: '/slider/action/right-top-text.png',
     width: 250,
     height: 50,
     position: {

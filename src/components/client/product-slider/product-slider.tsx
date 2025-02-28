@@ -1,10 +1,11 @@
 'use client'
-import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide'
-import '@splidejs/react-splide/css/core'
-import '@splidejs/react-splide/css'
+import { useEffect } from 'react'
+import { Splide, SplideSlide } from '@splidejs/react-splide'
+
 import { Arrow } from '@/components/client/ui/arrow'
-import './product-slider.css'
 import Product from '@/components/client/product/product'
+
+import './product-slider.css'
 
 interface ProductSlider {
   products: IProduct[]
@@ -17,77 +18,105 @@ export default function ProductSlider({
   title,
   message,
 }: ProductSlider) {
+  useEffect(() => {
+    const target = document.querySelector('.products-slider')
+    if (!target) return
+    const handleResize = () => {
+      let k: number
+      switch (true) {
+        case window.innerWidth >= 1280:
+          k = 35
+          break
+        case window.innerWidth >= 1024:
+          k = 32
+          break
+        case window.innerWidth >= 768:
+          k = 28
+          break
+        case window.innerWidth < 768:
+          k = 23
+          break
+        default:
+          k = 30
+      }
+      const x = products.length * k
+      const prev = document.querySelector(
+        '.products-slider .splide__arrow--prev.custom__arrow-prev',
+      ) as HTMLElement
+      const next = document.querySelector(
+        '.products-slider .splide__arrow--next.custom__arrow-next',
+      ) as HTMLElement
+
+      if (prev && next) {
+        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
+        next.style.setProperty('--tw-arrow-translate', `${x}px`)
+      }
+    }
+
+    const resizeObserver = new ResizeObserver(handleResize)
+
+    if (target) {
+      resizeObserver.observe(target)
+    }
+
+    return () => {
+      if (target) {
+        resizeObserver.unobserve(target)
+      }
+    }
+  }, [products])
+
   const splideOptions = {
     arrowPath: Arrow(),
+    type: 'loop',
     autoplay: true,
-    loop: true,
-    rewind: true,
+    interval: 3000,
     perPage: 3,
     perMove: 1,
     gap: '18px',
-    pagination: true,
+    focus: 0,
     arrows: true,
+    pagination: true,
     breakpoints: {
-      320: {
-        perPage: 1.1,
-        gap: '0px',
-      },
       768: {
-        perPage: 2.1,
-        gap: '4px',
-      },
-      992: {
-        perPage: 2.1,
-        gap: '14px',
-      },
-      1024: {
-        perPage: 3,
-        gap: '14px',
-      },
-      1280: {
-        perPage: 3,
-        gap: '18px',
+        perPage: 1,
+        gap: '0',
       },
     },
     classes: {
-      arrows: 'splide__arrows product__arrows',
-      arrow: 'splide__arrow product__arrow',
-      prev: 'splide__arrow--prev product__arrow-prev',
-      next: 'splide__arrow--next product__arrow-next',
-      pagination: 'splide__pagination product__pagination',
-      page: 'splide__pagination__page product__pagination-page',
+      arrows: 'splide__arrows custom__arrows',
+      arrow: 'splide__arrow custom__arrow',
+      prev: 'splide__arrow--prev custom__arrow-prev',
+      next: 'splide__arrow--next custom__arrow-next',
+      pagination: 'splide__pagination custom__pagination',
+      page: 'splide__pagination__page custom__pagination-page',
     },
   }
 
   return (
     <section
       aria-labelledby="popular-products"
-      className="mx-auto max-w-[1280px] px-5"
+      className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
-      <div className="px-[20px] md:pb-16">
-        <h1 className="font-rubik text-[32px] sm:mb-4 sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+      <div className="md:px-[20px] md:pb-16">
+        <h1 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
           {title}
         </h1>
-        <h2 className="slider-label relative grid place-content-start text-base sm:place-content-end md:text-lg lg:text-xl xl:text-2xl">
+        <h2 className="slider-label md relative grid place-content-start font-poppins text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:place-content-end">
           {message}
         </h2>
       </div>
-      <SplideTrack>
-        <Splide
-          aria-labelledby="Main slider"
-          options={splideOptions}
-          className="mb-28 h-full w-full"
-        >
-          {products.map((product) => (
-            <SplideSlide
-              key={product._id}
-              className="px-2 py-8 sm:px-3 md:px-4"
-            >
-              <Product product={product} />
-            </SplideSlide>
-          ))}
-        </Splide>
-      </SplideTrack>
+      <Splide
+        aria-labelledby="Main slider"
+        options={splideOptions}
+        className="products-slider mb-14 h-full w-full lg:mb-20"
+      >
+        {products.map((product) => (
+          <SplideSlide key={product._id} className="px-2 py-8 sm:px-3 md:px-4">
+            <Product product={product} />
+          </SplideSlide>
+        ))}
+      </Splide>
     </section>
   )
 }

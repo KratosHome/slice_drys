@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
-import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import Cart from '@/components/client/header/card/cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
@@ -17,22 +16,24 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
+import { pageLinks } from '@/data/main/nav-links'
+import Socials from '../ui/Socials'
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface HeaderP {
-  headerLinks: ILink[]
+  productLinks: ICategory[]
 }
 
-const Header: FC<HeaderP> = ({ headerLinks }) => {
+const Header: FC<HeaderP> = ({ productLinks }) => {
   const t = useTranslations('main.header')
-  const local: string = useLocale()
+  const locale = useLocale() as ILocale
   const headerRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLAnchorElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const socialRef = useRef<HTMLDivElement>(null)
-  const cullRef = useRef<HTMLDivElement>(null)
-  const curtRef = useRef<HTMLDivElement>(null)
+  const callRef = useRef<HTMLDivElement>(null)
+  const cartRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
@@ -54,20 +55,25 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
         {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           backdropFilter: 'blur(10px)',
-          height: '60px',
-          marginTop: '0px',
+          height: '80px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
           duration: 0.5,
-          minWidth: '100vw',
           ease: 'power1.out',
         },
         0,
       )
 
-      tl.to(menuRef.current, { padding: '0px 20px' }, '<')
-      tl.to(logoRef.current, { scale: 0.3, y: -30 }, '<')
-      tl.to(socialRef.current, { opacity: 0, y: -30 }, '<')
-      tl.to(cullRef.current, { opacity: 0, y: -30 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        socialRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
+      tl.to(
+        callRef.current,
+        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
 
     mm.add('(max-width: 1023px)', () => {
@@ -95,11 +101,12 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
         0,
       )
 
-      tl.to(curtRef.current, { marginTop: '10px' }, 0)
-      tl.to(logoRef.current, { x: -20 }, '<')
-      tl.to(menuRef.current, { padding: '0px 10px' }, '<')
-      tl.to(socialRef.current, { opacity: 0, y: -15 }, '<')
-      tl.to(cullRef.current, { opacity: 0, display: 'none', y: -15 }, '<')
+      tl.to(logoRef.current, { height: 55 }, '<')
+      tl.to(
+        callRef.current,
+        { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        '<',
+      )
     })
   })
 
@@ -108,108 +115,72 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
       <Info title={`${t('free-delivery-from')}`} />
       <header
         ref={headerRef}
-        className="fixed left-1/2 top-0 z-50 mt-6 w-full max-w-[1240px] -translate-x-1/2 border-b-[1px] border-[#E4E4E4] transition-all lg:pb-6"
+        className="sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
       >
         <div
           ref={menuRef}
-          className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-3"
+          className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3"
         >
-          <div>
+          <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
-              {headerLinks?.map((link: ILink) => (
+              {productLinks.slice(0, 4)?.map((link) => (
                 <Link
-                  key={link.id}
-                  href={`/${local}/${link.href}`}
-                  className="hover:text-red pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
+                  key={link.slug}
+                  href={`/${locale}/${link.slug}`}
+                  className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
-                  {link.name}
+                  {link.name[locale]}
                 </Link>
               ))}
             </nav>
-            <HamburgerMenu headerLinks={headerLinks} hamburgerLinksOther={[]} />
+            <HamburgerMenu
+              productLinks={productLinks}
+              hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
+            />
             <div
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
             >
-              <Button
-                variant={'icons'}
-                onClick={() =>
-                  window.open(
-                    'https://www.facebook.com/slicedrys/',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                <Image
-                  src={'/icons/facebook.svg'}
-                  alt={`${t('facebook-icon')}`}
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Button>
-              <Button
-                variant={'icons'}
-                onClick={() =>
-                  window.open(
-                    'https://www.instagram.com/slicedrys',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                <Image
-                  src={'/icons/instagram.svg'}
-                  alt={`${t('instagram-icon')}`}
-                  width={32}
-                  height={32}
-                  className="cursor-pointer"
-                />
-              </Button>
+              <Socials variant="dark" />
             </div>
           </div>
-          <Link
-            ref={logoRef}
-            href={`/${local}`}
-            className="ml-[55px] py-3 lg:py-0"
-          >
+          <Link ref={logoRef} href={`/${locale}`} className="h-full self-start">
             <Image
               src={'/icons/logo.svg'}
               alt={`${t('logo')}`}
-              className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
+              className="h-full"
               width={86}
               height={100}
             />
           </Link>
-          <div>
-            <div className="flex justify-center lg:justify-end">
-              <nav className="mr-[52px] hidden gap-x-3 text-[20px] lg:flex">
-                <Link
-                  href={`/${local}/blog`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('blog')}
-                </Link>
-                <Link
-                  href={`/${local}/opt`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('wholesale')}
-                </Link>
-                <Link
-                  href={`/${local}/contacts`}
-                  className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  {t('contacts')}
-                </Link>
+
+          <div className="justify-self-end">
+            <div className="flex justify-end lg:justify-between lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)]">
+              <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
+                {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
+                  <Link
+                    key={link.id}
+                    href={`/${locale}/${link.href}`}
+                    className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
               </nav>
-              <div ref={curtRef} className="flex items-center gap-x-4">
+
+              <div
+                ref={cartRef}
+                className="flex items-center justify-center gap-x-4 lg:justify-between"
+              >
                 <LocaleChange className="hidden lg:block" />
                 <Cart />
               </div>
             </div>
-            <div ref={cullRef} className="mt-3 flex justify-between">
+
+            <div
+              ref={callRef}
+              className="flex origin-top-right justify-between"
+            >
               <NumberCall className="hidden lg:flex" />
               <CallMe />
             </div>

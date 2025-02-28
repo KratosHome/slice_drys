@@ -267,7 +267,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.title?.uk && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.title.uk.message}
                       </span>
                     )}
@@ -298,7 +298,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       })}
                     />
                     {errors.title?.en && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.title.en.message}
                       </span>
                     )}
@@ -318,7 +318,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       <RadioGroupItem value="uk"></RadioGroupItem>
                     </div>
                     {contentError && (
-                      <span className="text-red">{contentError}</span>
+                      <span className="text-red-700">{contentError}</span>
                     )}
                   </div>
                 </RadioGroup>
@@ -344,7 +344,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     })}
                   />
                   {errors.slug && (
-                    <span className="text-red">{errors.slug.message}</span>
+                    <span className="text-red-700">{errors.slug.message}</span>
                   )}
                 </div>
                 <div className="flex justify-between">
@@ -370,7 +370,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.author?.uk && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.author.uk.message}
                       </span>
                     )}
@@ -397,7 +397,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.author?.en && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.author.en.message}
                       </span>
                     )}
@@ -426,7 +426,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.keywords?.uk && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.keywords.uk.message}
                       </span>
                     )}
@@ -454,7 +454,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.keywords?.en && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.keywords.en.message}
                       </span>
                     )}
@@ -483,7 +483,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.metaDescription?.uk && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.metaDescription.uk.message}
                       </span>
                     )}
@@ -510,7 +510,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       }}
                     />
                     {errors.metaDescription?.en && (
-                      <span className="text-red">
+                      <span className="text-red-700">
                         {errors.metaDescription.en.message}
                       </span>
                     )}
