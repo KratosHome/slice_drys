@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import { getTranslations } from 'next-intl/server'
 
 import { Hero } from '@/components/client/main/hero'
 import ProductSlider from '@/components/client/product-slider/product-slider'
@@ -21,6 +22,7 @@ export default async function Home(props: {
 }) {
   const url = process.env.NEXT_URL
   const { locale } = await props.params
+  const t = await getTranslations('main.products-slider')
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
@@ -46,7 +48,11 @@ export default async function Home(props: {
   return (
     <>
       <Hero device={device} productLinks={categoriesData.data} />
-      <ProductSlider products={productsData.products} />
+      <ProductSlider
+        products={productsData.products}
+        title={t('title')}
+        message={t('message')}
+      />
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />

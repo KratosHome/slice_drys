@@ -1,9 +1,10 @@
 'use client'
+import { useEffect, useRef } from 'react'
 import { useLocale } from 'next-intl'
 import { useTranslations } from 'next-intl'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/all'
 import { useGSAP } from '@gsap/react'
-import { useRef } from 'react'
 
 import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
 
@@ -15,6 +16,11 @@ export default function Reviews() {
   const t = useTranslations('main.reviews')
   const reviewsRef = useRef<HTMLLIElement[]>([])
   const locale: ILocale = useLocale() as ILocale
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh(true)
+    }, 1)
+  }, [])
 
   useGSAP(() => {
     reviewsRef.current.forEach((r, i) => {
@@ -26,10 +32,13 @@ export default function Reviews() {
         ease: 'power1.out',
         scrollTrigger: {
           trigger: r,
-          start: 'top 80%',
+          start: 'top bottom',
+          end: '200px top',
+          toggleActions: 'play reset play reset',
         },
       })
     })
+    ScrollTrigger.refresh(true)
   })
 
   return (

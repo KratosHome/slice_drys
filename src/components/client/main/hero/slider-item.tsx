@@ -1,5 +1,5 @@
-import { cn } from '@/utils/cn'
 import { useEffect, useRef, useState } from 'react'
+import { cn } from '@/utils/cn'
 
 const SliderItem = ({
   title,
@@ -30,7 +30,7 @@ const SliderItem = ({
       <svg
         viewBox={`0 95 ${textWidth + 150} 50`}
         height="70"
-        className="w-[80px] sm:w-[100px] md:w-[250px]"
+        className="w-[200px] sm:w-[220px] md:w-[250px]"
       >
         <path
           stroke="transparent"
