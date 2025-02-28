@@ -47,7 +47,7 @@ export default async function Home(props: {
 
   return (
     <>
-      <Hero device={device} />
+      <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
         products={productsData.products}
         title={t('title')}
