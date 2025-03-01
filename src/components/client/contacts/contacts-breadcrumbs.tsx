@@ -14,7 +14,7 @@ export default function ContactsBreadcrumbs() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
+            <BreadcrumbLink href="/" localizationKey="Home" />
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

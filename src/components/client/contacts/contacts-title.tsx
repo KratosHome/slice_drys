@@ -8,7 +8,7 @@ const ContactsTitle = () => {
       <div className="w-[375] xl:w-[532]">
         <h1
           className={
-            'mt-8 pl-[21px] font-rubikDouble text-5xl xl:w-[532] xl:text-9xl'
+            'mt-8 pl-[21px] font-rubik text-5xl xl:w-[532] xl:text-9xl'
           }
         >
           {t('pageTitle')}

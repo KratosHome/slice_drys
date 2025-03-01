@@ -9,7 +9,7 @@ function ContactsSendPhone() {
   return (
     <>
       <div className="pt-[110px]">
-        <h2 className="font-rubik text-center text-2xl font-normal">
+        <h2 className="text-center font-rubik text-2xl font-normal">
           {t('sendDescription')}
         </h2>
       </div>

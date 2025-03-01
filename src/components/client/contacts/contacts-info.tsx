@@ -18,7 +18,7 @@ const ContactsInfo = () => {
       <div className={'mx-auto'}>
         <h1
           className={
-            'mt-8 block pl-[21px] text-left font-rubikDouble text-5xl lg:text-[96px]'
+            'mt-8 block pl-[21px] text-left font-rubik text-5xl lg:text-[96px]'
           }
         >
           {t('pageTitle')}
@@ -78,7 +78,11 @@ const ContactsInfo = () => {
             'mx-auto w-[338px] bg-black px-3 py-6 text-left font-poppins text-base font-medium text-white drop-shadow-[16px_-16px_0px_#A90909]'
           }
         >
-          <h2 className={'font-rubik text-center text-4xl font-medium'}>
+          <h2
+            className={
+              'font-rubik-doodle-shadow text-center text-4xl font-medium'
+            }
+          >
             {t('addressTitle')}
           </h2>
           <a className={'flex pt-8'} href={`mailto:${t('email')}`}>
