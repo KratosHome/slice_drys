@@ -78,7 +78,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     } else {
       params.delete('categories')
     }
-    // Заміна router.push на window.history.replaceState для уникнення перезавантаження
     updateUrlParams(params)
   }
 
@@ -91,7 +90,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     updateCategoriesQuery(updatedCategories)
   }
 
-  // Оновлення параметрів minWeight та maxWeight без перезавантаження сторінки
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
 
@@ -111,15 +109,20 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   }, [debouncedSliderValue])
 
   return (
-    <div className="relative w-full max-w-none grow">
+    <div className="relative min-w-[259px] lg:min-w-[319px]">
       <div className="flex items-center gap-2 py-[16px]">
         <div className="hidden w-full max-w-80 grow md:block">
-          <Accordion type="single" collapsible defaultValue="item-1">
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue="item-1"
+            className="mb-2"
+          >
             <AccordionItem value="item-1">
               <AccordionTrigger className="font-rubik !text-[36px]">
                 Вид
               </AccordionTrigger>
-              <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto">
+              <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
                     <label
@@ -152,31 +155,20 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             </AccordionItem>
           </Accordion>
 
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="item-2"
-            className="mt-[60px]"
-          >
+          <Accordion type="single" collapsible defaultValue="item-2">
             <AccordionItem value="item-2">
               <AccordionTrigger className="font-rubik !text-[36px]">
                 Вага
               </AccordionTrigger>
               <AccordionContent>
-                <div className="mx-auto max-w-sm">
-                  <div className="p-4">
-                    <Slider
-                      value={sliderValue}
-                      step={1}
-                      min={numericWeights[0]}
-                      max={numericWeights[numericWeights.length - 1]}
-                      onValueChange={(value) => setSliderValue(value)}
-                    />
-                    <div className="flex justify-between text-sm">
-                      <span>Від {sliderValue[0]} г</span>
-                      <span>До {sliderValue[1]} г</span>
-                    </div>
-                  </div>
+                <div className="my-[50px]">
+                  <Slider
+                    value={sliderValue}
+                    step={1}
+                    min={numericWeights[0]}
+                    max={numericWeights[numericWeights.length - 1]}
+                    onValueChange={(value) => setSliderValue(value)}
+                  />
                 </div>
               </AccordionContent>
             </AccordionItem>

@@ -34,6 +34,7 @@ export async function getCategories(slug?: string, locale?: ILocale) {
     }
 
     const categories = await Category.find({ parentCategory: null })
+      .sort({ order: 1 })
       .populate({
         path: 'children',
         populate: {

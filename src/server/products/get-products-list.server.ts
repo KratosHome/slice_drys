@@ -53,6 +53,9 @@ export async function getProductsList({
     const skip = (page - 1) * limit
     const products = await Product.find(query).skip(skip).limit(limit).lean()
 
+    const totalItems = await Product.countDocuments(query)
+    const totalPages = Math.ceil(totalItems / limit)
+
     const localizedProducts = products.map((product) => ({
       ...product,
       name: product.name[locale],
@@ -63,8 +66,11 @@ export async function getProductsList({
 
     return {
       data: localizedProducts,
+      currentPage: page,
       success: true,
       message: 'Products retrieved successfully',
+      totalItems,
+      totalPages,
     }
   } catch (error) {
     return {
