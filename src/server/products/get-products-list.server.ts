@@ -22,6 +22,7 @@ export async function getProductsList({
   minWeight,
   maxWeight,
 }: IGetProductsParams) {
+  console.log('getProductpagesList', page)
   try {
     await connectToDb()
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from 'next-intl'
+import { motion } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
@@ -125,10 +126,12 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
               <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
-                    <label
+                    <motion.label
                       key={category.slug}
                       htmlFor={category.slug}
                       className="flex cursor-pointer items-center gap-[24px]"
+                      whileHover={{ scale: 1.05, marginLeft: 15 }} // Ефект збільшення при наведенні
+                      transition={{ type: 'spring', stiffness: 300 }} // Пружинна анімація
                     >
                       <CheckboxPrimitive.Root
                         id={category.slug}
@@ -146,7 +149,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       <span className="font-poppins text-[20px] text-xl font-normal uppercase">
                         {category.name[locale]}
                       </span>
-                    </label>
+                    </motion.label>
                   ))
                 ) : (
                   <div>Немає доступних категорій.</div>

@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   const data = await getProductsList({
     page: +page,
-    limit: 30,
+    limit: 2,
     locale: locale,
     menu: menu,
     categories: categories,

@@ -85,12 +85,13 @@ export default async function MenuPage(props: {
   const params = new URLSearchParams({ locale: String(locale) })
 
   if (menu) params.append('menu', String(menu))
+  if (page) params.append('page', String(page))
   if (categories) params.append('categories', String(categories))
   if (minWeight) params.append('minWeight', String(minWeight))
   if (maxWeight) params.append('maxWeight', String(maxWeight))
 
   const categoriesParam =
-    !categories || (Array.isArray(categories) && categories.length >= 2)
+    !categories || (typeof categories === 'string' && categories.includes(','))
       ? menu
       : categories
 
@@ -117,7 +118,8 @@ export default async function MenuPage(props: {
       ).then((res) => res.json()),
     ])
 
-  console.log(productsData)
+  const currentPage = productsData.currentPage
+  const totalPages = productsData.totalPages
 
   const descriptionHTML = currentCategories.data.description[locale]
   const isLongText = currentCategories.data.description[locale].length > 500
@@ -143,12 +145,23 @@ export default async function MenuPage(props: {
     })),
   )
 
-  const currentPage = page ? Number(page) : 1
-
   const getPageUrl = (pageNum: number) => {
-    const newParams = new URLSearchParams(params.toString())
+    const newParams = new URLSearchParams()
+
+    if (categories && String(categories).trim() !== '') {
+      newParams.set('categories', String(categories))
+    }
+    if (minWeight && String(minWeight).trim() !== '') {
+      newParams.set('minWeight', String(minWeight))
+    }
+    if (maxWeight && String(maxWeight).trim() !== '') {
+      newParams.set('maxWeight', String(maxWeight))
+    }
+
     newParams.set('page', pageNum.toString())
-    return `?${newParams.toString()}`
+
+    const queryString = newParams.toString()
+    return queryString ? `?${queryString}` : ''
   }
 
   return (
@@ -161,11 +174,9 @@ export default async function MenuPage(props: {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+              <BreadcrumbPage>
+                {currentCategories.data.name[locale]}
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -189,35 +200,40 @@ export default async function MenuPage(props: {
           </div>
         </div>
       </div>
-      <Pagination className="mb-[130px] mt-[94px]">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href={currentPage > 1 ? getPageUrl(currentPage - 1) : '#'}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href={getPageUrl(1)} isActive={currentPage === 1}>
-              1
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href={getPageUrl(2)} isActive={currentPage === 2}>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href={getPageUrl(3)} isActive={currentPage === 3}>
-              3
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href={getPageUrl(currentPage + 1)} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      {totalPages > 1 && (
+        <Pagination className="mt-[94px]">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href={currentPage > 1 ? getPageUrl(currentPage - 1) : '#'}
+              />
+            </PaginationItem>
 
-      <div className="relative w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <PaginationItem key={pageNum}>
+                  <PaginationLink
+                    href={getPageUrl(pageNum)}
+                    isActive={currentPage === pageNum}
+                  >
+                    {pageNum}
+                  </PaginationLink>
+                </PaginationItem>
+              ),
+            )}
+
+            <PaginationItem>
+              <PaginationNext
+                href={
+                  currentPage < totalPages ? getPageUrl(currentPage + 1) : '#'
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
+
+      <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
         <div className="mx-auto max-w-[1280px] px-5">
           <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold">
             {currentCategories.data.metaTitle[locale]}
