@@ -49,7 +49,7 @@ export default function Reviews() {
       <span className="absolute inset-0 z-[-1] before:absolute before:-left-24 before:bottom-[210px] before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.png')]"></span>
       <div className="mx-auto w-full max-w-[910px] px-[20px] lg:px-0">
         <h2 className="title-section text-center">{t('title')}</h2>
-        <p className="slider-label relative mb-8 mt-5 hidden place-content-end text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:grid">
+        <p className="underline-wave relative mb-8 mt-5 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">
           {t('say-those')}
         </p>
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">

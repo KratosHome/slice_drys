@@ -1,6 +1,6 @@
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
-import BlogTitle from '@/components/client/ui/blog-title'
+import BlogTitle from '@/components/client/blog/blog-title'
 
 import {
   Pagination,
@@ -18,6 +18,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import BlogFooter from '@/components/client/blog/blog-footer'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -48,12 +49,12 @@ export default async function Blog({ params, searchParams }: Props) {
   const { page } = await searchParams
 
   const pageItem = parseInt(page || '1', 10)
-  const limit = 8
+  const limit = 20
   const data = await getPosts({ locale, page: pageItem, limit })
   const countOfPages = Math.ceil((data.totalPosts || 0) / limit)
 
   return (
-    <div className="mx-auto max-w-[1280px] p-5">
+    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
       <div className="mt-10">
         <Breadcrumb>
           <BreadcrumbList>
@@ -106,6 +107,7 @@ export default async function Blog({ params, searchParams }: Props) {
           </PaginationContent>
         </Pagination>
       </div>
+      <BlogFooter />
     </div>
   )
 }

@@ -176,3 +176,9 @@ body {
 .splide__arrow--next.custom__arrow-next:hover {
   transform: translateX(calc(var(--tw-arrow-translate) + 5px));
 }
+
+
+/* for underlined text */
+.underline-wave::after {
+  @apply absolute bottom-[-10px] left-0 h-[clamp(15px,calc(15px+10*(100vw-375px)/1065),25px)] w-full bg-[url('/icons/underline.svg')] bg-[size:100%_100%] bg-center bg-no-repeat content-[''] md:bottom-[-15px] lg:bottom-[-20px];
+}

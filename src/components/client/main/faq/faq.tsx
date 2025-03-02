@@ -62,7 +62,7 @@ const Faq: FC<IFaq> = ({ data }) => {
         <h2 className="title-section pr-0 text-center md:pr-20">
           {t('all-about-dry-fruits')}
         </h2>
-        <p className="slider-label relative mb-8 mt-5 grid place-content-end text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
+        <p className="underline-wave relative mb-7 ml-auto mt-5 w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
           {t('even-what-did-not-ask')}
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
