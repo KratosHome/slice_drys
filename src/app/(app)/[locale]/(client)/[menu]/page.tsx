@@ -15,6 +15,7 @@ import 'quill/dist/quill.snow.css'
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -22,67 +23,78 @@ import {
 } from '@/components/client/ui/pagination'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { getProductBgImg } from '@/data/product-bg-img'
+import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string; menu: string }>
+  searchParams: { categories?: string }
+}): Promise<Metadata> {
+  const url = process.env.NEXT_URL
+
+  const { locale, menu } = await params
+  const { categories } = await searchParams
+
+  const categoriesParam =
+    !categories || categories.includes(',') ? menu : categories
+
+  const currentCategories = await fetch(
+    `${url}/api/products/current-categories?&slug=${categoriesParam}`,
+    {},
+  ).then((res) => res.json())
+
+  const description = currentCategories.data.metaDescription?.[locale] || ''
+
+  const canonicalUrl = `${url}/${categoriesParam}`
+  const ogImage = currentCategories.image || `${url}/default-category-image.jpg`
+
+  const metaKeywordsArray =
+    currentCategories.data.metaKeywords?.[locale]
+      ?.split(',')
+      .map((keyword: string) => keyword.trim()) || []
+
+  return {
+    title: currentCategories.data.metaTitle?.[locale],
+    description: currentCategories.data.metaDescription?.[locale],
+    keywords: metaKeywordsArray,
+    robots: 'index, follow',
+    openGraph: {
+      title: currentCategories.data.name?.[locale],
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: currentCategories.data.metaTitle?.[locale],
+        },
+      ],
+    },
+  }
+}
 
 export default async function MenuPage(props: {
   params: Params
   searchParams: SearchParams
 }) {
   const { locale, menu } = await props.params
-  const t = await getTranslations('not_found_page')
-
-  const fruits = [
-    {
-      src: 'orange',
-      className: 'absolute left-5 top-5 w-24',
-      alt: t('fruit.orange'),
-    },
-    {
-      src: 'mango',
-      className: 'absolute left-[140px] top-[250px] hidden w-12 md:block',
-      alt: t('fruit.mango'),
-    },
-    {
-      src: 'pear',
-      className:
-        'absolute left-[40px] top-[650px] hidden w-24 rotate-[-120deg] md:block',
-      alt: t('fruit.pear'),
-    },
-    {
-      src: 'pineapple',
-      className: 'absolute bottom-24 left-36 h-12 w-12',
-      alt: t('fruit.pineapple'),
-    },
-
-    {
-      src: 'grapefruit',
-      className: 'absolute right-10 top-12 w-28',
-      alt: t('fruit.grapefruit'),
-    },
-    {
-      src: 'pineapple',
-      className: 'absolute bottom-[300px] right-[50px] w-16 rotate-45',
-      alt: t('fruit.pineapple'),
-    },
-    {
-      src: 'pineapple',
-      className: 'absolute bottom-[100px] right-[140px] hidden w-16 md:block',
-      alt: t('fruit.pineapple'),
-    },
-    {
-      src: 'kiwi',
-      className: 'absolute bottom-5 right-5 w-10',
-      alt: t('fruit.kiwi'),
-    },
-  ]
-
   const { categories, minWeight, maxWeight, page } = await props.searchParams
 
-  const url = process.env.NEXT_URL
-
   const params = new URLSearchParams({ locale: String(locale) })
+
+  const t = await getTranslations('product-list')
+
+  const productBgImg = getProductBgImg(t)
+  const url = process.env.NEXT_URL
 
   if (menu) params.append('menu', String(menu))
   if (page) params.append('page', String(page))
@@ -90,8 +102,9 @@ export default async function MenuPage(props: {
   if (minWeight) params.append('minWeight', String(minWeight))
   if (maxWeight) params.append('maxWeight', String(maxWeight))
 
-  const categoriesParam =
-    !categories || (typeof categories === 'string' && categories.includes(','))
+  const categoriesParam = Array.isArray(categories)
+    ? categories.join(',')
+    : !categories || categories.includes(',')
       ? menu
       : categories
 
@@ -117,9 +130,6 @@ export default async function MenuPage(props: {
         {},
       ).then((res) => res.json()),
     ])
-
-  const currentPage = productsData.currentPage
-  const totalPages = productsData.totalPages
 
   const descriptionHTML = currentCategories.data.description[locale]
   const isLongText = currentCategories.data.description[locale].length > 500
@@ -164,118 +174,173 @@ export default async function MenuPage(props: {
     return queryString ? `?${queryString}` : ''
   }
 
+  const getPaginationRange = (currentPage: number, totalPages: number) => {
+    const delta = 2
+    const range: number[] = []
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i === 1 ||
+        i === totalPages ||
+        (i >= currentPage - delta && i <= currentPage + delta)
+      ) {
+        range.push(i)
+      }
+    }
+
+    const rangeWithDots: (number | 'ellipsis')[] = []
+    let prev = 0
+    for (const page of range) {
+      if (page - prev > 1) {
+        rangeWithDots.push('ellipsis')
+      }
+      rangeWithDots.push(page)
+      prev = page
+    }
+    return rangeWithDots
+  }
+
+  const canonicalUrl = `${url}/${categoriesParam}`
+
   return (
-    <main>
-      <div className="mx-auto max-w-[1280px] px-5">
-        <Breadcrumb className="my-2">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {currentCategories.data.name[locale]}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        <div className="flex items-end justify-between border border-[#E4E4E4]">
-          <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
-            {currentCategories.data.name[locale]}
-          </h1>
-        </div>
-        <div className="flex w-full flex-col gap-[50px] md:flex-row">
-          <ProductFilters
-            categories={categoriesData.data}
-            weights={weightData.data}
-          />
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-7">
-            {flattenedProducts.map((product: IProduct) => (
-              <>
-                <Product key={product.slug} product={product} />
-              </>
-            ))}
-          </div>
-        </div>
-      </div>
-      {totalPages > 1 && (
-        <Pagination className="mt-[94px]">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href={currentPage > 1 ? getPageUrl(currentPage - 1) : '#'}
-              />
-            </PaginationItem>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (pageNum) => (
-                <PaginationItem key={pageNum}>
-                  <PaginationLink
-                    href={getPageUrl(pageNum)}
-                    isActive={currentPage === pageNum}
-                  >
-                    {pageNum}
-                  </PaginationLink>
-                </PaginationItem>
-              ),
-            )}
-
-            <PaginationItem>
-              <PaginationNext
-                href={
-                  currentPage < totalPages ? getPageUrl(currentPage + 1) : '#'
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
-
-      <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
+    <>
+      <ProductListJsonLd
+        currentCategories={currentCategories}
+        locale={locale}
+        canonicalUrl={canonicalUrl}
+        productsData={productsData}
+        url={url ?? ''}
+        categoriesParam={categoriesParam}
+      />
+      <main>
         <div className="mx-auto max-w-[1280px] px-5">
-          <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold">
-            {currentCategories.data.metaTitle[locale]}
-          </h2>
-          <div
-            className={`grid gap-6 ${isLongText ? 'md:grid-cols-2' : 'grid-cols-1'}`}
-          >
-            {isLongText ? (
-              <>
-                <article
-                  className="ql-editor prose lg:prose-xl"
-                  dangerouslySetInnerHTML={{ __html: firstPart }}
-                />
-                <article
-                  className="ql-editor prose lg:prose-xl"
-                  dangerouslySetInnerHTML={{ __html: secondPart }}
-                />
-              </>
-            ) : (
-              <article
-                className="ql-editor prose lg:prose-xl"
-                dangerouslySetInnerHTML={{
-                  __html: currentCategories.data.description[locale],
-                }}
-              />
-            )}
+          <Breadcrumb className="my-2">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  {currentCategories.data.name[locale]}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
+          <div className="flex items-end justify-between border border-[#E4E4E4]">
+            <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
+              {currentCategories.data.name[locale]}
+            </h1>
           </div>
-          <div className="pointer-events-none absolute inset-0 -z-10 mx-auto max-w-[1380px]">
-            {fruits.map((fruit, index) => (
-              <Image
-                key={index}
-                src={`/slider/fruit/${fruit.src}.png`}
-                alt={fruit.alt}
-                className={fruit.className}
-                width={132}
-                height={132}
-              />
-            ))}
+          <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
+            <ProductFilters
+              categories={categoriesData.data}
+              weights={weightData.data}
+            />
+            <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
+              {flattenedProducts.map((product: IProduct) => (
+                <>
+                  <Product key={product.slug} product={product} />
+                </>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <ToTheTop />
-    </main>
+        {productsData.totalPages > 1 && (
+          <Pagination className="mt-[94px]">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href={
+                    productsData.currentPage > 1
+                      ? getPageUrl(productsData.currentPage - 1)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+
+              {/* Заміна прямого відображення всіх сторінок на відображення з еліпсисами */}
+              {getPaginationRange(
+                productsData.currentPage,
+                productsData.totalPages,
+              ).map((item, index) => {
+                if (item === 'ellipsis') {
+                  return (
+                    <PaginationItem key={`ellipsis-${index}`}>
+                      <PaginationEllipsis /> {/* Відображення еліпсиса */}
+                    </PaginationItem>
+                  )
+                }
+                return (
+                  <PaginationItem key={item}>
+                    <PaginationLink
+                      href={getPageUrl(item)}
+                      isActive={productsData.currentPage === item}
+                    >
+                      {item}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              })}
+
+              <PaginationItem>
+                <PaginationNext
+                  href={
+                    productsData.currentPage < productsData.totalPages
+                      ? getPageUrl(productsData.currentPage + 1)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
+
+        <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
+          <div className="mx-auto max-w-[1280px] px-5">
+            <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold">
+              {currentCategories.data.metaTitle[locale]}
+            </h2>
+            <div
+              className={`grid gap-6 ${isLongText ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+            >
+              {isLongText ? (
+                <>
+                  <article
+                    className="ql-editor prose lg:prose-xl"
+                    dangerouslySetInnerHTML={{ __html: firstPart }}
+                  />
+                  <article
+                    className="ql-editor prose lg:prose-xl"
+                    dangerouslySetInnerHTML={{ __html: secondPart }}
+                  />
+                </>
+              ) : (
+                <article
+                  className="ql-editor prose lg:prose-xl"
+                  dangerouslySetInnerHTML={{
+                    __html: currentCategories.data.description[locale],
+                  }}
+                />
+              )}
+            </div>
+            <div className="pointer-events-none absolute inset-0 -z-10 mx-auto max-w-[1380px]">
+              {productBgImg.map((fruit, index) => (
+                <Image
+                  key={index}
+                  src={`/slider/fruit/${fruit.src}.png`}
+                  alt={fruit.alt}
+                  className={fruit.className}
+                  width={132}
+                  height={132}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <ToTheTop />
+      </main>
+    </>
   )
 }

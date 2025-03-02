@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 const Breadcrumb = React.forwardRef<
@@ -82,7 +82,7 @@ const BreadcrumbSeparator = ({
     className={cn('[&>svg]:h-3.5 [&>svg]:w-3.5', className)}
     {...props}
   >
-    {children ?? <ChevronRight />}
+    {children ?? <div className="font-rubik">{'>'}</div>}
   </li>
 )
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'

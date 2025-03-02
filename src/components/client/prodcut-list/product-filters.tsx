@@ -23,6 +23,7 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import CheckboxRoot from '@/components/client/ui/checkbox-root'
 import CheckboxIndicator from '@/components/client/ui/checkbox-indicator'
 import { Slider } from '@/components/client/ui/slider'
+import Image from 'next/image'
 
 interface ProductFiltersProps {
   categories: ICategory[]
@@ -36,6 +37,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   const router = useRouter()
   const searchParams = useSearchParams()
   const locale = useLocale() as ILocale
+
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const numericWeights = weights.map(Number)
 
@@ -79,6 +82,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     } else {
       params.delete('categories')
     }
+    params.set('page', '1')
     updateUrlParams(params)
   }
 
@@ -109,6 +113,19 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSliderValue])
 
+  const resetFilters = () => {
+    setSelectedCategories([])
+    setSliderValue([
+      numericWeights[0],
+      numericWeights[numericWeights.length - 1],
+    ])
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
+    params.delete('categories')
+    params.delete('minWeight')
+    params.delete('maxWeight')
+    updateUrlParams(params)
+  }
+
   return (
     <div className="relative min-w-[259px] lg:min-w-[319px]">
       <div className="flex items-center gap-2 py-[16px]">
@@ -120,9 +137,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             className="mb-2"
           >
             <AccordionItem value="item-1">
-              <AccordionTrigger className="font-rubik !text-[36px]">
-                Вид
-              </AccordionTrigger>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <AccordionTrigger className="font-rubik !text-[36px]">
+                  Вид
+                </AccordionTrigger>
+              </motion.div>
               <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
@@ -130,8 +152,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       key={category.slug}
                       htmlFor={category.slug}
                       className="flex cursor-pointer items-center gap-[24px]"
-                      whileHover={{ scale: 1.05, marginLeft: 15 }} // Ефект збільшення при наведенні
-                      transition={{ type: 'spring', stiffness: 300 }} // Пружинна анімація
+                      whileHover={{ scale: 1.05, marginLeft: 15 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
                     >
                       <CheckboxPrimitive.Root
                         id={category.slug}
@@ -160,9 +182,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
           <Accordion type="single" collapsible defaultValue="item-2">
             <AccordionItem value="item-2">
-              <AccordionTrigger className="font-rubik !text-[36px]">
-                Вага
-              </AccordionTrigger>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <AccordionTrigger className="font-rubik !text-[36px]">
+                  Вага
+                </AccordionTrigger>
+              </motion.div>
               <AccordionContent>
                 <div className="my-[50px]">
                   <Slider
@@ -172,41 +199,190 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     max={numericWeights[numericWeights.length - 1]}
                     onValueChange={(value) => setSliderValue(value)}
                   />
+                  <div className="mt-10 flex items-center justify-between">
+                    <span className="flex font-poppins text-[20px]">
+                      <div className="mr-5 mt-9">Від</div>
+                      <div className="relative mt-8">
+                        <Image
+                          src="/icons/o-oval.svg"
+                          alt="icon"
+                          width={70}
+                          height={70}
+                          className="object-contain"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          {sliderValue[0]}г
+                        </div>
+                      </div>
+                    </span>
+                    <span className="flex font-poppins text-[20px]">
+                      <div className="mr-5 mt-9">До</div>
+                      <div className="relative mt-8">
+                        <Image
+                          src="/icons/o-oval.svg"
+                          alt="icon"
+                          width={70}
+                          height={70}
+                          className="object-contain"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          {sliderValue[1]}г
+                        </div>
+                      </div>
+                    </span>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
 
-        <Dialog>
-          <DialogTrigger className="flex items-center gap-2 md:hidden">
-            <div className="text-xl sm:text-2xl">Фільтр</div>
-          </DialogTrigger>
-          <DialogContent className="max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-[32px]">Фільтр</DialogTitle>
-              <DialogDescription>
-                <div className="flex items-center justify-between pb-[40px] pt-[60px]">
-                  <Button
-                    className="rounded-none text-base"
-                    variant="outline"
-                    type="button"
-                    size="lg"
+        <div className="md:hidden">
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger className="flex items-center gap-2">
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className="font-rubik text-xl sm:text-2xl"
+              >
+                Фільтр
+              </motion.div>
+            </DialogTrigger>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="font-rubik text-[32px]">
+                  Фільтр
+                </DialogTitle>
+                <DialogDescription>
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-[40px] pt-[30px]">
+                    <Button
+                      className="rounded-none text-base"
+                      variant="outline"
+                      type="button"
+                      onClick={resetFilters}
+                    >
+                      Скинути все
+                    </Button>
+                    <Button
+                      className="rounded-none text-base"
+                      type="button"
+                      onClick={() => setDialogOpen(false)}
+                    >
+                      Показати
+                    </Button>
+                  </div>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    defaultValue="item-1"
+                    className="mb-2"
                   >
-                    Скинути все
-                  </Button>
-                  <Button
-                    className="rounded-none text-base"
-                    type="button"
-                    size="lg"
-                  >
-                    Показати
-                  </Button>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+                    <AccordionItem value="item-1">
+                      <motion.div
+                        whileHover={{ scale: 1.03 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                      >
+                        <AccordionTrigger className="font-rubik !text-[36px]">
+                          Вид
+                        </AccordionTrigger>
+                      </motion.div>
+                      <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
+                        {categories.length > 0 ? (
+                          categories.map((category) => (
+                            <motion.label
+                              key={category.slug}
+                              htmlFor={category.slug}
+                              className="flex cursor-pointer items-center gap-[24px]"
+                              whileHover={{ scale: 1.05, marginLeft: 15 }}
+                              transition={{ type: 'spring', stiffness: 300 }}
+                            >
+                              <CheckboxPrimitive.Root
+                                id={category.slug}
+                                checked={selectedCategories.includes(
+                                  category.slug,
+                                )}
+                                onCheckedChange={() =>
+                                  handleToggleCategory(category.slug)
+                                }
+                                className="relative z-0 py-2"
+                              >
+                                <CheckboxRoot />
+                                <CheckboxPrimitive.Indicator>
+                                  <CheckboxIndicator />
+                                </CheckboxPrimitive.Indicator>
+                              </CheckboxPrimitive.Root>
+                              <span className="font-poppins text-[20px] text-xl font-normal uppercase">
+                                {category.name[locale]}
+                              </span>
+                            </motion.label>
+                          ))
+                        ) : (
+                          <div>Немає доступних категорій.</div>
+                        )}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+
+                  <Accordion type="single" collapsible defaultValue="item-2">
+                    <AccordionItem value="item-2">
+                      <motion.div
+                        whileHover={{ scale: 1.03 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                      >
+                        <AccordionTrigger className="font-rubik !text-[36px]">
+                          Вага
+                        </AccordionTrigger>
+                      </motion.div>
+                      <AccordionContent>
+                        <div className="my-[50px]">
+                          <Slider
+                            value={sliderValue}
+                            step={1}
+                            min={numericWeights[0]}
+                            max={numericWeights[numericWeights.length - 1]}
+                            onValueChange={(value) => setSliderValue(value)}
+                          />
+                          <div className="mt-10 flex items-center justify-between">
+                            <span className="flex font-poppins text-[20px]">
+                              <div className="mr-5 mt-9">Від</div>
+                              <div className="relative mt-8">
+                                <Image
+                                  src="/icons/o-oval.svg"
+                                  alt="icon"
+                                  width={70}
+                                  height={70}
+                                  className="object-contain"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  {sliderValue[0]}г
+                                </div>
+                              </div>
+                            </span>
+                            <span className="flex font-poppins text-[20px]">
+                              <div className="mr-5 mt-9">До</div>
+                              <div className="relative mt-8">
+                                <Image
+                                  src="/icons/o-oval.svg"
+                                  alt="icon"
+                                  width={70}
+                                  height={70}
+                                  className="object-contain"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  {sliderValue[1]}г
+                                </div>
+                              </div>
+                            </span>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   )

@@ -84,7 +84,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   />
                   <path d="M8 10V20" stroke="#FBFBFB" />
                 </svg>
-                <p>ТОП</p>
+                <p className="mt-[2px]">ТОП</p>
               </CardItem>
             )}
             {product.statusLabel?.includes('new') && (
@@ -116,7 +116,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p>Новинка</p>
+                <p className="mt-[2px]">Новинка</p>
               </CardItem>
             )}
             {product.statusLabel?.includes('sale') && (
@@ -161,7 +161,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p>Акція</p>
+                <p className="mt-[2px]">Акція</p>
               </CardItem>
             )}
           </div>
@@ -181,7 +181,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           {selectedVariable.count === 0 && (
             <CardItem
               translateZ={30}
-              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 text-[11px] font-medium text-white sm:absolute sm:right-0 sm:top-0 sm:text-xs lg:text-sm"
+              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-0 sm:top-0 sm:text-xs lg:text-sm"
             >
               Очікуйте незабаром!
             </CardItem>

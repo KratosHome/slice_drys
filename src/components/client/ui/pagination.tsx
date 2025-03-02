@@ -10,7 +10,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={cn('mx-auto flex w-full justify-center', className)}
+    className={cn('mx-auto flex w-full justify-center px-2 sm:px-4', className)}
     {...props}
   />
 )
@@ -22,7 +22,10 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn('flex flex-row items-center gap-1', className)}
+    className={cn(
+      'flex flex-row flex-wrap items-center gap-2 text-base sm:gap-3 sm:text-lg',
+      className,
+    )}
     {...props}
   />
 ))
@@ -44,8 +47,8 @@ type PaginationLinkProps = {
 const PaginationLink = ({
   className,
   isActive,
-  href, // Додаємо href
-  onClick, // Додаємо onClick
+  href,
+  onClick,
   ...props
 }: PaginationLinkProps) => {
   const variants = {
@@ -69,9 +72,7 @@ const PaginationLink = ({
       whileHover="hover"
       whileTap="tap"
       className={cn(
-        buttonVariants({
-          variant: isActive ? 'none' : 'none',
-        }),
+        buttonVariants({ variant: isActive ? 'none' : 'none' }),
         className,
       )}
       href={href}
@@ -88,16 +89,18 @@ const PaginationLink = ({
           <Image
             src="/icons/o.svg"
             alt="icon"
-            width={70}
-            height={70}
-            className="object-contain"
+            width={50}
+            height={50}
+            className="object-contain sm:h-[70px] sm:w-[70px]"
           />
-          <div className="absolute inset-0 flex items-center justify-center font-rubik text-[48px]">
+          <div className="absolute inset-0 flex items-center justify-center font-rubik text-xl sm:text-2xl md:text-4xl">
             {props.children}
           </div>
         </div>
       ) : (
-        <div className="font-rubik text-[48px]">{props.children}</div>
+        <div className="font-rubik text-xl sm:text-2xl md:text-4xl">
+          {props.children}
+        </div>
       )}
     </motion.a>
   )
@@ -117,8 +120,8 @@ const PaginationPrevious = ({
     <Image
       src={'/icons/pagination-arrow-left.svg'}
       alt={''}
-      width={30}
-      height={30}
+      width={24}
+      height={24}
     />
   </PaginationLink>
 )
@@ -137,8 +140,8 @@ const PaginationNext = ({
     <Image
       src={'/icons/pagination-arrow-right.svg'}
       alt={''}
-      width={30}
-      height={30}
+      width={24}
+      height={24}
     />
   </PaginationLink>
 )
