@@ -34,8 +34,8 @@ export async function generateMetadata({
   params,
   searchParams,
 }: {
-  params: Promise<{ locale: string; menu: string }>
-  searchParams: { categories?: string }
+  params: Params
+  searchParams: SearchParams
 }): Promise<Metadata> {
   const url = process.env.NEXT_URL
 
@@ -110,9 +110,9 @@ export default async function MenuPage(props: {
 
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
-      fetch(`${url}/api/products/get-list?${params.toString()}`, {}).then(
-        (res) => res.json(),
-      ),
+      fetch(`${url}/api/products/get-list?${params.toString()}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
         next: { revalidate: 60 },
@@ -125,10 +125,9 @@ export default async function MenuPage(props: {
         },
       ).then((res) => res.json()),
 
-      fetch(
-        `${url}/api/products/current-categories?&slug=${categoriesParam}`,
-        {},
-      ).then((res) => res.json()),
+      fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
     ])
 
   const descriptionHTML = currentCategories.data.description[locale]
@@ -217,7 +216,7 @@ export default async function MenuPage(props: {
           <Breadcrumb className="my-2">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -259,8 +258,6 @@ export default async function MenuPage(props: {
                   }
                 />
               </PaginationItem>
-
-              {/* Заміна прямого відображення всіх сторінок на відображення з еліпсисами */}
               {getPaginationRange(
                 productsData.currentPage,
                 productsData.totalPages,
@@ -268,7 +265,7 @@ export default async function MenuPage(props: {
                 if (item === 'ellipsis') {
                   return (
                     <PaginationItem key={`ellipsis-${index}`}>
-                      <PaginationEllipsis /> {/* Відображення еліпсиса */}
+                      <PaginationEllipsis />
                     </PaginationItem>
                   )
                 }

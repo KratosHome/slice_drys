@@ -84,6 +84,34 @@
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
   },
+  "product-list": {
+    "home": "Головна",
+    "type": "Тип",
+    "no_categories_available": "Категорії відсутні",
+    "weight": "Вага",
+    "from": "Від",
+    "g": "г.",
+    "to": "До",
+    "filter": "Фільтр",
+    "reset_all": "Скинути все",
+    "show": "Показати",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
+  },
+  "product": {
+    "top": "ТОП",
+    "novelty": "Новинка",
+    "sale": "Акція",
+    "expect_soon": "Очікуйте незабаром!",
+    "add_to_cart": "Додати в кошик"
+  },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",
     "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",

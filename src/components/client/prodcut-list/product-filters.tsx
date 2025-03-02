@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
 import {
   Dialog,
@@ -34,11 +34,11 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   weights,
   categories,
 }) => {
+  const t = useTranslations('product-list')
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const locale = useLocale() as ILocale
-
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   const numericWeights = weights.map(Number)
 
@@ -55,6 +55,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     return [minWeight, maxWeight]
   }
 
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>(getInitialCategories)
   const [sliderValue, setSliderValue] = useState<number[]>(
@@ -68,6 +70,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     setSliderValue(getInitialSliderValues())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
+
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
+
+    if (
+      debouncedSliderValue[0] !== numericWeights[0] ||
+      debouncedSliderValue[1] !== numericWeights[numericWeights.length - 1]
+    ) {
+      params.set('minWeight', debouncedSliderValue[0].toString())
+      params.set('maxWeight', debouncedSliderValue[1].toString())
+    } else {
+      params.delete('minWeight')
+      params.delete('maxWeight')
+    }
+
+    updateUrlParams(params)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSliderValue])
 
   const updateUrlParams = (params: URLSearchParams) => {
     const newUrl = `?${params.toString()}`
@@ -94,24 +114,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     setSelectedCategories(updatedCategories)
     updateCategoriesQuery(updatedCategories)
   }
-
-  useEffect(() => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()))
-
-    if (
-      debouncedSliderValue[0] !== numericWeights[0] ||
-      debouncedSliderValue[1] !== numericWeights[numericWeights.length - 1]
-    ) {
-      params.set('minWeight', debouncedSliderValue[0].toString())
-      params.set('maxWeight', debouncedSliderValue[1].toString())
-    } else {
-      params.delete('minWeight')
-      params.delete('maxWeight')
-    }
-
-    updateUrlParams(params)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSliderValue])
 
   const resetFilters = () => {
     setSelectedCategories([])
@@ -142,7 +144,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 transition={{ type: 'spring', stiffness: 300 }}
               >
                 <AccordionTrigger className="font-rubik !text-[36px]">
-                  Вид
+                  {t('type')}
                 </AccordionTrigger>
               </motion.div>
               <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
@@ -174,7 +176,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </motion.label>
                   ))
                 ) : (
-                  <div>Немає доступних категорій.</div>
+                  <div>{t('no_categories_available')}</div>
                 )}
               </AccordionContent>
             </AccordionItem>
@@ -187,7 +189,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 transition={{ type: 'spring', stiffness: 300 }}
               >
                 <AccordionTrigger className="font-rubik !text-[36px]">
-                  Вага
+                  {t('weight')}
                 </AccordionTrigger>
               </motion.div>
               <AccordionContent>
@@ -201,7 +203,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                   <div className="mt-10 flex items-center justify-between">
                     <span className="flex font-poppins text-[20px]">
-                      <div className="mr-5 mt-9">Від</div>
+                      <div className="mr-5 mt-9">{t('from')}</div>
                       <div className="relative mt-8">
                         <Image
                           src="/icons/o-oval.svg"
@@ -211,12 +213,13 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                           className="object-contain"
                         />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          {sliderValue[0]}г
+                          {sliderValue[0]}
+                          {t('g')}
                         </div>
                       </div>
                     </span>
                     <span className="flex font-poppins text-[20px]">
-                      <div className="mr-5 mt-9">До</div>
+                      <div className="mr-5 mt-9">{t('to')}</div>
                       <div className="relative mt-8">
                         <Image
                           src="/icons/o-oval.svg"
@@ -226,7 +229,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                           className="object-contain"
                         />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          {sliderValue[1]}г
+                          {sliderValue[1]}
+                          {t('g')}
                         </div>
                       </div>
                     </span>
@@ -245,13 +249,13 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 transition={{ type: 'spring', stiffness: 300 }}
                 className="font-rubik text-xl sm:text-2xl"
               >
-                Фільтр
+                {t('filter')}
               </motion.div>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-rubik text-[32px]">
-                  Фільтр
+                  {t('filter')}
                 </DialogTitle>
                 <DialogDescription>
                   <div className="flex flex-wrap items-center justify-between gap-2 pb-[40px] pt-[30px]">
@@ -261,14 +265,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="button"
                       onClick={resetFilters}
                     >
-                      Скинути все
+                      {t('reset_all')}
                     </Button>
                     <Button
                       className="rounded-none text-base"
                       type="button"
                       onClick={() => setDialogOpen(false)}
                     >
-                      Показати
+                      {t('show')}
                     </Button>
                   </div>
                   <Accordion
@@ -283,7 +287,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         transition={{ type: 'spring', stiffness: 300 }}
                       >
                         <AccordionTrigger className="font-rubik !text-[36px]">
-                          Вид
+                          {t('type')}
                         </AccordionTrigger>
                       </motion.div>
                       <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
@@ -317,7 +321,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                             </motion.label>
                           ))
                         ) : (
-                          <div>Немає доступних категорій.</div>
+                          <div>{t('no_categories_available')}</div>
                         )}
                       </AccordionContent>
                     </AccordionItem>
@@ -330,7 +334,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         transition={{ type: 'spring', stiffness: 300 }}
                       >
                         <AccordionTrigger className="font-rubik !text-[36px]">
-                          Вага
+                          {t('weight')}
                         </AccordionTrigger>
                       </motion.div>
                       <AccordionContent>
@@ -344,7 +348,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                           />
                           <div className="mt-10 flex items-center justify-between">
                             <span className="flex font-poppins text-[20px]">
-                              <div className="mr-5 mt-9">Від</div>
+                              <div className="mr-5 mt-9">{t('from')}</div>
                               <div className="relative mt-8">
                                 <Image
                                   src="/icons/o-oval.svg"
@@ -354,12 +358,13 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                   className="object-contain"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                  {sliderValue[0]}г
+                                  {sliderValue[0]}
+                                  {t('g')}
                                 </div>
                               </div>
                             </span>
                             <span className="flex font-poppins text-[20px]">
-                              <div className="mr-5 mt-9">До</div>
+                              <div className="mr-5 mt-9">{t('to')}</div>
                               <div className="relative mt-8">
                                 <Image
                                   src="/icons/o-oval.svg"
@@ -369,7 +374,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                   className="object-contain"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                  {sliderValue[1]}г
+                                  {sliderValue[1]}
+                                  {t('g')}
                                 </div>
                               </div>
                             </span>
