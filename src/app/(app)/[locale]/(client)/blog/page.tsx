@@ -54,27 +54,8 @@ export default async function Blog({ params, searchParams }: Props) {
   const countOfPages = Math.ceil((data.totalPosts || 0) / limit)
 
   return (
-    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
-      <div className="mt-10">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                href={`/${locale}/blog`}
-                localizationKey="Blog"
-              ></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage localizationKey="Page">{pageItem}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+    <div className="mx-auto max-w-[1280px]  overflow-hidden p-5">
+      <div className="mt-10"></div>
 
       <BlogTitle />
       <div className="mx-auto flex flex-col items-center">

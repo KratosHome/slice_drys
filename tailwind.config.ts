@@ -23,7 +23,7 @@ const config: Config = {
         },
       }),
       fontFamily: {
-        poppins: 'var(--font-poppins)',
+        poppins: ['var(--font-poppins)', 'sans-serif'],
         rubik: ['var(--font-rubik-doodle-shadow)', 'sans-serif'],
         dmsans: ['var(--font-dm-sans)', 'sans-serif'],
       },

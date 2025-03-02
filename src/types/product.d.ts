@@ -11,6 +11,7 @@ interface IProduct {
   visited?: number
   categories: string[]
   nutritionalValue: INutritionalValue
+  variant?: IVariableProduct
 }
 
 interface IProductLocal {
