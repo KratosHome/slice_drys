@@ -125,5 +125,13 @@
       "grapefruit": "Grapefruit",
       "kiwi": "Kiwi"
     }
+  },
+  "promo-banner": {
+    "free_delivery": "Free delivery!",
+    "when_ordering_from": "When ordering from",
+    "uah": "UAH",
+    "get_free_delivery": "Get free delivery",
+    "icon_cart": "icon cart",
+    "icon_instagram": "icon instagram"
   }
 }

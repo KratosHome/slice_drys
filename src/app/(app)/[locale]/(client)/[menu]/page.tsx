@@ -26,6 +26,7 @@ import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
+import Delivery from '@/components/client/promo-banner/delivery'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -336,6 +337,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
+        <Delivery />
         <ToTheTop />
       </main>
     </>

@@ -110,7 +110,7 @@
     "novelty": "Новинка",
     "sale": "Акція",
     "expect_soon": "Очікуйте незабаром!",
-    "add_to_cart": "Додати в кошик"
+    "add_to_cart": "Додати"
   },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",
@@ -125,5 +125,13 @@
       "grapefruit": "Грейпфрут",
       "kiwi": "Ківі"
     }
+  },
+  "promo-banner": {
+    "free_delivery": "Безкоштовна доставка!",
+    "when_ordering_from": "При замовленні від",
+    "uah": "грн",
+    "get_free_delivery": "Отримати безкоштовну доставку",
+    "icon_cart": "іконка кошика",
+    "icon_instagram": "іконка Instagram"
   }
 }
