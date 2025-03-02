@@ -16,7 +16,7 @@ import {
 } from '@/components/client/ui/3d-card'
 import Image from 'next/image'
 import Button from '@/components/client/ui/button'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cartStore'
 
 interface ProductProps {
@@ -25,10 +25,13 @@ interface ProductProps {
 
 const Product: React.FC<ProductProps> = ({ product }) => {
   const locale = useLocale() as ILocale
+  const t = useTranslations('product')
 
   const { addItemToCart, setOpenCart } = useCartStore((state) => state)
 
-  const [selectedVariable, setSelectedVariable] = useState(product.variables[0])
+  const [selectedVariable, setSelectedVariable] = useState(
+    product.variant ?? product.variables[0],
+  )
 
   const handleAddToCart = () => {
     if (product._id && product.img)
@@ -82,7 +85,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   />
                   <path d="M8 10V20" stroke="#FBFBFB" />
                 </svg>
-                <p>ТОП</p>
+                <p className="mt-[2px]">{t('top')}</p>
               </CardItem>
             )}
             {product.statusLabel?.includes('new') && (
@@ -114,7 +117,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p>Новинка</p>
+                <p className="mt-[2px]">{t('novelty')}</p>
               </CardItem>
             )}
             {product.statusLabel?.includes('sale') && (
@@ -159,7 +162,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <p>Акція</p>
+                <p className="mt-[2px]">{t('sale')}</p>
               </CardItem>
             )}
           </div>
@@ -179,9 +182,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           {selectedVariable.count === 0 && (
             <CardItem
               translateZ={30}
-              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 text-[11px] font-medium text-white sm:absolute sm:right-0 sm:top-0 sm:text-xs lg:text-sm"
+              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-0 sm:top-0 sm:text-xs lg:text-sm"
             >
-              Очікуйте незабаром!
+              {t('expect_soon')}
             </CardItem>
           )}
           <div className="flex w-full items-start justify-between gap-2">
@@ -195,7 +198,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               <div onClick={(e) => e.stopPropagation()}>
                 <Select
                   onValueChange={handleVariableChange}
-                  defaultValue={String(product.variables[0]._id)}
+                  value={String(selectedVariable._id)}
                 >
                   <SelectTrigger className="w-fit border-none shadow-none outline-none">
                     <SelectValue
@@ -252,7 +255,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   variant="button"
                   onClick={handleAddToCart}
                 >
-                  До кошика
+                  {t('add_to_cart')}
                 </Button>
               </div>
             </CardItem>

@@ -10,14 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -54,26 +46,7 @@ export default async function Blog({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-[1280px] p-5">
-      <div className="mt-10">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                href={`/${locale}/blog`}
-                localizationKey="Blog"
-              ></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage localizationKey="Page">{pageItem}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <div className="mt-10"></div>
 
       <BlogTitle />
       <div className="mx-auto flex flex-col items-center">

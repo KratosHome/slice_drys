@@ -17,7 +17,7 @@
       "message": "the most delicious kus-topchiki"
     },
     "footer": {
-      "CTA-socials":"join our social networks",
+      "CTA-socials": "join our social networks",
       "public-offer": "public offer",
       "privacy-policy": "privacy policy"
     },
@@ -49,7 +49,8 @@
       "title-md": "Travel with us"
     },
     "burger-menu": {
-      "catalog": "Catalog"
+      "catalog": "Catalog",
+      "logo": "logo"
     }
   },
   "cart": {
@@ -82,6 +83,34 @@
     "facebook icon": "facebook icon",
     "instagram icon": "instagram icon",
     "telegram icon": "telegram icon"
+  },
+  "product-list": {
+    "home": "Home",
+    "type": "Type",
+    "no_categories_available": "No categories available",
+    "weight": "Weight",
+    "from": "From",
+    "g": "g",
+    "to": "To",
+    "filter": "Filter",
+    "reset_all": "Reset all",
+    "show": "Show",
+    "fruit": {
+      "orange": "Orange",
+      "mango": "Mango",
+      "pear": "Pear",
+      "pineapple": "Pineapple",
+      "ginger": "Ginger",
+      "grapefruit": "Grapefruit",
+      "kiwi": "Kiwi"
+    }
+  },
+  "product": {
+    "top": "TOP",
+    "novelty": "Novelty",
+    "sale": "Sale",
+    "expect_soon": "Expect soon!",
+    "add_to_cart": "Add to cart"
   },
   "not_found_page": {
     "fruitAlt": "Fruit decoration",
