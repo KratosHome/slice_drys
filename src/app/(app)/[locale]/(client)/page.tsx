@@ -32,7 +32,7 @@ export default async function Home(props: {
         next: { revalidate: 60 },
       }).then((res) => res.json()),
 
-      fetch(`${url}/api/post?locale=${locale}&page=1&limit=12`, {
+      fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
         next: { revalidate: 60 },
       }).then((res) => res.json()),
 
@@ -56,9 +56,9 @@ export default async function Home(props: {
       <Help data={helpData[locale]} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
-      <BlogSection data={blogData.post} />
+      <BlogSection data={blogData.postsLocalized} />
       <Reviews />
-      <InstaFeed data={instaPosts} />
+      <InstaFeed data={instaPosts.data} />
       <ToTheTop />
     </>
   )

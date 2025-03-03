@@ -4,10 +4,8 @@ import { Post } from '@/server/posts/postSchema'
 
 type GetPostsOptions = {
   locale: ILocale
-  slug?: string
-  page?: number
-  limit?: number
-  isVisited?: boolean
+  page: number
+  limit: number
 }
 
 const getSelectedFields = (locale: ILocale) => ({
@@ -37,56 +35,28 @@ const formatPost = (post: IPostLocal, locale: ILocale) => ({
   createdAt: post.createdAt,
 })
 
-export async function getPosts({
-  locale,
-  slug,
-  page,
-  limit,
-  isVisited,
-}: GetPostsOptions) {
+export async function getPosts({ locale, page, limit }: GetPostsOptions) {
   try {
     await connectToDb()
 
-    if (slug) {
-      const post: IPostLocal | null = isVisited
-        ? ((await Post.findOneAndUpdate(
-            { slug },
-            { $inc: { visited: 1 } },
-            { new: true, select: getSelectedFields(locale) },
-          ).lean()) as IPostLocal | null)
-        : ((await Post.findOne(
-            { slug },
-            getSelectedFields(locale),
-          ).lean()) as IPostLocal | null)
+    const skip = (page - 1) * limit
 
-      if (!post) return { success: false, post: [], message: 'Post not found' }
-
-      return {
-        success: true,
-        post: [formatPost(post, locale)],
-        totalPosts: 0,
-        message: 'Products retrieved',
-      }
-    }
-
-    const pagination = page && limit ? { skip: (page - 1) * limit, limit } : {}
-
-    const [posts, totalPostsCount, allPosts] = await Promise.all([
+    const [posts, totalPostsCount] = await Promise.all([
       Post.find({}, getSelectedFields(locale))
         .sort({ createdAt: -1 })
-        .skip(pagination.skip ?? 0)
-        .limit(pagination.limit ?? 0)
+        .skip(skip)
+        .limit(limit)
         .lean<IPostLocal[]>(),
       Post.countDocuments(),
-      Post.find().sort({ createdAt: -1 }).lean<IPostLocal[]>(),
     ])
 
     return {
-      success: true,
-      post: posts.map((p: IPostLocal) => formatPost(p, locale)),
-      postAll: allPosts.map((p) => ({ ...p, _id: p._id?.toString() })),
+      postsLocalized: posts.map((p: IPostLocal) => formatPost(p, locale)),
+      currentPage: page,
+      totalPages: Math.ceil(totalPostsCount / limit),
       totalPosts: totalPostsCount,
-      message: 'Products retrieved',
+      success: true,
+      message: 'Posts retrieved',
     }
   } catch (error) {
     return {
@@ -94,7 +64,75 @@ export async function getPosts({
       postAll: [],
       post: [],
       totalPosts: 0,
-      message: `Can't retrieve posts ${error}`,
+      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
+    }
+  }
+}
+
+type GetAllPostsOptions = {
+  locale: ILocale
+}
+
+export async function getAllPosts({ locale }: GetAllPostsOptions) {
+  try {
+    await connectToDb()
+
+    const allPosts = await Post.find()
+      .sort({ createdAt: -1 })
+      .lean<IPostLocal[]>()
+
+    return {
+      success: true,
+      postsLocalized: allPosts.map((p: IPostLocal) => formatPost(p, locale)),
+      postsAll: allPosts.map((p) => ({ ...p, _id: p._id?.toString() })),
+      message: 'Posts retrieved',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      postsAll: [],
+      postsLocalized: [],
+      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
+    }
+  }
+}
+
+type GetPostOptions = {
+  locale: ILocale
+  slug: string
+  isVisited?: boolean
+}
+
+export async function getPost({ locale, slug, isVisited }: GetPostOptions) {
+  try {
+    await connectToDb()
+
+    const post: IPostLocal | null = isVisited
+      ? ((await Post.findOneAndUpdate(
+          { slug },
+          { $inc: { visited: 1 } },
+          { new: true, select: getSelectedFields(locale) },
+        ).lean()) as IPostLocal | null)
+      : ((await Post.findOne(
+          { slug },
+          getSelectedFields(locale),
+        ).lean()) as IPostLocal | null)
+
+    if (!post) return { success: false, post: [], message: 'Post not found' }
+
+    return {
+      success: true,
+      post: [formatPost(post, locale)],
+      totalPosts: 0,
+      message: 'Post retrieved',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      postAll: [],
+      post: [],
+      totalPosts: 0,
+      message: `Can't retrieve post ${JSON.stringify(error, null, 2)}`,
     }
   }
 }

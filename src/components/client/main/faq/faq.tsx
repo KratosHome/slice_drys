@@ -26,7 +26,6 @@ const Faq: FC<IFaq> = ({ data }) => {
       trigger: faqRef.current[0],
       start: 'top 80%',
       end: '400px 10%',
-      markers: true,
       toggleActions: 'play reset play reset',
       preventOverlaps: true,
       onToggle: (self) => {
@@ -66,11 +65,11 @@ const Faq: FC<IFaq> = ({ data }) => {
           {t('even-what-did-not-ask')}
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data?.map((item: Faq) => (
+          {data?.map((item: Faq, i) => (
             <Item
               ref={(el) => {
                 if (el) {
-                  faqRef.current.push(el)
+                  if (el) faqRef.current[i] = el
                 }
               }}
               key={item.title}

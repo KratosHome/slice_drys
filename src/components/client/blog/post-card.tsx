@@ -46,8 +46,13 @@ export default function PostCard({
           <Image
             src={post?.img || ''}
             alt={post?.title}
-            layout="fill"
-            objectFit="cover"
+            fill
+            className="object-cover"
+            sizes={
+              variant === 'big'
+                ? '(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 50vw'
+                : '(max-width: 768px) 50vw, 30vw'
+            }
           />
         </AspectRatio>
         <p
