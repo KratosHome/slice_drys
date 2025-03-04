@@ -22,16 +22,31 @@ const Faq: FC<IFaq> = ({ data }) => {
   }, [])
 
   useGSAP(() => {
-    gsap.from(faqRef.current, {
-      autoAlpha: 0,
-      duration: 0.6,
-      stagger: 0.2,
-      ease: 'power1.out',
-      scrollTrigger: {
-        trigger: faqRef.current[0],
-        start: 'top 80%',
-        end: '400px top',
-        toggleActions: 'play reset play reset',
+    ScrollTrigger.create({
+      trigger: faqRef.current[0],
+      start: 'top 80%',
+      end: '400px 10%',
+      toggleActions: 'play reset play reset',
+      preventOverlaps: true,
+      onToggle: (self) => {
+        if (!self.isActive) {
+          gsap.set(faqRef.current, { autoAlpha: 0 })
+        } else {
+          gsap.fromTo(
+            faqRef.current,
+            { autoAlpha: 0, y: self.direction === -1 ? -50 : 50 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.6,
+              stagger: {
+                each: 0.2,
+                from: self.direction === -1 ? 'end' : 'start',
+              },
+              ease: 'power1.out',
+            },
+          )
+        }
       },
     })
     ScrollTrigger.refresh(true)
@@ -46,15 +61,15 @@ const Faq: FC<IFaq> = ({ data }) => {
         <h2 className="title-section pr-0 text-center md:pr-20">
           {t('all-about-dry-fruits')}
         </h2>
-        <p className="slider-label relative mb-8 mt-5 grid place-content-end text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
+        <p className="underline-wave relative mb-7 ml-auto mt-5 w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
           {t('even-what-did-not-ask')}
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data?.map((item: Faq) => (
+          {data?.map((item: Faq, i) => (
             <Item
               ref={(el) => {
                 if (el) {
-                  faqRef.current.push(el)
+                  if (el) faqRef.current[i] = el
                 }
               }}
               key={item.title}
