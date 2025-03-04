@@ -1,4 +1,5 @@
 'use server'
+import { revalidateTag } from 'next/cache'
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
@@ -38,7 +39,7 @@ export async function editPost(
     }
 
     await Post.findByIdAndUpdate(id, updatedData, { new: true })
-
+    revalidateTag('posts')
     return { success: true, message: 'Post updated successfully' }
   } catch (error) {
     console.error(error)

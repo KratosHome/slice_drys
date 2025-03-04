@@ -1,7 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import { getPosts } from '@/server/posts/get-posts.server'
-import PostList from '@/components/client/blog/post-list'
-import BlogTitle from '@/components/client/blog/blog-title'
+import { notFound } from 'next/navigation'
 
 import {
   Pagination,
@@ -20,15 +18,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import PostList from '@/components/client/blog/post-list'
+import BlogTitle from '@/components/client/blog/blog-title'
 import BlogFooter from '@/components/client/blog/blog-footer'
-import { getPaginationRange } from '../[menu]/page'
+import { getPaginationRange } from '@/utils/getPaginationRange'
 import { cn } from '@/utils/cn'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
   searchParams: Promise<{ page?: string }>
 }
-
+const url = process.env.NEXT_URL
 const translations = {
   en: {
     title: 'Blog',
@@ -54,10 +54,17 @@ export default async function Blog({ params, searchParams }: Props) {
   const blogSearchParams = await searchParams
 
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
-  const limit = 8
-  const postsData = await getPosts({ locale, page: pageItem, limit })
 
-  if (!postsData.success) return null
+  const postsData = await fetch(
+    `${url}/api/posts?locale=${locale}&${new URLSearchParams(await searchParams).toString()}`,
+    {
+      next: {
+        tags: ['posts'],
+      },
+    },
+  ).then((res) => res.json())
+
+  if (!postsData.success) return notFound()
 
   const { postsLocalized, currentPage, totalPages } =
     postsData as IGetPostsClient
@@ -100,7 +107,7 @@ export default async function Blog({ params, searchParams }: Props) {
       </div>
 
       <BlogTitle />
-      <div className="mx-auto flex flex-col items-center">
+      <div className="mx-auto flex flex-col items-center font-bold">
         <PostList posts={postsLocalized} />
 
         {totalPages > 1 && (
