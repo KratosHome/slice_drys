@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
-import { getPosts } from '@/server/posts/get-posts.server'
+import { getAllPosts } from '@/server/posts/get-posts.server'
 
 export async function GET(req: Request) {
   const searchParams = new URL(req.url).searchParams
-  const data = await getPosts({
+  const data = await getAllPosts({
     locale: (searchParams.get('locale') as ILocale) ?? 'uk',
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 8,
   })
   return NextResponse.json(data)
 }

@@ -1,7 +1,7 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
-const BlogTitle = () => {
-  const t = useTranslations('blog')
+const BlogTitle = async () => {
+  const t = await getTranslations('blog')
   return (
     <div className="mt-10 flex w-full flex-wrap items-center justify-between gap-[26px] lg:mt-[60px] lg:flex-nowrap lg:gap-[54px]">
       <div className="w-full font-rubik text-[clamp(64px,calc(64px+64*(100vw-768px)/672),128px)] md:w-fit">

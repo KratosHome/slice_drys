@@ -28,13 +28,12 @@ interface IPostLocal {
 
 interface IGetPostsAdmin {
   postsLocalized: IPost[]
-  postsAll?: IPostLocal[]
+  postsAll: IPostLocal[]
   success: boolean
   message: string
 }
 interface IGetPostsClient {
   postsLocalized: IPost[]
-  postsAll?: IPostLocal[]
   currentPage: number
   totalPages: number
   totalPosts: number
