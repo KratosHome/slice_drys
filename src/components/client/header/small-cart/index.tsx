@@ -34,7 +34,7 @@ export default function SmallCart() {
   }, [])
 
   return (
-    <div className="relative inline-block">
+    <div className="relative flex flex-col justify-center">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
           <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">
@@ -51,7 +51,7 @@ export default function SmallCart() {
         <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
           <div className="absolute right-0 top-0 z-20 w-full bg-white px-5 pt-5">
             <div className="flex w-full items-center justify-between border-b bg-black p-[12px] text-white md:px-[48px] md:py-[32px]">
-              <div className="font-rubik p-0 text-[32px] uppercase leading-[0.9] md:text-[64px]">
+              <div className="p-0 font-rubik text-[32px] uppercase leading-[0.9] md:text-[64px]">
                 {t('basket')}
               </div>
 
@@ -136,7 +136,7 @@ export default function SmallCart() {
 
                         <div className="flex w-[115px] items-center justify-between bg-black px-[12px] text-white">
                           <div
-                            className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+                            className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
                             onClick={() =>
                               updateItemQuantity(
                                 item.id,
@@ -151,7 +151,7 @@ export default function SmallCart() {
                           <span className="text-[24px]">{item.quantity}</span>
 
                           <div
-                            className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+                            className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
                             onClick={() =>
                               updateItemQuantity(
                                 item.id,

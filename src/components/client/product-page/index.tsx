@@ -18,31 +18,32 @@ import {
   TopIcon,
 } from './icons'
 import SliderWithThumbnails from './slider'
-import { mockProduct, mockSliders } from './consts'
+import { mockSliders } from './consts'
 
-export const ProductInfo = () => (
-  <section className="lg:border-light_gray·mb-20·mt-10·flex·flex-col·gap-10·pb-10·lg:mt-[6.25rem]·lg:flex-row·lg:border">
-    <div className="absolute grid gap-0.5">
-      <TopLabel />
-      <NewLabel />
-    </div>
+export const ProductInfo = ({ product }: { product: IProduct }) => {
+  const { name, statusLabel, description, composition, variables } = product
 
-    <div className="flex justify-center lg:w-1/2">
-      <SliderWithThumbnails images={mockSliders} />
-    </div>
+  return (
+    <section className="lg:border-light_gray·mb-20·mt-10·flex·flex-col·gap-10·pb-10·lg:mt-[6.25rem]·lg:flex-row·lg:border">
+      <div className="absolute grid gap-0.5">
+        <TopLabel />
+        <NewLabel />
+      </div>
 
-    <div className="lg:w-1/2">
-      <Title name={mockProduct.name} statusLabel={mockProduct.statusLabel} />
-      <Description
-        description={mockProduct.description}
-        composition={mockProduct.composition}
-      />
-      <WeightSelect variables={mockProduct.variables} />
-      <PriceControl variables={mockProduct.variables} />
-      <Certifications />
-    </div>
-  </section>
-)
+      <div className="flex justify-center lg:w-1/2">
+        <SliderWithThumbnails images={mockSliders} />
+      </div>
+
+      <div className="lg:w-1/2">
+        <Title name={name} statusLabel={statusLabel} />
+        <Description description={description} composition={composition} />
+        <WeightSelect variables={variables} />
+        <PriceControl variables={variables} />
+        <Certifications />
+      </div>
+    </section>
+  )
+}
 
 export const Title = ({
   name,
@@ -52,7 +53,7 @@ export const Title = ({
   statusLabel: string[]
 }) => {
   const InStockLabel = () => (
-    <div className="bg-red absolute right-0 top-0 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
+    <div className="absolute right-0 top-0 bg-red-500 px-2.5 text-sm font-semibold leading-[24px] sm:mr-6 sm:text-base">
       {statusLabel.join(', ')}
     </div>
   )
@@ -144,7 +145,7 @@ export const PriceControl = ({
 
       <button
         type="button"
-        className="bg-red text-nowrap px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
+        className="text-nowrap bg-red-500 px-9 py-2.5 text-xl font-semibold tracking-wider text-white hover:grayscale-[10%]"
       >
         До кошика
       </button>

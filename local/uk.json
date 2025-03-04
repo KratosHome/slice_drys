@@ -8,9 +8,18 @@
       "order": "Замовити",
       "facebook-icon": "facebook іконка",
       "instagram-icon": "instagram іконка",
-      "logo-slice-drys": "логтип slice drys",
+      "logo-slice-drys": "логотип slice drys",
       "telephone-icon": "telephone іконка",
       "logo": "логотип"
+    },
+    "products-slider": {
+      "title": "ТОПОВІ СУШЕНИКИ",
+      "message": "найсмачніші кусь-топчики"
+    },
+    "footer": {
+      "CTA-socials": "приєднуйся до наших соцмереж",
+      "public-offer": "Публічна оферта",
+      "privacy-policy": "Політика конфіденційності"
     },
     "call-me": {
       "call-back": "Передзвонити",
@@ -27,10 +36,22 @@
       "even-what-did-not-ask": "і навіть те, що не питали :)"
     },
     "reviews": {
-      "reviews": "відгуки",
+      "title": "відгуки",
       "say-those": "кажуть ті, хто вже скуштував сушеники "
     },
-    "our-partners": "Наші партнери"
+    "our-partners": "Наші партнери",
+    "more-about-us": {
+      "title": "Блог про сушеники",
+      "more-btn": "Дізнатися більше"
+    },
+    "instafeed": {
+      "title-md": "Подорожуйте з нами",
+      "title": "Мандруйте разом з нами"
+    },
+    "burger-menu": {
+      "catalog": "Каталог",
+      "logo": "логотип"
+    }
   },
   "cart": {
     "basket": "Кошик",
@@ -49,10 +70,15 @@
   "blog": {
     "paginationButtonLeft": "Попередня",
     "paginationButtonRight": "Наступна",
-    "Blog": "Блог",
-    "title": "Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з нашими сушениками – від цікавих рецептів і корисних порад до просто веселих історій. Заглядай частіше, тут завжди щось смачненьке!"
+    "title": "Блог",
+    "description-top": "Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з нашими сушениками – від цікавих рецептів і корисних порад до просто веселих історій. Заглядай частіше, тут завжди щось смачненьке!",
+    "description-bottom":"Хочете бути в курсі всіх новинок, акцій та отримувати ексклюзивні рецепти?",
+    "email-caption":"Залиште свій емейл — і ми будемо надсилати вам тільки найсмачніші новини!",
+    "handbag":"фото сумки для покупок",
+    "email-placeholder":"Введіть свій email",
+    "submit-btn":"Відправити"
   },
-  "breadcrumbs": {
+  "Breadcrumbs": {
     "Home": "Головна",
     "Blog": "Блог",
     "Page": "Сторінка"
@@ -62,5 +88,52 @@
     "facebook icon": "іконка Facebook",
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
+  },
+  "product-list": {
+    "home": "Головна",
+    "type": "Тип",
+    "no_categories_available": "Категорії відсутні",
+    "weight": "Вага",
+    "from": "Від",
+    "g": "г.",
+    "to": "До",
+    "filter": "Фільтр",
+    "reset_all": "Скинути все",
+    "show": "Показати",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
+  },
+  "product": {
+    "top": "ТОП",
+    "novelty": "Новинка",
+    "sale": "Акція",
+    "expect_soon": "Очікуйте незабаром!",
+    "add_to_cart": "Додати в кошик"
+  },
+  "not_found_page": {
+    "fruitAlt": "Декоративні фрукти",
+    "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
+    "goHome": "“кусь”!",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
+  },
+  "toast": {
+    "success": "Вітання!",
+    "error": "Помилка!",
+    "info": "Інформація"
   }
 }

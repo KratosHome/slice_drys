@@ -9,7 +9,7 @@ const connection: Connection = {}
 export const connectToDb = async (): Promise<void> => {
   try {
     if (connection.isConnected) {
-      console.error('Using existing connection')
+      console.warn('Using existing connection')
 
       return
     }

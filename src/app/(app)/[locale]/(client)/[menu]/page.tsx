@@ -1,138 +1,343 @@
 import React from 'react'
-import Link from 'next/link'
-import { getProducts } from '@/server/products/get-products.server'
 import Product from '@/components/client/product/product'
-import ProductMenu from '@/components/client/product-menu/product-menu'
-import ProductSidebar from '@/components/client/product-sidebar/product-sidebar'
+import NotFound from '@/components/not-found'
+import ProductFilters from '@/components/client/prodcut-list/product-filters'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/client/ui/dialog'
-import { Button } from '@/components/admin/ui/button'
-import { capitalize } from '@/utils/capitalize'
-import { menuToUk } from '@/utils/menuToUk'
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/client/ui/breadcrumbs'
+import ToTheTop from '@/components/client/ui/to-the-top'
+import 'quill/dist/quill.snow.css'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/client/ui/pagination'
+import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { getProductBgImg } from '@/data/product-bg-img'
+import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
+
+type Params = Promise<{ locale: ILocale; menu: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Params
+  searchParams: SearchParams
+}): Promise<Metadata> {
+  const url = process.env.NEXT_URL
+
+  const { locale, menu } = await params
+  const { categories } = await searchParams
+
+  const categoriesParam =
+    !categories || categories.includes(',') ? menu : categories
+
+  const currentCategories = await fetch(
+    `${url}/api/products/current-categories?&slug=${categoriesParam}`,
+    {},
+  ).then((res) => res.json())
+
+  const description = currentCategories.data.metaDescription?.[locale] || ''
+
+  const canonicalUrl = `${url}/${categoriesParam}`
+  const ogImage = currentCategories.image || `${url}/default-category-image.jpg`
+
+  const metaKeywordsArray =
+    currentCategories.data.metaKeywords?.[locale]
+      ?.split(',')
+      .map((keyword: string) => keyword.trim()) || []
+
+  return {
+    title: currentCategories.data.metaTitle?.[locale],
+    description: currentCategories.data.metaDescription?.[locale],
+    keywords: metaKeywordsArray,
+    robots: 'index, follow',
+    openGraph: {
+      title: currentCategories.data.name?.[locale],
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: currentCategories.data.metaTitle?.[locale],
+        },
+      ],
+    },
+  }
+}
+
+export const getPaginationRange = (currentPage: number, totalPages: number) => {
+  const delta = 2
+  const range: number[] = []
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (
+      i === 1 ||
+      i === totalPages ||
+      (i >= currentPage - delta && i <= currentPage + delta)
+    ) {
+      range.push(i)
+    }
+  }
+
+  const rangeWithDots: (number | 'ellipsis')[] = []
+  let prev = 0
+  for (const page of range) {
+    if (page - prev > 1) {
+      rangeWithDots.push('ellipsis')
+    }
+    rangeWithDots.push(page)
+    prev = page
+  }
+  return rangeWithDots
+}
 
 export default async function MenuPage(props: {
-  params: Promise<{ locale: string; menu: string; category: string }>
+  params: Params
+  searchParams: SearchParams
 }) {
-  const { params } = props
-  const { locale, menu, category } = await params
-  const menuToLocale = locale === 'uk' ? menuToUk(menu) : menu
-  const categoryArray = category ? category.split(',') : []
+  const { locale, menu } = await props.params
+  const { categories, minWeight, maxWeight, page } = await props.searchParams
 
-  const productsData = await getProducts(
-    1,
-    100,
-    [],
-    [menuToLocale],
-    categoryArray,
-    locale,
-    false,
+  const params = new URLSearchParams({ locale: String(locale) })
+
+  const t = await getTranslations('product-list')
+
+  const productBgImg = getProductBgImg(t)
+  const url = process.env.NEXT_URL
+
+  if (menu) params.append('menu', String(menu))
+  if (page) params.append('page', String(page))
+  if (categories) params.append('categories', String(categories))
+  if (minWeight) params.append('minWeight', String(minWeight))
+  if (maxWeight) params.append('maxWeight', String(maxWeight))
+
+  const categoriesParam = Array.isArray(categories)
+    ? categories.join(',')
+    : !categories || categories.includes(',')
+      ? menu
+      : categories
+
+  const [productsData, weightData, categoriesData, currentCategories] =
+    await Promise.all([
+      fetch(`${url}/api/products/get-list?${params.toString()}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+
+      fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+
+      fetch(
+        `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
+        {
+          next: { revalidate: 60 },
+        },
+      ).then((res) => res.json()),
+
+      fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
+        next: { revalidate: 60 },
+      }).then((res) => res.json()),
+    ])
+
+  const descriptionHTML = currentCategories.data.description[locale]
+  const isLongText = currentCategories.data.description[locale].length > 500
+
+  let firstPart = descriptionHTML
+  let secondPart = ''
+
+  if (isLongText) {
+    const mid = Math.ceil(descriptionHTML.length / 2)
+    firstPart = descriptionHTML.substring(0, mid)
+    secondPart = descriptionHTML.substring(mid)
+  }
+
+  if (productsData.data.length === 0) {
+    return <NotFound />
+  }
+
+  const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
+    product.variables.map((variant: IVariableProduct) => ({
+      ...product,
+      variant,
+      key: `${product.slug}-${variant._id ?? variant.weight}`,
+    })),
   )
 
-  const { product: products } = productsData
+  const getPageUrl = (pageNum: number) => {
+    const newParams = new URLSearchParams()
 
-  const categories = Array.from(
-    new Set(
-      productsData.product
-        .filter((product) => product.menu)
-        .flatMap((product) => product.category),
-    ),
-  ).filter(Boolean)
+    if (categories && String(categories).trim() !== '') {
+      newParams.set('categories', String(categories))
+    }
+    if (minWeight && String(minWeight).trim() !== '') {
+      newParams.set('minWeight', String(minWeight))
+    }
+    if (maxWeight && String(maxWeight).trim() !== '') {
+      newParams.set('maxWeight', String(maxWeight))
+    }
 
-  const allMenus = ['meat', 'fruits', 'vegetables', 'mix']
-  const translatedMenus = allMenus.map((menu) => ({
-    key: menu,
-    label: locale === 'uk' ? menuToUk(menu) : menu,
-  }))
+    newParams.set('page', pageNum.toString())
 
-  const filteredMenus = translatedMenus.filter(
-    (menuItem) => menuItem.key !== menu,
-  )
+    const queryString = newParams.toString()
+    return queryString ? `?${queryString}` : ''
+  }
+
+  const canonicalUrl = `${url}/${categoriesParam}`
 
   return (
-    <main className="mx-auto max-w-[1280px] px-5">
-      <div className="flex items-center gap-6 py-10">
-        <Link
-          href="/"
-          className="text-base hover:text-[#a90909] sm:text-lg md:text-xl"
-        >
-          Головна
-        </Link>
-        <p className="text-base font-semibold sm:text-lg md:text-xl">
-          {capitalize(menuToLocale)}
-        </p>
-      </div>
-      <ProductMenu
-        menuToLocale={menuToLocale}
-        filteredMenus={filteredMenus}
+    <>
+      <ProductListJsonLd
+        currentCategories={currentCategories}
         locale={locale}
-        capitalize={capitalize}
+        canonicalUrl={canonicalUrl}
+        productsData={productsData}
+        url={url ?? ''}
+        categoriesParam={categoriesParam}
       />
-      <div className="flex items-center gap-2 px-[22px] py-[16px]">
-        <div className={`hidden text-xl sm:text-2xl md:block`}>Фільтр</div>
-        <div className="hidden md:block">rr</div>
-        <Dialog>
-          <DialogTrigger className="flex items-center gap-2 md:hidden">
-            <div className={`text-xl sm:text-2xl`}>Фільтр</div>
-            rrr
-          </DialogTrigger>
-          <DialogContent className="max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className={`text-[32px]`}>Фільтр</DialogTitle>
-              <DialogDescription>
-                <ProductSidebar
-                  locale={locale}
-                  menu={menu}
-                  categories={categories}
-                />
-                <div className="flex items-center justify-between pb-[40px] pt-[60px]">
-                  <Button
-                    className="rounded-none text-base"
-                    variant="outline"
-                    type="button"
-                    size="lg"
-                  >
-                    Скинути все
-                  </Button>
-                  <Button
-                    className="rounded-none text-base"
-                    type="button"
-                    size="lg"
-                  >
-                    Показати
-                  </Button>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      </div>
-      <div className="my-10 flex w-full gap-4 lg:gap-8 xl:gap-12">
-        <div className="hidden w-full max-w-80 grow md:block">
-          <ProductSidebar locale={locale} menu={menu} categories={categories} />
-        </div>
-        <div className="w-full min-w-[67%]">
-          <div className="grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-            {products.length > 0 ? (
-              products.map((product: IProduct) => (
-                <Product key={product._id} product={product} />
-              ))
-            ) : (
-              <div>No products found in this menu.</div>
-            )}
+      <main>
+        <div className="mx-auto max-w-[1280px] px-5">
+          <Breadcrumb className="my-2">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  {currentCategories.data.name[locale]}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
+          <div className="flex items-end justify-between border border-[#E4E4E4]">
+            <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
+              {currentCategories.data.name[locale]}
+            </h1>
           </div>
-          {products.length > 10 ? (
-            <div className="py-10 text-center text-3xl">
-              Pagination - coming soon
+          <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
+            <ProductFilters
+              categories={categoriesData.data}
+              weights={weightData.data}
+            />
+            <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
+              {flattenedProducts.map((product: IProduct) => (
+                <>
+                  <Product key={product.slug} product={product} />
+                </>
+              ))}
             </div>
-          ) : null}
+          </div>
         </div>
-      </div>
-    </main>
+        {productsData.totalPages > 1 && (
+          <Pagination className="mt-[94px]">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href={
+                    productsData.currentPage > 1
+                      ? getPageUrl(productsData.currentPage - 1)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+              {getPaginationRange(
+                productsData.currentPage,
+                productsData.totalPages,
+              ).map((item, index) => {
+                if (item === 'ellipsis') {
+                  return (
+                    <PaginationItem key={`ellipsis-${index}`}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )
+                }
+                return (
+                  <PaginationItem key={item}>
+                    <PaginationLink
+                      href={getPageUrl(item)}
+                      isActive={productsData.currentPage === item}
+                    >
+                      {item}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              })}
+
+              <PaginationItem>
+                <PaginationNext
+                  href={
+                    productsData.currentPage < productsData.totalPages
+                      ? getPageUrl(productsData.currentPage + 1)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
+
+        <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
+          <div className="mx-auto max-w-[1280px] px-5">
+            <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold">
+              {currentCategories.data.metaTitle[locale]}
+            </h2>
+            <div
+              className={`grid gap-6 ${isLongText ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+            >
+              {isLongText ? (
+                <>
+                  <article
+                    className="ql-editor prose lg:prose-xl"
+                    dangerouslySetInnerHTML={{ __html: firstPart }}
+                  />
+                  <article
+                    className="ql-editor prose lg:prose-xl"
+                    dangerouslySetInnerHTML={{ __html: secondPart }}
+                  />
+                </>
+              ) : (
+                <article
+                  className="ql-editor prose lg:prose-xl"
+                  dangerouslySetInnerHTML={{
+                    __html: currentCategories.data.description[locale],
+                  }}
+                />
+              )}
+            </div>
+            <div className="pointer-events-none absolute inset-0 -z-10 mx-auto max-w-[1380px]">
+              {productBgImg.map((fruit, index) => (
+                <Image
+                  key={index}
+                  src={`/slider/fruit/${fruit.src}.png`}
+                  alt={fruit.alt}
+                  className={fruit.className}
+                  width={132}
+                  height={132}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <ToTheTop />
+      </main>
+    </>
   )
 }

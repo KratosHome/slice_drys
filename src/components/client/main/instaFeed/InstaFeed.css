@@ -1,0 +1,15 @@
+/*слайдер*/
+
+.instafeed {
+    .splide__pagination.custom__pagination {
+      @apply bottom-[-33px] md:bottom-[-43px] lg:bottom-[-50px]
+    }
+  
+    .splide__slide {
+      @apply relative md:mr-[1px] lg:mr-[2px] items-stretch md:px-[10px] lg:px-[18px];
+    }
+    .splide__track {
+      @apply pb-[70px] overflow-visible overflow-x-clip; 
+    }
+  }
+  

@@ -1,15 +1,7 @@
 import { Metadata } from 'next'
-import { getPosts } from '@/server/posts/get-posts.server'
+import { getPost } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { notFound } from 'next/navigation'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/client/ui/share'
 
@@ -19,7 +11,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
-  const data = await getPosts({ locale, slug })
+  const data = await getPost({ locale, slug })
 
   if (!data.success) {
     return {
@@ -38,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const data = await getPosts({ locale, slug, isVisited: true })
+  const data = await getPost({ locale, slug, isVisited: true })
   if (!data.success) {
     return notFound()
   }
@@ -51,26 +43,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
-      <div className="mt-10">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                href={`/${locale}/blog`}
-                localizationKey="Blog"
-              ></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{title}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
+      <div className="mt-10"></div>
       <div className="my-20 px-20">
         <div className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
           {title}

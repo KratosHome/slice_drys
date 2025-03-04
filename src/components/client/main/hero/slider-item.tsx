@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utils/cn'
 
 const SliderItem = ({
@@ -9,6 +10,16 @@ const SliderItem = ({
   hoverHexColor: string
   isHovered: boolean
 }) => {
+  const textRef = useRef<SVGTextElement>(null)
+  const [textWidth, setTextWidth] = useState(190)
+
+  useEffect(() => {
+    if (textRef.current) {
+      const width = textRef.current.getBBox().width
+      setTextWidth(Math.max(width, 190))
+    }
+  }, [title, isHovered])
+
   const Text = () => (
     <div
       className={cn(
@@ -17,14 +28,14 @@ const SliderItem = ({
       )}
     >
       <svg
-        viewBox="100 85 190 50"
+        viewBox={`0 95 ${textWidth + 150} 50`}
         height="70"
-        className="w-[80px] sm:w-[100px] md:w-[150px]"
+        className="w-[200px] sm:w-[220px] md:w-[250px]"
       >
         <path
           stroke="transparent"
           fill="transparent"
-          d="M 120,150 A 190,100 0 0,1 270,150"
+          d={`M 35,150 A ${textWidth + 120},120 0 0,1 ${120 + textWidth},150`}
           id="curve"
         />
 

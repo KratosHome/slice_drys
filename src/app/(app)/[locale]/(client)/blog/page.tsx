@@ -1,6 +1,7 @@
+import { getTranslations } from 'next-intl/server'
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
-import BlogTitle from '@/components/client/ui/blog-title'
+import BlogTitle from '@/components/client/blog/blog-title'
 
 import {
   Pagination,
@@ -8,6 +9,7 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
+  PaginationEllipsis,
   PaginationPrevious,
 } from '@/components/client/ui/pagination'
 import {
@@ -18,6 +20,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import BlogFooter from '@/components/client/blog/blog-footer'
+import { getPaginationRange } from '../[menu]/page'
+import { cn } from '@/utils/cn'
 
 type Props = {
   params: Promise<{ locale: ILocale }>
@@ -45,67 +50,113 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Blog({ params, searchParams }: Props) {
   const { locale } = await params
-  const { page } = await searchParams
+  const t = await getTranslations('Breadcrumbs')
+  const blogSearchParams = await searchParams
 
-  const pageItem = parseInt(page || '1', 10)
+  const pageItem = parseInt(blogSearchParams.page || '1', 10)
   const limit = 8
-  const data = await getPosts({ locale, page: pageItem, limit })
-  const countOfPages = Math.ceil((data.totalPosts || 0) / limit)
+  const postsData = await getPosts({ locale, page: pageItem, limit })
+
+  if (!postsData.success) return null
+
+  const { postsLocalized, currentPage, totalPages } =
+    postsData as IGetPostsClient
+
+  const getPageUrl = (
+    newPage: number,
+    searchParamsObj: Record<string, string>,
+  ) => {
+    const searchParams = new URLSearchParams(searchParamsObj)
+    if (searchParams.get('page')) {
+      searchParams.set('page', newPage.toString())
+    } else {
+      searchParams.append('page', newPage.toString())
+    }
+    return '?' + searchParams.toString()
+  }
 
   return (
-    <div className="mx-auto max-w-[1280px] p-5">
+    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
       <div className="mt-10">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/" localizationKey="Home"></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                href={`/${locale}/blog`}
-                localizationKey="Blog"
-              ></BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage localizationKey="Page">{pageItem}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="mt-10">
+          <Breadcrumb className="my-2">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={`/${locale}/blog`}>
+                  {t('Blog')}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
       </div>
 
       <BlogTitle />
       <div className="mx-auto flex flex-col items-center">
-        <PostList posts={data.post} />
-        <Pagination>
-          <PaginationContent className="m-10">
-            <PaginationItem>
-              <PaginationPrevious
-                size={'default'}
-                className={`${pageItem === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                href={`?page=${pageItem > 1 ? pageItem - 1 : 1}`}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                size={'default'}
-                className="mx-5"
-                href={`?page=${pageItem}`}
+        <PostList posts={postsLocalized} />
+
+        {totalPages > 1 && (
+          <Pagination className="mt-[60px] md:mt-[120px]">
+            <PaginationContent>
+              <PaginationItem
+                className={cn(currentPage === 1 && 'cursor-auto')}
               >
-                {pageItem}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                size={'default'}
-                className={`${pageItem === countOfPages ? 'pointer-events-none opacity-50' : ''}`}
-                href={`?page=${pageItem + 1}`}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+                <PaginationPrevious
+                  disabled={currentPage === 1}
+                  href={
+                    currentPage > 1
+                      ? getPageUrl(currentPage - 1, blogSearchParams)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+              {getPaginationRange(currentPage, totalPages).map(
+                (item, index) => {
+                  if (item === 'ellipsis') {
+                    return (
+                      <PaginationItem key={`ellipsis-${index}`}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )
+                  }
+                  return (
+                    <PaginationItem key={item}>
+                      <PaginationLink
+                        href={getPageUrl(item, blogSearchParams)}
+                        isActive={postsData.currentPage === item}
+                      >
+                        {item}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                },
+              )}
+
+              <PaginationItem
+                className={cn(currentPage === totalPages && 'cursor-auto')}
+              >
+                <PaginationNext
+                  disabled={currentPage === totalPages}
+                  href={
+                    currentPage < totalPages
+                      ? getPageUrl(currentPage + 1, blogSearchParams)
+                      : '#'
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
+      <BlogFooter />
     </div>
   )
 }

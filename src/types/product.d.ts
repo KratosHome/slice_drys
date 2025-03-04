@@ -4,12 +4,14 @@ interface IProduct {
   description: string
   img?: string
   variables: IVariableProduct[]
-  category: string[]
   menu: string[]
+  slug: string
   composition: string[]
   statusLabel: string[]
   visited?: number
+  categories: string[]
   nutritionalValue: INutritionalValue
+  variant?: IVariableProduct
 }
 
 interface IProductLocal {
@@ -18,22 +20,13 @@ interface IProductLocal {
   description: ILocalizedString
   img?: string
   variables: IVariableProduct[]
-  category: ILocalizedStringArray
   menu: ILocalizedStringArray
   composition: ILocalizedStringArray
   statusLabel: string[]
   visited?: number
+  slug: string
+  categories: string[]
   nutritionalValue: INutritionalValue
-}
-
-interface ILocalizedString {
-  en: string
-  uk: string
-}
-
-interface ILocalizedStringArray {
-  en: string[]
-  uk: string[]
 }
 
 interface INutritionalValue {
@@ -55,18 +48,9 @@ interface IVariableProduct {
 
 interface IRecommendations {
   success: boolean
-  composition: {
-    en: string[]
-    uk: string[]
-  }
-  menu: {
-    en: string[]
-    uk: string[]
-  }
-  category: {
-    en: string[]
-    uk: string[]
-  }
+  composition: ILocalizedStringArray
+  menu: ILocalizedStringArray
+  category: ILocalizedStringArray
   currency: string[]
   weight: string[]
   proteins: string[]

@@ -18,94 +18,73 @@ import {
   actionSubImages,
 } from './hero-products-animation'
 
-const sliderLinksUk = [
-  { name: 'М’ЯСО', link: '/products/meat.tsx#product' },
-  { name: 'ФРУКТИ', link: '/products/fruits' },
-  { name: 'ОВОЧІ', link: '/products/vegetables' },
-  { name: 'МІКСИ', link: '/products/mix' },
-  { name: 'АКЦІЯ', link: '/products/promo' },
-]
-
-const sliderLinksEn = [
-  { name: 'Meat', link: '/products/meat.tsx#product' },
-  { name: 'Fruit', link: '/products/fruits' },
-  { name: 'Veggie', link: '/products/vegetables' },
-  { name: 'Mix', link: '/products/mix' },
-  { name: 'Promo', link: '/products/promo' },
-]
-
 const slidersUk = [
   {
     title: "М'ясні сушені",
-    image: '/sliders/meat.png',
+    image: '/slider/meat.png',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
     title: 'Фруктові сушені',
-    image: '/sliders/fruit.png',
+    image: '/slider/fruit.png',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
     title: 'Овочеві сушені',
-    image: '/sliders/veggie.png',
+    image: '/slider/veggie.png',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
     title: 'Мікс сушені',
     subImages: mixSubImages,
-    image: '/sliders/mix.png',
+    image: '/slider/mix.png',
     color: colorConstants.purple,
   },
   {
     title: 'Акційна пропозиція',
-    image: '/sliders/promo.png',
+    image: '/slider/promo.png',
     subImages: actionSubImages,
     color: colorConstants.red,
   },
-]
+] as const
 
 const slidersEn = [
   {
     title: 'Meat drys',
-    image: '/sliders/meat.png',
+    image: '/slider/meat.png',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
     title: 'Fruit drys',
-    image: '/sliders/fruit.png',
+    image: '/slider/fruit.png',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
     title: 'Veggie drys',
-    image: '/sliders/veggie.png',
+    image: '/slider/veggie.png',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
     title: 'Mixed drys',
-    image: '/sliders/mix.png',
+    image: '/slider/mix.png',
     subImages: mixSubImages,
     color: colorConstants.purple,
   },
   {
     title: 'Special offer',
-    image: '/sliders/promo.png',
+    image: '/slider/promo.png',
     subImages: actionSubImages,
     color: colorConstants.red,
   },
-]
-
-export const sliderLinks = {
-  uk: sliderLinksUk,
-  en: sliderLinksEn,
-} as const
+] as const
 
 export const sliders = {
   uk: slidersUk,
   en: slidersEn,
-} as const
+}
