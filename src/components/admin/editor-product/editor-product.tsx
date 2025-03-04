@@ -73,6 +73,9 @@ const EditorProduct: FC<ICrateProduct> = ({
         carbohydrates: '',
         energyValue: '',
       },
+      title: { uk: '', en: '' },
+      metaDescription: { uk: '', en: '' },
+      keywords: { uk: [], en: [] },
     },
   })
   const router = useRouter()
@@ -127,6 +130,9 @@ const EditorProduct: FC<ICrateProduct> = ({
       setValue('slug', product.slug)
       setValue('description', product.description)
       setValue('statusLabel', product.statusLabel)
+      setValue('title', product.title)
+      setValue('metaDescription', product.metaDescription)
+      setValue('keywords', product.keywords)
 
       if (product.nutritionalValue) {
         setValue('nutritionalValue', product.nutritionalValue)
@@ -167,6 +173,9 @@ const EditorProduct: FC<ICrateProduct> = ({
       composition,
       visited: 0,
       categories: selectedCategories,
+      title: data.title,
+      metaDescription: data.metaDescription,
+      keywords: data.keywords,
       variables: data.variables.map((variable) => ({
         ...variable,
         weight: Number(variable.weight),
@@ -742,6 +751,87 @@ const EditorProduct: FC<ICrateProduct> = ({
                   >
                     Додати вид
                   </Button>
+                </div>
+                <div>
+                  <h2>SEO</h2>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Тайтел (UK)</Label>
+                      <Input
+                        {...register('title.uk', {
+                          required: 'Це поле є обов’язковим',
+                          minLength: {
+                            value: 20,
+                            message: 'Мінімальна довжина 20 символів',
+                          },
+                          maxLength: {
+                            value: 70,
+                            message: 'Максимальна довжина 70 символів',
+                          },
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Тайтел (EN)</Label>
+                      <Input
+                        {...register('title.en', {
+                          required: 'This field is required',
+                          minLength: {
+                            value: 20,
+                            message: 'Minimum length is 20 characters',
+                          },
+                          maxLength: {
+                            value: 70,
+                            message: 'Maximum length is 70 characters',
+                          },
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Мета Дескріпшен (UK)</Label>
+                      <Input
+                        {...register('metaDescription.uk', {
+                          required: 'Це поле є обов’язковим',
+                          minLength: {
+                            value: 50,
+                            message: 'Мінімальна довжина 50 символів',
+                          },
+                          maxLength: {
+                            value: 160,
+                            message: 'Максимальна довжина 160 символів',
+                          },
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Мета Дескріпшен (EN)</Label>
+                      <Input
+                        {...register('metaDescription.en', {
+                          required: 'This field is required',
+                          minLength: {
+                            value: 50,
+                            message: 'Minimum length is 50 characters',
+                          },
+                          maxLength: {
+                            value: 160,
+                            message: 'Maximum length is 160 characters',
+                          },
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Кейвордс (UK)</Label>
+                      <Input {...register('keywords.uk')} />
+                    </div>
+                    <div>
+                      <Label>Кейвордс (EN)</Label>
+                      <Input {...register('keywords.en')} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </AlertDialogDescription>

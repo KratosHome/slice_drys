@@ -10,14 +10,17 @@ import {
 } from '@/components/client/ui/doodle-select'
 import { CertIcons, Curve, MinusIcon, NewIcon, PlusIcon } from './icons'
 import SliderWithThumbnails from './slider'
-import { mockSliders } from './consts'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import { useCartStore } from '@/store/cartStore'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
-  const { name, statusLabel, description, composition, variables } = product
+  const t = useTranslations('product')
+
+  const { name, nutritionalValue, img, images, composition, variables } =
+    product
 
   const { addItemToCart, setOpenCart } = useCartStore((state) => state)
 
@@ -39,6 +42,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
     setOpenCart(true)
   }
 
+  console.log(img)
   return (
     <section className="lg:border-light_gray mb-20 flex flex-col gap-10 pb-10 lg:flex-row lg:border">
       <div className="absolute grid gap-0.5">
@@ -47,18 +51,34 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
       </div>
 
       <div className="flex justify-center lg:w-1/2">
-        <SliderWithThumbnails images={mockSliders} />
+        <SliderWithThumbnails img={img} images={[]} />
       </div>
 
       <div className="lg:w-1/2">
         <h1 className="bg-black py-2 pl-3 text-white">{name}</h1>
         <div className="mt-6 pb-14 sm:mt-3 sm:text-xl sm:leading-8">
-          <p>{description}</p>
-          <div className="flex gap-2 pt-8 sm:gap-8">
+          <div className="flex gap-2">
             <h3 className="font-bold">Склад:</h3>
             <p>{composition.join(', ')}</p>
           </div>
+          <div className="flex gap-1">
+            <div className="font-bold">Білки:</div>
+            <div>{nutritionalValue.proteins}</div>
+          </div>
+          <div className="flex gap-1">
+            <div className="font-bold">Жири:</div>
+            <div>{nutritionalValue.fats}</div>
+          </div>
+          <div className="flex gap-1">
+            <div className="font-bold">Вуглеводи:</div>
+            <div>{nutritionalValue.carbohydrates}</div>
+          </div>
+          <div className="flex gap-1">
+            <div className="font-bold">Енергетична цінність:</div>
+            <div>{nutritionalValue.energyValue}</div>
+          </div>
         </div>
+        <div className="p-5">Поживна (харчова) цінність на 100 г продукту</div>
         <div className="relative flex items-center justify-center gap-6 pb-[3.75rem] sm:justify-start">
           <Select>
             <SelectTrigger className="relative">

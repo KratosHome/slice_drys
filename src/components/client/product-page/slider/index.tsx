@@ -5,18 +5,23 @@ import React, { useEffect, useRef } from 'react'
 
 import './styles.css'
 
-const SliderWithThumbnails = ({ images }: { images: string[] }) => {
-  const mainRef = useRef<typeof Splide>(null)
-  const thumbsRef = useRef<typeof Splide>(null)
+const SliderWithThumbnails = ({
+  images,
+  img,
+}: {
+  images: string[]
+  img?: string
+}) => {
+  const slides = img ? [img, ...images.filter((src) => src !== img)] : images
 
-  /**
-   * Sync the main and thumbnail sliders after the component mounts.
-   */
+  const mainRef = useRef<any>(null)
+  const thumbsRef = useRef<any>(null)
+
   useEffect(() => {
-    if (mainRef.current && thumbsRef.current?.splide) {
+    if (slides.length >= 3 && mainRef.current && thumbsRef.current?.splide) {
       mainRef.current.sync(thumbsRef.current.splide)
     }
-  }, [])
+  }, [slides.length])
 
   const mainOptions: Options = {
     type: 'loop',
@@ -37,7 +42,6 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
     focus: 0,
     isNavigation: true,
     arrows: false,
-
     breakpoints: {
       640: {
         fixedWidth: 80,
@@ -47,37 +51,34 @@ const SliderWithThumbnails = ({ images }: { images: string[] }) => {
   }
 
   return (
-    <div>
-      <Splide
-        className="sm:py-16"
-        options={mainOptions}
-        ref={mainRef}
-        aria-labelledby="The image slider"
-      >
-        {images.map((src, index) => (
-          <SplideSlide key={src} className="p-2.5">
-            <Image
-              className="p-10 sm:p-0"
-              src={src}
-              alt={`Slider ${index}`}
-              fill
-            />
-          </SplideSlide>
-        ))}
-      </Splide>
-
-      <Splide
-        options={thumbsOptions}
-        ref={thumbsRef}
-        className="flex justify-center"
-        aria-label="The carousel with thumbnails"
-      >
-        {images.map((src, index) => (
-          <SplideSlide key={src}>
-            <Image src={src} alt={`Slider ${index}`} width={100} height={100} />
-          </SplideSlide>
-        ))}
-      </Splide>
+    <div className="w-full">
+      <div className="relative h-full w-full">
+        <Image
+          className="object-contain"
+          src={img}
+          alt={`Slider ${img}`}
+          fill
+        />
+      </div>
+      {slides.length >= 3 && (
+        <Splide
+          options={thumbsOptions}
+          ref={thumbsRef}
+          className="flex justify-center"
+          aria-label="The carousel with thumbnails"
+        >
+          {slides.map((src, index) => (
+            <SplideSlide key={src}>
+              <Image
+                src={src}
+                alt={`Slider ${index}`}
+                width={100}
+                height={100}
+              />
+            </SplideSlide>
+          ))}
+        </Splide>
+      )}
     </div>
   )
 }

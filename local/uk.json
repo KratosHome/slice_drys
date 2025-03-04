@@ -115,7 +115,9 @@
     "novelty": "Новинка",
     "sale": "Акція",
     "expect_soon": "Очікуйте незабаром!",
-    "add_to_cart": "Додати"
+    "add_to_cart": "Додати",
+    "with_this_product_buy": "З цим товаром купують",
+    "something_that_will_come_handy_along_with_your_choice": "Те, що стане в нагоді разом із вашим вибором!"
   },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",

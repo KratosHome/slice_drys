@@ -25,6 +25,9 @@ export async function getProductBySlug({
         statusLabel: 1,
         visited: 1,
         categories: 1,
+        title: 1,
+        metaDescription: 1,
+        keywords: 1,
       },
     ).populate('categories')
 
@@ -37,6 +40,7 @@ export async function getProductBySlug({
     }
 
     const categories = product.categories.map((category: ICategory) => ({
+      id: category._id,
       name: category.name?.[locale],
       description: category.description?.[locale],
       metaTitle: category.metaTitle?.[locale],
@@ -47,6 +51,10 @@ export async function getProductBySlug({
     }))
 
     const data = {
+      id: product._id,
+      title: product.title[locale],
+      metaDescription: product.metaDescription[locale],
+      keywords: product.keywords[locale],
       name: product.name[locale],
       description: product.description?.[locale],
       menu: product.menu?.[locale],

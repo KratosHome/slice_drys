@@ -16,6 +16,48 @@ const productSchema = new mongoose.Schema(
         maxlength: 255,
       },
     },
+    title: {
+      en: {
+        type: String,
+        required: true,
+        minlength: 20,
+        maxlength: 70,
+      },
+      uk: {
+        type: String,
+        required: true,
+        minlength: 20,
+        maxlength: 70,
+      },
+    },
+    metaDescription: {
+      en: {
+        type: String,
+        required: true,
+        minlength: 50,
+        maxlength: 160,
+      },
+      uk: {
+        type: String,
+        required: true,
+        minlength: 50,
+        maxlength: 160,
+      },
+    },
+    keywords: {
+      en: {
+        type: [String],
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
+      uk: {
+        type: [String],
+        required: true,
+        minlength: 1,
+        maxlength: 255,
+      },
+    },
     slug: {
       type: String,
       required: true,
@@ -40,6 +82,10 @@ const productSchema = new mongoose.Schema(
       required: true,
       minlength: 1,
       maxlength: 255,
+    },
+    images: {
+      type: [String],
+      required: true,
     },
     variables: [
       {

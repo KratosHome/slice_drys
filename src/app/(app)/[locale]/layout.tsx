@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
+import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 
 import Header from '@/components/client/header/header'
 import { Toaster } from '@/components/admin/ui/toaster'
@@ -10,7 +10,7 @@ import '../globals.css'
 import Footer from '@/components/client/footer/footer'
 import { seedCategories } from '@/server/seed/category'
 
-const poppins = Poppins({
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-poppins',
@@ -59,7 +59,7 @@ export default async function LocaleLayout(props: {
   return (
     <html
       lang={locale}
-      className={`${poppins.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
+      className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">

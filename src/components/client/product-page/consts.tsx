@@ -1,11 +1,5 @@
 import { CardIcon, ChequeIcon, PaperIcon } from './icons'
 
-export const mockSliders = [
-  '/sliders/meat.png',
-  '/sliders/fruit.png',
-  '/sliders/promo.png',
-]
-
 export const infoAccordions = [
   {
     title: 'Інформація про продукт',
