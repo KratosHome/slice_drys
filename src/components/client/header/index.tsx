@@ -1,14 +1,12 @@
 'use client'
 
-import type { FC } from 'react'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Cart from '@/components/client/header/card/cart'
+import SmallCart from '@/components/client/header/small-cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
 
@@ -20,11 +18,11 @@ import { useLocale, useTranslations } from 'next-intl'
 
 gsap.registerPlugin(ScrollTrigger)
 
-interface HeaderP {
+interface IHeaderLinks {
   headerLinks: ILink[]
 }
 
-const Header: FC<HeaderP> = ({ headerLinks }) => {
+const Header = ({ headerLinks }: IHeaderLinks) => {
   const t = useTranslations('main.header')
   const local: string = useLocale()
   const headerRef = useRef<HTMLDivElement>(null)
@@ -106,6 +104,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
   return (
     <>
       <Info title={`${t('free-delivery-from')}`} />
+
       <header
         ref={headerRef}
         className="fixed left-1/2 top-0 z-50 mt-6 w-full max-w-[1240px] -translate-x-1/2 border-b-[1px] border-[#E4E4E4] transition-all lg:pb-6"
@@ -126,13 +125,14 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                 </Link>
               ))}
             </nav>
+
             <HamburgerMenu headerLinks={headerLinks} hamburgerLinksOther={[]} />
             <div
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
             >
               <Button
-                variant={'icons'}
+                variant="icons"
                 onClick={() =>
                   window.open(
                     'https://www.facebook.com/slicedrys/',
@@ -142,15 +142,16 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                 }
               >
                 <Image
-                  src={'/icons/facebook.svg'}
+                  src="/icons/facebook.svg"
                   alt={`${t('facebook-icon')}`}
                   width={32}
                   height={32}
                   className="cursor-pointer"
                 />
               </Button>
+
               <Button
-                variant={'icons'}
+                variant="icons"
                 onClick={() =>
                   window.open(
                     'https://www.instagram.com/slicedrys',
@@ -160,7 +161,7 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                 }
               >
                 <Image
-                  src={'/icons/instagram.svg'}
+                  src="/icons/instagram.svg"
                   alt={`${t('instagram-icon')}`}
                   width={32}
                   height={32}
@@ -169,19 +170,21 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
               </Button>
             </div>
           </div>
+
           <Link
             ref={logoRef}
             href={`/${local}`}
             className="ml-[55px] py-3 lg:py-0"
           >
             <Image
-              src={'/icons/logo.svg'}
+              src="/icons/logo.svg"
               alt={`${t('logo')}`}
               className="h-[70px] w-[59px] transition-transform duration-300 ease-in-out lg:h-[100px] lg:w-[86px]"
               width={86}
               height={100}
             />
           </Link>
+
           <div>
             <div className="flex justify-center lg:justify-end">
               <nav className="mr-[52px] hidden gap-x-3 text-[20px] lg:flex">
@@ -191,12 +194,14 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                 >
                   {t('blog')}
                 </Link>
+
                 <Link
                   href={`/${local}/opt`}
                   className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
                 >
                   {t('wholesale')}
                 </Link>
+
                 <Link
                   href={`/${local}/contacts`}
                   className="hover:text-red p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105"
@@ -204,13 +209,17 @@ const Header: FC<HeaderP> = ({ headerLinks }) => {
                   {t('contacts')}
                 </Link>
               </nav>
+
               <div ref={curtRef} className="flex items-center gap-x-4">
                 <LocaleChange className="hidden lg:block" />
-                <Cart />
+
+                <SmallCart />
               </div>
             </div>
+
             <div ref={cullRef} className="mt-3 flex justify-between">
               <NumberCall className="hidden lg:flex" />
+
               <CallMe />
             </div>
           </div>

@@ -82,6 +82,7 @@ interface IGetProduct {
   success: boolean
   message: string
 }
+
 interface IGetProducts {
   products: IProduct[]
   success: boolean

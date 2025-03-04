@@ -1,50 +1,45 @@
 'use client'
+
 import Image from 'next/image'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/client/ui/popover'
+import Link from 'next/link'
+
 import { useCartStore } from '@/store/cartStore'
 import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 
-export default function Cart() {
+export default function SmallCart() {
   const t = useTranslations('cart')
   const local = useLocale()
   const {
     openCart,
     setOpenCart,
     cart,
+    totalPrice,
+    totalProducts,
     removeItemFromCart,
     updateItemQuantity,
     minOrderAmount,
   } = useCartStore((state) => state)
 
-  const [isClient, setIsClient] = useState(false)
+  const [isClient, setIsClient] = useState<boolean>(false)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
-
-  const totalPrice =
-    cart.itemList?.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0,
-    ) || 0
-
-  const totalItems = () => {
-    return cart.itemList?.reduce((acc, item) => acc + item.quantity, 0) || 0
-  }
 
   return (
     <div className="relative inline-block">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
           <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">
-            <Image src={'/icons/bin.svg'} width={32} height={32} alt="cart" />
+            <Image src="/icons/bin.svg" width={32} height={32} alt="cart" />
+
             {isClient && cart.itemList?.length ? (
               <span className="-rig ht-1 absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
                 {cart.itemList.length}
@@ -59,6 +54,7 @@ export default function Cart() {
               <div className="font-rubik p-0 text-[32px] uppercase leading-[0.9] md:text-[64px]">
                 {t('basket')}
               </div>
+
               <motion.div
                 initial={{ rotate: 0, scale: 1 }}
                 whileHover={{ scale: 1.2 }}
@@ -68,7 +64,7 @@ export default function Cart() {
                 className="cursor-pointer"
               >
                 <Image
-                  src={'/icons/close.svg'}
+                  src="/icons/close.svg"
                   width={48}
                   height={48}
                   alt={`${t('close')}`}
@@ -77,6 +73,7 @@ export default function Cart() {
               </motion.div>
             </div>
           </div>
+
           {cart.itemList?.length === 0 ? (
             <div className="mt-4 h-[300px] pt-[150px] text-center text-[20px] md:pt-[190px]">
               {t('cart-empty')}
@@ -87,12 +84,14 @@ export default function Cart() {
                 <span className="mr-[24px] font-semibold text-[#7D7D7D]">
                   {t('added')}
                 </span>
+
                 <span>
                   {t('itemCount', {
-                    count: totalItems(),
+                    count: totalProducts,
                   })}
                 </span>
               </div>
+
               <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[70px] md:pt-[150px]">
                 {cart.itemList?.map((item) => (
                   <div
@@ -106,30 +105,35 @@ export default function Cart() {
                       alt={item.name}
                       className="size-[85px] md:size-[135px]"
                     />
+
                     <div className="flex w-full flex-col gap-2 md:ml-[55px]">
                       <div className="flex items-center justify-between">
                         <div className="text-[20px] capitalize">
                           {item.name}
                         </div>
+
                         <div
                           onClick={() => removeItemFromCart(item.id)}
                           className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-90"
                         >
                           <Image
-                            src={'/icons/delete.svg'}
+                            src="/icons/delete.svg"
                             width={24}
                             height={24}
                             alt={t('delete')}
                           />
                         </div>
                       </div>
+
                       <div className="font-bold text-[#7D7D7D]">
                         {item.weight} {t('g')}
                       </div>
+
                       <div className="flex items-center justify-between">
                         <div className="text-[20px] text-[#0F0F0F]">
                           {item.price} {t('uah')}.
                         </div>
+
                         <div className="flex w-[115px] items-center justify-between bg-black px-[12px] text-white">
                           <div
                             className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
@@ -143,7 +147,9 @@ export default function Cart() {
                           >
                             -
                           </div>
+
                           <span className="text-[24px]">{item.quantity}</span>
+
                           <div
                             className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
                             onClick={() =>
@@ -162,19 +168,24 @@ export default function Cart() {
                   </div>
                 ))}
               </div>
+
               <div className="absolute bottom-0 left-0 w-full bg-white px-5 pb-4">
                 <div className="flex items-center justify-between pt-2">
                   <p className="text-lg font-bold">{t('total')}:</p>
+
                   <div className="flex items-center gap-1">
                     <p>{totalPrice}</p>
+
                     <p className="text-lg font-bold">{t('uah')}</p>
                   </div>
                 </div>
+
                 {totalPrice < minOrderAmount && (
                   <div className="mt-2 text-sm text-red-500">
                     {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.
                   </div>
                 )}
+
                 <div className="mt-[32px] flex h-[60px] gap-[16px]">
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -184,6 +195,7 @@ export default function Cart() {
                   >
                     {t('continue-shopping')}
                   </motion.div>
+
                   <Link
                     href={`/${local}/cart`}
                     onClick={() => setOpenCart(false)}

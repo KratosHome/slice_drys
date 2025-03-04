@@ -1,105 +1,152 @@
 'use server'
+
 import { connectToDb } from '@/server/connectToDb'
 import { NovaPoshta } from './novaPoshtaSchema'
 
-export async function updateNovaPoshta() {
+interface ICity {
+  Description: string
+  Ref: string
+}
+
+interface IBranch {
+  Description: string
+  CityRef: string
+}
+
+interface ICombinedBranch {
+  CityRef: string
+  City: string
+  Branch: string
+}
+
+interface IGroupedBranchesByCity {
+  cityRef: string
+  city: string
+  branches: string[]
+}
+
+interface INovaPoshtaApiResponse<T> {
+  data: T
+  info?: { totalCount: number }
+}
+
+async function fetchNovaPoshtaData<T>(
+  calledMethod: 'getCities' | 'getWarehouses',
+  methodProperties?: Record<string, unknown>,
+): Promise<INovaPoshtaApiResponse<T> | null> {
+  const API_URL: string | undefined = process.env.NOVA_POSHTA_API_URL
+  const API_KEY: string | undefined = process.env.NOVA_POSHTA_API_KEY
+
+  if (!API_URL || !API_KEY) {
+    throw new Error(
+      'Missing NOVA_POSHTA_API_URL or NOVA_POSHTA_API_KEY in environment variables',
+    )
+  }
+
+  if (calledMethod === 'getWarehouses' && !methodProperties) {
+    throw new Error('Missing object with Page number for getWarehouses method')
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        apiKey: API_KEY,
+        modelName: 'Address',
+        calledMethod,
+        methodProperties,
+      }),
+    })
+
+    if (!response.ok) throw new Error(`Failed to fetch ${calledMethod}`)
+
+    const result: INovaPoshtaApiResponse<T> = await response.json()
+
+    return result
+  } catch (error) {
+    console.error(`Error fetching ${calledMethod}:`, error)
+
+    return null
+  }
+}
+
+export async function updateNovaPoshta(): Promise<IResponse> {
   try {
     await connectToDb()
 
-    async function fetchCities() {
-      const response = await fetch('https://api.novaposhta.ua/v2.0/json/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          apiKey: '',
-          modelName: 'Address',
-          calledMethod: 'getCities',
-        }),
-      })
-      const data = await response.json()
-      return data.data.map((city: { Description: string; Ref: string }) => ({
-        Description: city.Description,
-        Ref: city.Ref,
-      }))
+    const cities = await fetchNovaPoshtaData<ICity[]>('getCities')
+
+    if (!cities) throw new Error('Failed to fetch initial cities data')
+
+    const firstPageBranches = await fetchNovaPoshtaData<IBranch[]>(
+      'getWarehouses',
+      { Page: 1 },
+    )
+
+    if (!firstPageBranches) {
+      throw new Error('Failed to fetch initial branches data')
     }
 
-    const cities = await fetchCities()
+    const totalPages: number = Math.ceil(
+      (firstPageBranches.info?.totalCount || 0) / 500,
+    )
 
-    async function fetchBrunchesByPage(i: number) {
-      const response = await fetch('https://api.novaposhta.ua/v2.0/json/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          apiKey: '',
-          modelName: 'Address',
-          calledMethod: 'getWarehouses',
-          methodProperties: {
-            Page: i,
-          },
+    const branchPages = await Promise.all(
+      Array.from({ length: totalPages }, (_, i) =>
+        fetchNovaPoshtaData<IBranch[]>('getWarehouses', {
+          Page: i + 1,
         }),
-      })
-      const data = await response.json()
-      return data
-    }
+      ),
+    )
 
-    const branchesTotalCount = await fetchBrunchesByPage(1)
-    const totalPage = Math.ceil(branchesTotalCount.info.totalCount / 500)
-
-    let combinedBrunchData: {
-      Branch: string
-      City: string
-      CityRef: string
-    }[] = []
-
-    for (let i = 1; i <= totalPage; i++) {
-      const brunch = await fetchBrunchesByPage(i)
-      const brunchData = brunch.data.map(
-        (brunch: { Description: string; CityRef: string }) => {
-          const city = cities.find(
-            (city: { Description: string; Ref: string }) =>
-              city.Ref === brunch.CityRef,
+    const combinedBranches: ICombinedBranch[] = branchPages
+      .filter(Boolean)
+      .flatMap((branchesPage) =>
+        branchesPage!.data.map(({ Description, CityRef }) => {
+          const city: ICity | undefined = cities.data.find(
+            (city) => city.Ref === CityRef,
           )
 
           return {
-            Branch: brunch.Description,
-            City: city ? city.Description : 'Unknown',
-            CityRef: city.Ref,
+            Branch: Description,
+            City: city ? city.Description : 'Unknown city',
+            CityRef: city?.Ref || 'Unknown city reference',
           }
-        },
+        }),
       )
 
-      combinedBrunchData = [...combinedBrunchData, ...brunchData]
-    }
+    const groupedBranchesByCity = combinedBranches.reduce<
+      IGroupedBranchesByCity[]
+    >((acc, { Branch, City, CityRef }) => {
+      const existingCity: IGroupedBranchesByCity | undefined = acc.find(
+        (data) => data.cityRef === CityRef,
+      )
 
-    const groupedData = combinedBrunchData.reduce(
-      (acc, item) => {
-        const existingCity = acc.find((data) => data.cityRef === item.CityRef)
-        if (existingCity) {
-          existingCity.branches.push(item.Branch)
-        } else {
-          acc.push({
-            cityRef: item.CityRef,
-            city: item.City,
-            branches: [item.Branch],
-          })
-        }
-        return acc
-      },
-      [] as { cityRef: string; city: string; branches: string[] }[],
+      if (existingCity) {
+        existingCity.branches.push(Branch)
+      } else {
+        acc.push({
+          cityRef: CityRef,
+          city: City,
+          branches: [Branch],
+        })
+      }
+
+      return acc
+    }, [])
+
+    await Promise.all(
+      groupedBranchesByCity.map((branchesByCity) =>
+        NovaPoshta.updateOne(
+          { city: branchesByCity.city },
+          { $set: branchesByCity },
+          { upsert: true },
+        ),
+      ),
     )
 
-    groupedData.forEach(async (NovaPoshtaData) => {
-      await NovaPoshta.updateOne(
-        { city: NovaPoshtaData.city },
-        { $set: NovaPoshtaData },
-        { upsert: true },
-      )
-    })
-    return { success: true, message: 'nova poshta data updated' }
+    return { success: true, message: 'Nova poshta data updated' }
   } catch (error) {
     return {
       success: false,

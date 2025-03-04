@@ -6,5 +6,6 @@ export const menuToUk = (menu: string): string => {
     mix: 'мікс',
     promo: 'акція',
   }
+
   return translations[menu] || menu
 }

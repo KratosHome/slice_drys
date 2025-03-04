@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+'use client'
+
+import { Combobox } from '@/components/client/ui/combobox'
+
+import { useState, useEffect } from 'react'
 import {
   getNovaPoshtaAllCities,
   getNovaPoshtaBranchesByCity,
 } from '@/server/delivery/get-nova-poshta'
-import { Combobox } from '@/components/client/ui/combobox'
 
 interface NovaPoshtaCitiesProps {
   city: string
@@ -20,24 +23,25 @@ export default function NovaPoshtaCities({
 }: NovaPoshtaCitiesProps) {
   const [cities, setCities] = useState<string[]>([])
   const [selectedCity, setSelectedCity] = useState<string>(city)
-  const [brunches, setBrunches] = useState<string[][]>([])
 
+  const [brunches, setBrunches] = useState<string[][]>([])
   const [selectedBrunch, setSelectedBrunch] = useState<string>(brunch)
 
   useEffect(() => {
-    const fetchCities = async () => {
+    const fetchCities = async (): Promise<void> => {
       const fetchedCities: string[] = await getNovaPoshtaAllCities()
+
       setCities(fetchedCities)
     }
 
-    const fetchBrunches = async () => {
+    const fetchBrunches = async (): Promise<void> => {
       const fetchedBrunche: string[][] =
         await getNovaPoshtaBranchesByCity(selectedCity)
+
       setBrunches(fetchedBrunche)
     }
 
     fetchCities()
-
     fetchBrunches()
   }, [selectedCity])
 
@@ -50,12 +54,12 @@ export default function NovaPoshtaCities({
       }))
     : []
 
-  const handleCitySelect = (city: string) => {
+  const handleCitySelect = (city: string): void => {
     setSelectedCity(city)
     onCityChange(city)
   }
 
-  const handleBrunchSelect = (brunch: string) => {
+  const handleBrunchSelect = (brunch: string): void => {
     setSelectedBrunch(brunch)
     onBrunchChange(brunch)
   }
@@ -67,6 +71,7 @@ export default function NovaPoshtaCities({
         selectedValue={selectedCity}
         onSelect={handleCitySelect}
       />
+
       <Combobox
         elements={brunchesToSelect}
         selectedValue={selectedBrunch}
