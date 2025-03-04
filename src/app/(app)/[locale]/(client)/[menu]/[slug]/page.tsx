@@ -115,7 +115,7 @@ export default async function Page(props: {
         />
         <ProductInfo product={productData.data} />
         <Accordions
-          nutritions={productData.data.nutritionalValue}
+          nutrition={productData.data.nutritionalValue}
           description={productData.data.description}
         />
         <ProductSlider

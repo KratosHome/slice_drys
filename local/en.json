@@ -122,7 +122,20 @@
     "composition": "composition",
     "choose_weight": "Choose weight",
     "weight": "Weight",
-    "g": "g"
+    "g": "g",
+    "about_product": "About product",
+    "nutritional_value": "Nutritional value",
+    "proteins": "Proteins",
+    "fats": "Fats",
+    "carbohydrates": "Carbohydrates",
+    "energy_value": "Energy value",
+    "shelf_life": "Shelf life",
+    "storage_conditions": "Storage conditions",
+    "at_temperatures_from_relative_humidity": "at temperatures from +3°C to +25°C and relative humidity of 70%",
+    "expiration_date": "Expiration date",
+    "months_from_the_date_manufacture_indicated_packaging": "12 months from the date of manufacture. The date is indicated on the packaging",
+    "delivery": "Delivery",
+    "delivery_ukraine": "Delivery in Ukraine"
   },
   "not_found_page": {
     "fruitAlt": "Fruit decoration",
