@@ -1,5 +1,6 @@
 'use client'
 import * as React from 'react'
+import Link, { LinkProps } from 'next/link'
 import { motion } from 'framer-motion'
 import { MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/cn'
@@ -41,9 +42,12 @@ PaginationItem.displayName = 'PaginationItem'
 
 type PaginationLinkProps = {
   isActive?: boolean
+  disabled?: boolean
 } & Pick<ButtonProps, 'size'> &
-  React.ComponentProps<'a'>
+  React.ComponentProps<'a'> &
+  LinkProps
 
+const MotionLink = motion.create(Link)
 const PaginationLink = ({
   className,
   isActive,
@@ -66,7 +70,7 @@ const PaginationLink = ({
   }
 
   return (
-    <motion.a
+    <MotionLink
       variants={variants}
       initial="initial"
       whileHover="hover"
@@ -102,19 +106,25 @@ const PaginationLink = ({
           {props.children}
         </div>
       )}
-    </motion.a>
+    </MotionLink>
   )
 }
 PaginationLink.displayName = 'PaginationLink'
 
 const PaginationPrevious = ({
   className,
+  disabled,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
+    aria-disabled={disabled}
     size="default"
-    className={cn('gap-1 pl-2.5', className)}
+    className={cn(
+      'gap-1 pl-2.5',
+      disabled && 'pointer-events-none opacity-50',
+      className,
+    )}
     {...props}
   >
     <Image
@@ -129,12 +139,18 @@ PaginationPrevious.displayName = 'PaginationPrevious'
 
 const PaginationNext = ({
   className,
+  disabled,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
+    aria-disabled={disabled}
     size="default"
-    className={cn('gap-1 pr-2.5', className)}
+    className={cn(
+      'gap-1 pr-2.5',
+      disabled && 'pointer-events-none opacity-50',
+      className,
+    )}
     {...props}
   >
     <Image

@@ -24,7 +24,7 @@ import EditorPost from '../editor-post/editor-post'
 import { Button } from '@/components/admin/ui/button'
 
 interface IPostList {
-  data: IGetPost
+  data: IGetPostsAdmin
 }
 
 export const PostList: FC<IPostList> = ({ data }) => {
@@ -84,7 +84,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
       cell: ({ row }) => {
         const post = row.original as IPost
         const id = post._id
-        const findPost = data.postAll?.find((item) => item._id === id)
+        const findPost = data.postsAll?.find((item) => item._id === id)
         return (
           <>
             <EditorPost buttonTitle="редагувати" post={findPost} />
@@ -95,7 +95,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
   ]
 
   const table = useReactTable({
-    data: data.post,
+    data: data.postsLocalized,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

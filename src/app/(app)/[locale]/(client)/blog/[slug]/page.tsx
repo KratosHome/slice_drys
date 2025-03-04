@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getPosts } from '@/server/posts/get-posts.server'
+import { getPost } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { notFound } from 'next/navigation'
 import 'quill/dist/quill.snow.css'
@@ -11,7 +11,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
-  const data = await getPosts({ locale, slug })
+  const data = await getPost({ locale, slug })
 
   if (!data.success) {
     return {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const data = await getPosts({ locale, slug, isVisited: true })
+  const data = await getPost({ locale, slug, isVisited: true })
   if (!data.success) {
     return notFound()
   }

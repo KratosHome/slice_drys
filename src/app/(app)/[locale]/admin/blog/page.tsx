@@ -1,6 +1,6 @@
 import EditorPost from '@/components/admin/editor-post/editor-post'
 import { PostList } from '@/components/admin/post-list/post-list'
-import { getPosts } from '@/server/posts/get-posts.server'
+import { getAllPosts } from '@/server/posts/get-posts.server'
 
 export default async function Blog({
   params,
@@ -9,7 +9,7 @@ export default async function Blog({
 }) {
   const { locale } = await params
 
-  const posts = await getPosts({ locale })
+  const posts = await getAllPosts({ locale })
 
   return (
     <div className="px-5">
