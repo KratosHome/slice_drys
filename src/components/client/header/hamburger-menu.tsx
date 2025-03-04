@@ -6,14 +6,14 @@ import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Cart from '@/components/client/header/card/cart'
+import SmallCart from '@/components/client/header/small-cart'
 import Socials from '../ui/Socials'
 import { Separator } from '@/components/admin/ui/separator'
 
 import { contacts } from '@/data/main/contacts'
 import { cn } from '@/utils/cn'
 
-interface HamburgerMenuProps {
+interface IHamburgerMenuProps {
   productLinks: ICategory[]
   hamburgerLinksOther: ILink[]
 }
@@ -21,7 +21,7 @@ interface HamburgerMenuProps {
 export default function HamburgerMenu({
   productLinks,
   hamburgerLinksOther,
-}: HamburgerMenuProps) {
+}: IHamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false) // новий стан для відслідковування скролу
   const locale = useLocale() as ILocale
@@ -109,7 +109,7 @@ export default function HamburgerMenu({
 
                   <LocaleChange />
                   <div onClick={closeMenu}>
-                    <Cart />
+                    <SmallCart />
                   </div>
                 </div>
 
