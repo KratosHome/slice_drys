@@ -1,7 +1,7 @@
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { Options } from '@splidejs/splide'
 import Image from 'next/image'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 
 import './styles.css'
 
@@ -13,25 +13,6 @@ const SliderWithThumbnails = ({
   img?: string
 }) => {
   const slides = img ? [img, ...images.filter((src) => src !== img)] : images
-
-  const mainRef = useRef<any>(null)
-  const thumbsRef = useRef<any>(null)
-
-  useEffect(() => {
-    if (slides.length >= 3 && mainRef.current && thumbsRef.current?.splide) {
-      mainRef.current.sync(thumbsRef.current.splide)
-    }
-  }, [slides.length])
-
-  const mainOptions: Options = {
-    type: 'loop',
-    perPage: 1,
-    perMove: 1,
-    gap: '2.1rem',
-    pagination: false,
-    height: '400px',
-    arrows: false,
-  }
 
   const thumbsOptions: Options = {
     gap: '1.625rem',
@@ -51,11 +32,11 @@ const SliderWithThumbnails = ({
   }
 
   return (
-    <div className="w-full">
-      <div className="relative h-full w-full">
+    <div className="flex w-full justify-center">
+      <div className="relative h-full w-full max-w-[344px]">
         <Image
           className="object-contain"
-          src={img}
+          src={img || images[0]}
           alt={`Slider ${img}`}
           fill
         />
@@ -63,7 +44,6 @@ const SliderWithThumbnails = ({
       {slides.length >= 3 && (
         <Splide
           options={thumbsOptions}
-          ref={thumbsRef}
           className="flex justify-center"
           aria-label="The carousel with thumbnails"
         >

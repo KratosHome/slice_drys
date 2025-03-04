@@ -114,7 +114,10 @@ export default async function Page(props: {
           categoryLink={productData.data.categories[0].slug}
         />
         <ProductInfo product={productData.data} />
-        <Accordions nutritions={productData.data.nutritionalValue} />
+        <Accordions
+          nutritions={productData.data.nutritionalValue}
+          description={productData.data.description}
+        />
         <ProductSlider
           products={productSliderData.data}
           title={t('with_this_product_buy')}

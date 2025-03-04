@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/admin/ui/button'
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
-import { Textarea } from '@/components/admin/ui/textarea'
 import { Checkbox } from '@/components/admin/ui/checkbox'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { createProduct } from '@/server/products/create-product.server'
@@ -24,6 +23,7 @@ import { convertToBase64 } from '@/utils/convertToBase64'
 import Image from 'next/image'
 import { deleteProduct } from '@/server/products/delete-product.server'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
 interface ICrateProduct {
   buttonTitle: string
@@ -52,7 +52,6 @@ const EditorProduct: FC<ICrateProduct> = ({
   } = useForm<IProductLocal>({
     defaultValues: {
       name: { en: '', uk: '' },
-      description: { en: '', uk: '' },
       categories: [],
       composition: { en: [], uk: [] },
       img: '',
@@ -95,6 +94,9 @@ const EditorProduct: FC<ICrateProduct> = ({
     uk: product?.composition?.uk || [],
   })
 
+  const [descriptionUk, setDescriptionUk] = useState<string>('')
+  const [descriptionEn, setDescriptionEn] = useState<string>('')
+
   const {
     fields: variableFields,
     append: appendVariable,
@@ -133,6 +135,8 @@ const EditorProduct: FC<ICrateProduct> = ({
       setValue('title', product.title)
       setValue('metaDescription', product.metaDescription)
       setValue('keywords', product.keywords)
+      setDescriptionUk(product.description.uk)
+      setDescriptionEn(product.description.en)
 
       if (product.nutritionalValue) {
         setValue('nutritionalValue', product.nutritionalValue)
@@ -175,6 +179,10 @@ const EditorProduct: FC<ICrateProduct> = ({
       categories: selectedCategories,
       title: data.title,
       metaDescription: data.metaDescription,
+      description: {
+        uk: descriptionUk,
+        en: descriptionEn,
+      },
       keywords: data.keywords,
       variables: data.variables.map((variable) => ({
         ...variable,
@@ -185,6 +193,8 @@ const EditorProduct: FC<ICrateProduct> = ({
         sold: 0,
       })),
     }
+
+    console.log('newData', newData)
 
     if (product?._id) {
       result = await editProduct(product._id, newData, image)
@@ -556,32 +566,20 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label htmlFor="description-uk">Опис (UK)</Label>
-                  <Textarea
-                    id="description-uk"
-                    {...register('description.uk', {
-                      required: 'Це поле є обов’язковим',
-                    })}
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionUk}
+                    setContent={setDescriptionUk}
                   />
-                  {errors.description?.uk && (
-                    <span className="text-red-700">
-                      {errors.description.uk.message}
-                    </span>
-                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="description-en">Description (EN)</Label>
-                  <Textarea
-                    id="description-en"
-                    {...register('description.en', {
-                      required: 'This field is required',
-                    })}
+                  <Label htmlFor="description-uk">Опис (EN)</Label>
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionEn}
+                    setContent={setDescriptionEn}
                   />
-                  {errors.description?.en && (
-                    <span className="text-red-700">
-                      {errors.description.en.message}
-                    </span>
-                  )}
                 </div>
 
                 <Controller
