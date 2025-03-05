@@ -7,7 +7,7 @@ const Delivery = async () => {
   const t = await getTranslations('promo-banner')
 
   return (
-    <div className="mb-[200px] mt-[330px] bg-black py-12 text-white">
+    <div className="mb-[100px] mt-[200px] bg-black py-12 text-white lg:mt-[330px]">
       <div className="overlay-hidden mx-auto flex max-w-[1280px] flex-col justify-between px-5 md:flex-row">
         <div className="w-full px-0 md:px-[80px]">
           <div className="font-rubik text-[32px] leading-[0.9] md:mt-[70px] md:text-[44px] lg:text-[64px]">

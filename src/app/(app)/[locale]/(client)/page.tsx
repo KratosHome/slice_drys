@@ -15,6 +15,23 @@ import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
 import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
+import type { Metadata } from 'next'
+import { mainMetaData } from '@/data/meta-data/main'
+import { locales } from '@/data/locales'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  return mainMetaData[locale]
+}
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
 
 export default async function Home(props: {
   params: Params

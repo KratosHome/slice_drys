@@ -107,7 +107,7 @@ export default function ProductSlider({
         </h2>
       </div>
       <Splide
-        aria-labelledby="Main slider"
+        aria-labelledby={`${title} slider`}
         options={splideOptions}
         className="products-slider mb-14 h-full w-full lg:mb-20"
       >

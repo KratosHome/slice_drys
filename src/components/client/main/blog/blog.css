@@ -7,17 +7,17 @@
   }
 
   .about__card {
-    @apply relative h-full rounded-xl 
-    bg-gray-900 transition-all duration-300 ease-in-out will-change-transform 
+    @apply relative h-full rounded-xl
+    bg-gray-900 transition-all duration-300 ease-in-out will-change-transform
     lg:hover:-translate-y-1 lg:hover:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)]
     active:-translate-y-1 active:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)]
   }
   .card__link {
-    @apply text-balance text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] 
+    @apply text-balance text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]
     font-medium before:absolute before:inset-0 before:cursor-pointer
   }
 
-  
+
   @media (width >= 768px) {
   .splide__slide:not(:last-child)::after {
     content: '';
@@ -37,7 +37,7 @@
   }
 
   .splide__pagination.custom__pagination {
-    @apply bottom-[-80px] 
+    @apply bottom-[-80px]
     gap-[3px]
     md:bottom-[-77px]
     xl:bottom-[-79px];
@@ -54,7 +54,7 @@
     @apply relative md:mr-[1px] lg:mr-[2px] items-stretch md:px-[10px] lg:px-[18px];
   }
   .splide__track {
-    @apply mb-[130px] md:mb-[100px] overflow-visible overflow-x-clip; 
+    @apply mb-[130px] md:mb-[100px] overflow-visible overflow-x-clip;
   }
 
   .splide__arrow.custom__arrow {

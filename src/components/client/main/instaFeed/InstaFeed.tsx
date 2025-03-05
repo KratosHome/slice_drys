@@ -78,6 +78,7 @@ export default function InstaFeed({ data }: Props) {
           </UnderlinedLink>
         </div>
         <Splide
+          aria-labelledby="Insta Feed"
           options={{
             arrowPath: Arrow(),
             type: 'loop',
