@@ -127,49 +127,43 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
               {t('delivery_ukraine')}
             </dt>
             <dd className="sm:min-w-40">
-              Ми пропонуємо швидку та надійну доставку нашої продукції по всій
-              території України за допомогою Нової Пошти. Після оформлення
-              замовлення, ми відправляємо його протягом
-              <b> 1-2 робочих днів</b>. Термін доставки залежить від вашого
-              місцезнаходження та зазвичай займає <b>1-3 дні.</b>
-            </dd>
-          </div>
-          <div className="flex flex-wrap gap-5 sm:flex-nowrap">
-            <dt className="min-w-48 font-bold sm:min-w-60">Способи оплати</dt>
-            <dd className="sm:min-w-40">
-              <p>
-                Ми пропонуємо
-                <b> кілька зручних варіантів оплати:</b>
-              </p>
-              <ul className="grid gap-3 pt-3">
-                <li className="flex items-center gap-4">
-                  <CardIcon /> Онлайн-оплата карткою (Visa/Mastercard) через
-                  безпечну платіжну систему.
-                </li>
-
-                <li className="flex items-center gap-4">
-                  <ChequeIcon /> Накладений платіж (оплата при отриманні) у
-                  відділенні Нової Пошти.
-                </li>
-
-                <li className="flex items-center gap-4">
-                  <PaperIcon /> Безготівковий розрахунок для корпоративних
-                  клієнтів та великих замовлень.
-                </li>
-              </ul>
+              {t(
+                'we_offer_fast_and_reliable_delivery_of_our_products_throughout_ukraine_using_nova_poshta_after_placing_an_order_we_ship_it_within',
+              )}
+              <b> {t('1_2_business_days')}</b>.{' '}
+              {t('delivery_time_depends_on_your_location_and_usually_takes')}{' '}
+              <b>{t('1_3_days')}.</b>
             </dd>
           </div>
           <div className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
-              Вартість доставки
+              {t('payment_methods')}
             </dt>
             <dd className="sm:min-w-40">
-              Доставка розраховується згідно з тарифами Нової Пошти і
-              оплачується клієнтом при отриманні замовлення.
-              <b>
-                {' '}
-                При замовленні на суму від 1000 грн - доставка безкоштовна!
-              </b>
+              <p>
+                {t('we_offer')}
+                <b> {t('several_convenient_payment_options')}:</b>
+              </p>
+              <ul className="grid gap-3 pt-3">
+                <li className="flex items-center gap-4">
+                  <CardIcon />{' '}
+                  {t(
+                    'online_payment_by_card_visa_mastercard_through_secure_payment_system',
+                  )}
+                </li>
+
+                <li className="flex items-center gap-4">
+                  <ChequeIcon />{' '}
+                  {t(
+                    'cash_on_delivery_payment_upon_receipt_nova_poshta_branch',
+                  )}
+                </li>
+
+                <li className="flex items-center gap-4">
+                  <PaperIcon />{' '}
+                  {t('cashless_payment_for_corporate_clients_and_large_orders')}
+                </li>
+              </ul>
             </dd>
           </div>
         </AccordionContent>

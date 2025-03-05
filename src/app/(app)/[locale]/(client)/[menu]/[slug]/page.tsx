@@ -8,6 +8,7 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
+import { locales } from '@/data/locales'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -71,6 +72,20 @@ export async function generateMetadata({
   }
 }
 
+export async function generateStaticParams() {
+  const url = process.env.NEXT_URL
+  const posts = await fetch(`${url}/api/products/get-urls`).then((res) =>
+    res.json(),
+  )
+
+  return posts.data.flatMap((post: { slug: string }) =>
+    locales.map((locale) => ({
+      slug: post.slug,
+      locale,
+    })),
+  )
+}
+
 export default async function Page(props: {
   params: Params
   searchParams: SearchParams
@@ -120,7 +135,7 @@ export default async function Page(props: {
         />
         <ProductSlider
           products={productSliderData.data}
-          title={t('with_this_product_buy')}
+          title={t('also_buy')}
           message={t('something_that_will_come_handy_along_with_your_choice')}
         />
         <Delivery />

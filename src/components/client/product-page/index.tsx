@@ -19,6 +19,7 @@ import { CardItem } from '@/components/client/ui/3d-card'
 import SaleLabel from '@/components/client/labels/sale-label'
 import Button from '@/components/client/ui/button'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const t = useTranslations('product')
@@ -151,6 +152,35 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               {t('add_to_cart')}
             </Button>
           </div>
+        </div>
+        <div className="underline-wave relative ml-auto flex w-fit justify-end gap-2 pb-4 pr-5">
+          <Image
+            src={'/icons/haccp_certified.svg'}
+            alt={''}
+            width={80}
+            height={80}
+          />
+          <Image
+            src={'/icons/gluten_free.svg'}
+            alt={''}
+            width={65}
+            height={65}
+            className="mt-5"
+          />
+          <Image
+            src={'/icons/non_gmo.svg'}
+            alt={''}
+            width={65}
+            height={65}
+            className="mt-5"
+          />
+          <Image
+            src={'/icons/sugar_free.svg'}
+            alt={''}
+            width={65}
+            height={65}
+            className="mt-5"
+          />
         </div>
       </div>
     </section>

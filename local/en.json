@@ -135,7 +135,19 @@
     "expiration_date": "Expiration date",
     "months_from_the_date_manufacture_indicated_packaging": "12 months from the date of manufacture. The date is indicated on the packaging",
     "delivery": "Delivery",
-    "delivery_ukraine": "Delivery in Ukraine"
+    "delivery_ukraine": "Delivery in Ukraine",
+    "we_offer_fast_and_reliable_delivery_of_our_products_throughout_ukraine_using_nova_poshta_after_placing_an_order_we_ship_it_within": "We offer fast and reliable delivery of our products throughout\nUkraine using Nova Poshta. After placing an order, we ship it within",
+    "1_2_business_days": "1-2 business days",
+    "delivery_time_depends_on_your_location_and_usually_takes": "Delivery time depends on your location and usually takes",
+    "1_3_days": "1-3 days",
+    "payment_methods": "Payment methods",
+    "we_offer": "We offer",
+    "several_convenient_payment_options": "several convenient payment options",
+    "online_payment_by_card_visa_mastercard_through_secure_payment_system": "Online payment by card (Visa/Mastercard) through a secure payment system.",
+    "cash_on_delivery_payment_upon_receipt_nova_poshta_branch": "Cash on delivery (payment upon receipt) at a Nova Poshta branch.",
+    "cashless_payment_for_corporate_clients_and_large_orders": "Cashless payment for corporate clients and large orders.",
+    "delivery_cost": "Delivery cost",
+    "also_buy": "Also buy"
   },
   "not_found_page": {
     "fruitAlt": "Fruit decoration",
