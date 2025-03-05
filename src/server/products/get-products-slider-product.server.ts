@@ -2,16 +2,33 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 
-export async function getProductsSliderMain(locale: ILocale) {
+export async function getProductsSliderProduct(
+  locale: ILocale,
+  categories: string[],
+  productId: string,
+) {
   try {
     await connectToDb()
 
-    const products = await Product.find()
-      .sort({ visited: -1 })
+    let relatedProducts = await Product.find({
+      categories: { $in: categories },
+      _id: { $ne: productId },
+    })
       .limit(7)
       .lean<IProductLocal[]>()
 
-    const formattedProducts: IProduct[] = products.map(
+    if (relatedProducts.length < 7) {
+      const popularProducts = await Product.find({
+        _id: { $ne: productId, $nin: relatedProducts.map((p) => p._id) },
+      })
+        .sort({ visited: -1 })
+        .limit(7 - relatedProducts.length)
+        .lean<IProductLocal[]>()
+
+      relatedProducts = [...relatedProducts, ...popularProducts]
+    }
+
+    const formattedProducts: IProduct[] = relatedProducts.map(
       (product: IProductLocal) => ({
         ...product,
         _id: product._id?.toString(),
@@ -32,13 +49,13 @@ export async function getProductsSliderMain(locale: ILocale) {
 
     return {
       success: true,
-      products: formattedProducts,
+      data: formattedProducts,
       message: 'Products retrieved',
     }
   } catch (error) {
     return {
       success: false,
-      products: [],
+      data: [],
       message: `${error}`,
     }
   }

@@ -26,6 +26,8 @@ import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
+import Delivery from '@/components/client/promo-banner/delivery'
+import { getPaginationRange } from '@/utils/get-pagination-range'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -80,32 +82,6 @@ export async function generateMetadata({
       ],
     },
   }
-}
-
-export const getPaginationRange = (currentPage: number, totalPages: number) => {
-  const delta = 2
-  const range: number[] = []
-
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 ||
-      i === totalPages ||
-      (i >= currentPage - delta && i <= currentPage + delta)
-    ) {
-      range.push(i)
-    }
-  }
-
-  const rangeWithDots: (number | 'ellipsis')[] = []
-  let prev = 0
-  for (const page of range) {
-    if (page - prev > 1) {
-      rangeWithDots.push('ellipsis')
-    }
-    rangeWithDots.push(page)
-    prev = page
-  }
-  return rangeWithDots
 }
 
 export default async function MenuPage(props: {
@@ -336,6 +312,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
+        <Delivery />
         <ToTheTop />
       </main>
     </>

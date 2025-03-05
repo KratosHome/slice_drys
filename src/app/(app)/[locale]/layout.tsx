@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 
-import { Poppins, Rubik_Doodle_Shadow, DM_Sans } from 'next/font/google'
-
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
+import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 import { seedCategories } from '@/server/seed/category'
 
 import Header from '@/components/client/header'
@@ -13,7 +12,7 @@ import Footer from '@/components/client/footer/footer'
 
 import '../globals.css'
 
-const poppins = Poppins({
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-poppins',
@@ -62,7 +61,7 @@ export default async function LocaleLayout(props: {
   return (
     <html
       lang={locale}
-      className={`${poppins.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
+      className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
