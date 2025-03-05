@@ -1,15 +1,14 @@
 'use client'
 
-import type { FC } from 'react'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Cart from '@/components/client/header/card/cart'
+import SmallCart from '@/components/client/header/small-cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
+import Socials from '../ui/Socials'
 
 import { useRef } from 'react'
 import { gsap } from 'gsap'
@@ -17,15 +16,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { pageLinks } from '@/data/main/nav-links'
-import Socials from '../ui/Socials'
 
 gsap.registerPlugin(ScrollTrigger)
 
-interface HeaderP {
+interface IHeaderProps {
   productLinks: ICategory[]
 }
 
-const Header: FC<HeaderP> = ({ productLinks }) => {
+const Header = ({ productLinks }: IHeaderProps) => {
   const t = useTranslations('main.header')
   const locale = useLocale() as ILocale
   const headerRef = useRef<HTMLDivElement>(null)
@@ -113,6 +111,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
   return (
     <>
       <Info title={`${t('free-delivery-from')}`} />
+
       <header
         ref={headerRef}
         className="sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
@@ -133,10 +132,12 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
                 </Link>
               ))}
             </nav>
+
             <HamburgerMenu
               productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
+
             <div
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
@@ -144,9 +145,10 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               <Socials variant="dark" />
             </div>
           </div>
+
           <Link ref={logoRef} href={`/${locale}`} className="h-full self-start">
             <Image
-              src={'/icons/logo.svg'}
+              src="/icons/logo.svg"
               alt={`${t('logo')}`}
               className="h-full"
               width={86}
@@ -173,7 +175,8 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
                 className="flex items-center justify-center gap-x-4 lg:justify-between"
               >
                 <LocaleChange className="hidden lg:block" />
-                <Cart />
+
+                <SmallCart />
               </div>
             </div>
 
@@ -182,6 +185,7 @@ const Header: FC<HeaderP> = ({ productLinks }) => {
               className="flex origin-top-right justify-between"
             >
               <NumberCall className="hidden lg:flex" />
+
               <CallMe />
             </div>
           </div>

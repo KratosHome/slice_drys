@@ -147,4 +147,5 @@ const config: Config = {
     require('tailwind-hamburgers'),
   ],
 }
+
 export default config

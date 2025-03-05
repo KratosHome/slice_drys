@@ -1,49 +1,82 @@
 import { connectToDb } from '../connectToDb'
 import { Product } from './productSchema'
 
-// type IProductResult = {
-//   success: boolean
-//   product: IProduct | null
-//   message: string
-// }
-
 export async function getProductBySlug({
   slug,
   locale,
 }: {
   slug: string
   locale: ILocale
-}): Promise<string> {
+}) {
   'use server'
-
   try {
     await connectToDb()
 
-    const product = await Product.findOne({ slug })
+    const product = await Product.findOne(
+      { slug: { $regex: `^${slug}$`, $options: 'i' } },
+      {
+        [`name.${locale}`]: 1,
+        [`description.${locale}`]: 1,
+        [`menu.${locale}`]: 1,
+        [`composition.${locale}`]: 1,
+        img: 1,
+        variables: 1,
+        nutritionalValue: 1,
+        statusLabel: 1,
+        visited: 1,
+        categories: 1,
+        title: 1,
+        metaDescription: 1,
+        keywords: 1,
+      },
+    ).populate('categories')
 
-    const localizedProduct: IProduct = {
-      name: product.name[locale],
-      description: product.description[locale],
-      variables: product.variables,
-      menu: product.category[locale],
-      slug: product.slug,
-      composition: product.composition[locale],
-      statusLabel: product.statusLabel,
-      nutritionalValue: product.nutritionalValue,
-      categories: product.categories ?? [],
+    if (!product) {
+      return {
+        data: [],
+        success: false,
+        message: 'Product not found',
+      }
     }
 
-    // BUG: JSON because NextJS shows error: RangeError: Maximum call stack size exceeded
-    return JSON.stringify({
+    const categories = product.categories.map((category: ICategory) => ({
+      id: category._id,
+      name: category.name?.[locale],
+      description: category.description?.[locale],
+      metaTitle: category.metaTitle?.[locale],
+      metaDescription: category.metaDescription?.[locale],
+      metaKeywords: category.metaKeywords?.[locale],
+      slug: category.slug,
+      children: category.children,
+    }))
+
+    const data = {
+      id: product._id,
+      title: product.title[locale],
+      metaDescription: product.metaDescription[locale],
+      keywords: product.keywords[locale],
+      name: product.name[locale],
+      description: product.description?.[locale],
+      menu: product.menu?.[locale],
+      composition: product.composition?.[locale],
+      img: product.img,
+      variables: product.variables,
+      nutritionalValue: product.nutritionalValue,
+      statusLabel: product.statusLabel,
+      visited: product.visited,
+      categories,
+    }
+
+    return {
+      data: data,
       success: true,
-      product: localizedProduct,
-      message: 'Product found',
-    })
+      message: 'Product retrieved successfully',
+    }
   } catch (error) {
-    return JSON.stringify({
+    return {
+      data: [],
       success: false,
-      product: null,
-      message: `Product not found: ${error}`,
-    })
+      message: `Can't retrieve product: ${error}`,
+    }
   }
 }

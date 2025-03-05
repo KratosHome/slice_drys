@@ -23,6 +23,10 @@ export async function getProductsSliderMain(locale: ILocale) {
         variables: JSON.parse(JSON.stringify(product.variables)),
         statusLabel: product.statusLabel,
         nutritionalValue: product.nutritionalValue,
+        title: product.title[locale],
+        metaDescription: product.metaDescription[locale],
+        keywords: product.keywords[locale],
+        images: product.images,
       }),
     )
 

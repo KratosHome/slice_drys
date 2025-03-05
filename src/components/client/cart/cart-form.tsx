@@ -1,28 +1,16 @@
-import React, { useEffect, forwardRef, useImperativeHandle } from 'react'
-import { useForm } from 'react-hook-form'
-import { useCartStore } from '@/store/cartStore'
+'use client'
+
 import NovaPoshtaCities from './nova-poshta'
 import { RadioGroup, RadioGroupItem } from '@/components/client/ui/radio-group'
 
-interface DeliveryInfo {
-  city?: string
-  brunch?: string
-  deliveryMethod?: string
-  courierInfo: string
-}
-
-interface FormData {
-  name?: string
-  surname?: string
-  phoneNumber?: string
-  email?: string
-  formStep?: number
-  deliveryInfo?: DeliveryInfo
-  paymentInfo?: string
-  comment?: string
-  acceptTerms?: boolean
-  noCall?: boolean
-}
+import {
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  type ChangeEvent,
+} from 'react'
+import { useForm } from 'react-hook-form'
+import { useCartStore } from '@/store/cartStore'
 
 interface CartFormRef {
   submit: () => void
@@ -34,60 +22,62 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<IUserData>()
 
-  const setFormData = useCartStore((state) => state.setCartFormData)
-  const formData = useCartStore((state) => state.cart.formData)
+  const setUserData = useCartStore((state) => state.setCartUserData)
+  const userData = useCartStore((state) => state.cart.userData)
 
   useEffect(() => {
-    if (formData) {
-      setValue('name', formData.name)
-      setValue('surname', formData.surname)
-      setValue('phoneNumber', formData.phoneNumber)
-      setValue('email', formData.email)
-      setValue('deliveryInfo.city', formData.deliveryInfo?.city || '')
-      setValue('deliveryInfo.brunch', formData.deliveryInfo?.brunch || '')
+    if (userData) {
+      setValue('name', userData.name)
+      setValue('surname', userData.surname)
+      setValue('phoneNumber', userData.phoneNumber)
+      setValue('email', userData.email)
+      setValue('deliveryInfo.city', userData.deliveryInfo?.city || '')
+      setValue('deliveryInfo.brunch', userData.deliveryInfo?.brunch || '')
       setValue(
         'deliveryInfo.deliveryMethod',
-        formData.deliveryInfo?.deliveryMethod || 'novaPoshta',
+        userData.deliveryInfo?.deliveryMethod || 'novaPoshta',
       )
       setValue(
         'deliveryInfo.courierInfo',
-        formData.deliveryInfo?.courierInfo || '',
+        userData.deliveryInfo?.courierInfo || '',
       )
-
-      setValue('paymentInfo', formData.paymentInfo)
-      setValue('comment', formData.comment)
-      setValue('acceptTerms', formData.acceptTerms)
-      setValue('noCall', formData.noCall)
+      setValue('paymentInfo', userData.paymentInfo)
+      setValue('comment', userData.comment)
+      setValue('acceptTerms', userData.acceptTerms)
+      setValue('noCall', userData.noCall)
     }
-  }, [formData, setValue])
+  }, [userData, setValue])
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.checked) {
       setValue('deliveryInfo.deliveryMethod', event.target.value || '')
-      const partialData = {
-        ...formData,
+
+      const partialData: IUserData = {
+        ...userData,
         deliveryInfo: {
-          ...formData?.deliveryInfo,
+          ...userData?.deliveryInfo,
           deliveryMethod: event.target.value,
         },
       }
-      setFormData(partialData)
+
+      setUserData(partialData)
     }
   }
 
-  const onSubmit = (data: FormData) => {
-    const partialData = {
+  const onSubmit = (data: IUserData): void => {
+    const partialData: IUserData = {
       ...data,
       formStep:
-        formData?.formStep && formData.formStep !== null
-          ? formData.formStep < 4
-            ? formData.formStep + 1
-            : formData.formStep
+        userData?.formStep && userData.formStep !== null
+          ? userData.formStep < 4
+            ? userData.formStep + 1
+            : userData.formStep
           : 1,
     }
-    setFormData(partialData)
+
+    setUserData(partialData)
   }
 
   useImperativeHandle(ref, () => ({
@@ -103,8 +93,10 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           id="surname"
           {...register('surname', { required: true })}
         />
+
         {errors.surname && <span>This field is required</span>}
       </div>
+
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -112,8 +104,10 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           id="name"
           {...register('name', { required: true })}
         />
+
         {errors.name && <span>This field is required</span>}
       </div>
+
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -132,12 +126,14 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             },
             required: 'Це поле є обов’язковим',
           })}
-          onClick={(e) => {
-            const target = e.target as HTMLInputElement
+          onClick={(event) => {
+            const target = event.target as HTMLInputElement
+
             target.value = target.value == '' ? '+38 (0' : target.value
           }}
-          onInput={(e) => {
-            const target = e.target as HTMLInputElement
+          onInput={(event) => {
+            const target = event.target as HTMLInputElement
+
             target.value =
               '+38 (0' +
               target.value.replace(/\D/g, '').substring(3, 5) +
@@ -147,9 +143,12 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
                 : '')
           }}
         />
+
         {errors.phoneNumber && <span>{errors.phoneNumber?.message}</span>}
       </div>
+
       <div>У форматі +38(093) 123 45 67</div>
+
       <div>
         <input
           className="mt-5 border border-gray-300"
@@ -163,12 +162,14 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             },
           })}
         />
+
         {errors.email && <span>{errors.email.message}</span>}
       </div>
-      {formData?.formStep && formData.formStep >= 1 && (
+
+      {userData?.formStep && userData.formStep >= 1 && (
         <RadioGroup
           onChange={handleRadioChange}
-          defaultValue={formData?.deliveryInfo?.deliveryMethod || 'novaPoshta'}
+          defaultValue={userData?.deliveryInfo?.deliveryMethod || 'novaPoshta'}
         >
           Оберіть відділення нової пошти
           <div>
@@ -176,20 +177,21 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             Нова пошта
             <RadioGroupItem value="Courier" id="r2" />
             Курʼєр
-            {formData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ||
-            !formData?.deliveryInfo?.deliveryMethod ? (
+            {userData?.deliveryInfo?.deliveryMethod == 'novaPoshta' ||
+            !userData?.deliveryInfo?.deliveryMethod ? (
               <div>
                 <NovaPoshtaCities
-                  city={formData?.deliveryInfo?.city || ''}
-                  brunch={formData?.deliveryInfo?.brunch || ''}
-                  onCityChange={(newCity) => {
+                  city={userData?.deliveryInfo?.city || ''}
+                  brunch={userData?.deliveryInfo?.brunch || ''}
+                  onCityChange={(newCity) =>
                     setValue('deliveryInfo.city', newCity)
-                  }}
-                  onBrunchChange={(newBrunch) => {
+                  }
+                  onBrunchChange={(newBrunch) =>
                     setValue('deliveryInfo.brunch', newBrunch)
-                  }}
+                  }
                   {...register('deliveryInfo.brunch', { required: true })}
                 />
+
                 {errors.deliveryInfo && <span>This field is required</span>}
               </div>
             ) : (
@@ -207,7 +209,8 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
           </div>
         </RadioGroup>
       )}
-      {formData?.formStep && formData.formStep >= 2 && (
+
+      {userData?.formStep && userData.formStep >= 2 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -215,10 +218,12 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             id="paymentInfo"
             {...register('paymentInfo', { required: true })}
           />
+
           {errors.paymentInfo && <span>This field is required</span>}
         </div>
       )}
-      {formData?.formStep && formData.formStep >= 3 && (
+
+      {userData?.formStep && userData.formStep >= 3 && (
         <div>
           <input
             className="mt-5 border border-gray-300"
@@ -226,10 +231,12 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
             id="comment"
             {...register('comment', { required: true })}
           />
+
           {errors.comment && <span>This field is required</span>}
         </div>
       )}
-      {formData?.formStep && formData.formStep >= 4 && (
+
+      {userData?.formStep && userData.formStep >= 4 && (
         <div>
           <label className="flex items-center space-x-3">
             <input
@@ -238,16 +245,21 @@ const CartForm = forwardRef<CartFormRef>((_, ref) => {
               id="acceptTerms"
               className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`}
             />
+
             <span>Я погоджуюсь з умовами використання</span>
           </label>
+
           {errors.acceptTerms && <span>This field is required</span>}
+
           <label className="flex items-center space-x-3">
             <input type="checkbox" {...register('noCall')} id="doNotCall" />
+
             <span>Не телефонувати</span>
           </label>
         </div>
       )}
-      {(!formData || (formData?.formStep ?? 0) <= 3) && (
+
+      {(!userData || (userData?.formStep ?? 0) <= 3) && (
         <button type="submit" className="bg-black px-5 py-2 text-white">
           Продовжити
         </button>

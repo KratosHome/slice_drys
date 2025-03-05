@@ -70,7 +70,7 @@ export const transliterate = (text: string): string => {
     .split('')
     .map((char) => map[char] || char)
     .join('')
-    .replace(/[^a-zA-Z0-9-]/g, '-') // замінюємо все зайве на '-'
-    .replace(/-+/g, '-') // видаляємо дублікати '-'
-    .replace(/^-|-$/g, '') // видаляємо '-' на початку та в кінці рядка
+    .replace(/[^a-zA-Z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 }

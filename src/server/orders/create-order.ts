@@ -3,7 +3,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Order } from './orderSchema'
 
-export async function createOrder(orderData: IOrder) {
+export async function createOrder(orderData: IOrder): Promise<IResponse> {
   try {
     await connectToDb()
 

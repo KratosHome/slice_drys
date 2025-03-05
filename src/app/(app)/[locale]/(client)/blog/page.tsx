@@ -22,7 +22,7 @@ import {
 import PostList from '@/components/client/blog/post-list'
 import BlogTitle from '@/components/client/blog/blog-title'
 import BlogFooter from '@/components/client/blog/blog-footer'
-import { getPaginationRange } from '@/utils/getPaginationRange'
+import { getPaginationRange } from '@/utils/get-pagination-range'
 import BlogJsonLd from '@/components/client/json-ld/blog-json-ld'
 import { cn } from '@/utils/cn'
 
