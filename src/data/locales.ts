@@ -1,1 +1,1 @@
-export const locales = ['en', 'uk'] as ILocale[]
+export const locales: ILocale[] = ['uk', 'en']

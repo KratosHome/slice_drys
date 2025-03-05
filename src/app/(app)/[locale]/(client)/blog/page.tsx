@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
-import { getPosts } from '@/server/posts/get-posts.server'
-import PostList from '@/components/client/blog/post-list'
-import BlogTitle from '@/components/client/blog/blog-title'
+import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
 import {
   Pagination,
   PaginationContent,
@@ -19,87 +19,118 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import PostList from '@/components/client/blog/post-list'
+import BlogTitle from '@/components/client/blog/blog-title'
 import BlogFooter from '@/components/client/blog/blog-footer'
-import { cn } from '@/utils/cn'
 import { getPaginationRange } from '@/utils/get-pagination-range'
+import BlogJsonLd from '@/components/client/json-ld/blog-json-ld'
+import { cn } from '@/utils/cn'
 
-type Props = {
+import { blogMetaData } from '@/data/blog/blogMetaData'
+import { locales } from '@/data/locales'
+
+type PageProps = {
   params: Promise<{ locale: ILocale }>
   searchParams: Promise<{ page?: string }>
 }
 
-const translations = {
-  en: {
-    title: 'Blog',
-    description: 'This is the blog page.',
-    keywords: ['blog', 'articles', 'news'],
-  },
-  uk: {
-    title: 'Блог',
-    description: 'Це сторінка блогу.',
-    keywords: ['блог', 'статті', 'новини'],
-  },
-}
+const baseUrl = process.env.NEXT_URL
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: PageProps): Promise<Metadata> {
   const { locale } = await params
+  const { page } = await searchParams
 
-  return translations[locale]
+  const ogImage = `${baseUrl}/blog-image.webp`
+  const title = blogMetaData[locale].title
+  const description = blogMetaData[locale].description
+  const keywords = blogMetaData[locale].keywords
+  const url =
+    page && +page > 1 ? `${baseUrl}/blog?page=${page}` : `${baseUrl}/blog`
+  return {
+    title,
+    description,
+    keywords,
+    robots: 'index, follow',
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'website',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 1012,
+          alt: title,
+        },
+      ],
+    },
+  }
 }
 
-export default async function Blog({ params, searchParams }: Props) {
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
+
+const getPageUrl = (
+  newPage: number,
+  searchParamsObj: Record<string, string>,
+) => {
+  const searchParams = new URLSearchParams(searchParamsObj)
+  if (searchParams.get('page')) {
+    searchParams.set('page', newPage.toString())
+  } else {
+    searchParams.append('page', newPage.toString())
+  }
+  return '?' + searchParams.toString()
+}
+
+export default async function Blog({ params, searchParams }: PageProps) {
   const { locale } = await params
   const t = await getTranslations('Breadcrumbs')
   const blogSearchParams = await searchParams
 
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
-  const limit = 8
-  const postsData = await getPosts({ locale, page: pageItem, limit })
 
-  if (!postsData.success) return null
+  const postsData = (await fetch(
+    `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}`,
+    {
+      next: {
+        tags: ['posts'],
+      },
+    },
+  ).then((res) => res.json())) as IGetPostsClient
+
+  if (!postsData.success) return notFound()
 
   const { postsLocalized, currentPage, totalPages } =
     postsData as IGetPostsClient
 
-  const getPageUrl = (
-    newPage: number,
-    searchParamsObj: Record<string, string>,
-  ) => {
-    const searchParams = new URLSearchParams(searchParamsObj)
-    if (searchParams.get('page')) {
-      searchParams.set('page', newPage.toString())
-    } else {
-      searchParams.append('page', newPage.toString())
-    }
-    return '?' + searchParams.toString()
-  }
-
   return (
     <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
-      <div className="mt-10">
-        <div className="mt-10">
-          <Breadcrumb className="my-2">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href={`/${locale}/blog`}>
-                  {t('Blog')}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+      <Breadcrumb className="mt-[30px] md:mt-10">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/${locale}/blog`}>
+              {t('Blog')}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <BlogTitle />
-      <div className="mx-auto flex flex-col items-center">
+      <div className="mx-auto flex flex-col items-center font-bold">
         <PostList posts={postsLocalized} />
 
         {totalPages > 1 && (
@@ -156,6 +187,7 @@ export default async function Blog({ params, searchParams }: Props) {
         )}
       </div>
       <BlogFooter />
+      <BlogJsonLd data={postsData} />
     </div>
   )
 }
