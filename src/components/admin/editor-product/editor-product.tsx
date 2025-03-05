@@ -194,8 +194,6 @@ const EditorProduct: FC<ICrateProduct> = ({
       })),
     }
 
-    console.log('newData', newData)
-
     if (product?._id) {
       result = await editProduct(product._id, newData, image)
     } else {

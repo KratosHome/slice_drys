@@ -2,7 +2,6 @@ import { getTranslations } from 'next-intl/server'
 import { getPosts } from '@/server/posts/get-posts.server'
 import PostList from '@/components/client/blog/post-list'
 import BlogTitle from '@/components/client/blog/blog-title'
-
 import {
   Pagination,
   PaginationContent,
@@ -21,8 +20,8 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 import BlogFooter from '@/components/client/blog/blog-footer'
-import { getPaginationRange } from '../[menu]/page'
 import { cn } from '@/utils/cn'
+import { getPaginationRange } from '@/utils/get-pagination-range'
 
 type Props = {
   params: Promise<{ locale: ILocale }>

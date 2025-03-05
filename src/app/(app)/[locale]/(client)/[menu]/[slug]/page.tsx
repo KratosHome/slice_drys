@@ -9,6 +9,7 @@ import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { locales } from '@/data/locales'
+import { getUrls } from '@/server/products/get-urls.server'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -73,14 +74,11 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const url = process.env.NEXT_URL
-  const posts = await fetch(`${url}/api/products/get-urls`).then((res) =>
-    res.json(),
-  )
+  const productSlug = await getUrls()
 
-  return posts.data.flatMap((post: { slug: string }) =>
+  return productSlug.data.flatMap((item: { slug: string }) =>
     locales.map((locale) => ({
-      slug: post.slug,
+      slug: item.slug,
       locale,
     })),
   )

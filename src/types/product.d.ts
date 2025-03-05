@@ -34,6 +34,7 @@ interface IProductLocal {
   title: ILocalizedString
   metaDescription: ILocalizedString
   keywords: ILocalizedStringArray
+  images: string[]
 }
 
 interface INutritionalValue {
