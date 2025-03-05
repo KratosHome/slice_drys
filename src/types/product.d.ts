@@ -12,10 +12,10 @@ interface IProduct {
   categories: string[]
   nutritionalValue: INutritionalValue
   variant?: IVariableProduct
-  title: string
-  metaDescription: string
-  keywords: string[]
-  images: string[]
+  title?: string
+  metaDescription?: string
+  keywords?: string[]
+  images?: string[]
 }
 
 interface IProductLocal {

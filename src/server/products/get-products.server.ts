@@ -38,10 +38,13 @@ export async function getProducts(
         nutritionalValue: 1,
         statusLabel: 1,
         visited: 1,
+        title: 1,
+        metaDescription: 1,
         [`menu.${locale}`]: 1,
         [`category.${locale}`]: 1,
         [`composition.${locale}`]: 1,
         createdAt: 1,
+        keywords: 1,
         updatedAt: 1,
       })
       .sort({ createdAt: -1 })
@@ -64,7 +67,6 @@ export async function getProducts(
       title: product.title[locale],
       metaDescription: product.metaDescription[locale],
       keywords: product.keywords[locale],
-      images: product.images ?? [],
     }))
 
     const allProducts: IProductLocal[] = fetchAll
