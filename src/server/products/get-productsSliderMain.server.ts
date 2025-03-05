@@ -7,6 +7,7 @@ export async function getProductsSliderMain(locale: ILocale) {
     await connectToDb()
 
     const products = await Product.find()
+      .populate('categories', 'slug')
       .sort({ visited: -1 })
       .limit(7)
       .lean<IProductLocal[]>()
@@ -17,7 +18,10 @@ export async function getProductsSliderMain(locale: ILocale) {
         _id: product._id?.toString(),
         name: product.name[locale],
         description: product.description[locale],
-        categories: product.categories ?? [],
+        categories: product.categories
+          ? product.categories.map((category) => category._id)
+          : [],
+        category: product.categories[0].slug,
         menu: product.menu[locale],
         composition: product.composition[locale],
         variables: JSON.parse(JSON.stringify(product.variables)),

@@ -18,6 +18,8 @@ import { helpData } from '@/data/main/help'
 import type { Metadata } from 'next'
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
+import MainJsonLd from '@/components/client/json-ld/main-json-ld'
+import { reviewsData } from '@/data/main/reviews'
 
 export async function generateMetadata({
   params,
@@ -64,6 +66,11 @@ export default async function Home(props: {
 
   return (
     <>
+      <MainJsonLd
+        products={productsData.products}
+        faq={faqData[locale]}
+        reviews={reviewsData[locale]}
+      />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
         products={productsData.products}
@@ -74,7 +81,7 @@ export default async function Home(props: {
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews />
+      <Reviews reviews={reviewsData[locale]} />
       <InstaFeed data={instaPosts.data} />
       <ToTheTop />
     </>

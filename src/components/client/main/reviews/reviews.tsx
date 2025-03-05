@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useRef } from 'react'
-import { useLocale } from 'next-intl'
 import { useTranslations } from 'next-intl'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
@@ -8,14 +7,21 @@ import { useGSAP } from '@gsap/react'
 
 import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
 
-import { reviewsData } from '@/data/main/reviews'
-
 const variants = ['grey', 'black', 'white']
 
-export default function Reviews() {
+interface Review {
+  author: string
+  text: string
+}
+
+interface ReviewsProps {
+  reviews: Review[]
+}
+
+export default function Reviews({ reviews }: ReviewsProps) {
   const t = useTranslations('main.reviews')
   const reviewsRef = useRef<HTMLLIElement[]>([])
-  const locale: ILocale = useLocale() as ILocale
+
   useEffect(() => {
     setTimeout(() => {
       ScrollTrigger.refresh(true)
@@ -53,7 +59,7 @@ export default function Reviews() {
           {t('say-those')}
         </p>
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
-          {reviewsData[locale].map((review, index) => (
+          {reviews.map((review, index) => (
             <ReviewsItem
               ref={(el) => {
                 if (el) reviewsRef.current[index] = el

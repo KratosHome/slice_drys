@@ -16,6 +16,7 @@ interface IProduct {
   metaDescription?: string
   keywords?: string[]
   images?: string[]
+  category?: string
 }
 
 interface IProductLocal {
@@ -29,7 +30,7 @@ interface IProductLocal {
   statusLabel: string[]
   visited?: number
   slug: string
-  categories: string[]
+  categories: ICategory[]
   nutritionalValue: INutritionalValue
   title: ILocalizedString
   metaDescription: ILocalizedString
