@@ -15,6 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/client/ui/dialog'
+import { locales } from '@/data/locales'
+import Image from 'next/image'
+import { convertToBase64 } from '@/utils/convertToBase64'
 
 interface UpdateTreeProps {
   selectedCategory: ICategory
@@ -44,9 +47,24 @@ interface FormData {
 }
 
 const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
-  const languages = ['uk', 'en'] as ILocale[]
   const router = useRouter()
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
+
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    let url: string | null = null
+
+    if (imageFile) {
+      url = URL.createObjectURL(imageFile)
+      setImagePreviewUrl(url)
+    } else if (selectedCategory?.image) {
+      setImagePreviewUrl(selectedCategory.image)
+    } else {
+      setImagePreviewUrl(null)
+    }
+  }, [imageFile, selectedCategory?.image])
 
   const {
     register,
@@ -81,7 +99,9 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
   }, [selectedCategory, reset])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const result = await updateCategory(selectedCategory._id, data)
+    const image = imageFile ? await convertToBase64(imageFile) : ''
+
+    const result = await updateCategory(selectedCategory._id, data, image)
 
     if (result.success) {
       toast({
@@ -111,14 +131,37 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     router.refresh()
   }
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+    }
+  }
+
   return (
     <div>
+      <div>
+        {imagePreviewUrl && (
+          <div>
+            <Label>Попередній перегляд зображення</Label>
+            <Image
+              src={imagePreviewUrl}
+              width={100}
+              height={100}
+              alt="Зображення категорії"
+              className="rounded-md"
+            />
+          </div>
+        )}
+        <Label htmlFor="picture">Додати зображення</Label>
+        <Input id="picture" type="file" onChange={handleImageChange} />
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 rounded-lg border p-4"
       >
         <div className="flex justify-between gap-4">
-          {languages.map((lang) => (
+          {locales.map((lang) => (
             <div key={lang} className="mb-4 w-full border-b pb-4">
               <h3 className="text-lg font-bold uppercase">
                 {lang === 'uk' ? 'Українська' : 'English'}
