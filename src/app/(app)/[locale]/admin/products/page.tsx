@@ -23,8 +23,6 @@ export default async function Home({
   const recommendations: IRecommendations = await findProductInfoItems()
   const dataCategories: IResult<ICategory> = await getCategories()
 
-  console.log('products', products)
-
   return (
     <div className="px-5">
       <div className="flex items-end justify-between">

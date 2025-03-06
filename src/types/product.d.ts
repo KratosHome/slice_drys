@@ -30,12 +30,12 @@ interface IProductLocal {
   statusLabel: string[]
   visited?: number
   slug: string
-  categories: ICategory[]
+  categories: string[]
   nutritionalValue: INutritionalValue
   title: ILocalizedString
   metaDescription: ILocalizedString
   keywords: ILocalizedStringArray
-  images: string[]
+  images?: string[]
 }
 
 interface INutritionalValue {
