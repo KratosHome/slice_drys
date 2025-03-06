@@ -3,12 +3,9 @@ import { FC } from 'react'
 interface mainJsonLdProps {
   products: IProduct[]
   faq: IFaq[]
-  reviews: {
-    author: string
-    text: string
-  }[]
+  reviews: IReview[]
 }
-const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq }) => {
+const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
   const baseUrl = process.env.NEXT_URL
 
   const jsonLd = {
@@ -90,35 +87,20 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq }) => {
           url: `${baseUrl}/${product.category}/${product.slug}`,
         })),
       },
-      {
+      ...reviews.map((review, index) => ({
         '@type': 'Review',
-        '@id': 'https://example.com/#review1',
-        reviewBody:
-          "Дуже смачні та корисні! Люблю курячі сушеники від Slice & Dry's.",
+        '@id': `${baseUrl}/#review${index + 1}`,
+        reviewBody: review.text,
         reviewRating: {
           '@type': 'Rating',
-          ratingValue: '5',
+          ratingValue: review.rating.toString(),
           bestRating: '5',
         },
         author: {
           '@type': 'Person',
-          name: 'Олександр',
+          name: review.author,
         },
-      },
-      {
-        '@type': 'Review',
-        '@id': 'https://example.com/#review2',
-        reviewBody: 'Просто фантастика! Легкий перекус для будь-якої ситуації.',
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: '5',
-          bestRating: '5',
-        },
-        author: {
-          '@type': 'Person',
-          name: 'Анна',
-        },
-      },
+      })),
     ],
   }
 

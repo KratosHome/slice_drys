@@ -69,7 +69,7 @@ export default async function Home(props: {
       <MainJsonLd
         products={productsData.products}
         faq={faqData[locale]}
-        reviews={reviewsData[locale]}
+        reviews={reviewsData}
       />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
@@ -81,7 +81,7 @@ export default async function Home(props: {
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews reviews={reviewsData[locale]} />
+      <Reviews reviews={reviewsData} />
       <InstaFeed data={instaPosts.data} />
       <ToTheTop />
     </>

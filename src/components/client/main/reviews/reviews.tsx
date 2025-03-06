@@ -9,13 +9,8 @@ import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
 
 const variants = ['grey', 'black', 'white']
 
-interface Review {
-  author: string
-  text: string
-}
-
 interface ReviewsProps {
-  reviews: Review[]
+  reviews: IReview[]
 }
 
 export default function Reviews({ reviews }: ReviewsProps) {

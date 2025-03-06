@@ -1,58 +1,32 @@
-const reviewsDataEn = [
+export const reviewsData = [
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    author: 'Оля',
+    text: 'Якісь нереально смачні ті “сушені чіпси”! Спочатку подумала, що буде жорстко, але навпаки – м’яко і дуже хрустко одночасно. Тепер завжди маю їх в сумочці як перекус. Хочу ще більше різних смаків!',
+    rating: 5,
   },
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    author: 'Микола',
+    text: 'Надзвичайно ароматні, хоча ціна кусається. Але за таку якість, воно того варте!',
+    rating: 4,
   },
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    author: 'Вікторія',
+    text: 'Шукала щось новеньке для фуршету на роботі й натрапила на ці сушені чіпси. Це був хіт вечора – колеги питали, де купити! Тепер усі в офісі “підсіли” на них.',
+    rating: 5,
   },
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    author: 'Валерій',
+    text: 'Взяв на рибалку, щоб було чим перекусити. Виявилися ідеальним варіантом, смак – бомба. Наступного разу замовлю більше!',
+    rating: 5,
   },
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
+    author: 'Катя',
+    text: 'Я думала, що м’ясо буде сухе й без смаку, але ні! Трохи переживала, бо діти зазвичай вередують, а тут просили добавки. Тепер це наш маст-хев на прогулянках.',
+    rating: 5,
   },
   {
-    author: 'Valera Valeryan',
-    text: 'Dried meat chips are just fantastic! A light snack for any day. I was thrilled!',
-  },
-]
-
-const reviewsDataUk = [
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
-  },
-  {
-    author: 'Валера Валерʼян',
-    text: 'Сушені чіпси з м’яса – це просто фантастика! Легкий перекус для будь-якого дня. Залишився в захваті!',
+    author: 'Руслан',
+    text: 'Тренуюсь регулярно, тому шукав білковий перекус без зайвих калорій. Ці сушені чіпси – просто спасіння! Смакують краще, ніж я очікував.',
+    rating: 5,
   },
 ]
-
-export const reviewsData = {
-  uk: reviewsDataUk,
-  en: reviewsDataEn,
-}
