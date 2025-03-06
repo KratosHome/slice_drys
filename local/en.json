@@ -37,7 +37,15 @@
     },
     "reviews": {
       "title": "Reviews",
-      "say-those": "say those who have already tasted sushennyk"
+      "say-those": "say those who have already tasted sushennyk",
+      "thanks_for_the_feedback": "Thanks for the feedback!",
+      "add_new_review": "Add new review",
+      "name": "name",
+      "enter_name": "Enter your name",
+      "feedback": "Feedback",
+      "enter_text": "Enter text",
+      "back": "Back",
+      "send": "Send"
     },
     "our-partners": "Our partners",
     "more-about-us": {
@@ -72,12 +80,11 @@
     "paginationButtonRight": "Next",
     "title": "Blog",
     "description-top": "Welcome to our blog! Here we talk about everything related to our dryers – from interesting recipes and useful tips to just plain funny stories. Check back often, there’s always something delicious here!",
-    "description-bottom":"Do you want to stay up to date with all the latest news, promotions, and receive exclusive recipes?",
-    "email-caption":"Leave your email and we will send you only the tastiest news!",
-    "handbag":"shopping handbag picture",
-    "email-placeholder":"Fill in your email",
-    "submit-btn":"Submit"
-
+    "description-bottom": "Do you want to stay up to date with all the latest news, promotions, and receive exclusive recipes?",
+    "email-caption": "Leave your email and we will send you only the tastiest news!",
+    "handbag": "shopping handbag picture",
+    "email-placeholder": "Fill in your email",
+    "submit-btn": "Submit"
   },
   "Breadcrumbs": {
     "Home": "Home",
