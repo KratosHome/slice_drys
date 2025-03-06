@@ -74,6 +74,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
       metaTitle: data.metaTitle,
       metaDescription: data.metaDescription,
       metaKeywords: data.metaKeywords,
+      order: 0,
       parentCategory: selectedCategories.length
         ? selectedCategories[0]
         : undefined,

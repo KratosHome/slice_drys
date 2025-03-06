@@ -34,6 +34,7 @@ const categoriesSchema = new mongoose.Schema(
         ref: 'Category',
       },
     ],
+    order: { type: Number, default: 0 },
     image: { type: String, maxlength: 255 },
   },
   { timestamps: true },
