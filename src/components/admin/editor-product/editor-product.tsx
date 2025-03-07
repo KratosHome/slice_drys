@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/admin/ui/button'
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
-import { Textarea } from '@/components/admin/ui/textarea'
 import { Checkbox } from '@/components/admin/ui/checkbox'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { createProduct } from '@/server/products/create-product.server'
@@ -24,6 +23,7 @@ import { convertToBase64 } from '@/utils/convertToBase64'
 import Image from 'next/image'
 import { deleteProduct } from '@/server/products/delete-product.server'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
 interface ICrateProduct {
   buttonTitle: string
@@ -52,7 +52,6 @@ const EditorProduct: FC<ICrateProduct> = ({
   } = useForm<IProductLocal>({
     defaultValues: {
       name: { en: '', uk: '' },
-      description: { en: '', uk: '' },
       categories: [],
       composition: { en: [], uk: [] },
       img: '',
@@ -73,6 +72,9 @@ const EditorProduct: FC<ICrateProduct> = ({
         carbohydrates: '',
         energyValue: '',
       },
+      title: { uk: '', en: '' },
+      metaDescription: { uk: '', en: '' },
+      keywords: { uk: [], en: [] },
     },
   })
   const router = useRouter()
@@ -91,6 +93,9 @@ const EditorProduct: FC<ICrateProduct> = ({
     en: product?.composition?.en || [],
     uk: product?.composition?.uk || [],
   })
+
+  const [descriptionUk, setDescriptionUk] = useState<string>('')
+  const [descriptionEn, setDescriptionEn] = useState<string>('')
 
   const {
     fields: variableFields,
@@ -127,6 +132,11 @@ const EditorProduct: FC<ICrateProduct> = ({
       setValue('slug', product.slug)
       setValue('description', product.description)
       setValue('statusLabel', product.statusLabel)
+      setValue('title', product.title)
+      setValue('metaDescription', product.metaDescription)
+      setValue('keywords', product.keywords)
+      setDescriptionUk(product.description.uk)
+      setDescriptionEn(product.description.en)
 
       if (product.nutritionalValue) {
         setValue('nutritionalValue', product.nutritionalValue)
@@ -167,6 +177,13 @@ const EditorProduct: FC<ICrateProduct> = ({
       composition,
       visited: 0,
       categories: selectedCategories,
+      title: data.title,
+      metaDescription: data.metaDescription,
+      description: {
+        uk: descriptionUk,
+        en: descriptionEn,
+      },
+      keywords: data.keywords,
       variables: data.variables.map((variable) => ({
         ...variable,
         weight: Number(variable.weight),
@@ -547,32 +564,20 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label htmlFor="description-uk">Опис (UK)</Label>
-                  <Textarea
-                    id="description-uk"
-                    {...register('description.uk', {
-                      required: 'Це поле є обов’язковим',
-                    })}
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionUk}
+                    setContent={setDescriptionUk}
                   />
-                  {errors.description?.uk && (
-                    <span className="text-red-700">
-                      {errors.description.uk.message}
-                    </span>
-                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="description-en">Description (EN)</Label>
-                  <Textarea
-                    id="description-en"
-                    {...register('description.en', {
-                      required: 'This field is required',
-                    })}
+                  <Label htmlFor="description-uk">Опис (EN)</Label>
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionEn}
+                    setContent={setDescriptionEn}
                   />
-                  {errors.description?.en && (
-                    <span className="text-red-700">
-                      {errors.description.en.message}
-                    </span>
-                  )}
                 </div>
 
                 <Controller
@@ -742,6 +747,87 @@ const EditorProduct: FC<ICrateProduct> = ({
                   >
                     Додати вид
                   </Button>
+                </div>
+                <div>
+                  <h2>SEO</h2>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Тайтел (UK)</Label>
+                      <Input
+                        {...register('title.uk', {
+                          required: 'Це поле є обов’язковим',
+                          minLength: {
+                            value: 20,
+                            message: 'Мінімальна довжина 20 символів',
+                          },
+                          maxLength: {
+                            value: 70,
+                            message: 'Максимальна довжина 70 символів',
+                          },
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Тайтел (EN)</Label>
+                      <Input
+                        {...register('title.en', {
+                          required: 'This field is required',
+                          minLength: {
+                            value: 20,
+                            message: 'Minimum length is 20 characters',
+                          },
+                          maxLength: {
+                            value: 70,
+                            message: 'Maximum length is 70 characters',
+                          },
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Мета Дескріпшен (UK)</Label>
+                      <Input
+                        {...register('metaDescription.uk', {
+                          required: 'Це поле є обов’язковим',
+                          minLength: {
+                            value: 50,
+                            message: 'Мінімальна довжина 50 символів',
+                          },
+                          maxLength: {
+                            value: 160,
+                            message: 'Максимальна довжина 160 символів',
+                          },
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label>Мета Дескріпшен (EN)</Label>
+                      <Input
+                        {...register('metaDescription.en', {
+                          required: 'This field is required',
+                          minLength: {
+                            value: 50,
+                            message: 'Minimum length is 50 characters',
+                          },
+                          maxLength: {
+                            value: 160,
+                            message: 'Maximum length is 160 characters',
+                          },
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div>
+                      <Label>Кейвордс (UK)</Label>
+                      <Input {...register('keywords.uk')} />
+                    </div>
+                    <div>
+                      <Label>Кейвордс (EN)</Label>
+                      <Input {...register('keywords.en')} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </AlertDialogDescription>

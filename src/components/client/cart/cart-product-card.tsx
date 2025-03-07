@@ -1,14 +1,8 @@
-import Image from 'next/image'
-import { useCartStore } from '@/store/cartStore'
+'use client'
 
-interface CartProductCardProps {
-  id: string
-  image: string
-  name: string
-  price: number
-  weight: number
-  quantity: number
-}
+import Image from 'next/image'
+
+import { useCartStore } from '@/store/cartStore'
 
 export default function CartProductCard({
   id,
@@ -17,7 +11,9 @@ export default function CartProductCard({
   price,
   weight,
   quantity,
-}: CartProductCardProps) {
+}: ICartItem) {
+  const { removeItemFromCart, addItemToCart } = useCartStore((state) => state)
+
   return (
     <div className="mx-3 flex h-40 items-center border-b border-gray-200 py-2 hover:bg-gray-100">
       <Image
@@ -27,29 +23,33 @@ export default function CartProductCard({
         alt={name}
         className="max-h-40 w-1/3"
       />
+
       <div className="ml-3 h-full w-2/3">
         <div className="h-[50%]">
           <div className="flex justify-between">
             <div className="font text">{name}</div>
+
             <Image
-              src={'/icons/trash-can.svg'}
+              src="/icons/trash-can.svg"
               alt="facebook icon"
               width={32}
               height={32}
               className="cursor-pointer"
-              onClick={() => useCartStore.getState().removeItemFromCart(id)}
+              onClick={() => removeItemFromCart(id)}
             />
           </div>
+
           <p className="text-sm text-gray-500"> {weight}г</p>
         </div>
 
         <div className="flex h-[50%] items-end justify-between">
           <div className="text mt-1">{price * quantity} грн</div>
+
           <div className="flex bg-black text-sm text-white">
             <div
               className="cursor-pointer"
               onClick={() =>
-                useCartStore.getState().addItemToCart({
+                addItemToCart({
                   id: id,
                   quantity: -1,
                   image: image,
@@ -65,7 +65,7 @@ export default function CartProductCard({
             <div
               className="cursor-pointer"
               onClick={() =>
-                useCartStore.getState().addItemToCart({
+                addItemToCart({
                   id: id,
                   quantity: 1,
                   image: image,

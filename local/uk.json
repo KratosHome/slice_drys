@@ -17,7 +17,7 @@
       "message": "найсмачніші кусь-топчики"
     },
     "footer": {
-      "CTA-socials":"приєднуйся до наших соцмереж",
+      "CTA-socials": "приєднуйся до наших соцмереж",
       "public-offer": "Публічна оферта",
       "privacy-policy": "Політика конфіденційності"
     },
@@ -49,7 +49,8 @@
       "title": "Мандруйте разом з нами"
     },
     "burger-menu": {
-      "catalog": "Каталог"
+      "catalog": "Каталог",
+      "logo": "логотип"
     }
   },
   "cart": {
@@ -69,10 +70,15 @@
   "blog": {
     "paginationButtonLeft": "Попередня",
     "paginationButtonRight": "Наступна",
-    "Blog": "Блог",
-    "title": "Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з нашими сушениками – від цікавих рецептів і корисних порад до просто веселих історій. Заглядай частіше, тут завжди щось смачненьке!"
+    "title": "Блог",
+    "description-top": "Привіт у нашому блозі! Тут ми говоримо про все, що пов’язано з нашими сушениками – від цікавих рецептів і корисних порад до просто веселих історій. Заглядай частіше, тут завжди щось смачненьке!",
+    "description-bottom":"Хочете бути в курсі всіх новинок, акцій та отримувати ексклюзивні рецепти?",
+    "email-caption":"Залиште свій емейл — і ми будемо надсилати вам тільки найсмачніші новини!",
+    "handbag":"фото сумки для покупок",
+    "email-placeholder":"Введіть свій email",
+    "submit-btn":"Відправити"
   },
-  "breadcrumbs": {
+  "Breadcrumbs": {
     "Home": "Головна",
     "Blog": "Блог",
     "Page": "Сторінка",
@@ -99,7 +105,65 @@
     "instagram icon": "іконка Instagram",
     "telegram icon": "іконка Telegram"
   },
-
+  "product-list": {
+    "home": "Головна",
+    "type": "Тип",
+    "no_categories_available": "Категорії відсутні",
+    "weight": "Вага",
+    "from": "Від",
+    "g": "г.",
+    "to": "До",
+    "filter": "Фільтр",
+    "reset_all": "Скинути все",
+    "show": "Показати",
+    "fruit": {
+      "orange": "Апельсин",
+      "mango": "Манго",
+      "pear": "Груша",
+      "pineapple": "Ананас",
+      "ginger": "Імбир",
+      "grapefruit": "Грейпфрут",
+      "kiwi": "Ківі"
+    }
+  },
+  "product": {
+    "top": "ТОП",
+    "novelty": "Новинка",
+    "sale": "Розпродаж",
+    "expect_soon": "Очікуйте скоро!",
+    "add_to_cart": "Додати в кошик",
+    "with_this_product_buy": "З цим товаром купують",
+    "something_that_will_come_handy_along_with_your_choice": "Щось корисне до вашого вибору!",
+    "composition": "Склад",
+    "choose_weight": "Обрати вагу",
+    "weight": "Вага",
+    "g": "г",
+    "about_product": "Про товар",
+    "nutritional_value": "Харчова цінність",
+    "proteins": "Білки",
+    "fats": "Жири",
+    "carbohydrates": "Вуглеводи",
+    "energy_value": "Енергетична цінність",
+    "shelf_life": "Термін зберігання",
+    "storage_conditions": "Умови зберігання",
+    "at_temperatures_from_relative_humidity": "при температурі від +3°C до +25°C і відносній вологості 70%",
+    "expiration_date": "Строк придатності",
+    "months_from_the_date_manufacture_indicated_packaging": "12 місяців з дати виготовлення. Дата вказана на упаковці",
+    "delivery": "Доставка",
+    "delivery_ukraine": "Доставка по Україні",
+    "we_offer_fast_and_reliable_delivery_of_our_products_throughout_ukraine_using_nova_poshta_after_placing_an_order_we_ship_it_within": "Ми пропонуємо швидку та надійну доставку нашої продукції по всій Україні службою Нова Пошта. Після оформлення замовлення ми відправляємо його протягом",
+    "1_2_business_days": "1-2 робочих днів",
+    "delivery_time_depends_on_your_location_and_usually_takes": "Час доставки залежить від вашого місцезнаходження і зазвичай займає",
+    "1_3_days": "1-3 дні",
+    "payment_methods": "Способи оплати",
+    "we_offer": "Ми пропонуємо",
+    "several_convenient_payment_options": "кілька зручних варіантів оплати",
+    "online_payment_by_card_visa_mastercard_through_secure_payment_system": "Онлайн-оплата карткою (Visa/Mastercard) через захищену платіжну систему.",
+    "cash_on_delivery_payment_upon_receipt_nova_poshta_branch": "Накладений платіж (оплата при отриманні) у відділенні Нової Пошти.",
+    "cashless_payment_for_corporate_clients_and_large_orders": "Безготівковий розрахунок для корпоративних клієнтів та великих замовлень.",
+    "delivery_cost": "Вартість доставки",
+    "also_buy": "Також купують"
+  },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",
     "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
@@ -113,6 +177,18 @@
       "grapefruit": "Грейпфрут",
       "kiwi": "Ківі"
     }
+  },
+  "promo-banner": {
+    "free_delivery": "Безкоштовна доставка!",
+    "when_ordering_from": "При замовленні від",
+    "uah": "грн",
+    "get_free_delivery": "Отримати безкоштовну доставку",
+    "icon_cart": "іконка кошика",
+    "icon_instagram": "іконка Instagram"
+  },
+  "toast": {
+    "success": "Вітання!",
+    "error": "Помилка!",
+    "info": "Інформація"
   }
-
 }

@@ -17,7 +17,7 @@
       "message": "the most delicious kus-topchiki"
     },
     "footer": {
-      "CTA-socials":"join our social networks",
+      "CTA-socials": "join our social networks",
       "public-offer": "public offer",
       "privacy-policy": "privacy policy"
     },
@@ -49,7 +49,8 @@
       "title-md": "Travel with us"
     },
     "burger-menu": {
-      "catalog": "Catalog"
+      "catalog": "Catalog",
+      "logo": "logo"
     }
   },
   "cart": {
@@ -66,11 +67,17 @@
     "continue-shopping": "Continue shopping",
     "order": "Order"
   },
-  "Blog": {
+  "blog": {
     "paginationButtonLeft": "Previous",
     "paginationButtonRight": "Next",
-    "Blog": "Blog",
-    "title": "Welcome to our blog! Here we talk about everything related to our dryers – from interesting recipes and useful tips to just plain funny stories. Check back often, there’s always something delicious here!"
+    "title": "Blog",
+    "description-top": "Welcome to our blog! Here we talk about everything related to our dryers – from interesting recipes and useful tips to just plain funny stories. Check back often, there’s always something delicious here!",
+    "description-bottom":"Do you want to stay up to date with all the latest news, promotions, and receive exclusive recipes?",
+    "email-caption":"Leave your email and we will send you only the tastiest news!",
+    "handbag":"shopping handbag picture",
+    "email-placeholder":"Fill in your email",
+    "submit-btn":"Submit"
+
   },
   "breadcrumbs": {
     "Home": "Home",
@@ -99,6 +106,65 @@
     "instagram icon": "instagram icon",
     "telegram icon": "telegram icon"
   },
+  "product-list": {
+    "home": "Home",
+    "type": "Type",
+    "no_categories_available": "No categories available",
+    "weight": "Weight",
+    "from": "From",
+    "g": "g",
+    "to": "To",
+    "filter": "Filter",
+    "reset_all": "Reset all",
+    "show": "Show",
+    "fruit": {
+      "orange": "Orange",
+      "mango": "Mango",
+      "pear": "Pear",
+      "pineapple": "Pineapple",
+      "ginger": "Ginger",
+      "grapefruit": "Grapefruit",
+      "kiwi": "Kiwi"
+    }
+  },
+  "product": {
+    "top": "TOP",
+    "novelty": "Novelty",
+    "sale": "Sale",
+    "expect_soon": "Expect soon!",
+    "add_to_cart": "Add to cart",
+    "with_this_product_buy": "With this product buy",
+    "something_that_will_come_handy_along_with_your_choice": "Something that will come in handy along with your choice!",
+    "composition": "composition",
+    "choose_weight": "Choose weight",
+    "weight": "Weight",
+    "g": "g",
+    "about_product": "About product",
+    "nutritional_value": "Nutritional value",
+    "proteins": "Proteins",
+    "fats": "Fats",
+    "carbohydrates": "Carbohydrates",
+    "energy_value": "Energy value",
+    "shelf_life": "Shelf life",
+    "storage_conditions": "Storage conditions",
+    "at_temperatures_from_relative_humidity": "at temperatures from +3°C to +25°C and relative humidity of 70%",
+    "expiration_date": "Expiration date",
+    "months_from_the_date_manufacture_indicated_packaging": "12 months from the date of manufacture. The date is indicated on the packaging",
+    "delivery": "Delivery",
+    "delivery_ukraine": "Delivery in Ukraine",
+    "we_offer_fast_and_reliable_delivery_of_our_products_throughout_ukraine_using_nova_poshta_after_placing_an_order_we_ship_it_within": "We offer fast and reliable delivery of our products throughout\nUkraine using Nova Poshta. After placing an order, we ship it within",
+    "1_2_business_days": "1-2 business days",
+    "delivery_time_depends_on_your_location_and_usually_takes": "Delivery time depends on your location and usually takes",
+    "1_3_days": "1-3 days",
+    "payment_methods": "Payment methods",
+    "we_offer": "We offer",
+    "several_convenient_payment_options": "several convenient payment options",
+    "online_payment_by_card_visa_mastercard_through_secure_payment_system": "Online payment by card (Visa/Mastercard) through a secure payment system.",
+    "cash_on_delivery_payment_upon_receipt_nova_poshta_branch": "Cash on delivery (payment upon receipt) at a Nova Poshta branch.",
+    "cashless_payment_for_corporate_clients_and_large_orders": "Cashless payment for corporate clients and large orders.",
+    "delivery_cost": "Delivery cost",
+    "also_buy": "Also buy"
+  },
   "not_found_page": {
     "fruitAlt": "Fruit decoration",
     "notFoundMessage": "What a tragedy! Let's rush to prepare something for you",
@@ -112,5 +178,18 @@
       "grapefruit": "Grapefruit",
       "kiwi": "Kiwi"
     }
+  },
+  "toast": {
+    "success": "Success!",
+    "error": "Error!",
+    "info": "Info"
+  },
+  "promo-banner": {
+    "free_delivery": "Free delivery!",
+    "when_ordering_from": "When ordering from",
+    "uah": "UAH",
+    "get_free_delivery": "Get free delivery",
+    "icon_cart": "icon cart",
+    "icon_instagram": "icon instagram"
   }
 }

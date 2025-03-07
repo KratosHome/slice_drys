@@ -1,3 +1,24 @@
+interface IOrderProduct {
+  id: string
+  name: string
+  count: number
+  price: number
+}
+
+interface IOrderUser {
+  id: string
+  name: string
+  surname: string
+  phone: string
+  email: string
+}
+
+interface IOrderDelivery {
+  city: string
+  department: string
+  phone: string
+}
+
 interface IOrder {
   id: string
   status:
@@ -9,25 +30,10 @@ interface IOrder {
     | 'awaitingReturn'
     | 'cancelled'
     | 'failedDelivery'
-  products: {
-    id: string
-    name: string
-    count: number
-    price: number
-  }[]
+  products: IOrderProduct[]
   total: number
-  user: {
-    id: string
-    name: string
-    surname: string
-    phone: string
-    email: string
-  }
-  delivery: {
-    city: string
-    department: string
-    phone: string
-  }
+  user: IOrderUser
+  delivery: IOrderDelivery
   payment: {
     method: 'cash' | 'card'
   }

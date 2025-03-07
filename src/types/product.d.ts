@@ -11,6 +11,11 @@ interface IProduct {
   visited?: number
   categories: string[]
   nutritionalValue: INutritionalValue
+  variant?: IVariableProduct
+  title?: string
+  metaDescription?: string
+  keywords?: string[]
+  images?: string[]
 }
 
 interface IProductLocal {
@@ -26,6 +31,10 @@ interface IProductLocal {
   slug: string
   categories: string[]
   nutritionalValue: INutritionalValue
+  title: ILocalizedString
+  metaDescription: ILocalizedString
+  keywords: ILocalizedStringArray
+  images: string[]
 }
 
 interface INutritionalValue {

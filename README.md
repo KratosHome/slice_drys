@@ -24,11 +24,11 @@ yarn --legacy-peer-deps
 
 The project uses a `MongoDB` database. Go to the site [MongoDB](https://www.mongodb.com) create a project and cluster then add a link to your database to the `.env` file.
 
-## 2. Create Cloudinary account:
+## 3. Create Cloudinary account:
 
 The project uses the `Cloudinary` platform to work with images. Go to the site [Cloudinary](https://cloudinary.com/home), register and add your keys and cloud name to the `.env` file.
 
-## 3. Run the development server:
+## 4. Run the development server:
 
 ```bash
 npm run dev
@@ -36,7 +36,7 @@ npm run dev
 yarn dev
 ```
 
-## 4. Build and run project:
+## 5. Build and run project:
 
 ```bash
 npm run build

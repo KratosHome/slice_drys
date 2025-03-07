@@ -6,14 +6,14 @@ import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Cart from '@/components/client/header/card/cart'
+import SmallCart from '@/components/client/header/small-cart'
 import Socials from '../ui/Socials'
 import { Separator } from '@/components/admin/ui/separator'
 
 import { contacts } from '@/data/main/contacts'
 import { cn } from '@/utils/cn'
 
-interface HamburgerMenu {
+interface IHamburgerMenuProps {
   productLinks: ICategory[]
   hamburgerLinksOther: ILink[]
 }
@@ -21,15 +21,27 @@ interface HamburgerMenu {
 export default function HamburgerMenu({
   productLinks,
   hamburgerLinksOther,
-}: HamburgerMenu) {
+}: IHamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false) // новий стан для відслідковування скролу
   const locale = useLocale() as ILocale
 
   const t = useTranslations('main.burger-menu')
   const closeMenu = () => setIsOpen(!isOpen)
   const pathname = usePathname()
 
-  const containerClasses = `tham tham-e-squeeze tham-w-6  ${isOpen ? 'tham-active' : ''}`
+  const containerClasses = `tham tham-e-squeeze tham-w-6 ${isOpen ? 'tham-active' : ''}`
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(document.documentElement.scrollTop > 10)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
@@ -37,7 +49,6 @@ export default function HamburgerMenu({
     } else {
       document.body.classList.remove('overflow-hidden')
     }
-
     return () => {
       document.body.classList.remove('overflow-hidden')
     }
@@ -70,7 +81,8 @@ export default function HamburgerMenu({
                 'data-[closed]:-translate-x-full',
                 'data-[leave]:duration-500 data-[leave]:ease-in-out',
                 'data-[leave]:data-[closed]:-translate-x-full',
-                document.documentElement.scrollTop > 10 ? '' : 'top-[33px]',
+                // замість прямого доступу до document використовується стан isScrolled
+                isScrolled ? '' : 'top-[33px]',
               )}
             >
               <div className="flex flex-col font-poppins">
@@ -89,7 +101,7 @@ export default function HamburgerMenu({
                   >
                     <Image
                       src={'/icons/logo.svg'}
-                      alt="logo"
+                      alt={`${t('logo')}`}
                       width={39}
                       height={46}
                     />
@@ -97,7 +109,7 @@ export default function HamburgerMenu({
 
                   <LocaleChange />
                   <div onClick={closeMenu}>
-                    <Cart />
+                    <SmallCart />
                   </div>
                 </div>
 

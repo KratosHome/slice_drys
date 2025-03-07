@@ -9,7 +9,13 @@ export async function getFeed(limit: number) {
 
   if (!accessToken) {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(instaData.slice(0, limit)), 0)
+      setTimeout(
+        () =>
+          resolve({
+            data: instaData.slice(0, limit),
+          }),
+        0,
+      )
     })
   }
 

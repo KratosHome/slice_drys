@@ -182,28 +182,26 @@ export const Hero = ({
                     : item.position?.desktop?.x
 
                   return (
-                    <>
-                      <Image
-                        key={index}
-                        src={item.path}
-                        alt="animation"
-                        className={cn(
-                          `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
-                          isMobile ? `opacity-1` : '',
-                          isDesktop ? `w-[${item.width}px]` : '',
-                        )}
-                        style={{
-                          top: isDesktop ? `0` : `${top}px`,
-                          left: isDesktop ? `0` : `${left}px`,
-                          transform: `rotate(${item.rotate || 0}deg)`,
-                        }}
-                        width={isDesktop ? item.width : item.width / 2}
-                        height={isDesktop ? item.height : item.height / 2}
-                        ref={(el) => {
-                          if (el) subImagesRefs.current[index] = el
-                        }}
-                      />
-                    </>
+                    <Image
+                      key={index}
+                      src={item.path}
+                      alt="animation"
+                      className={cn(
+                        `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                        isMobile ? `opacity-1` : '',
+                        isDesktop ? `w-[${item.width}px]` : '',
+                      )}
+                      style={{
+                        top: isDesktop ? `0` : `${top}px`,
+                        left: isDesktop ? `0` : `${left}px`,
+                        transform: `rotate(${item.rotate || 0}deg)`,
+                      }}
+                      width={isDesktop ? item.width : item.width / 2}
+                      height={isDesktop ? item.height : item.height / 2}
+                      ref={(el) => {
+                        if (el) subImagesRefs.current[index] = el
+                      }}
+                    />
                   )
                 })}
               </div>

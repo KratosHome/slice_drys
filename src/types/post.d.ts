@@ -26,14 +26,22 @@ interface IPostLocal {
   createdAt: Date
 }
 
-interface IGetPost {
-  post: IPost[]
-  postAll?: IPostLocal[]
+interface IGetPostsAdmin {
+  postsLocalized: IPost[]
+  postsAll: IPostLocal[]
+  success: boolean
+  message: string
+}
+interface IGetPostsClient {
+  postsLocalized: IPost[]
+  currentPage: number
+  totalPages: number
+  totalPosts: number
   success: boolean
   message: string
 }
 
-interface IGetOnePost {
+interface IGetLocalizedPost {
   post: IPost
   success: boolean
   message: string

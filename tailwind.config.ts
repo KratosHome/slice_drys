@@ -23,7 +23,7 @@ const config: Config = {
         },
       }),
       fontFamily: {
-        poppins: 'var(--font-poppins)',
+        poppins: ['var(--font-poppins)', 'sans-serif'],
         rubik: ['var(--font-rubik-doodle-shadow)', 'sans-serif'],
         dmsans: ['var(--font-dm-sans)', 'sans-serif'],
       },
@@ -121,11 +121,20 @@ const config: Config = {
             transform: 'translateX(-50%)',
           },
         },
+        follow: {
+          '0%': {
+            transform: 'translateY(0) rotate(90deg)',
+          },
+          '100%': {
+            transform: 'translateY(50px) scale(0.8) rotate(90deg)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         marquee: '30s marquee linear infinite',
+        follow: '1s follow ease-in-out infinite alternate',
       },
     },
   },
@@ -138,4 +147,5 @@ const config: Config = {
     require('tailwind-hamburgers'),
   ],
 }
+
 export default config
