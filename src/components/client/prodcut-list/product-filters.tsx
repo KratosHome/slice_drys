@@ -90,7 +90,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   }, [debouncedSliderValue])
 
   const updateUrlParams = (params: URLSearchParams) => {
-    const newUrl = `?${params.toString()}`
+    const query = params.toString()
+    const newUrl = query ? `?${query}` : window.location.pathname
     window.history.replaceState(null, '', newUrl)
     router.refresh()
   }

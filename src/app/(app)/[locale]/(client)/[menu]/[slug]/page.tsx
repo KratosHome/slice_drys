@@ -9,7 +9,7 @@ import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { locales } from '@/data/locales'
-import { getUrls } from '@/server/products/get-urls.server'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -74,7 +74,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const productSlug = await getUrls()
+  const productSlug = await getProductsUrls()
 
   return productSlug.data.flatMap((item: { slug: string }) =>
     locales.map((locale) => ({

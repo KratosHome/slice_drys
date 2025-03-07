@@ -10,7 +10,7 @@ function InstaCard({ post }: Props) {
     <motion.div
       className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white will-change-transform md:max-w-none"
       whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
-      transition={{ duration: 0.3 }} // Тривалість анімації
+      transition={{ duration: 0.3 }}
     >
       <div className="grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px] font-dmsans">
         <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px]">

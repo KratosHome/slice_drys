@@ -1,6 +1,5 @@
 import React from 'react'
 import Product from '@/components/client/product/product'
-import NotFound from '@/components/not-found'
 import ProductFilters from '@/components/client/prodcut-list/product-filters'
 import {
   Breadcrumb,
@@ -28,6 +27,9 @@ import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
 import Delivery from '@/components/client/promo-banner/delivery'
 import { getPaginationRange } from '@/utils/get-pagination-range'
+import { locales } from '@/data/locales'
+import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
+import NotFoundPage from '@/components/not-found'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -55,7 +57,6 @@ export async function generateMetadata({
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
   const canonicalUrl = `${url}/${categoriesParam}`
-  const ogImage = currentCategories.image || `${url}/default-category-image.jpg`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -72,9 +73,10 @@ export async function generateMetadata({
       description,
       url: canonicalUrl,
       type: 'website',
+      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
       images: [
         {
-          url: ogImage,
+          url: currentCategories.data.image,
           width: 1200,
           height: 630,
           alt: currentCategories.data.metaTitle?.[locale],
@@ -82,6 +84,17 @@ export async function generateMetadata({
       ],
     },
   }
+}
+
+export async function generateStaticParams() {
+  const categorySlug = await getCategoryUrls()
+
+  return categorySlug.data.flatMap((item: { slug: string }) =>
+    locales.map((locale) => ({
+      menu: item.slug,
+      locale,
+    })),
+  )
 }
 
 export default async function MenuPage(props: {
@@ -145,7 +158,7 @@ export default async function MenuPage(props: {
   }
 
   if (productsData.data.length === 0) {
-    return <NotFound />
+    return <NotFoundPage />
   }
 
   const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
@@ -180,11 +193,10 @@ export default async function MenuPage(props: {
   return (
     <>
       <ProductListJsonLd
-        currentCategories={currentCategories}
+        currentCategories={currentCategories.data}
         locale={locale}
         canonicalUrl={canonicalUrl}
         productsData={productsData}
-        url={url ?? ''}
         categoriesParam={categoriesParam}
       />
       <main>

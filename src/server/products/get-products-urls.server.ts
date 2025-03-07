@@ -3,7 +3,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 
-export async function getUrls() {
+export async function getProductsUrls() {
   try {
     await connectToDb()
 

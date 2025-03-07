@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import { getPost } from '@/server/posts/get-posts.server'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
-import { notFound } from 'next/navigation'
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/client/ui/share'
+import NotFoundPage from '@/components/not-found'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -32,7 +32,7 @@ export default async function PostPage({ params }: Props) {
 
   const data = await getPost({ locale, slug, isVisited: true })
   if (!data.success) {
-    return notFound()
+    return <NotFoundPage />
   }
   const content = JSON.parse(data.post[0].content)
   const title = data.post[0].title
