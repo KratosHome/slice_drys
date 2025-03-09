@@ -75,21 +75,6 @@ export async function generateMetadata({
   }
 }
 
-export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
-  const categorySlug = await getCategoryUrls()
-
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    categorySlug.data.flatMap((category: { slug: string }) =>
-      locales.map((locale) => ({
-        slug: item.slug,
-        locale,
-        category: category.slug,
-      })),
-    ),
-  )
-}
-
 export default async function Page(props: {
   params: Params
   searchParams: SearchParams
@@ -158,5 +143,21 @@ export async function generateStaticParams() {
     })),
   )
 }
+
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+  const categorySlug = await getCategoryUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    categorySlug.data.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        category: category.slug,
+      })),
+    ),
+  )
+}
+
 
  */
