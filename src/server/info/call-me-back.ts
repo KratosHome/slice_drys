@@ -20,7 +20,6 @@ export async function callMeBack(formData: FormData) {
       chatId,
       `
       Час відправки: ${formattedDate},
-      Імя: ${formData.name}, 
       Номер: ${formData.phoneNumber},
     `,
     )
