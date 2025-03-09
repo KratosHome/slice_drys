@@ -93,6 +93,7 @@ export default async function PostPage({ params }: Props) {
   if (!data.success) {
     return <NotFoundPage />
   }
+  const url = `${baseUrl}/${locale}/blog/${slug}`
 
   const content = JSON.parse(data.post[0].content)
   const title = data.post[0].title
@@ -126,7 +127,7 @@ export default async function PostPage({ params }: Props) {
             <div className="text-gray-500">{author}</div>
           </div>
         </div>
-        <Share />
+        <Share title={title} url={url} />
       </div>
     </>
   )
