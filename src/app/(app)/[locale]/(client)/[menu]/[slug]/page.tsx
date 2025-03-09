@@ -1,6 +1,3 @@
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 import { ProductInfo } from '@/components/client/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
@@ -96,25 +93,23 @@ export default async function Page(props: {
 
   const t = await getTranslations('product')
 
-  const productData = await fetch(
-    `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    { next: { revalidate: 60 } },
-  ).then((res) => res.json())
+  const [productData, productSliderData] = await Promise.all([
+    fetch(
+      `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+      { next: { revalidate: 60 } },
+    ).then((res) => res.json()),
 
-  const categorySlug = productData.data.categories[0].slug
-
-  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
-  const categories = productData.data.categories
-  const idsString = categories.map((item: { id: number }) => item.id).join(',')
-
-  const productSliderData = await fetch(
-    `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&categories=${idsString}&productId=${productData.data.id}`,
-    { next: { revalidate: 60 } },
-  ).then((res) => res.json())
+    fetch(
+      `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
+    ).then((res) => res.json()),
+  ])
 
   if (productData.success === false) {
     return <NotFoundPage />
   }
+
+  const categorySlug = productData.data.categories[0].slug
+  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
 
   return (
     <>
