@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 import { ProductInfo } from '@/components/client/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
