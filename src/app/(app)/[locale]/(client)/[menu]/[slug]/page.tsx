@@ -72,21 +72,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
-  const categorySlug = await getCategoryUrls()
-
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    categorySlug.data.flatMap((category: { slug: string }) =>
-      locales.map((locale) => ({
-        slug: item.slug,
-        locale,
-        category: category.slug,
-      })),
-    ),
-  )
-}
-
 export default async function ProductPage({ params }: Props) {
   const { slug, locale } = await params
 
