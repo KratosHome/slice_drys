@@ -8,6 +8,7 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -72,6 +73,14 @@ export async function generateMetadata({
   }
 }
 
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+
+  return productSlug.data.map((item: { slug: string }) => ({
+    slug: item.slug,
+  }))
+}
+
 export default async function Page(props: {
   params: Params
   searchParams: SearchParams
@@ -88,6 +97,7 @@ export default async function Page(props: {
 
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
+      { next: { revalidate: 60 } },
     ).then((res) => res.json()),
   ])
 
