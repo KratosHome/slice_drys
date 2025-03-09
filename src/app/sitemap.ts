@@ -1,22 +1,15 @@
 import type { MetadataRoute } from 'next'
 import { locales } from '@/data/locales'
+import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
+import { getPostsUrls } from '@/server/posts/get-ports-urls.server'
 
 const url = process.env.NEXT_URL
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [categoriesData, productsData, postsData] = await Promise.all([
-    fetch(`${url}/api/categories/all`, {
-      next: { revalidate: 60 },
-    }).then((res) => res.json()),
-
-    fetch(`${url}/api/products/all`, { next: { revalidate: 60 } }).then((res) =>
-      res.json(),
-    ),
-
-    fetch(`${url}/api/posts/get-urls`, { next: { revalidate: 60 } }).then(
-      (res) => res.json(),
-    ),
-  ])
+  const categoriesData = await getCategoryUrls()
+  const productsData = await getProductsUrls()
+  const postsData = await getPostsUrls()
 
   const homePage = locales.map((lang) => ({
     url: `${url}/${lang}`,
@@ -66,8 +59,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
 
   const productsUrls = productsData.data.flatMap(
-    (product: { slug: string; categories: Array<{ slug: string }> }) =>
-      product.categories.flatMap((category) =>
+    (product: { slug: string; categories?: Array<{ slug: string }> }) =>
+      (product.categories ?? []).flatMap((category) =>
         locales.map((lang) => ({
           url: `${url}/${lang}/${category.slug}/${product.slug}`,
           lastModified: new Date('2024-03-01'),
