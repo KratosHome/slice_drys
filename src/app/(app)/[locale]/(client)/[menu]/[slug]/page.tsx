@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   const categorySlug = productData.data.categories[0].slug
 
-  const canonicalUrl = `${url}/${categorySlug}/${slug}`
+  const canonicalUrl = `${url}/${locale}/${categorySlug}/${slug}`
 
   return {
     title: productData.data.title,
@@ -95,7 +95,7 @@ export default async function Page(props: {
 
   const productData = await fetch(
     `${url}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    {},
+    { next: { revalidate: 60 } },
   ).then((res) => res.json())
 
   const categorySlug = productData.data.categories[0].slug
