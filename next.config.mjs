@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 import createNextIntlPlugin from 'next-intl/plugin'
+import * as NextMdx from '@next/mdx'
 
 const withNextIntl = createNextIntlPlugin()
+
+const withMDX = NextMdx.default({
+  extension: /\.mdx?$/,
+})
 
 const nextConfig = {
   images: {
@@ -29,4 +34,4 @@ const nextConfig = {
   },
 }
 
-export default withNextIntl(nextConfig)
+export default withNextIntl(withMDX(nextConfig))
