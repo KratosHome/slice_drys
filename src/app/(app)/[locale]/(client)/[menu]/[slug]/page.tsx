@@ -8,6 +8,8 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
+import { locales } from '@/data/locales'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -69,56 +71,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    locales.map((locale) => ({
+      slug: item.slug,
+      locale,
+    })),
+  )
+}
+
 export default async function ProductPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const t = await getTranslations('product')
-
-  const [productData, productSliderData] = await Promise.all([
-    fetch(
-      `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-      { next: { revalidate: 60 } },
-    ).then((res) => res.json()),
-
-    fetch(
-      `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
-      { next: { revalidate: 60 } },
-    ).then((res) => res.json()),
-  ])
-
-  if (productData.success === false) {
-    return <NotFoundPage />
-  }
-
-  const categorySlug = productData.data.categories[0].slug
-  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
-
   return (
     <>
-      <ProductJsonLd
-        productData={productData.data}
-        canonicalUrl={canonicalUrl}
-      />
-      <div className="container px-5">
-        <Breadcrumbs
-          locale={locale}
-          category={productData.data.categories[0].name}
-          product={productData.data.name}
-          categoryLink={productData.data.categories[0].slug}
-        />
-        <ProductInfo product={productData.data} />
-        <Accordions
-          nutrition={productData.data.nutritionalValue}
-          description={productData.data.description}
-        />
-        <ProductSlider
-          products={productSliderData.data}
-          title={t('also_buy')}
-          message={t('something_that_will_come_handy_along_with_your_choice')}
-        />
-        <Delivery />
-        <ToTheTop />
-      </div>
+      {slug}
+      {locale}
     </>
   )
 }
@@ -150,5 +120,53 @@ export async function generateStaticParams() {
   )
 }
 
+
+
+  const t = await getTranslations('product')
+
+  const [productData, productSliderData] = await Promise.all([
+    fetch(
+      `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+      { next: { revalidate: 60 } },
+    ).then((res) => res.json()),
+
+    fetch(
+      `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
+      { next: { revalidate: 60 } },
+    ).then((res) => res.json()),
+  ])
+
+  if (productData.success === false) {
+    return <NotFoundPage />
+  }
+
+  const categorySlug = productData.data.categories[0].slug
+  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
+  
+
+      <ProductJsonLd
+        productData={productData.data}
+        canonicalUrl={canonicalUrl}
+      />
+      <div className="container px-5">
+        <Breadcrumbs
+          locale={locale}
+          category={productData.data.categories[0].name}
+          product={productData.data.name}
+          categoryLink={productData.data.categories[0].slug}
+        />
+        <ProductInfo product={productData.data} />
+        <Accordions
+          nutrition={productData.data.nutritionalValue}
+          description={productData.data.description}
+        />
+        <ProductSlider
+          products={productSliderData.data}
+          title={t('also_buy')}
+          message={t('something_that_will_come_handy_along_with_your_choice')}
+        />
+        <Delivery />
+        <ToTheTop />
+      </div>
 
  */
