@@ -54,6 +54,13 @@ export async function generateMetadata({
     {},
   ).then((res) => res.json())
 
+  if (currentCategories.success === false) {
+    return {
+      title: 'post not found',
+      description: 'post not found',
+    }
+  }
+
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
   const canonicalUrl = `${url}/${categoriesParam}`
@@ -145,6 +152,10 @@ export default async function MenuPage(props: {
       }).then((res) => res.json()),
     ])
 
+  if (productsData.data.length === 0) {
+    return <NotFoundPage />
+  }
+
   const descriptionHTML = currentCategories.data.description[locale]
   const isLongText = currentCategories.data.description[locale].length > 500
 
@@ -155,10 +166,6 @@ export default async function MenuPage(props: {
     const mid = Math.ceil(descriptionHTML.length / 2)
     firstPart = descriptionHTML.substring(0, mid)
     secondPart = descriptionHTML.substring(mid)
-  }
-
-  if (productsData.data.length === 0) {
-    return <NotFoundPage />
   }
 
   const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
