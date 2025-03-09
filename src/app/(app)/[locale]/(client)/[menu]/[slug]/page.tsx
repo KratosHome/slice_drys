@@ -12,15 +12,13 @@ import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import { locales } from '@/data/locales'
 
-type Params = Promise<{ locale: ILocale; slug: string }>
+type Props = {
+  params: Promise<{ locale: ILocale; slug: string }>
+}
 
 const baseUrl = process.env.NEXT_URL
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
   const productData = await fetch(
@@ -89,8 +87,8 @@ export async function generateStaticParams() {
   )
 }
 
-export default async function Page(props: { params: Params }) {
-  const { slug, locale } = await props.params
+export default async function ProductPage({ params }: Props) {
+  const { slug, locale } = await params
 
   const t = await getTranslations('product')
 
