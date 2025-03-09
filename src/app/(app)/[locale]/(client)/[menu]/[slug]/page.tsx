@@ -8,6 +8,9 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
+import { locales } from '@/data/locales'
+import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -70,6 +73,21 @@ export async function generateMetadata({
       images: [productData.data.img],
     },
   }
+}
+
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+  const categorySlug = await getCategoryUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    categorySlug.data.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        category: category.slug,
+      })),
+    ),
+  )
 }
 
 export default async function Page(props: {
