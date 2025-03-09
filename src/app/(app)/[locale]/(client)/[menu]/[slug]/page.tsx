@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const productData = await fetch(
     `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    {},
+    { next: { revalidate: 60 } },
   ).then((res) => res.json())
 
   if (productData.success === false) {
