@@ -1,5 +1,6 @@
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
+import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -7,12 +8,16 @@ type Props = {
 
 export async function generateStaticParams() {
   const productSlug = await getProductsUrls()
+  const categorySlug = await getCategoryUrls()
 
   return productSlug.data.flatMap((item: { slug: string }) =>
-    locales.map((locale) => ({
-      slug: item.slug,
-      locale,
-    })),
+    categorySlug.data.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        menu: category.slug,
+      })),
+    ),
   )
 }
 
