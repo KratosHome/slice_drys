@@ -8,9 +8,6 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
-import { getProductsUrls } from '@/server/products/get-products-urls.server'
-import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
-import { locales } from '@/data/locales'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
