@@ -7,7 +7,7 @@ export async function getProductsUrls() {
   try {
     await connectToDb()
 
-    const products = await Product.find()
+    const products = await Product.find({})
       .select('slug categories')
       .populate('categories', 'slug')
       .lean()

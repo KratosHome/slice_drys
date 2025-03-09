@@ -30,6 +30,7 @@ import { getPaginationRange } from '@/utils/get-pagination-range'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import NotFoundPage from '@/components/not-found'
+import { getProductsUrls } from '@/server/products/get-products-urls.server'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -94,13 +95,17 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
   const categorySlug = await getCategoryUrls()
 
-  return categorySlug.data.flatMap((item: { slug: string }) =>
-    locales.map((locale) => ({
-      menu: item.slug,
-      locale,
-    })),
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    categorySlug.data.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        category: category.slug,
+      })),
+    ),
   )
 }
 
