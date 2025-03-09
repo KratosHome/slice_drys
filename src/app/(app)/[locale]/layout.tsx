@@ -11,6 +11,9 @@ import { Toaster } from '@/components/admin/ui/toaster'
 import Footer from '@/components/client/footer/footer'
 
 import '../globals.css'
+import { routing } from '@/i18n/routing'
+import { notFound } from 'next/navigation'
+import NotFoundPage from '@/components/not-found'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -47,6 +50,16 @@ export default async function LocaleLayout(props: {
 
   const { locale } = params
   const { children } = props
+
+  if (!routing.locales.includes(locale as ILocale)) {
+    return (
+      <html>
+        <body>
+          <NotFoundPage />
+        </body>
+      </html>
+    )
+  }
 
   const messages = await getMessages()
 
