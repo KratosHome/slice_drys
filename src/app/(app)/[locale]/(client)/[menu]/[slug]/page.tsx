@@ -1,10 +1,33 @@
-import type { Metadata } from 'next'
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
 }
+
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    locales.map((locale) => ({
+      slug: item.slug,
+      locale,
+    })),
+  )
+}
+
+export default async function ProductPage({ params }: Props) {
+  const { slug, locale } = await params
+
+  return (
+    <>
+      {slug}
+      {locale}
+    </>
+  )
+}
+
+/*
 
 const baseUrl = process.env.NEXT_URL
 
@@ -62,29 +85,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
 
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    locales.map((locale) => ({
-      slug: item.slug,
-      locale,
-    })),
-  )
-}
 
-export default async function ProductPage({ params }: Props) {
-  const { slug, locale } = await params
-
-  return (
-    <>
-      {slug}
-      {locale}
-    </>
-  )
-}
-
-/*
 export async function generateStaticParams() {
   const productSlug = await getProductsUrls()
 
