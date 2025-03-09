@@ -4,16 +4,9 @@ import { getProductsSliderProduct } from '@/server/products/get-products-slider-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const locale = searchParams.get('locale') as ILocale
-  const categories = searchParams.get('categories') as string
-  const productId = searchParams.get('id') as ILocale
+  const productId = searchParams.get('productSlug') as ILocale
 
-  const categoriesToArr = categories.split(',')
-
-  const data = await getProductsSliderProduct(
-    locale,
-    categoriesToArr,
-    productId,
-  )
+  const data = await getProductsSliderProduct(locale, productId)
 
   return NextResponse.json(data)
 }

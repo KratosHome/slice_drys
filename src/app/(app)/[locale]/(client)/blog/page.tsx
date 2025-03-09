@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server'
-import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
 import {
@@ -28,6 +27,7 @@ import { cn } from '@/utils/cn'
 
 import { blogMetaData } from '@/data/blog/blogMetaData'
 import { locales } from '@/data/locales'
+import NotFoundPage from '@/components/not-found'
 
 type PageProps = {
   params: Promise<{ locale: ILocale }>
@@ -44,19 +44,20 @@ export async function generateMetadata({
   const { page } = await searchParams
 
   const ogImage = `${baseUrl}/blog-image.webp`
-  const title = blogMetaData[locale].title
-  const description = blogMetaData[locale].description
-  const keywords = blogMetaData[locale].keywords
+
   const url =
-    page && +page > 1 ? `${baseUrl}/blog?page=${page}` : `${baseUrl}/blog`
+    page && +page > 1
+      ? `${baseUrl}/${locale}/blog?page=${page}`
+      : `${baseUrl}/${locale}/blog`
+
   return {
-    title,
-    description,
-    keywords,
+    title: blogMetaData[locale].title,
+    description: blogMetaData[locale].description,
+    keywords: blogMetaData[locale].keywords,
     robots: 'index, follow',
     openGraph: {
-      title,
-      description,
+      title: blogMetaData[locale].openGraphTitle,
+      description: blogMetaData[locale].openGraphDescription,
       url,
       type: 'website',
       images: [
@@ -64,7 +65,7 @@ export async function generateMetadata({
           url: ogImage,
           width: 1200,
           height: 1012,
-          alt: title,
+          alt: blogMetaData[locale].alt,
         },
       ],
     },
@@ -95,23 +96,22 @@ export default async function Blog({ params, searchParams }: PageProps) {
 
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
 
-  const postsData = (await fetch(
+  const postsData = await fetch(
     `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}`,
     {
       next: {
         tags: ['posts'],
       },
     },
-  ).then((res) => res.json())) as IGetPostsClient
+  ).then((res) => res.json())
 
-  if (!postsData.success) return notFound()
+  if (!postsData.success) return <NotFoundPage />
 
-  const { postsLocalized, currentPage, totalPages } =
-    postsData as IGetPostsClient
+  const { postsLocalized, currentPage, totalPages } = postsData
 
   return (
     <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
-      <Breadcrumb className="mt-[30px] md:mt-10">
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
@@ -128,11 +128,9 @@ export default async function Blog({ params, searchParams }: PageProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-
       <BlogTitle />
       <div className="mx-auto flex flex-col items-center font-bold">
         <PostList posts={postsLocalized} />
-
         {totalPages > 1 && (
           <Pagination className="mt-[60px] md:mt-[120px]">
             <PaginationContent>

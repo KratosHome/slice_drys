@@ -7,11 +7,11 @@ import { ScrollTrigger } from 'gsap/all'
 
 import { Item } from '@/components/client/main/faq/item'
 
-interface IFaq {
-  data: Faq[]
+interface faqProps {
+  data: IFaq[]
 }
 
-const Faq: FC<IFaq> = ({ data }) => {
+const Faq: FC<faqProps> = ({ data }) => {
   const t = useTranslations('main.faq')
   const faqRef = useRef<HTMLDivElement[]>([])
 
@@ -65,7 +65,7 @@ const Faq: FC<IFaq> = ({ data }) => {
           {t('even-what-did-not-ask')}
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data?.map((item: Faq, i) => (
+          {data?.map((item: IFaq, i) => (
             <Item
               ref={(el) => {
                 if (el) {

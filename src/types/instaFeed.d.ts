@@ -3,6 +3,7 @@ enum InstaMediaType {
   VIDEO = 'VIDEO',
   CAROUSEL_ALBUM = 'CAROUSEL_ALBUM',
 }
+
 interface InstaBasePost {
   id: string
   caption: string
@@ -19,4 +20,5 @@ interface InstaCarouselAlbumPost extends InstaBasePost {
     data: InstaSimplePost[]
   }
 }
+
 type InstaFeed = InstaSimplePost | InstaCarouselAlbumPost

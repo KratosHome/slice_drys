@@ -1,4 +1,4 @@
-interface Faq {
+interface IFaq {
   title: string
   description: string
 }

@@ -1,4 +1,6 @@
 import React, { FC } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface CategoriesTreeProps {
   category: ICategory
@@ -13,13 +15,27 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
   toggleExpand,
   setSelectedCategory,
 }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: category._id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
   return (
-    <li className="mb-2">
+    <li className="mb-2" ref={setNodeRef} style={style} {...attributes}>
       <div
         className="flex cursor-pointer items-center justify-between rounded bg-gray-100 p-2 hover:bg-gray-200"
         onClick={() => setSelectedCategory(category)}
       >
-        <span>{category.name.uk}</span>
+        {/* Додай окремий елемент для перетягування */}
+        <span className="mr-2 cursor-move" {...listeners}>
+          ⠿
+        </span>
+
+        <span className="flex-1">{category.name.uk}</span>
+
         {category.children && category.children.length > 0 && (
           <button
             className="text-gray-500 hover:text-gray-700"
@@ -32,6 +48,7 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
           </button>
         )}
       </div>
+
       {expanded[category._id] && category.children && (
         <ul className="ml-4 mt-2 border-l border-gray-300 pl-2">
           {category.children.map((child) => (

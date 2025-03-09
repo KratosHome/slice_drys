@@ -132,12 +132,10 @@ const Header = ({ productLinks }: IHeaderProps) => {
                 </Link>
               ))}
             </nav>
-
             <HamburgerMenu
               productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
-
             <div
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
@@ -175,7 +173,6 @@ const Header = ({ productLinks }: IHeaderProps) => {
                 className="flex items-center justify-center gap-x-4 lg:justify-between"
               >
                 <LocaleChange className="hidden lg:block" />
-
                 <SmallCart />
               </div>
             </div>
@@ -185,7 +182,6 @@ const Header = ({ productLinks }: IHeaderProps) => {
               className="flex origin-top-right justify-between"
             >
               <NumberCall className="hidden lg:flex" />
-
               <CallMe />
             </div>
           </div>

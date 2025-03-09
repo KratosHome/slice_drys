@@ -15,6 +15,26 @@ import ToTheTop from '@/components/client/ui/to-the-top'
 import { partnersData } from '@/data/main/partners'
 import { faqData } from '@/data/main/faq'
 import { helpData } from '@/data/main/help'
+import type { Metadata } from 'next'
+import { mainMetaData } from '@/data/meta-data/main'
+import { locales } from '@/data/locales'
+import MainJsonLd from '@/components/client/json-ld/main-json-ld'
+import { reviewsData } from '@/data/main/reviews'
+import { instaData } from '@/data/main/insta-data'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  return mainMetaData[locale]
+}
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
 
 export default async function Home(props: {
   params: Params
@@ -26,27 +46,27 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, blogData, instaPosts, categoriesData] =
-    await Promise.all([
-      fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
+  const [productsData, blogData, categoriesData] = await Promise.all([
+    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
 
-      fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
+    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
 
-      fetch(`${url}/api/instagram?limit=6`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
-
-      await fetch(`${url}/api/categories`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
-    ])
+    await fetch(`${url}/api/categories`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ])
 
   return (
     <>
+      <MainJsonLd
+        products={productsData.products}
+        faq={faqData[locale]}
+        reviews={reviewsData}
+      />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
         products={productsData.products}
@@ -57,8 +77,8 @@ export default async function Home(props: {
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews />
-      <InstaFeed data={instaPosts.data} />
+      <Reviews reviews={reviewsData} />
+      <InstaFeed data={instaData[locale]} />
       <ToTheTop />
     </>
   )

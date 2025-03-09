@@ -37,7 +37,15 @@
     },
     "reviews": {
       "title": "відгуки",
-      "say-those": "кажуть ті, хто вже скуштував сушеники "
+      "say-those": "кажуть ті, хто вже скуштував сушеники ",
+      "thanks_for_the_feedback": "Дякуємо за відгук!",
+      "add_new_review": "Додати новий відгук",
+      "name": "Ім'я",
+      "enter_name": "Введіть ваше ім'я",
+      "feedback": "Відгук",
+      "enter_text": "Введіть текст",
+      "back": "Назад",
+      "send": "Відправити"
     },
     "our-partners": "Наші партнери",
     "more-about-us": {
@@ -131,7 +139,7 @@
     "novelty": "Новинка",
     "sale": "Розпродаж",
     "expect_soon": "Очікуйте скоро!",
-    "add_to_cart": "Додати в кошик",
+    "add_to_cart": "Купити",
     "with_this_product_buy": "З цим товаром купують",
     "something_that_will_come_handy_along_with_your_choice": "Щось корисне до вашого вибору!",
     "composition": "Склад",

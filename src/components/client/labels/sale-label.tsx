@@ -5,7 +5,7 @@ const SaleLabel = () => {
   const t = useTranslations('product')
 
   return (
-    <div className="relative z-10 flex w-fit items-center gap-2 rounded-sm bg-[#A90909] px-2 py-[2px] uppercase">
+    <div className="relative z-10 flex w-fit items-center gap-2 rounded-sm bg-[#A90909] px-2 py-[2px] uppercase text-white">
       <svg
         className="md:h-6 md:w-6"
         width="16"

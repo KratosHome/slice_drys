@@ -78,6 +78,7 @@ export default function InstaFeed({ data }: Props) {
           </UnderlinedLink>
         </div>
         <Splide
+          aria-labelledby="Insta Feed"
           options={{
             arrowPath: Arrow(),
             type: 'loop',
@@ -85,7 +86,7 @@ export default function InstaFeed({ data }: Props) {
             interval: 3000,
             perPage: 3,
             perMove: 1,
-            gap: '30px',
+            gap: '-15px',
             focus: 0,
             arrows: true,
             pagination: true,

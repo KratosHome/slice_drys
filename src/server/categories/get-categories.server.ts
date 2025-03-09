@@ -9,6 +9,7 @@ export async function getCategories(slug?: string, locale?: ILocale) {
 
     if (slug) {
       const category = await Category.findOne({ slug })
+        .sort({ order: 1 })
         .populate({
           path: 'children',
           populate: {

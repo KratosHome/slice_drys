@@ -16,6 +16,7 @@ interface IProduct {
   metaDescription?: string
   keywords?: string[]
   images?: string[]
+  category?: string
 }
 
 interface IProductLocal {
@@ -34,7 +35,7 @@ interface IProductLocal {
   title: ILocalizedString
   metaDescription: ILocalizedString
   keywords: ILocalizedStringArray
-  images: string[]
+  images?: string[]
 }
 
 interface INutritionalValue {

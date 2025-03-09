@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-import { getUrls } from '@/server/products/get-urls.server'
+import { getPostsUrls } from '@/server/posts/get-ports-urls.server'
 
 export async function GET() {
-  const data = await getUrls()
-
+  const data = await getPostsUrls()
   return NextResponse.json(data)
 }

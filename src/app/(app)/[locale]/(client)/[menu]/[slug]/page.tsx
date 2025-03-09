@@ -8,22 +8,21 @@ import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
-import { locales } from '@/data/locales'
-import { getUrls } from '@/server/products/get-urls.server'
 
 type Params = Promise<{ locale: ILocale; slug: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+const baseUrl = process.env.NEXT_URL
 
 export async function generateMetadata({
   params,
 }: {
   params: Params
 }): Promise<Metadata> {
-  const url = process.env.NEXT_URL
   const { slug, locale } = await params
 
   const productData = await fetch(
-    `${url}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+    `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
     {},
   ).then((res) => res.json())
 
@@ -38,7 +37,7 @@ export async function generateMetadata({
 
   const categorySlug = productData.data.categories[0].slug
 
-  const canonicalUrl = `${url}/${categorySlug}/${slug}`
+  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
 
   return {
     title: productData.data.title,
@@ -73,45 +72,32 @@ export async function generateMetadata({
   }
 }
 
-export async function generateStaticParams() {
-  const productSlug = await getUrls()
-
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    locales.map((locale) => ({
-      slug: item.slug,
-      locale,
-    })),
-  )
-}
-
 export default async function Page(props: {
   params: Params
   searchParams: SearchParams
 }) {
-  const url = process.env.NEXT_URL
   const { slug, locale } = await props.params
 
   const t = await getTranslations('product')
 
-  const productData = await fetch(
-    `${url}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    {},
-  ).then((res) => res.json())
+  const [productData, productSliderData] = await Promise.all([
+    fetch(
+      `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+      { next: { revalidate: 60 } },
+    ).then((res) => res.json()),
 
-  const categorySlug = productData.data.categories[0].slug
-
-  const canonicalUrl = `${url}/${categorySlug}/${slug}`
-  const categories = productData.data.categories
-  const idsString = categories.map((item: { id: number }) => item.id).join(',')
-
-  const productSliderData = await fetch(
-    `${url}/api/products/get-products-slider-product?&locale=${locale}&categories=${idsString}&productId=${productData.data.id}`,
-    {},
-  ).then((res) => res.json())
+    fetch(
+      `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
+      { next: { revalidate: 60 } },
+    ).then((res) => res.json()),
+  ])
 
   if (productData.success === false) {
     return <NotFoundPage />
   }
+
+  const categorySlug = productData.data.categories[0].slug
+  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
 
   return (
     <>
@@ -142,3 +128,33 @@ export default async function Page(props: {
     </>
   )
 }
+
+/*
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    locales.map((locale) => ({
+      slug: item.slug,
+      locale,
+    })),
+  )
+}
+
+export async function generateStaticParams() {
+  const productSlug = await getProductsUrls()
+  const categorySlug = await getCategoryUrls()
+
+  return productSlug.data.flatMap((item: { slug: string }) =>
+    categorySlug.data.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        category: category.slug,
+      })),
+    ),
+  )
+}
+
+
+ */

@@ -14,12 +14,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { createCategory } from '@/server/categories/create-categories.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import { locales } from '@/data/locales'
 
 interface CategoriesTreeProps {
   categories: ICategory[]
 }
-
-const languages = ['uk', 'en'] as ILocale[]
 
 interface FormData {
   name: {
@@ -74,6 +73,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
       metaTitle: data.metaTitle,
       metaDescription: data.metaDescription,
       metaKeywords: data.metaKeywords,
+      order: 0,
       parentCategory: selectedCategories.length
         ? selectedCategories[0]
         : undefined,
@@ -126,7 +126,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
             className="space-y-4 rounded-lg border p-4"
           >
             <div className="flex justify-between gap-2">
-              {languages.map((lang) => (
+              {locales.map((lang) => (
                 <div key={lang} className="mb-4 border-b pb-4">
                   <h3 className="text-lg font-bold uppercase">
                     {lang === 'uk' ? 'Українська' : 'English'}

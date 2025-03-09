@@ -1,9 +1,37 @@
+'use client'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import Image from 'next/image'
+import { FC } from 'react'
 
-const Share = () => {
-  const t = useTranslations('Share')
+interface shareProps {
+  title: string
+  url: string
+}
+
+const Share: FC<shareProps> = ({ url, title }) => {
+  const t = useTranslations('share')
+  const encodedUrl = encodeURIComponent(url)
+
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+  const telegramShareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(title)}`
+
+  const handleInstagramShare = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          window.open('https://www.instagram.com', '_blank')
+        })
+        .catch((err) => {
+          console.error('Не вдалося скопіювати посилання:', err)
+        })
+    } else {
+      console.warn('Clipboard API не підтримується')
+      window.open('https://www.instagram.com', '_blank')
+    }
+  }
 
   return (
     <div className="mb-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
@@ -14,7 +42,12 @@ const Share = () => {
         {t('Share')}
       </div>
       <div className="flex gap-3">
-        <Link href="https://www.google.com/" className="w-fit" target="_blank">
+        {/* Додано Tailwind класи для плавного зуму та тіні при наведенні */}
+        <Link
+          href={facebookShareUrl}
+          className="w-fit transform transition-all duration-300 hover:scale-110"
+          target="_blank"
+        >
           <Image
             src={'/icons/facebook.svg'}
             alt={t('facebook icon')}
@@ -22,9 +55,12 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
-        <Link href="https://www.google.com/" className="w-fit" target="_blank">
+        <Link
+          href="#"
+          className="w-fit transform transition-all duration-300 hover:scale-110"
+          onClick={handleInstagramShare}
+        >
           <Image
             src={'/icons/instagram.svg'}
             alt={t('instagram icon')}
@@ -32,9 +68,12 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
-        <Link href="https://www.google.com/" className="w-fit" target="_blank">
+        <Link
+          href={telegramShareUrl}
+          className="w-fit transform transition-all duration-300 hover:scale-110"
+          target="_blank"
+        >
           <Image
             src={'/icons/telegram.svg'}
             alt={t('telegram icon')}
@@ -42,7 +81,6 @@ const Share = () => {
             height={32}
             className="cursor-pointer"
           />
-          <div className="group-data-[focus]:bg-red-500 group-data-[focus]:blur-2xl"></div>
         </Link>
       </div>
     </div>

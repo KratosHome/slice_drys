@@ -1,13 +1,15 @@
 import { FC } from 'react'
 
 interface JsonLdProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  currentCategories: any
+  currentCategories: ICategory
   locale: string
   canonicalUrl: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  productsData: any
-  url: string
+  productsData: {
+    data: IProduct[]
+    currentPage: number
+    totalItems: number
+    totalPages: number
+  }
   categoriesParam: string
 }
 
@@ -16,16 +18,15 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
   locale,
   canonicalUrl,
   productsData,
-  url,
   categoriesParam,
 }) => {
+  const url = process.env.NEXT_URL
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: currentCategories.data.name[locale],
-    description:
-      currentCategories.data.metaDescription[locale] ||
-      currentCategories.data.description[locale],
+    name: currentCategories.name[locale as ILocale],
+    description: currentCategories?.metaDescription?.[locale as ILocale],
     url: canonicalUrl,
     image: currentCategories.image || `${url}/default-category-image.jpg`,
     alternates: {
@@ -35,6 +36,26 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
         en: `${url}/en/${categoriesParam}`,
       },
     },
+    products: productsData.data.map((product) => ({
+      '@type': 'Product',
+      '@id': `${url}/${product.category}/${product.slug}`,
+      name: product.name,
+      image: product.img,
+      description: product.description,
+      brand: {
+        '@type': 'Brand',
+        name: "Slice & Dry's",
+      },
+      sku: product._id,
+      offers: product.variables.map((variable) => ({
+        '@type': 'Offer',
+        url: `${url}/${product.category}/${product.slug}`,
+        priceCurrency: 'UAH',
+        price: variable.price,
+        itemCondition: 'https://schema.org/NewCondition',
+        availability: 'https://schema.org/InStock',
+      })),
+    })),
     pagination: {
       prev:
         productsData.currentPage > 1
@@ -57,7 +78,7 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
         {
           '@type': 'ListItem',
           position: 2,
-          name: currentCategories.data.name[locale],
+          name: currentCategories.name[locale as ILocale],
           item: canonicalUrl,
         },
       ],
