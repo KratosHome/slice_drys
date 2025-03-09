@@ -20,6 +20,7 @@ import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
+import { instaData } from '@/data/main/insta-data'
 
 export async function generateMetadata({
   params,
@@ -45,24 +46,19 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, blogData, instaPosts, categoriesData] =
-    await Promise.all([
-      fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
+  const [productsData, blogData, categoriesData] = await Promise.all([
+    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
 
-      fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
+    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
 
-      fetch(`${url}/api/instagram?limit=6`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
-
-      await fetch(`${url}/api/categories`, {
-        next: { revalidate: 60 },
-      }).then((res) => res.json()),
-    ])
+    await fetch(`${url}/api/categories`, {
+      next: { revalidate: 60 },
+    }).then((res) => res.json()),
+  ])
 
   return (
     <>
@@ -82,7 +78,7 @@ export default async function Home(props: {
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData} />
-      <InstaFeed data={instaPosts.data} />
+      <InstaFeed data={instaData[locale]} />
       <ToTheTop />
     </>
   )
