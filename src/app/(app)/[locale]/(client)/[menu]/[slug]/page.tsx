@@ -1,13 +1,4 @@
-import { ProductInfo } from '@/components/client/product-page'
-import { Accordions } from '@/components/client/product-page/accordions'
-import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
-import NotFoundPage from '@/components/not-found'
-import ProductSlider from '@/components/client/product-slider/product-slider'
-import { getTranslations } from 'next-intl/server'
-import Delivery from '@/components/client/promo-banner/delivery'
-import ToTheTop from '@/components/client/ui/to-the-top'
 import type { Metadata } from 'next'
-import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
 
