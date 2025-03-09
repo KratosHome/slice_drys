@@ -1,38 +1,20 @@
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
+import { Metadata } from 'next'
+import NotFoundPage from '@/components/not-found'
+import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
+import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
+import { ProductInfo } from '@/components/client/product-page'
+import ProductSlider from '@/components/client/product-slider/product-slider'
+import { Accordions } from '@/components/client/product-page/accordions'
+import Delivery from '@/components/client/promo-banner/delivery'
+import ToTheTop from '@/components/client/ui/to-the-top'
+import { getTranslations } from 'next-intl/server'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
 }
-
-export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
-  const categorySlug = await getCategoryUrls()
-
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    categorySlug.data.flatMap((category: { slug: string }) =>
-      locales.map((locale) => ({
-        slug: item.slug,
-        locale,
-        menu: category.slug,
-      })),
-    ),
-  )
-}
-
-export default async function ProductPage({ params }: Props) {
-  const { slug, locale } = await params
-
-  return (
-    <>
-      {slug}
-      {locale}
-    </>
-  )
-}
-
-/*
 
 const baseUrl = process.env.NEXT_URL
 
@@ -90,19 +72,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-
-
-export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
-
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    locales.map((locale) => ({
-      slug: item.slug,
-      locale,
-    })),
-  )
-}
-
 export async function generateStaticParams() {
   const productSlug = await getProductsUrls()
   const categorySlug = await getCategoryUrls()
@@ -112,13 +81,14 @@ export async function generateStaticParams() {
       locales.map((locale) => ({
         slug: item.slug,
         locale,
-        category: category.slug,
+        menu: category.slug,
       })),
     ),
   )
 }
 
-
+export default async function ProductPage({ params }: Props) {
+  const { slug, locale } = await params
 
   const t = await getTranslations('product')
 
@@ -140,8 +110,9 @@ export async function generateStaticParams() {
 
   const categorySlug = productData.data.categories[0].slug
   const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
-  
 
+  return (
+    <>
       <ProductJsonLd
         productData={productData.data}
         canonicalUrl={canonicalUrl}
@@ -166,5 +137,6 @@ export async function generateStaticParams() {
         <Delivery />
         <ToTheTop />
       </div>
-
- */
+    </>
+  )
+}
