@@ -18,8 +18,6 @@ import {
 import { locales } from '@/data/locales'
 import Image from 'next/image'
 import { convertToBase64 } from '@/utils/convertToBase64'
-import { revalidateTag } from 'next/cache'
-import { fetchTags } from '@/data/fetch-tags'
 
 interface UpdateTreeProps {
   selectedCategory: ICategory
@@ -106,9 +104,6 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     const result = await updateCategory(selectedCategory._id, data, image)
 
     if (result.success) {
-      revalidateTag(fetchTags.menu)
-      revalidateTag(fetchTags.products)
-
       toast({
         title: result.message,
       })

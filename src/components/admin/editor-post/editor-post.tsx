@@ -28,8 +28,6 @@ import Spinner from '@/components/admin/ui/spinner'
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 import { useRouter } from 'next/navigation'
-import { revalidateTag } from 'next/cache'
-import { fetchTags } from '@/data/fetch-tags'
 
 interface ICratePost {
   buttonTitle: string
@@ -125,9 +123,6 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       }
       setIsLoading(false)
       if (response.success) {
-        revalidateTag(fetchTags.posts)
-        revalidateTag(fetchTags.post)
-
         setIsOpen(false)
         toast({
           duration: 3000,

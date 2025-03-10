@@ -3,6 +3,7 @@ import { revalidateTag } from 'next/cache'
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function editPost(
   id: string,
@@ -39,7 +40,9 @@ export async function editPost(
     }
 
     await Post.findByIdAndUpdate(id, updatedData, { new: true })
-    revalidateTag('posts')
+    revalidateTag(fetchTags.posts)
+    revalidateTag(fetchTags.post)
+
     return { success: true, message: 'Post updated successfully' }
   } catch (error) {
     console.error(error)

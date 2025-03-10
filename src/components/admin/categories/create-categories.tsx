@@ -15,8 +15,6 @@ import { createCategory } from '@/server/categories/create-categories.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { locales } from '@/data/locales'
-import { revalidateTag } from 'next/cache'
-import { fetchTags } from '@/data/fetch-tags'
 
 interface CategoriesTreeProps {
   categories: ICategory[]
@@ -84,9 +82,6 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
     const result = await createCategory(formattedData)
 
     if (result.success) {
-      revalidateTag(fetchTags.menu)
-      revalidateTag(fetchTags.products)
-
       setIsOpen(false)
       toast({
         title: result.message,

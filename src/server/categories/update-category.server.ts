@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 import cloudinary from '@/server/cloudinaryConfig'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 type UpdateCategoryDTO = Partial<Omit<ICategory, '_id' | 'children'>>
 
@@ -54,6 +56,9 @@ export async function updateCategory(
     if (!updatedCategory) {
       return { success: false, message: 'Категорію не знайдено' }
     }
+
+    revalidateTag(fetchTags.menu)
+    revalidateTag(fetchTags.products)
 
     return {
       data: updatedCategory,

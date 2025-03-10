@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 import cloudinary from '@/server/cloudinaryConfig'
+import { fetchTags } from '@/data/fetch-tags'
+import { revalidateTag } from 'next/cache'
 
 export async function editProduct(
   id: string,
@@ -39,6 +41,9 @@ export async function editProduct(
     }
 
     await Product.findByIdAndUpdate(id, updatedData, { new: true })
+
+    revalidateTag(fetchTags.products)
+    revalidateTag(fetchTags.product)
 
     return { success: true, message: 'Product updated successfully' }
   } catch (error) {

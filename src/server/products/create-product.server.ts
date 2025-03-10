@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 import cloudinary from '@/server/cloudinaryConfig'
+import { fetchTags } from '@/data/fetch-tags'
+import { revalidateTag } from 'next/cache'
 
 export async function createProduct(formData: IProductLocal, image: string) {
   'use server'
@@ -16,6 +18,9 @@ export async function createProduct(formData: IProductLocal, image: string) {
 
     const product = new Product(productData)
     await product.save()
+
+    revalidateTag(fetchTags.products)
+    revalidateTag(fetchTags.product)
 
     return { success: true, message: 'Product created' }
   } catch (error) {

@@ -4,4 +4,5 @@ export const fetchTags = {
   menu: 'menu',
   posts: 'posts',
   post: 'post',
+  helpMain: 'helpMain',
 }

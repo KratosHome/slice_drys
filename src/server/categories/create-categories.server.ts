@@ -1,6 +1,8 @@
 'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 
@@ -17,6 +19,9 @@ export async function createCategory(categoryData: CreateCategoryDTO) {
         $push: { children: newCategory._id },
       })
     }
+
+    revalidateTag(fetchTags.menu)
+    revalidateTag(fetchTags.products)
 
     return {
       data: newCategory,
