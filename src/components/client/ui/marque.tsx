@@ -25,6 +25,7 @@ export const Marquee = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [repeat, setRepeat] = useState(3) // Initial value, can be adjusted
   const [_animationDuration, _setAnimationDuration] = useState('15s') // Initial value
+
   useEffect(() => {
     const updateRepeatCount = () => {
       if (containerRef.current) {
