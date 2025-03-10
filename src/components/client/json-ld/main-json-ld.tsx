@@ -29,7 +29,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
         contactPoint: [
           {
             '@type': 'ContactPoint',
-            telephone: '+380123456789', // TODO: Add real phone number
+            telephone: '+380939797910',
             contactType: 'customer service',
             areaServed: 'UA',
           },
