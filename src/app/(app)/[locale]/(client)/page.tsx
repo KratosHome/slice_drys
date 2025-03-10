@@ -21,6 +21,7 @@ import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { instaData } from '@/data/main/insta-data'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function generateMetadata({
   params,
@@ -48,15 +49,18 @@ export default async function Home(props: {
 
   const [productsData, blogData, categoriesData] = await Promise.all([
     fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      next: { revalidate: 60 },
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.products}`] },
     }).then((res) => res.json()),
 
     fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
-      next: { revalidate: 60 },
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
 
     await fetch(`${url}/api/categories`, {
-      next: { revalidate: 60 },
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
   ])
 

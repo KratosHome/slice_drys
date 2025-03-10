@@ -30,6 +30,7 @@ import { getPaginationRange } from '@/utils/get-pagination-range'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import NotFoundPage from '@/components/not-found'
+import { fetchTags } from '@/data/fetch-tags'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -51,7 +52,7 @@ export async function generateMetadata({
 
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
-    {},
+    { cache: 'force-cache', next: { tags: [`${fetchTags.products}`] } },
   ).then((res) => res.json())
 
   if (currentCategories.success === false) {
@@ -133,22 +134,23 @@ export default async function MenuPage(props: {
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
-        {
-          next: { revalidate: 60 },
-        },
+        { cache: 'force-cache', next: { tags: [`${fetchTags.products}`] } },
       ).then((res) => res.json()),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
     ])
 

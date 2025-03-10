@@ -6,6 +6,7 @@ import NotFoundPage from '@/components/not-found'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
+import { fetchTags } from '@/data/fetch-tags'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -18,7 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
-    {},
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.post}`] },
+    },
   ).then((res) => res.json())
 
   if (!data.success || !data.post.length) {
@@ -87,7 +91,10 @@ export default async function PostPage({ params }: Props) {
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-    {},
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.post}`] },
+    },
   ).then((res) => res.json())
 
   if (!data.success) {

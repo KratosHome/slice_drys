@@ -28,6 +28,7 @@ import { cn } from '@/utils/cn'
 import { blogMetaData } from '@/data/blog/blogMetaData'
 import { locales } from '@/data/locales'
 import NotFoundPage from '@/components/not-found'
+import { fetchTags } from '@/data/fetch-tags'
 
 type PageProps = {
   params: Promise<{ locale: ILocale }>
@@ -99,9 +100,8 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const postsData = await fetch(
     `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}`,
     {
-      next: {
-        tags: ['posts'],
-      },
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.posts}`] },
     },
   ).then((res) => res.json())
 

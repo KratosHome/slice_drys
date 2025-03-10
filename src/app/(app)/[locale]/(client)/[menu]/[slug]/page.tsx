@@ -11,6 +11,7 @@ import { Accordions } from '@/components/client/product-page/accordions'
 import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
+import { fetchTags } from '@/data/fetch-tags'
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const productData = await fetch(
     `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    { next: { revalidate: 60 } },
+    { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
   ).then((res) => res.json())
 
   if (productData.success === false) {
@@ -95,12 +96,12 @@ export default async function ProductPage({ params }: Props) {
   const [productData, productSliderData] = await Promise.all([
     fetch(
       `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-      { next: { revalidate: 60 } },
+      { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
     ).then((res) => res.json()),
 
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
-      { next: { revalidate: 60 } },
+      { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
     ).then((res) => res.json()),
   ])
 

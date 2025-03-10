@@ -24,6 +24,8 @@ import Image from 'next/image'
 import { deleteProduct } from '@/server/products/delete-product.server'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
 import QuillEditor from '@/components/admin/editor-post/quill-editor'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 interface ICrateProduct {
   buttonTitle: string
@@ -201,6 +203,9 @@ const EditorProduct: FC<ICrateProduct> = ({
     }
 
     if (result.success) {
+      revalidateTag(fetchTags.products)
+      revalidateTag(fetchTags.product)
+
       setIsOpen(false)
       toast({
         title: result.message,

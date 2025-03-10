@@ -15,6 +15,7 @@ import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
 import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { fetchTags } from '@/data/fetch-tags'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -65,7 +66,8 @@ export default async function LocaleLayout(props: {
   const messages = await getMessages()
 
   const categoriesData = await fetch(`${url}/api/categories`, {
-    next: { revalidate: 60 },
+    cache: 'force-cache',
+    next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
 
   if (process.env.NODE_ENV === 'development') {
