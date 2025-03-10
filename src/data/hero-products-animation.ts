@@ -3,6 +3,7 @@ interface IHeroAnimationImage {
   width: number
   height: number
   rotate?: number
+  isMobileDiz?: boolean
   position: {
     desktop: {
       x: number
@@ -562,6 +563,7 @@ const meatSubImages: IHeroAnimationImage[] = [
   },
   {
     path: '/slider/meat/meet.png',
+    isMobileDiz: true,
     width: 113,
     rotate: 120,
     height: 102,
@@ -602,6 +604,7 @@ const meatSubImages: IHeroAnimationImage[] = [
   },
   {
     path: '/slider/meat/meet.png',
+    isMobileDiz: true,
     width: 66,
     rotate: 50,
     height: 62,
@@ -701,6 +704,7 @@ const meatSubImages: IHeroAnimationImage[] = [
   },
   {
     path: '/slider/meat/meet.png',
+    isMobileDiz: true,
     width: 85,
     height: 88,
     rotate: 20,

@@ -89,7 +89,7 @@ const Help: FC<HelpProps> = ({ data }) => {
               },
               classes: {
                 arrows: 'splide__arrows custom__arrows',
-                arrow: 'splide__arrow custom__arrow',
+                arrow: 'splide__arrow custom__arrow px-3',
                 prev: 'splide__arrow--prev custom__arrow-prev',
                 next: 'splide__arrow--next custom__arrow-next',
                 pagination: 'splide__pagination custom__pagination',

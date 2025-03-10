@@ -62,6 +62,7 @@ export default function InstaFeed({ data }: Props) {
       }
     }
   }, [data])
+
   return (
     <section className="section instafeed px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
@@ -86,7 +87,6 @@ export default function InstaFeed({ data }: Props) {
             interval: 3000,
             perPage: 3,
             perMove: 1,
-            gap: '-15px',
             focus: 0,
             arrows: true,
             pagination: true,
@@ -95,7 +95,7 @@ export default function InstaFeed({ data }: Props) {
             },
             classes: {
               arrows: 'splide__arrows custom__arrows',
-              arrow: 'splide__arrow custom__arrow',
+              arrow: 'splide__arrow custom__arrow mx-16 md:mx-12',
               prev: 'splide__arrow--prev custom__arrow-prev',
               next: 'splide__arrow--next custom__arrow-next',
               pagination: 'splide__pagination custom__pagination',

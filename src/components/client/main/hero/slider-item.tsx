@@ -41,7 +41,9 @@ const SliderItem = ({
 
         <text
           className={cn(
-            isHovered ? 'text-[2.3rem]' : 'fill-mid_gray text-[1.75rem]',
+            isHovered
+              ? 'text-[1.5rem] lg:text-[2.3rem]'
+              : 'fill-mid_gray text-[1rem] lg:text-[1.75rem]',
           )}
           fontFamily="Arial"
           letterSpacing="5"
