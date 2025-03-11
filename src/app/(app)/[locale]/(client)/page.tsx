@@ -62,7 +62,7 @@ export default async function Home(props: {
       next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/block/help?locale=${locale}`, {
+    await fetch(`${url}/api/block/help?locale=${locale}&_=${Date.now()}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.helpMain}`] },
     }).then((res) => res.json()),
