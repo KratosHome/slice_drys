@@ -1,26 +1,6 @@
-import { headers } from 'next/headers'
-import { getTranslations } from 'next-intl/server'
-
-import { Hero } from '@/components/client/main/hero'
-import ProductSlider from '@/components/client/product-slider/product-slider'
-import { detectDevice } from '@/utils/deviceDetection'
-import Faq from '@/components/client/main/faq/faq'
-import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
-import Help from '@/components/client/main/help/help'
-import Reviews from '@/components/client/main/reviews/reviews'
-import Partners from '@/components/client/main/partners'
-import BlogSection from '@/components/client/main/blog/blog'
-import ToTheTop from '@/components/client/ui/to-the-top'
-
-import { partnersData } from '@/data/main/partners'
-import { faqData } from '@/data/main/faq'
 import type { Metadata } from 'next'
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
-import MainJsonLd from '@/components/client/json-ld/main-json-ld'
-import { reviewsData } from '@/data/main/reviews'
-import { instaData } from '@/data/main/insta-data'
-import { fetchTags } from '@/data/fetch-tags'
 
 export async function generateMetadata({
   params,
@@ -36,10 +16,11 @@ export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-export default async function Home(props: {
-  params: Params
-  searchParams: ISearchParams
-}) {
+export default async function Home() {
+  return <>nest</>
+}
+
+/*
   const url = process.env.NEXT_URL
   const { locale } = await props.params
   const t = await getTranslations('main.products-slider')
@@ -68,8 +49,8 @@ export default async function Home(props: {
     }).then((res) => res.json()),
   ])
 
-  return (
-    <>
+
+
       <MainJsonLd
         products={productsData.products}
         faq={faqData[locale]}
@@ -88,6 +69,4 @@ export default async function Home(props: {
       <Reviews reviews={reviewsData} />
       <InstaFeed data={instaData[locale]} />
       <ToTheTop />
-    </>
-  )
-}
+ */
