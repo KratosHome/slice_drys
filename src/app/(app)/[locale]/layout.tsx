@@ -45,7 +45,6 @@ export default async function LocaleLayout(props: {
   const params = await props.params
 
   const { locale } = params
-  const { children } = props
 
   if (!routing.locales.includes(locale as ILocale)) {
     return (
