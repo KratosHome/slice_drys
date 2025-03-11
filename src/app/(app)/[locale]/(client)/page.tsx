@@ -60,7 +60,7 @@ export default async function Home(props: {
       next: { tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/categories&_=${Date.now()}`, {
+    await fetch(`${url}/api/categories?&_=${Date.now()}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
