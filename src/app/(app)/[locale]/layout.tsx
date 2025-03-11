@@ -6,6 +6,8 @@ import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 import { seedCategories } from '@/server/seed/category'
 
+import { Toaster } from '@/components/admin/ui/toaster'
+
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
@@ -73,6 +75,7 @@ export default async function LocaleLayout(props: {
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
           <main className="flex-1">{children}</main>
+          <Toaster />
         </body>
       </NextIntlClientProvider>
     </html>
@@ -88,6 +91,4 @@ export default async function LocaleLayout(props: {
    <Header productLinks={categoriesData.data} />
 
              <Footer productLinks={categoriesData.data} />
-
-                       <Toaster />
  */
