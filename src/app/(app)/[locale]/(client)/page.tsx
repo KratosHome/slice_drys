@@ -1,3 +1,7 @@
+import { headers } from 'next/headers'
+
+import { Hero } from '@/components/client/main/hero'
+import { detectDevice } from '@/utils/deviceDetection'
 import { faqData } from '@/data/main/faq'
 import type { Metadata } from 'next'
 import { mainMetaData } from '@/data/meta-data/main'
@@ -26,11 +30,18 @@ export default async function Home(props: {
 }) {
   const url = process.env.NEXT_URL
   const { locale } = await props.params
+  const userAgent: string = (await headers()).get('user-agent') || ''
+  const device: IDevice = detectDevice(userAgent)
 
-  const [productsData] = await Promise.all([
+  const [productsData, categoriesData] = await Promise.all([
     fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.products}`] },
+    }).then((res) => res.json()),
+
+    await fetch(`${url}/api/categories`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
   ])
 
@@ -41,6 +52,7 @@ export default async function Home(props: {
         faq={faqData[locale]}
         reviews={reviewsData}
       />
+      <Hero device={device} productLinks={categoriesData.data} />
     </>
   )
 }
@@ -58,10 +70,6 @@ export default async function Home(props: {
       next: { tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/categories`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.menu}`] },
-    }).then((res) => res.json()),
 
     await fetch(`${url}/api/block/help?locale=${locale}`, {
       cache: 'force-cache',
@@ -71,7 +79,7 @@ export default async function Home(props: {
 
 
 
-      <Hero device={device} productLinks={categoriesData.data} />
+
       <ProductSlider
         products={productsData.products}
         title={t('title')}
