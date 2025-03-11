@@ -16,6 +16,7 @@ import Faq from '@/components/client/main/faq/faq'
 import Partners from '@/components/client/main/partners'
 import { partnersData } from '@/data/main/partners'
 import BlogSection from '@/components/client/main/blog/blog'
+import Reviews from '@/components/client/main/reviews/reviews'
 
 export async function generateMetadata({
   params,
@@ -80,6 +81,7 @@ export default async function Home(props: {
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
+      <Reviews reviews={reviewsData} />
     </>
   )
 }
