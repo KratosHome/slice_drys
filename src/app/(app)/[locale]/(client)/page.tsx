@@ -19,6 +19,7 @@ import BlogSection from '@/components/client/main/blog/blog'
 import Reviews from '@/components/client/main/reviews/reviews'
 import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import { instaData } from '@/data/main/insta-data'
+import ToTheTop from '@/components/client/ui/to-the-top'
 
 export async function generateMetadata({
   params,
@@ -85,39 +86,7 @@ export default async function Home(props: {
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData} />
       <InstaFeed data={instaData[locale]} />
+      <ToTheTop />
     </>
   )
 }
-
-/*
-
- const [productsData, blogData, categoriesData, helpData] = await Promise.all([
-    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.products}`] },
-    }).then((res) => res.json()),
-
-    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.posts}`] },
-    }).then((res) => res.json()),
-
-    await fetch(`${url}/api/categories`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.menu}`] },
-    }).then((res) => res.json()),
-
-    await fetch(`${url}/api/block/help?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.helpMain}`] },
-    }).then((res) => res.json()),
-  ])
-
-
-
-
-
-      <Reviews reviews={reviewsData} />
-      <InstaFeed data={instaData[locale]} />
-      <ToTheTop />
- */
