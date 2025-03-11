@@ -82,7 +82,8 @@
   "Breadcrumbs": {
     "Home": "Home",
     "Blog": "Blog",
-    "Page": "Page"
+    "Page": "Page",
+    "Order":"Order processing"
   },
   "Share": {
     "Share": "Share",
@@ -170,8 +171,7 @@
   },
   "promo-banner": {
     "free_delivery": "Free delivery!",
-    "when_ordering_from": "When ordering from",
-    "uah": "UAH",
+    "when_ordering_from": "When ordering from <bold>{amount} UAH</bold>",
     "get_free_delivery": "Get free delivery",
     "icon_cart": "icon cart",
     "icon_instagram": "icon instagram"

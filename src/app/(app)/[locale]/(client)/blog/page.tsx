@@ -110,7 +110,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
     postsData as IGetPostsClient
 
   return (
-    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
+    <div className="mx-auto max-w-[1280px] overflow-hidden px-5">
       <Breadcrumb className="mt-[30px] md:mt-10">
         <BreadcrumbList>
           <BreadcrumbItem>

@@ -81,7 +81,8 @@
   "Breadcrumbs": {
     "Home": "Головна",
     "Blog": "Блог",
-    "Page": "Сторінка"
+    "Page": "Сторінка",
+    "Order":"Оформлення замовлення"
   },
   "share": {
     "Share": "Поділитись",
@@ -164,8 +165,7 @@
   },
   "promo-banner": {
     "free_delivery": "Безкоштовна доставка!",
-    "when_ordering_from": "При замовленні від",
-    "uah": "грн",
+    "when_ordering_from": "При замовленні від <bold>{amount} грн</bold>",
     "get_free_delivery": "Отримати безкоштовну доставку",
     "icon_cart": "іконка кошика",
     "icon_instagram": "іконка Instagram"

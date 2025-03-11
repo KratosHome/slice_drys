@@ -1,12 +1,18 @@
 'use client'
 
-import CartForm from '@/components/client/cart/cart-form'
-import CartList from '@/components/client/cart/cart-list'
+import OrderForm from '@/components/client/order/order-form'
+import OrderList from '@/components/client/order/order-list'
 
 import { useRef } from 'react'
 import { useCartStore } from '@/store/cartStore'
 
-export default function Cart() {
+type Props = {
+  defaultCities: {
+    novaPoshta: IDirectoryCity[]
+  }
+}
+
+export default function Order({ defaultCities }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
   const submitOrder = useCartStore((state) => state.submitOrder)
 
@@ -23,15 +29,15 @@ export default function Cart() {
   }
 
   return (
-    <div className="flex p-10">
-      <CartForm ref={formRef} />
+    <div className="alls mt-10 flex flex-col gap-[70px] md:mt-[70px] md:flex-row">
+      <OrderForm ref={formRef} defaultCities={defaultCities} />
 
-      <div>
+      <div className="w-full">
         <div className="bg-black text-center text-white">
           Перегляд замовлення
         </div>
 
-        <CartList />
+        <OrderList />
 
         <div
           className="mx-auto mt-3 cursor-pointer bg-black p-2 text-center text-white"

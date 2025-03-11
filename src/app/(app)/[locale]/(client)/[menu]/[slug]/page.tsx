@@ -136,7 +136,7 @@ export default async function Page(props: {
           title={t('also_buy')}
           message={t('something_that_will_come_handy_along_with_your_choice')}
         />
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </div>
     </>

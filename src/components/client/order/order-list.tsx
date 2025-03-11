@@ -1,6 +1,6 @@
 'use client'
 
-import CartProductCard from './cart-product-card'
+import OrderProductCard from './order-product-card'
 
 import { useCartStore } from '@/store/cartStore'
 
@@ -16,7 +16,7 @@ export default function CartList() {
 
         <div className="max-h-72 overflow-x-auto">
           {cart.itemList?.map((product, index) => (
-            <CartProductCard key={index} {...product} />
+            <OrderProductCard key={index} {...product} />
           ))}
         </div>
 

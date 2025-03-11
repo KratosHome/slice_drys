@@ -24,7 +24,17 @@ interface ICartState {
 }
 
 interface ICartActions {
-  setCartUserData: (data: IUserData) => void
+  setCartUserData: (
+    data: IUserData<
+      IDeliveryInfo<
+        'branch' | 'postomat' | 'courier',
+        {
+          value: string
+          label: string
+        }
+      >
+    >,
+  ) => void
   addItemToCart: (props: IAddItemToCartProps) => void
   updateItemQuantity: (
     id: string,
@@ -54,7 +64,16 @@ export const useCartStore = create<ICartState & ICartActions>()(
         }
 
         return {
-          cart: { itemList: [], userData: {} },
+          cart: {
+            itemList: [],
+            userData: {
+              deliveryInfo: {
+                deliveryMethod: 'branch',
+                deliveryProvider: 'novaPoshta',
+                paymentInfo: 'card-payment',
+              },
+            },
+          },
           openCart: false,
           totalPrice: 0,
           totalProducts: 0,
@@ -168,8 +187,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
             }
 
             const deliveryToSubmit: IOrderDelivery = {
-              city: cart.userData?.deliveryInfo?.city || '',
-              department: cart.userData?.deliveryInfo?.brunch || '',
+              city: cart.userData?.deliveryInfo?.city?.label || '',
+              department: cart.userData?.deliveryInfo?.branch?.label || '',
               phone: cart.userData?.phoneNumber || '',
             }
 

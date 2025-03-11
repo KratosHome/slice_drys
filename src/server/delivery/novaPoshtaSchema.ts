@@ -1,18 +1,57 @@
 import mongoose from 'mongoose'
 
-const novaPoshtaSchema = new mongoose.Schema(
+const novaPoshtaDefaultCitiesSchema = new mongoose.Schema(
   {
     city: {
       type: String,
       required: true,
     },
-    branches: {
-      type: [String],
+    ref: {
+      type: String,
       required: true,
     },
   },
   { timestamps: true },
 )
 
-export const NovaPoshta =
-  mongoose.models.NovaPoshta || mongoose.model('NovaPoshta', novaPoshtaSchema)
+export const NovaPoshtaCities =
+  mongoose.models.NovaPoshtaCities ||
+  mongoose.model('NovaPoshtaCities', novaPoshtaDefaultCitiesSchema)
+
+const novaPoshtaBranchesSchema = new mongoose.Schema(
+  {
+    cityRef: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    branches: [
+      {
+        _id: false,
+        branchRef: {
+          type: String,
+          required: true,
+          unique: true,
+        },
+        branchName: {
+          type: String,
+          required: true,
+        },
+        branchType: {
+          type: String,
+          // enum: ['Branch', 'Postomat'],
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true },
+)
+
+export const NovaPoshtaBranches =
+  mongoose.models.NovaPoshtaBranches ||
+  mongoose.model('NovaPoshtaBranches', novaPoshtaBranchesSchema)

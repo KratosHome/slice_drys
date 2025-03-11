@@ -13,7 +13,9 @@ body {
     background-color: #FBFBFB;
     color: #0f0f0f;
 }
-
+.all * {
+    @apply outline outline-1 outline-red-500;
+  }
 @layer base {
     :root {
         --background: 0 0% 100%;
