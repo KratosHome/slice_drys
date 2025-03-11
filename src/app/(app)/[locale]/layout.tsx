@@ -6,7 +6,6 @@ import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 import { seedCategories } from '@/server/seed/category'
 
-import Header from '@/components/client/header'
 import { Toaster } from '@/components/admin/ui/toaster'
 import Footer from '@/components/client/footer/footer'
 
@@ -83,7 +82,6 @@ export default async function LocaleLayout(props: {
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
-          <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer productLinks={categoriesData.data} />
           <Toaster />
@@ -92,3 +90,7 @@ export default async function LocaleLayout(props: {
     </html>
   )
 }
+
+/*
+   <Header productLinks={categoriesData.data} />
+ */
