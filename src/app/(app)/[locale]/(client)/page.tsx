@@ -12,6 +12,7 @@ import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
 import dynamic from 'next/dynamic'
+import Help from '@/components/client/main/help/help'
 
 const ProductSlider = dynamic(
   () => import('@/components/client/product-slider/product-slider'),
@@ -44,7 +45,7 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, categoriesData] = await Promise.all([
+  const [productsData, categoriesData, helpData] = await Promise.all([
     fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.products}`] },
@@ -53,6 +54,11 @@ export default async function Home(props: {
     await fetch(`${url}/api/categories`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
+    }).then((res) => res.json()),
+
+    await fetch(`${url}/api/block/help?locale=${locale}`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.helpMain}`] },
     }).then((res) => res.json()),
   ])
 
@@ -72,6 +78,7 @@ export default async function Home(props: {
         title={t('title')}
         message={t('message')}
       />
+      <Help data={helpData.data} />
     </>
   )
 }
