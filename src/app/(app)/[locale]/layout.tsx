@@ -7,14 +7,12 @@ import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 import { seedCategories } from '@/server/seed/category'
 
 import { Toaster } from '@/components/admin/ui/toaster'
-import Footer from '@/components/client/footer/footer'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
 import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { fetchTags } from '@/data/fetch-tags'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -46,11 +44,9 @@ export default async function LocaleLayout(props: {
   children: ReactNode
   params: Promise<{ locale: LanguageType }>
 }) {
-  const url = process.env.NEXT_URL
   const params = await props.params
 
   const { locale } = params
-  const { children } = props
 
   if (!routing.locales.includes(locale as ILocale)) {
     return (
@@ -63,11 +59,6 @@ export default async function LocaleLayout(props: {
   }
 
   const messages = await getMessages()
-
-  const categoriesData = await fetch(`${url}/api/categories`, {
-    cache: 'force-cache',
-    next: { tags: [`${fetchTags.menu}`] },
-  }).then((res) => res.json())
 
   if (process.env.NODE_ENV === 'development') {
     await seedCategories()
@@ -82,8 +73,6 @@ export default async function LocaleLayout(props: {
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
-          <main className="flex-1">{children}</main>
-          <Footer productLinks={categoriesData.data} />
           <Toaster />
         </body>
       </NextIntlClientProvider>
@@ -92,5 +81,14 @@ export default async function LocaleLayout(props: {
 }
 
 /*
+
+  const categoriesData = await fetch(`${url}/api/categories`, {
+    cache: 'force-cache',
+    next: { tags: [`${fetchTags.menu}`] },
+  }).then((res) => res.json())
+
+  
    <Header productLinks={categoriesData.data} />
+          <main className="flex-1">{children}</main>
+             <Footer productLinks={categoriesData.data} />
  */
