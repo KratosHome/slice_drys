@@ -1,3 +1,4 @@
+export const dynamicParams = true
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
@@ -74,8 +75,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const productSlug = await getProductsUrls()
-  const categorySlug = await getCategoryUrls()
+  const [productSlug, categorySlug] = await Promise.all([
+    getProductsUrls(),
+    getCategoryUrls(),
+  ])
 
   return productSlug.data.flatMap((item: { slug: string }) =>
     categorySlug.data.flatMap((category: { slug: string }) =>
@@ -141,3 +144,25 @@ export default async function ProductPage({ params }: Props) {
     </>
   )
 }
+
+/*
+export async function generateStaticParams() {
+  const [productSlug, categorySlug] = await Promise.all([
+    getProductsUrls(),
+    getCategoryUrls(),
+  ])
+
+  const limitedProducts = productSlug.data.slice(0, 1)
+  const limitedCategories = categorySlug.data.slice(0, 1)
+
+  return limitedProducts.flatMap((item: { slug: string }) =>
+    limitedCategories.flatMap((category: { slug: string }) =>
+      locales.map((locale) => ({
+        slug: item.slug,
+        locale,
+        menu: category.slug,
+      })),
+    ),
+  )
+}
+ */
