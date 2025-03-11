@@ -2,7 +2,6 @@ import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
 import { Hero } from '@/components/client/main/hero'
-import ProductSlider from '@/components/client/product-slider/product-slider'
 import { detectDevice } from '@/utils/deviceDetection'
 
 import { faqData } from '@/data/main/faq'
@@ -12,6 +11,14 @@ import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
+import dynamic from 'next/dynamic'
+
+const ProductSlider = dynamic(
+  () => import('@/components/client/product-slider/product-slider'),
+  {
+    loading: () => <></>,
+  },
+)
 
 export async function generateMetadata({
   params,
@@ -38,10 +45,10 @@ export default async function Home(props: {
   const device: IDevice = detectDevice(userAgent)
 
   const [productsData, categoriesData] = await Promise.all([
-    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.products}`] },
-    }).then((res) => res.json()),
+    fetch(
+      `${url}/api/products/get-products-slider-main?locale=${locale}`,
+      {},
+    ).then((res) => res.json()),
 
     await fetch(`${url}/api/categories`, {
       cache: 'force-cache',
