@@ -13,6 +13,8 @@ import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
 import Help from '@/components/client/main/help/help'
 import Faq from '@/components/client/main/faq/faq'
+import Partners from '@/components/client/main/partners'
+import { partnersData } from '@/data/main/partners'
 
 export async function generateMetadata({
   params,
@@ -73,6 +75,7 @@ export default async function Home(props: {
       />
       <Help data={helpData.data} />
       <Faq data={faqData[locale]} />
+      <Partners data={partnersData[locale]} />
     </>
   )
 }
@@ -104,7 +107,7 @@ export default async function Home(props: {
 
 
 
-      <Partners data={partnersData[locale]} />
+
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData} />
       <InstaFeed data={instaData[locale]} />
