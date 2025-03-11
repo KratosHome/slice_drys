@@ -6,8 +6,6 @@ import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
 import { seedCategories } from '@/server/seed/category'
 
-import { Toaster } from '@/components/admin/ui/toaster'
-
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
@@ -47,6 +45,7 @@ export default async function LocaleLayout(props: {
   const params = await props.params
 
   const { locale } = params
+  const { children } = props
 
   if (!routing.locales.includes(locale as ILocale)) {
     return (
@@ -73,7 +72,7 @@ export default async function LocaleLayout(props: {
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
-          <Toaster />
+          <main className="flex-1">children</main>
         </body>
       </NextIntlClientProvider>
     </html>
@@ -86,9 +85,9 @@ export default async function LocaleLayout(props: {
     cache: 'force-cache',
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
-
-  
    <Header productLinks={categoriesData.data} />
-          <main className="flex-1">{children}</main>
+
              <Footer productLinks={categoriesData.data} />
+
+                       <Toaster />
  */
