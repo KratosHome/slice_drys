@@ -22,7 +22,7 @@ interface IHeroAnimationImage {
 
 const mixSubImages: IHeroAnimationImage[] = [
   {
-    path: '/slider/fruit/orange.png',
+    path: '/slider/fruit/orange.webp',
     width: 43,
     height: 43,
     position: {
@@ -41,7 +41,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/kiwi.png',
+    path: '/slider/fruit/kiwi.webp',
     width: 69,
     height: 66,
     position: {
@@ -60,7 +60,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/grapefruit.png',
+    path: '/slider/fruit/grapefruit.webp',
     width: 40,
     height: 78,
     position: {
@@ -79,7 +79,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/ginger.png',
+    path: '/slider/fruit/ginger.webp',
     width: 40,
     height: 34,
     position: {
@@ -98,7 +98,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 61,
     height: 54,
     position: {
@@ -117,7 +117,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 86,
     height: 82,
     position: {
@@ -136,7 +136,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 71,
     height: 70,
     position: {
@@ -155,7 +155,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 40,
     height: 40,
     position: {
@@ -174,7 +174,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 115,
     height: 73,
     position: {
@@ -193,7 +193,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/lemon.png',
+    path: '/slider/veggie/lemon.webp',
     width: 111,
     height: 99,
     position: {
@@ -212,7 +212,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/orange.png',
+    path: '/slider/fruit/orange.webp',
     width: 43,
     height: 43,
     position: {
@@ -231,7 +231,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/orange.png',
+    path: '/slider/fruit/orange.webp',
     width: 43,
     height: 43,
     position: {
@@ -250,7 +250,7 @@ const mixSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 65,
     height: 77,
     position: {
@@ -272,7 +272,7 @@ const mixSubImages: IHeroAnimationImage[] = [
 
 const fruitSubImages: IHeroAnimationImage[] = [
   {
-    path: '/slider/fruit/pear.png',
+    path: '/slider/fruit/pear.webp',
     width: 88,
     height: 90,
     position: {
@@ -291,7 +291,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 66,
     height: 61,
     position: {
@@ -310,7 +310,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/kiwi.png',
+    path: '/slider/fruit/kiwi.webp',
     width: 55,
     height: 55,
     position: {
@@ -329,7 +329,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/orange.png',
+    path: '/slider/fruit/orange.webp',
     width: 53,
     height: 87,
     position: {
@@ -348,7 +348,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/mango.png',
+    path: '/slider/fruit/mango.webp',
     width: 36,
     height: 40,
     position: {
@@ -367,7 +367,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/kiwi.png',
+    path: '/slider/fruit/kiwi.webp',
     width: 86,
     height: 68,
     position: {
@@ -386,7 +386,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/kiwi.png',
+    path: '/slider/fruit/kiwi.webp',
     width: 39,
     height: 82,
     position: {
@@ -405,7 +405,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/orange.png',
+    path: '/slider/fruit/orange.webp',
     width: 56,
     height: 56,
     position: {
@@ -424,7 +424,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pineapple.png',
+    path: '/slider/fruit/pineapple.webp',
     width: 60,
     height: 55,
     position: {
@@ -443,7 +443,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/pear.png',
+    path: '/slider/fruit/pear.webp',
     width: 59,
     height: 55,
     position: {
@@ -462,7 +462,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/ginger.png',
+    path: '/slider/fruit/ginger.webp',
     width: 75,
     height: 66,
     position: {
@@ -481,7 +481,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/grapefruit.png',
+    path: '/slider/fruit/grapefruit.webp',
     width: 49,
     height: 48,
     position: {
@@ -500,7 +500,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/fruit/mango.png',
+    path: '/slider/fruit/mango.webp',
     width: 49,
     height: 92,
     position: {
@@ -522,7 +522,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
 
 const meatSubImages: IHeroAnimationImage[] = [
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     rotate: 90,
     width: 52,
     height: 52,
@@ -542,7 +542,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 67,
     rotate: -60,
     height: 64,
@@ -562,7 +562,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     isMobileDiz: true,
     width: 113,
     rotate: 120,
@@ -583,7 +583,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 32,
     rotate: 130,
     height: 32,
@@ -603,7 +603,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     isMobileDiz: true,
     width: 66,
     rotate: 50,
@@ -624,7 +624,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 78,
     rotate: 60,
     height: 74,
@@ -644,7 +644,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 22,
     height: 25,
     position: {
@@ -663,7 +663,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 24,
     height: 95,
     rotate: -60,
@@ -683,7 +683,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 71,
     height: 63,
     rotate: -110,
@@ -703,7 +703,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     isMobileDiz: true,
     width: 85,
     height: 88,
@@ -724,7 +724,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 42,
     height: 92,
     rotate: 60,
@@ -744,7 +744,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     rotate: -60,
     width: 32,
     height: 30,
@@ -764,7 +764,7 @@ const meatSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/meat/meet.png',
+    path: '/slider/meat/meet.webp',
     width: 64,
     height: 63,
     position: {
@@ -786,7 +786,7 @@ const meatSubImages: IHeroAnimationImage[] = [
 
 const veggieSubImages: IHeroAnimationImage[] = [
   {
-    path: '/slider/veggie/beet.png',
+    path: '/slider/veggie/beet.webp',
     width: 44,
     height: 35,
     position: {
@@ -805,7 +805,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 66,
     height: 51,
     position: {
@@ -824,7 +824,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/beet.png',
+    path: '/slider/veggie/beet.webp',
     width: 61,
     height: 48,
     position: {
@@ -843,7 +843,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/tomato.png',
+    path: '/slider/veggie/tomato.webp',
     width: 40,
     height: 38,
     position: {
@@ -862,7 +862,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/lemon.png',
+    path: '/slider/veggie/lemon.webp',
     width: 85,
     height: 76,
     position: {
@@ -881,7 +881,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 52,
     height: 30,
     position: {
@@ -900,7 +900,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/tomato.png',
+    path: '/slider/veggie/tomato.webp',
     width: 35,
     height: 33,
     position: {
@@ -919,7 +919,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 33,
     height: 25,
     position: {
@@ -938,7 +938,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/tomato.png',
+    path: '/slider/veggie/tomato.webp',
     width: 45,
     height: 42,
     position: {
@@ -957,7 +957,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/beet.png',
+    path: '/slider/veggie/beet.webp',
     width: 73,
     height: 57,
     position: {
@@ -976,7 +976,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/beet.png',
+    path: '/slider/veggie/beet.webp',
     width: 35,
     height: 30,
     position: {
@@ -995,7 +995,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 50,
     height: 81,
     position: {
@@ -1014,7 +1014,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/tomato.png',
+    path: '/slider/veggie/tomato.webp',
     width: 41,
     height: 43,
     position: {
@@ -1033,7 +1033,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/cucumber.png',
+    path: '/slider/veggie/cucumber.webp',
     width: 30,
     height: 35,
     position: {
@@ -1052,7 +1052,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/veggie/beet.png',
+    path: '/slider/veggie/beet.webp',
     width: 40,
     height: 54,
     position: {
@@ -1074,7 +1074,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
 
 const actionSubImages: IHeroAnimationImage[] = [
   {
-    path: '/slider/action/left-bottom.png',
+    path: '/slider/action/left-bottom.webp',
     width: 38,
     height: 60,
     position: {
@@ -1093,7 +1093,7 @@ const actionSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/action/left-top.png',
+    path: '/slider/action/left-top.webp',
     width: 92,
     height: 28,
     position: {
@@ -1112,7 +1112,7 @@ const actionSubImages: IHeroAnimationImage[] = [
     },
   },
   {
-    path: '/slider/action/right-top-text.png',
+    path: '/slider/action/right-top-text.webp',
     width: 250,
     height: 50,
     position: {

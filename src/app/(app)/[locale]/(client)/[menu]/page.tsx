@@ -323,7 +323,7 @@ export default async function MenuPage(props: {
               {productBgImg.map((fruit, index) => (
                 <Image
                   key={index}
-                  src={`/slider/fruit/${fruit.src}.png`}
+                  src={`/slider/fruit/${fruit.src}.webp`}
                   alt={fruit.alt}
                   className={fruit.className}
                   width={132}

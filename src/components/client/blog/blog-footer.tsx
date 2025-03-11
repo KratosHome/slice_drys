@@ -51,7 +51,7 @@ function BlogFooter() {
         <div className="row-span-3 hidden md:block">
           <AspectRatio ratio={484 / 433}>
             <Image
-              src="/images/Вag-Logo.png"
+              src="/images/Вag-Logo.webp"
               fill
               alt={t('handbag')}
               sizes="(max-width: 1024px) 100vw, 50vw"

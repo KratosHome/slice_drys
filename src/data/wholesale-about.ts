@@ -5,13 +5,13 @@ const helpDataEn = {
   button: 'We cook as if for ourselves!',
   link: 'https://www.instagram.com/slicedrys/#',
   images: [
-    '/wholesale/wholesale7.jpeg',
-    '/wholesale/wholesale1.jpeg',
-    '/wholesale/wholesale2.jpeg',
-    '/wholesale/wholesale3.jpeg',
-    '/wholesale/wholesale4.jpeg',
-    '/wholesale/wholesale5.jpeg',
-    '/wholesale/wholesale6.jpeg',
+    '/wholesale/wholesale7.webp',
+    '/wholesale/wholesale1.webp',
+    '/wholesale/wholesale2.webp',
+    '/wholesale/wholesale3.webp',
+    '/wholesale/wholesale4.webp',
+    '/wholesale/wholesale5.webp',
+    '/wholesale/wholesale6.webp',
   ],
 }
 
@@ -22,13 +22,13 @@ const helpDataUk = {
   button: 'Ми готуємо так, як для себе!',
   link: 'https://www.instagram.com/slicedrys/#',
   images: [
-    '/wholesale/wholesale7.jpeg',
-    '/wholesale/wholesale1.jpeg',
-    '/wholesale/wholesale2.jpeg',
-    '/wholesale/wholesale3.jpeg',
-    '/wholesale/wholesale4.jpeg',
-    '/wholesale/wholesale5.jpeg',
-    '/wholesale/wholesale6.jpeg',
+    '/wholesale/wholesale7.webp',
+    '/wholesale/wholesale1.webp',
+    '/wholesale/wholesale2.webp',
+    '/wholesale/wholesale3.webp',
+    '/wholesale/wholesale4.webp',
+    '/wholesale/wholesale5.webp',
+    '/wholesale/wholesale6.webp',
   ],
 }
 

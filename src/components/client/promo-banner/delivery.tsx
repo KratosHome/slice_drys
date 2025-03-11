@@ -25,7 +25,7 @@ const Delivery = async () => {
           <div className="relative mr-12 flex h-[250px] max-w-[75vw] rotate-[-10deg] items-center justify-center bg-red-700 md:h-[300px]">
             <div className="absolute -top-[15px] flex h-[220px] w-full rotate-[-5deg] items-center justify-center bg-white md:h-[270px]">
               <Image
-                src={'/images/cart.png'}
+                src={'/images/cart.webp'}
                 alt={t('icon_cart')}
                 width={400}
                 height={400}
@@ -33,7 +33,6 @@ const Delivery = async () => {
               />
             </div>
           </div>
-
           <div className="-ml-[10px] mt-[50px] block max-w-max rotate-[5deg] bg-red-700 px-4 py-3 text-sm md:ml-[-25px] md:mt-[90px] md:hidden md:px-5 md:py-5 md:text-base">
             {t('get_free_delivery')}
           </div>
