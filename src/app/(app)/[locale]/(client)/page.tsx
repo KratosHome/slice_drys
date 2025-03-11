@@ -47,17 +47,20 @@ export default async function Home(props: {
   const device: IDevice = detectDevice(userAgent)
 
   const [productsData, blogData, categoriesData, helpData] = await Promise.all([
-    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.products}`] },
-    }).then((res) => res.json()),
+    fetch(
+      `${url}/api/products/get-products-slider-main?locale=${locale}&_=${Date.now()}`,
+      {
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
+      },
+    ).then((res) => res.json()),
 
-    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
+    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5&_=${Date.now()}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/categories`, {
+    await fetch(`${url}/api/categories&_=${Date.now()}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
