@@ -21,7 +21,7 @@ const Help: FC<HelpProps> = ({ data }) => {
   const isMobile = useIsMobile()
 
   useEffect(() => {
-    const target = document.querySelector('.products-slider')
+    const target = document.querySelector('.help-slider')
     if (!target) return
     const handleResize = () => {
       let k: number
@@ -73,6 +73,7 @@ const Help: FC<HelpProps> = ({ data }) => {
       <div className="help__wrapper">
         <div className="splide-wrapper">
           <Splide
+            className="help-slider"
             options={{
               arrowPath: Arrow(),
               type: 'loop',

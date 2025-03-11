@@ -115,9 +115,9 @@ export default async function PostPage({ params }: Props) {
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
         <div className="mt-10"></div>
         <div className="my-20 px-20">
-          <div className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <h1 className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
             {title}
-          </div>
+          </h1>
         </div>
         <div className="h-10"></div>
         <div className="mx-auto max-w-[1280px]">

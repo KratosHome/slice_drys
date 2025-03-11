@@ -182,5 +182,12 @@
     "get_free_delivery": "Get free delivery",
     "icon_cart": "icon cart",
     "icon_instagram": "icon instagram"
+  },
+  "wholesale": {
+    "home": "Home",
+    "wholesale": "Wholesale",
+    "wholesale_dried_fruits_in_bulk": "Wholesale - Dried Fruits in Bulk!",
+    "do_you_have_business": "Do you have a business and want to order our treats in bulk? Great idea! Write to us, and we will find the best conditions to keep your shelves stocked with our awesome dried fruits!",
+    "why_us": "Why us?"
   }
 }
