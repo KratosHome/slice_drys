@@ -12,6 +12,7 @@ import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
 import Help from '@/components/client/main/help/help'
+import Faq from '@/components/client/main/faq/faq'
 
 export async function generateMetadata({
   params,
@@ -38,10 +39,13 @@ export default async function Home(props: {
   const device: IDevice = detectDevice(userAgent)
 
   const [productsData, categoriesData, helpData] = await Promise.all([
-    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.products}`] },
-    }).then((res) => res.json()),
+    fetch(
+      `${url}/api/products/get-products-slider-main?locale=${locale}&_=${Date.now()}`,
+      {
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
+      },
+    ).then((res) => res.json()),
 
     await fetch(`${url}/api/categories`, {
       cache: 'force-cache',
@@ -68,6 +72,7 @@ export default async function Home(props: {
         message={t('message')}
       />
       <Help data={helpData.data} />
+      <Faq data={faqData[locale]} />
     </>
   )
 }
@@ -98,7 +103,7 @@ export default async function Home(props: {
 
 
 
-      <Faq data={faqData[locale]} />
+
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData} />
