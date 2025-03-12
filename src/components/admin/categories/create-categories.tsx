@@ -15,6 +15,8 @@ import { createCategory } from '@/server/categories/create-categories.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { locales } from '@/data/locales'
+import { Label } from '@/components/admin/ui/label'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
 interface CategoriesTreeProps {
   categories: ICategory[]
@@ -50,6 +52,9 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
 
   const [isOpen, setIsOpen] = useState(false)
 
+  const [descriptionUk, setDescriptionUk] = useState<string>('')
+  const [descriptionEn, setDescriptionEn] = useState<string>('')
+
   const handleCategoryChange = (categoryId: string) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId) ? [] : [categoryId],
@@ -69,7 +74,10 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
     const formattedData: CreateCategoryDTO = {
       name: data.name,
       slug: data.name.uk.toLowerCase().replace(/\s+/g, '-'),
-      description: data.description,
+      description: {
+        uk: descriptionUk,
+        en: descriptionEn,
+      },
       metaTitle: data.metaTitle,
       metaDescription: data.metaDescription,
       metaKeywords: data.metaKeywords,
@@ -102,7 +110,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
         <DialogTrigger asChild>
           <Button variant="outline">Create</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-h-screen overflow-auto">
           <DialogHeader>
             <DialogTitle>Create categories</DialogTitle>
             <DialogDescription>
@@ -163,18 +171,20 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                     )}
                   </div>
 
-                  <div>
-                    <label className="block font-bold">Опис:</label>
-                    <textarea
-                      className="w-full border p-2"
-                      {...register(`description.${lang}`, {
-                        required: 'Опис обовʼязковий',
-                      })}
-                    />
-                    {errors.description?.[lang] && (
-                      <p className="text-sm text-red-500">
-                        {errors.description[lang]?.message}
-                      </p>
+                  <div className="mt-3">
+                    <Label className="block">Опис:</Label>
+                    {lang === 'uk' ? (
+                      <QuillEditor
+                        className="min-h-96"
+                        content={descriptionUk}
+                        setContent={setDescriptionUk}
+                      />
+                    ) : (
+                      <QuillEditor
+                        className="min-h-96"
+                        content={descriptionEn}
+                        setContent={setDescriptionEn}
+                      />
                     )}
                   </div>
 
