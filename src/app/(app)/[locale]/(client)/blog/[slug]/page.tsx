@@ -122,7 +122,6 @@ export default async function PostPage({ params }: Props) {
         <div className="h-10"></div>
         <div className="mx-auto max-w-[1280px]">
           <article
-            id="editor"
             className="ql-editor prose lg:prose-xl"
             dangerouslySetInnerHTML={{ __html: html }}
           />

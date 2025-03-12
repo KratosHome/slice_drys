@@ -8,8 +8,8 @@ const categoriesSchema = new mongoose.Schema(
     },
     slug: { type: String, required: true, unique: true },
     description: {
-      en: { type: String, maxlength: 4500 },
-      uk: { type: String, maxlength: 4500 },
+      en: { type: String, maxlength: 8500 },
+      uk: { type: String, maxlength: 8500 },
     },
     metaTitle: {
       en: { type: String, maxlength: 255 },
