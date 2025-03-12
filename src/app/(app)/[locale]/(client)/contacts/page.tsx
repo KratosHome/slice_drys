@@ -1,6 +1,5 @@
 import { getTranslations } from 'next-intl/server'
 import Contacts from '@/components/client/contacts/Contacts'
-import type { Metadata } from 'next'
 
 import {
   Breadcrumb,
@@ -11,13 +10,9 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 
-type PageProps = {
-  params: Promise<{ locale: ILocale }>
-  searchParams: Promise<{ page?: string }>
-}
+import './contacts.css'
 
-export default async function Contact({ params }: PageProps) {
-  const { locale } = await params
+export default async function Contact() {
   const t = await getTranslations('Breadcrumbs')
 
   return (

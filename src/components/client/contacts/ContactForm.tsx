@@ -14,10 +14,12 @@ const ContactForm = ({
   button,
   phone_field_description,
   placeholder,
+  form_description,
 }: {
   button: string
   phone_field_description: string
   placeholder: string
+  form_description: string
 }) => {
   const {
     handleSubmit,
@@ -42,10 +44,13 @@ const ContactForm = ({
   return (
     <form
       onSubmit={handleSubmit(sendCall)}
-      className="mx-auto mb-[205px] mt-8 flex max-w-[570px] flex-col items-center justify-center md:mb-[229px]"
+      className="mx-auto mb-[205px] mt-[110px] flex max-w-[570px] flex-col items-center justify-center md:mb-[229px] md:mt-9"
     >
+      <div className="form-description text-center font-rubik text-[32px] font-normal md:text-2xl">
+        {form_description}
+      </div>
       <div>
-        <span className="block rotate-90 animate-follow font-rubik text-[108px] leading-none">
+        <span className="block rotate-90 animate-follow font-rubik text-[108px] font-normal leading-none">
           {'>'}
         </span>
       </div>
@@ -111,7 +116,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
-        className="flex !h-[60px] items-center px-[60px] md:mt-[90px]"
+        className="forn-medium flex h-[60px] items-center px-[60px] font-poppins text-2xl md:mt-[90px]"
       >
         {button}
       </Button>
