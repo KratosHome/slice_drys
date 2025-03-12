@@ -89,7 +89,8 @@
   "Breadcrumbs": {
     "Home": "Home",
     "Blog": "Blog",
-    "Page": "Page"
+    "Page": "Page",
+    "Contacts": "Contacts"
   },
   "share": {
     "Share": "Share",
@@ -189,5 +190,14 @@
     "wholesale_dried_fruits_in_bulk": "Wholesale - Dried Fruits in Bulk!",
     "do_you_have_business": "Do you have a business and want to order our treats in bulk? Great idea! Write to us, and we will find the best conditions to keep your shelves stocked with our awesome dried fruits!",
     "why_us": "Why us?"
+  },
+  "contacts" : {
+    "title": "Contacts",
+    "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
+    "form_description": "Do you want us to call?",
+    "address": "Cherkasy, Nadpilna St. 248A.",
+    "button": "Send",
+    "placeholder": "Phone",
+    "phone_field_description": "In format +38 (093) 12 34 567"
   }
 }

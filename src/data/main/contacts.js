@@ -6,4 +6,6 @@ export const contacts = {
     en: 'Cherkasy city, Nadpilna St. 248A.',
     uk: 'м. Черкаси, вул. Надпільна 248А.',
   },
+  mail: 'slice&drys@gmail.com',
+  time: '10:00 - 19:00',
 }
