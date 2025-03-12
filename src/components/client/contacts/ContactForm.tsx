@@ -116,7 +116,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
-        className="forn-medium flex h-[60px] items-center px-[60px] font-poppins text-2xl md:mt-[90px]"
+        className="flex h-[60px] items-center px-[60px] font-poppins text-2xl font-medium md:mt-[90px]"
       >
         {button}
       </Button>
