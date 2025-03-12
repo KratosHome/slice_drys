@@ -66,7 +66,6 @@ export async function updateCategory(
       message: 'Категорію оновлено успішно',
     }
   } catch (error) {
-    console.error(error)
     return {
       success: false,
       message: `Помилка при оновленні категорії: ${error}`,
