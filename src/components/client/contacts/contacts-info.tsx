@@ -3,11 +3,10 @@ import {
   AddressIcon,
   ClockIcon,
   EmailIcon,
-  FacebookIcon,
-  InstagramIcon,
-  PhoneIcon,
   UnderlineIcon,
 } from '@/components/client/contacts/contacts-icons'
+import NumberCall from '@/components/client/header/number-call/number-call'
+import Socials from '@/components/client/ui/Socials'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
@@ -30,10 +29,8 @@ const ContactsInfo = () => {
         >
           {t('contactDescription')}
         </p>
-        <div className={'flex w-full pt-1'}>
-          <div className={'ml-auto pr-[15px]'}>
-            <UnderlineIcon />
-          </div>
+        <div className={'flex justify-end pr-[15px] pt-1'}>
+          <UnderlineIcon />
         </div>
       </div>
       <div className={'pt-[17]'}>
@@ -49,25 +46,10 @@ const ContactsInfo = () => {
             'mx-auto flex w-[375] flex-row-reverse items-start justify-between px-5'
           }
         >
-          <div className={'flex w-24 items-center justify-center'}>
-            <a
-              className={'mr-4 cursor-pointer'}
-              href="https://www.facebook.com/slicedrys/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FacebookIcon rotation={0} width={40} height={40} />
-            </a>
-            <a
-              className={'cursor-pointer'}
-              href="https://www.instagram.com/slicedrys/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <InstagramIcon rotation={0} width={40} height={40} />
-            </a>
+          <div className="flex justify-end gap-x-4">
+            <Socials variant="dark" />
           </div>
-          <div className={'h-[143] w-[160] lg:h-full lg:w-full'}>
+          <div className={'h-[143] w-[160] pt-2.5 lg:h-full lg:w-full'}>
             <Image src={Bag} alt={'Shopping Bag'} className={'h-full w-full'} />
           </div>
         </div>
@@ -91,12 +73,13 @@ const ContactsInfo = () => {
             </span>
             <span>{t('email')}</span>
           </a>
-          <a className={'flex pt-8'} href={`tel:${t('phone')}`}>
-            <span className="mr-3">
-              <PhoneIcon />
-            </span>
-            <span>{t('phone')}</span>
-          </a>
+          <NumberCall />
+          {/*<a className={'flex pt-8'} href={`tel:${t('phone')}`}>*/}
+          {/*  <span className="mr-3">*/}
+          {/*    <PhoneIcon />*/}
+          {/*  </span>*/}
+          {/*  <span>{t('phone')}</span>*/}
+          {/*</a>*/}
           <a
             className={'flex pt-8'}
             href={`https://www.google.com/maps?q=${t('location')}`}

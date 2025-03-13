@@ -121,8 +121,8 @@ export const UnderlineIcon = () => {
   return (
     <div>
       <svg
-        width="330"
-        height="15"
+        width="280"
+        height="13"
         viewBox="0 0 330 15"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

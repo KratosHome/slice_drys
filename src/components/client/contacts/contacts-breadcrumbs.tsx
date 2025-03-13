@@ -14,11 +14,13 @@ export default function ContactsBreadcrumbs() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/" localizationKey="Home" />
+            {/*<BreadcrumbLink href="/" localizationKey="Home" />*/}
+            <BreadcrumbLink />
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage localizationKey="Contacts" />
+            {/*<BreadcrumbPage localizationKey="Contacts" />*/}
+            <BreadcrumbPage />
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
