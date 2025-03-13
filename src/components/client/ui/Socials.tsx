@@ -6,9 +6,13 @@ import Button from '@/components/client/ui/button'
 
 import { contacts } from '@/data/main/contacts'
 
-type Props = Readonly<{ variant: 'light' | 'dark'; size: number }>
-
-function Socials({ variant, size = 33 }: Props) {
+function Socials({
+  variant,
+  size = 33,
+}: {
+  variant: 'light' | 'dark'
+  size?: number
+}) {
   return (
     <>
       <Button
