@@ -53,8 +53,7 @@
       "more-btn": "Дізнатися більше"
     },
     "instafeed": {
-      "title-md": "Подорожуйте з нами",
-      "title": "Мандруйте разом з нами"
+      "title": "Подорожуйте з нами"
     },
     "burger-menu": {
       "catalog": "Каталог",
@@ -189,7 +188,25 @@
     "wholesale": "Опт",
     "wholesale_dried_fruits_in_bulk": "Опт - сушеники гуртом!",
     "do_you_have_business": "Маєш бізнес і хочеш замовити наші смаколики оптом? Чудова ідея! Напиши нам – і ми підберемо найкращі умови, щоб твої полички завжди були з крутим запасом наших сушеників!",
-    "why_us": "Чому ми?"
+    "why_us": "Чому ми?",
+    "join_us": "Приєднуйся до нас",
+    "thank_you_we_will_contact_you": "Дякуємо! Ми зв'яжемося з вами найближчим часом.",
+    "error": "Упс! Щось пішло не так. Спробуйте ще раз або зателефонуйте нам.",
+    "icon_cart": "іконка кошика",
+    "fill_out_form": "Заповни форму",
+    "start_cooperation": "Почати співпрацю",
+    "name": "Ім'я",
+    "this_field_is_required": "Це поле є обов'язковим",
+    "minimum_characters": "Мінімум 2 символи",
+    "maximum_characters": "Максимум 50 символів",
+    "enter-phone-number": "Введіть номер телефону",
+    "enter-full-phone-number": "Введіть повний номер телефону",
+    "invalid_email_format": "Invalid email format",
+    "where_you_going_sell": "Де плануєш продавати?",
+    "maximum_100_characters": "Максимум 100 символів",
+    "link_company_name": "Посилання або назва компанії",
+    "how_did_you_find_about_us": "Як ти дізнався про нас?",
+    "send": "Відправити"
   },
   "contacts" : {
     "title": "Контакти",
@@ -200,5 +217,5 @@
     "placeholder": "Телефон",
     "information_title": "Інформація",
     "phone_field_description": "У форматі +38 (093) 12 34 567"
-  }
+  }  
 }

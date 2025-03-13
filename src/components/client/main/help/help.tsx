@@ -113,7 +113,7 @@ const Help: FC<HelpProps> = ({ data }) => {
             ))}
           </Splide>
         </div>
-        <div className="help__content max-h-[490px]">
+        <div className="help__content max-h-[790px]">
           <h1 className="help__title font-rubik">{data.title}</h1>
           <p className="help__text">{data.content}</p>
           <Button

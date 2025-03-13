@@ -35,7 +35,7 @@ export default async function Home(props: { params: Params }) {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="mb-[66px] mt-[66px] font-rubik text-[98px] leading-[88px]">
+        <h1 className="mb-[66px] mt-[40px] text-center font-rubik text-[40px] leading-[38px] lg:mt-[66px] lg:text-[98px] lg:leading-[88px]">
           {t('wholesale_dried_fruits_in_bulk')}
         </h1>
         <div className="flex justify-center">
@@ -43,16 +43,16 @@ export default async function Home(props: { params: Params }) {
             {t('do_you_have_business')}
           </div>
         </div>
-        <div className="mt-[130px] text-center font-rubik text-[64px]">
+        <div className="mt-[77px] text-center font-rubik text-[32px] lg:mt-[130px] lg:text-[64px]">
           {t('why_us')}
         </div>
         <div className="mt-[71px] grid grid-cols-1 gap-[29px] md:grid-cols-3">
           {whyWe[locale].map((item) => (
             <div key={item.title} className="w-full">
-              <div className="w-full bg-black p-[16px] text-center font-rubik text-[32px] text-white">
+              <div className="w-full bg-black p-[16px] text-center font-rubik text-[24px] text-white lg:text-[32px]">
                 {item.title}
               </div>
-              <div className="h-[110px] w-full border border-dashed p-[14px] text-center">
+              <div className="w-full border border-dashed border-black p-[14px] text-center text-[16px] lg:text-[18px]">
                 {item.content}
               </div>
             </div>
@@ -63,7 +63,7 @@ export default async function Home(props: { params: Params }) {
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">
         <WholesaleForm />
-        <InstaFeed data={instaData[locale]} />
+        <InstaFeed title={t('join_us')} data={instaData[locale]} />
         <ToTheTop />
       </div>
     </>
