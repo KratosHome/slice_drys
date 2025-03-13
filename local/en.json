@@ -53,8 +53,7 @@
       "more-btn": "Learn more"
     },
     "instafeed": {
-      "title": "Travel with us",
-      "title-md": "Travel with us"
+      "title": "Travel with us"
     },
     "burger-menu": {
       "catalog": "Catalog",
@@ -187,7 +186,26 @@
     "home": "Home",
     "wholesale": "Wholesale",
     "wholesale_dried_fruits_in_bulk": "Wholesale - Dried Fruits in Bulk!",
-    "do_you_have_business": "Do you have a business and want to order our treats in bulk? Great idea! Write to us, and we will find the best conditions to keep your shelves stocked with our awesome dried fruits!",
-    "why_us": "Why us?"
+    "do_you_have_business": "Do you have a business and want to order our treats in bulk? Great idea! Write to us – and we will find the best conditions so your shelves are always stocked with our delicious dried fruits!",
+    "why_us": "Why Us?",
+    "join_us": "Join Us",
+    "thank_you_we_will_contact_you": "Thank you! We will contact you shortly.",
+    "error": "Oops! Something went wrong. Please try again or give us a call.",
+    "icon_cart": "cart icon",
+    "fill_out_form": "Fill out the form",
+    "start_cooperation": "Start Cooperation",
+    "name": "Name",
+    "this_field_is_required": "This field is required",
+    "minimum_characters": "Minimum 2 characters",
+    "maximum_characters": "Maximum 50 characters",
+    "enter-phone-number": "Enter phone number",
+    "enter-full-phone-number": "Enter full phone number",
+    "invalid_email_format": "Invalid email format",
+    "where_you_going_sell": "Where do you plan to sell?",
+    "maximum_100_characters": "Maximum 100 characters",
+    "link_company_name": "Link or company name",
+    "how_did_you_find_about_us": "How did you find out about us?",
+    "send": "Send"
   }
+
 }

@@ -19,9 +19,10 @@ export async function sendReviews(formData: FormData) {
     await bot.sendMessage(
       chatId,
       `
+      Вітаю в нас новий відгук:
       Час відправки: ${formattedDate},
       Імя: ${formData.name}, 
-      Відшук: ${formData.text},
+      Відгук: ${formData.text},
     `,
     )
     return { success: true }

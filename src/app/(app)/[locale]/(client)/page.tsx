@@ -41,7 +41,7 @@ export default async function Home(props: {
 }) {
   const url = process.env.NEXT_URL
   const { locale } = await props.params
-  const t = await getTranslations('main.products-slider')
+  const t = await getTranslations('main')
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
@@ -77,15 +77,15 @@ export default async function Home(props: {
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
         products={productsData.products}
-        title={t('title')}
-        message={t('message')}
+        title={t('products-slider.title')}
+        message={t('products-slider.message')}
       />
       <Help data={helpData.data} />
       <Faq data={faqData[locale]} />
       <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData} />
-      <InstaFeed data={instaData[locale]} />
+      <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>
   )
