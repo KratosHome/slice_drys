@@ -5,8 +5,8 @@ import {
   EmailIcon,
   UnderlineIcon,
 } from '@/components/client/contacts/contacts-icons'
-import NumberCall from '@/components/client/header/number-call/number-call'
 import Socials from '@/components/client/ui/Socials'
+import { PhoneIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
@@ -67,37 +67,94 @@ const ContactsInfo = () => {
           >
             {t('addressTitle')}
           </h2>
-          <a className={'flex pt-8'} href={`mailto:${t('email')}`}>
-            <span className="mr-3">
-              <EmailIcon />
-            </span>
-            <span>{t('email')}</span>
-          </a>
-          <NumberCall />
-          {/*<a className={'flex pt-8'} href={`tel:${t('phone')}`}>*/}
-          {/*  <span className="mr-3">*/}
-          {/*    <PhoneIcon />*/}
-          {/*  </span>*/}
-          {/*  <span>{t('phone')}</span>*/}
-          {/*</a>*/}
-          <a
-            className={'flex pt-8'}
-            href={`https://www.google.com/maps?q=${t('location')}`}
-            target={'_blank'}
+
+          {/* Email address*/}
+
+          <div
+            className={
+              'align-center group mt-8 flex cursor-pointer items-end gap-x-3 pl-3 font-poppins text-base font-medium text-[#FBFBFB]'
+            }
           >
-            <span className="mr-3">
+            <div
+              className={
+                'shrink-0 transform duration-300 [filter:invert(0)] group-hover:skew-x-[-5deg] group-hover:scale-110'
+              }
+            >
+              <EmailIcon />
+            </div>
+            <a
+              className={
+                'block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500'
+              }
+              href={`mailto:${t('email')}`}
+            >
+              {t('email')}
+            </a>
+          </div>
+
+          {/* Phone number */}
+
+          <div
+            className={
+              'align-center group mt-8 flex cursor-pointer items-end gap-x-3 pl-3 font-poppins text-base font-medium text-[#FBFBFB]'
+            }
+          >
+            <div
+              className={
+                'shrink-0 transform duration-300 [filter:invert(0)] group-hover:skew-x-[-5deg] group-hover:scale-110'
+              }
+            >
+              <PhoneIcon />
+            </div>
+            <a
+              className={
+                'block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500'
+              }
+              href={`tel:${t('phone')}`}
+            >
+              {t('phone')}
+            </a>
+          </div>
+
+          {/* Location*/}
+
+          <div
+            className={
+              'align-center group mt-8 flex cursor-pointer items-end gap-x-3 pl-3 font-poppins text-base font-medium text-[#FBFBFB]'
+            }
+          >
+            <div
+              className={
+                'shrink-0 transform duration-300 [filter:invert(0)] group-hover:skew-x-[-5deg] group-hover:scale-110'
+              }
+            >
               <AddressIcon />
-            </span>
-            <span>{t('location')}</span>
-          </a>
-          <p className={'flex pt-8'}>
-            <span className="mr-3">
+            </div>
+            <a
+              className={
+                'block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500'
+              }
+              href={`https://www.google.com/maps?q=${t('location')}`}
+              target={'_blank'}
+            >
+              {t('location')}
+            </a>
+          </div>
+
+          {/* Working Time*/}
+
+          <div
+            className={
+              'align-center group mt-8 flex items-end gap-x-3 pl-3 font-poppins text-base font-medium text-[#FBFBFB]'
+            }
+          >
+            <div className={''}>
               <ClockIcon />
-            </span>
-            <span>
+            </div>
+            <p>
               {t('openTime')} - {t('closeTime')}
-            </span>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </>
