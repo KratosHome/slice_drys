@@ -110,82 +110,84 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const { postsLocalized, currentPage, totalPages } = postsData
 
   return (
-    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/blog`}>
-              {t('Blog')}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <BlogTitle />
-      <div className="mx-auto flex flex-col items-center font-bold">
-        <PostList posts={postsLocalized} />
-        {totalPages > 1 && (
-          <Pagination className="mt-[60px] md:mt-[120px]">
-            <PaginationContent>
-              <PaginationItem
-                className={cn(currentPage === 1 && 'cursor-auto')}
-              >
-                <PaginationPrevious
-                  disabled={currentPage === 1}
-                  href={
-                    currentPage > 1
-                      ? getPageUrl(currentPage - 1, blogSearchParams)
-                      : '#'
-                  }
-                />
-              </PaginationItem>
-              {getPaginationRange(currentPage, totalPages).map(
-                (item, index) => {
-                  if (item === 'ellipsis') {
+    <>
+      <BlogJsonLd data={postsData} />
+      <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}/blog`}>
+                {t('Blog')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <BlogTitle />
+        <div className="mx-auto flex flex-col items-center font-bold">
+          <PostList posts={postsLocalized} />
+          {totalPages > 1 && (
+            <Pagination className="mt-[60px] md:mt-[120px]">
+              <PaginationContent>
+                <PaginationItem
+                  className={cn(currentPage === 1 && 'cursor-auto')}
+                >
+                  <PaginationPrevious
+                    disabled={currentPage === 1}
+                    href={
+                      currentPage > 1
+                        ? getPageUrl(currentPage - 1, blogSearchParams)
+                        : '#'
+                    }
+                  />
+                </PaginationItem>
+                {getPaginationRange(currentPage, totalPages).map(
+                  (item, index) => {
+                    if (item === 'ellipsis') {
+                      return (
+                        <PaginationItem key={`ellipsis-${index}`}>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )
+                    }
                     return (
-                      <PaginationItem key={`ellipsis-${index}`}>
-                        <PaginationEllipsis />
+                      <PaginationItem key={item}>
+                        <PaginationLink
+                          href={getPageUrl(item, blogSearchParams)}
+                          isActive={postsData.currentPage === item}
+                        >
+                          {item}
+                        </PaginationLink>
                       </PaginationItem>
                     )
-                  }
-                  return (
-                    <PaginationItem key={item}>
-                      <PaginationLink
-                        href={getPageUrl(item, blogSearchParams)}
-                        isActive={postsData.currentPage === item}
-                      >
-                        {item}
-                      </PaginationLink>
-                    </PaginationItem>
-                  )
-                },
-              )}
+                  },
+                )}
 
-              <PaginationItem
-                className={cn(currentPage === totalPages && 'cursor-auto')}
-              >
-                <PaginationNext
-                  disabled={currentPage === totalPages}
-                  href={
-                    currentPage < totalPages
-                      ? getPageUrl(currentPage + 1, blogSearchParams)
-                      : '#'
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+                <PaginationItem
+                  className={cn(currentPage === totalPages && 'cursor-auto')}
+                >
+                  <PaginationNext
+                    disabled={currentPage === totalPages}
+                    href={
+                      currentPage < totalPages
+                        ? getPageUrl(currentPage + 1, blogSearchParams)
+                        : '#'
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+        </div>
+        <BlogFooter />
       </div>
-      <BlogFooter />
-      <BlogJsonLd data={postsData} />
-    </div>
+    </>
   )
 }
