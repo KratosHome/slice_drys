@@ -129,12 +129,18 @@ const config: Config = {
             transform: 'translateY(50px) scale(0.8) rotate(90deg)',
           },
         },
+        loadingAnimation: {
+          '0%': { width: '0%' },
+          '50%': { width: '50%' },
+          '100%': { width: '100%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         marquee: '30s marquee linear infinite',
         follow: '1s follow ease-in-out infinite alternate',
+        loading: 'loadingAnimation 2s infinite ease-in-out',
       },
     },
   },

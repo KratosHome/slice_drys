@@ -5,4 +5,4 @@ export const fetchTags = {
   posts: 'posts',
   post: 'post',
   helpMain: 'helpMain',
-}
+} as const

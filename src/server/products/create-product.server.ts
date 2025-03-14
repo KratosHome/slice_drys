@@ -1,12 +1,16 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Product } from '@/server/products/productSchema'
-import cloudinary from '@/server/cloudinaryConfig'
 import { fetchTags } from '@/data/fetch-tags'
+
+import { connectToDb } from '@/server/connectToDb'
+import cloudinary from '@/server/cloudinaryConfig'
 import { revalidateTag } from 'next/cache'
 
-export async function createProduct(formData: IProductLocal, image: string) {
-  'use server'
+export async function createProduct(
+  formData: IProductLocal,
+  image: string,
+): Promise<IResponse> {
   try {
     await connectToDb()
 
@@ -14,7 +18,7 @@ export async function createProduct(formData: IProductLocal, image: string) {
       folder: 'products-slice',
     })
 
-    const productData = { ...formData, img: upload.secure_url }
+    const productData: IProductLocal = { ...formData, img: upload.secure_url }
 
     const product = new Product(productData)
     await product.save()

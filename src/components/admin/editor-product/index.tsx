@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useEffect, useState } from 'react'
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -13,17 +13,19 @@ import { Button } from '@/components/admin/ui/button'
 import { Label } from '@/components/admin/ui/label'
 import { Input } from '@/components/admin/ui/input'
 import { Checkbox } from '@/components/admin/ui/checkbox'
+import Loading from '@/components/admin/ui/loading'
+import Image from 'next/image'
+import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
+
+import { type ChangeEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { createProduct } from '@/server/products/create-product.server'
 import { toast } from '@/hooks/use-toast'
-import Loading from '@/components/admin/ui/loading'
 import { editProduct } from '@/server/products/edit-product.server'
 import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
-import Image from 'next/image'
 import { deleteProduct } from '@/server/products/delete-product.server'
-import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
 interface ICrateProduct {
   buttonTitle: string
@@ -32,17 +34,12 @@ interface ICrateProduct {
   categories: ICategory[]
 }
 
-interface IResult {
-  success: boolean
-  message: string
-}
-
-const EditorProduct: FC<ICrateProduct> = ({
+const EditorProduct = ({
   buttonTitle,
   product,
   recommendations,
   categories,
-}) => {
+}: ICrateProduct) => {
   const {
     register,
     handleSubmit,
@@ -79,9 +76,9 @@ const EditorProduct: FC<ICrateProduct> = ({
   })
   const router = useRouter()
 
-  const [loading, setLoading] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = React.useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
 
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
@@ -157,20 +154,20 @@ const EditorProduct: FC<ICrateProduct> = ({
     }
   }, [product, setValue, replace])
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file) {
-      setImageFile(file)
-    }
+
+    if (file) setImageFile(file)
   }
 
   const onSubmit = async (data: IProductLocal) => {
     if (isConfirmDeleteOpen) return
 
     setLoading(true)
-    let result: IResult
 
-    const image = imageFile ? await convertToBase64(imageFile) : ''
+    let result: IResponse
+
+    const image: string = imageFile ? await convertToBase64(imageFile) : ''
 
     const newData = {
       ...data,
@@ -202,6 +199,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
     if (result.success) {
       setIsOpen(false)
+
       toast({
         title: result.message,
       })
@@ -223,9 +221,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
     const result = await deleteProduct(product._id)
 
-    if (result.success) {
-      setIsConfirmDeleteOpen(false)
-    }
+    if (result.success) setIsConfirmDeleteOpen(false)
 
     toast({
       title: result.message,
@@ -235,7 +231,7 @@ const EditorProduct: FC<ICrateProduct> = ({
     setLoading(false)
   }
 
-  const handleCategoryChange = (categoryId: string, checked: boolean) => {
+  const handleCategoryChange = (categoryId: string, checked: boolean): void => {
     setSelectedCategories((prev) =>
       checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId),
     )
@@ -255,6 +251,7 @@ const EditorProduct: FC<ICrateProduct> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Видалення</AlertDialogTitle>
         </AlertDialogHeader>
+
         <AlertDialogDescription>
           Дійсно хочете видалити цей товар?
         </AlertDialogDescription>
@@ -292,22 +289,26 @@ const EditorProduct: FC<ICrateProduct> = ({
         <AlertDialogTrigger asChild>
           <Button>{buttonTitle}</Button>
         </AlertDialogTrigger>
+
         <AlertDialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader>
               <AlertDialogTitle>{buttonTitle} товар</AlertDialogTitle>
             </AlertDialogHeader>
+
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
                 <div className="flex flex-col justify-between">
                   <div>
                     <Label htmlFor="name-uk">Назва (UK)</Label>
+
                     <Input
                       id="name-uk"
                       {...register('name.uk', {
                         required: 'Це поле є обов’язковим',
                       })}
                     />
+
                     {errors.name?.uk && (
                       <span className="text-red-700">
                         {errors.name.uk.message}
@@ -317,12 +318,14 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                   <div>
                     <Label htmlFor="name-en">Назва (EN)</Label>
+
                     <Input
                       id="name-en"
                       {...register('name.en', {
                         required: 'Це поле є обов’язковим',
                       })}
                     />
+
                     {errors.name?.en && (
                       <span className="text-red-700">
                         {errors.name.en.message}
@@ -332,12 +335,14 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                   <div>
                     <Label htmlFor="slug">URL-ідентифікатор (Slug)</Label>
+
                     <Input
                       id="slug"
                       {...register('slug', {
                         required: 'Це поле є обов’язковим',
                       })}
                     />
+
                     {errors.slug && (
                       <span className="text-red">{errors.slug.message}</span>
                     )}
@@ -346,6 +351,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label htmlFor="picture">Додати зображення</Label>
+
                   <Input
                     id="picture"
                     type="file"
@@ -356,6 +362,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                 {imagePreviewUrl && (
                   <div>
                     <Label>Попередній перегляд зображення</Label>
+
                     <Image
                       src={imagePreviewUrl}
                       width={100}
@@ -368,6 +375,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label>Категорії</Label>
+
                   <div className="max-h-[300px] overflow-auto border">
                     <CategoryTreeCheckbox
                       categories={categories}
@@ -379,21 +387,24 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <h3>Склад</h3>
+
                   <div className="flex flex-col gap-4">
                     <div className="flex gap-2">
                       <div>
                         <Label htmlFor="compositionInputUk">Склад (UK)</Label>
+
                         <Input
                           id="compositionInputUk"
                           list="composition-suggestions-uk"
                           value={compositionInput.uk}
-                          onChange={(e) =>
+                          onChange={(event) =>
                             setCompositionInput((prev) => ({
                               ...prev,
-                              uk: e.target.value,
+                              uk: event.target.value,
                             }))
                           }
                         />
+
                         <datalist id="composition-suggestions-uk">
                           {recommendations.composition.uk.map(
                             (item: string) => (
@@ -402,21 +413,24 @@ const EditorProduct: FC<ICrateProduct> = ({
                           )}
                         </datalist>
                       </div>
+
                       <div>
                         <Label htmlFor="compositionInputEn">
                           Composition (EN)
                         </Label>
+
                         <Input
                           id="compositionInputEn"
                           list="composition-suggestions-en"
                           value={compositionInput.en}
-                          onChange={(e) =>
+                          onChange={(event) =>
                             setCompositionInput((prev) => ({
                               ...prev,
-                              en: e.target.value,
+                              en: event.target.value,
                             }))
                           }
                         />
+
                         <datalist id="composition-suggestions-en">
                           {recommendations.composition.en.map(
                             (item: string) => (
@@ -425,6 +439,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           )}
                         </datalist>
                       </div>
+
                       <Button
                         className="mt-6"
                         type="button"
@@ -450,6 +465,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                             <div>
                               uk: {itemUk} / en: {composition.en[index]}
                             </div>
+
                             <Button
                               variant="destructive"
                               type="button"
@@ -472,9 +488,11 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <h2 className="text-lg font-semibold">Харчова цінність</h2>
+
                   <div className="space-y-2">
                     <div>
                       <Label htmlFor="nutritionalValue.proteins">Білки</Label>
+
                       <Input
                         id="nutritionalValue.proteins"
                         list="proteins-suggestions"
@@ -482,19 +500,23 @@ const EditorProduct: FC<ICrateProduct> = ({
                           required: 'Це поле є обов’язковим',
                         })}
                       />
+
                       <datalist id="proteins-suggestions">
                         {recommendations.proteins.map((category: string) => (
                           <option key={category} value={category} />
                         ))}
                       </datalist>
+
                       {errors.nutritionalValue?.proteins && (
                         <span className="text-red-700">
                           {errors.nutritionalValue.proteins.message}
                         </span>
                       )}
                     </div>
+
                     <div>
                       <Label htmlFor="nutritionalValue.fats">Жири</Label>
+
                       <Input
                         id="nutritionalValue.fats"
                         list="fats-suggestions"
@@ -502,21 +524,25 @@ const EditorProduct: FC<ICrateProduct> = ({
                           required: 'Це поле є обов’язковим',
                         })}
                       />
+
                       <datalist id="fats-suggestions">
                         {recommendations.fats.map((category: string) => (
                           <option key={category} value={category} />
                         ))}
                       </datalist>
+
                       {errors.nutritionalValue?.fats && (
                         <span className="text-red-700">
                           {errors.nutritionalValue.fats.message}
                         </span>
                       )}
                     </div>
+
                     <div>
                       <Label htmlFor="nutritionalValue.carbohydrates">
                         Вуглеводи
                       </Label>
+
                       <Input
                         id="nutritionalValue.carbohydrates"
                         list="carbohydrates-suggestions"
@@ -524,6 +550,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           required: 'Це поле є обов’язковим',
                         })}
                       />
+
                       <datalist id="carbohydrates-suggestions">
                         {recommendations.carbohydrates.map(
                           (category: string) => (
@@ -531,16 +558,19 @@ const EditorProduct: FC<ICrateProduct> = ({
                           ),
                         )}
                       </datalist>
+
                       {errors.nutritionalValue?.carbohydrates && (
                         <span className="text-red-700">
                           {errors.nutritionalValue.carbohydrates.message}
                         </span>
                       )}
                     </div>
+
                     <div>
                       <Label htmlFor="nutritionalValue.energyValue">
                         Енергетична цінність
                       </Label>
+
                       <Input
                         id="nutritionalValue.energyValue"
                         list="energyValue-suggestions"
@@ -548,11 +578,13 @@ const EditorProduct: FC<ICrateProduct> = ({
                           required: 'Це поле є обов’язковим',
                         })}
                       />
+
                       <datalist id="energyValue-suggestions">
                         {recommendations.energyValue.map((category: string) => (
                           <option key={category} value={category} />
                         ))}
                       </datalist>
+
                       {errors.nutritionalValue?.energyValue && (
                         <span className="text-red-700">
                           {errors.nutritionalValue.energyValue.message}
@@ -564,6 +596,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label htmlFor="description-uk">Опис (UK)</Label>
+
                   <QuillEditor
                     className="min-h-96"
                     content={descriptionUk}
@@ -573,6 +606,7 @@ const EditorProduct: FC<ICrateProduct> = ({
 
                 <div>
                   <Label htmlFor="description-uk">Опис (EN)</Label>
+
                   <QuillEditor
                     className="min-h-96"
                     content={descriptionEn}
@@ -593,6 +627,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           checked={field.value?.includes('new') || false}
                           onCheckedChange={(checked) => {
                             const value = 'new'
+
                             if (checked) {
                               field.onChange([...field.value, value])
                             } else {
@@ -602,8 +637,10 @@ const EditorProduct: FC<ICrateProduct> = ({
                             }
                           }}
                         />
+
                         <label htmlFor="new">Новинка</label>
                       </div>
+
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id="sale"
@@ -611,6 +648,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           checked={field.value?.includes('sale') || false}
                           onCheckedChange={(checked) => {
                             const value = 'sale'
+
                             if (checked) {
                               field.onChange([...field.value, value])
                             } else {
@@ -620,8 +658,10 @@ const EditorProduct: FC<ICrateProduct> = ({
                             }
                           }}
                         />
+
                         <label htmlFor="sale">Акція</label>
                       </div>
+
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id="top"
@@ -629,6 +669,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                           checked={field.value?.includes('top') || false}
                           onCheckedChange={(checked) => {
                             const value = 'top'
+
                             if (checked) {
                               field.onChange([...field.value, value])
                             } else {
@@ -638,19 +679,23 @@ const EditorProduct: FC<ICrateProduct> = ({
                             }
                           }}
                         />
+
                         <label htmlFor="top">Топ</label>
                       </div>
                     </>
                   )}
                 />
+
                 <div>
                   <h2 className="text-lg font-semibold">Вид</h2>
+
                   {variableFields.map((field, index) => (
                     <div key={field.id} className="mt-2 space-y-2 border p-4">
                       <div>
                         <Label htmlFor={`variables.${index}.weight`}>
                           Вага
                         </Label>
+
                         <Input
                           type={'number'}
                           id={`variables.${index}.weight`}
@@ -658,14 +703,17 @@ const EditorProduct: FC<ICrateProduct> = ({
                             required: 'Це поле є обов’язковим',
                           })}
                         />
+
                         {errors.variables?.[index]?.weight && (
                           <span className="text-red-700">
                             {errors.variables[index].weight.message}
                           </span>
                         )}
                       </div>
+
                       <div>
                         <Label htmlFor={`variables.${index}.price`}>Ціна</Label>
+
                         <Input
                           type={'number'}
                           id={`variables.${index}.price`}
@@ -673,42 +721,50 @@ const EditorProduct: FC<ICrateProduct> = ({
                             required: 'Це поле є обов’язковим',
                           })}
                         />
+
                         {errors.variables?.[index]?.price && (
                           <span className="text-red-700">
                             {errors.variables[index].price.message}
                           </span>
                         )}
                       </div>
+
                       <div>
                         <Label htmlFor={`variables.${index}.newPrice`}>
                           Нова ціна
                         </Label>
+
                         <Input
                           type={'number'}
                           id={`variables.${index}.newPrice`}
                           {...register(`variables.${index}.newPrice`)}
                         />
                       </div>
+
                       <div>
                         <Label htmlFor={`variables.${index}.currency`}>
                           Валюта
                         </Label>
+
                         <Input
                           id={`variables.${index}.currency`}
                           {...register(`variables.${index}.currency`, {
                             required: 'Це поле є обов’язковим',
                           })}
                         />
+
                         {errors.variables?.[index]?.currency && (
                           <span className="text-red-700">
                             {errors.variables[index].currency.message}
                           </span>
                         )}
                       </div>
+
                       <div>
                         <Label htmlFor={`variables.${index}.count`}>
                           Кількість
                         </Label>
+
                         <Input
                           type={'number'}
                           id={`variables.${index}.count`}
@@ -716,12 +772,14 @@ const EditorProduct: FC<ICrateProduct> = ({
                             required: 'Це поле є обов’язковим',
                           })}
                         />
+
                         {errors.variables?.[index]?.count && (
                           <span className="text-red-700">
                             {errors.variables[index].count.message}
                           </span>
                         )}
                       </div>
+
                       <Button
                         variant="destructive"
                         type="button"
@@ -731,6 +789,7 @@ const EditorProduct: FC<ICrateProduct> = ({
                       </Button>
                     </div>
                   ))}
+
                   <Button
                     variant="secondary"
                     type="button"
@@ -748,11 +807,14 @@ const EditorProduct: FC<ICrateProduct> = ({
                     Додати вид
                   </Button>
                 </div>
+
                 <div>
                   <h2>SEO</h2>
+
                   <div className="flex gap-2">
                     <div>
                       <Label>Тайтел (UK)</Label>
+
                       <Input
                         {...register('title.uk', {
                           required: 'Це поле є обов’язковим',
@@ -767,8 +829,10 @@ const EditorProduct: FC<ICrateProduct> = ({
                         })}
                       />
                     </div>
+
                     <div>
                       <Label>Тайтел (EN)</Label>
+
                       <Input
                         {...register('title.en', {
                           required: 'This field is required',
@@ -784,9 +848,11 @@ const EditorProduct: FC<ICrateProduct> = ({
                       />
                     </div>
                   </div>
+
                   <div className="flex gap-2">
                     <div>
                       <Label>Мета Дескріпшен (UK)</Label>
+
                       <Input
                         {...register('metaDescription.uk', {
                           required: 'Це поле є обов’язковим',
@@ -801,8 +867,10 @@ const EditorProduct: FC<ICrateProduct> = ({
                         })}
                       />
                     </div>
+
                     <div>
                       <Label>Мета Дескріпшен (EN)</Label>
+
                       <Input
                         {...register('metaDescription.en', {
                           required: 'This field is required',
@@ -818,19 +886,24 @@ const EditorProduct: FC<ICrateProduct> = ({
                       />
                     </div>
                   </div>
+
                   <div className="flex gap-2">
                     <div>
                       <Label>Кейвордс (UK)</Label>
+
                       <Input {...register('keywords.uk')} />
                     </div>
+
                     <div>
                       <Label>Кейвордс (EN)</Label>
+
                       <Input {...register('keywords.en')} />
                     </div>
                   </div>
                 </div>
               </div>
             </AlertDialogDescription>
+
             <AlertDialogFooter>
               <div className="flex w-full justify-between">
                 {product ? (
@@ -844,10 +917,12 @@ const EditorProduct: FC<ICrateProduct> = ({
                 ) : (
                   <div />
                 )}
+
                 <div className="flex gap-2">
                   <Button variant="outline" onClick={() => setIsOpen(false)}>
                     Скасувати
                   </Button>
+
                   <Button type="submit" disabled={loading}>
                     {buttonTitle}
                   </Button>
