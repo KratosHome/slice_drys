@@ -21,7 +21,6 @@ export async function callMeBack(formData: FormData) {
       `
       Користувач хочу що б йому зателефонували:
       Час відправки: ${formattedDate},
-      Імя: ${formData.name}, 
       Номер: ${formData.phoneNumber},
     `,
     )
