@@ -1,34 +1,33 @@
-import React, { FC } from 'react'
 import { Checkbox } from '@/components/admin/ui/checkbox'
 
-interface CategoryTreeProps {
+interface ICategoryTreeProps {
   categories: ICategory[]
   selectedCategories: string[]
   onCategoryChange: (categoryId: string, checked: boolean) => void
 }
 
-const CategoryTreeCheckbox: FC<CategoryTreeProps> = ({
+const CategoryTreeCheckbox = ({
   categories,
   selectedCategories,
   onCategoryChange,
-}) => {
+}: ICategoryTreeProps) => {
   return (
     <ul className="ml-4 space-y-2 overflow-auto">
-      {categories.map((category) => (
-        <li key={category._id} className="flex flex-col space-y-1">
+      {categories.map(({ _id, children, name }) => (
+        <li key={_id} className="flex flex-col space-y-1">
           <div className="flex items-center space-x-2">
             <Checkbox
-              id={category._id}
-              checked={selectedCategories.includes(category._id)}
-              onCheckedChange={(checked) =>
-                onCategoryChange(category._id, !!checked)
-              }
+              id={_id}
+              checked={selectedCategories.includes(_id)}
+              onCheckedChange={(checked) => onCategoryChange(_id, !!checked)}
             />
-            <label htmlFor={category._id}>{category.name.uk}</label>
+
+            <label htmlFor={_id}>{name.uk}</label>
           </div>
-          {category.children.length > 0 && (
+
+          {children.length > 0 && (
             <CategoryTreeCheckbox
-              categories={category.children}
+              categories={children}
               selectedCategories={selectedCategories}
               onCategoryChange={onCategoryChange}
             />

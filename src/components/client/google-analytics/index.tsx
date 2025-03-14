@@ -1,18 +1,22 @@
 import Script from 'next/script'
 
-export const GoogleTagManager = () => {
+export const GoogleAnalytics = () => {
+  const GOOGLE_ANALYTICS_ID: string | undefined =
+    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+
   return (
     <>
       <Script
         async
-        src="https://www.googletagmanager.com/gtag/js?id=G-B0WJ3M87VD"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
       />
+
       <Script id="google-analytics">
         {`
                        window.dataLayer = window.dataLayer || [];
                        function gtag(){dataLayer.push(arguments);}
                        gtag('js', new Date());
-                       gtag('config', 'G-B0WJ3M87VD');
+                       gtag('config', '${GOOGLE_ANALYTICS_ID}');
                     `}
       </Script>
     </>

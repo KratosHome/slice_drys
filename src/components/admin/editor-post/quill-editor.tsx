@@ -1,40 +1,48 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import Quill from 'quill'
+
+import { useEffect, useRef, useState } from 'react'
+
 import 'quill/dist/quill.snow.css'
 
 const QUILL_CONTAINER_ID = 'js-editor-container'
 
-interface QuillEditorProps {
+interface IQuillEditorProps {
   content: string
   setContent: (content: string) => void
   className?: string
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({
-  content,
-  setContent,
-  className,
-}) => {
-  const [toPreventDoubleQuill, setToPreventDoubleQuill] = useState(true)
-  const quillRef = useRef<Quill | null>(null)
+const QuillEditor = ({ content, setContent, className }: IQuillEditorProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [Quill, setQuill] = useState<any>(null)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const quillRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  if (!content) {
-    content = '{"ops":[{"insert":"\\n"}]}'
-  }
+
+  if (!content) content = '{"ops":[{"insert":"\\n"}]}'
 
   useEffect(() => {
-    setToPreventDoubleQuill(!toPreventDoubleQuill)
-    if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
+    const timerId = setTimeout(async () => {
+      const Quill = (await import('quill')).default
+
+      setQuill(Quill)
+    }, 3000)
+
+    return () => clearTimeout(timerId)
+  }, [])
+
+  useEffect(() => {
+    if (Quill && containerRef.current && !quillRef.current) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
         modules: {
           toolbar: [
-            [{ header: [1, 2, 3, false] }], // Розміри заголовків
-            ['bold', 'italic', 'underline', 'strike'], // Стилі тексту
-            [{ list: 'ordered' }, { list: 'bullet' }], // Списки
-            ['link', 'image'], // Вставка лінків та зображень
+            [{ header: [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
             [{ align: [] }],
           ],
         },
@@ -50,9 +58,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       quillRef.current?.off('text-change')
       quillRef.current = null
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setContent])
+  }, [setContent, Quill])
 
   useEffect(() => {
     if (
@@ -76,7 +82,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       className={className || ''}
       id={QUILL_CONTAINER_ID}
       ref={containerRef}
-    ></div>
+    />
   )
 }
 

@@ -1,22 +1,25 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Product } from '@/server/products/productSchema'
-import cloudinary from '@/server/cloudinaryConfig'
 import { fetchTags } from '@/data/fetch-tags'
+
+import { connectToDb } from '@/server/connectToDb'
+import cloudinary from '@/server/cloudinaryConfig'
 import { revalidateTag } from 'next/cache'
 
 export async function editProduct(
   id: string,
   formData: IProductLocal,
   image?: string,
-) {
-  'use server'
+): Promise<IResponse> {
   try {
     await connectToDb()
 
     const existingProduct = await Product.findById(id)
-    if (!existingProduct)
+
+    if (!existingProduct) {
       return { success: false, message: 'Product not found' }
+    }
 
     let imageUrl = existingProduct.img
 
@@ -35,7 +38,7 @@ export async function editProduct(
       imageUrl = upload.secure_url
     }
 
-    const updatedData = {
+    const updatedData: IProductLocal = {
       ...formData,
       img: imageUrl,
     }

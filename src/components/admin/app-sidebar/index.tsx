@@ -1,6 +1,8 @@
 'use client'
+
+import { appSidebarData } from '@/data/app-sidebar'
+
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
 import {
   Sidebar,
   SidebarContent,
@@ -10,11 +12,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/admin/ui/sidebar'
-import React from 'react'
-import { appSidebarData } from '@/data/app-sidebar'
+
+import { useLocale } from 'next-intl'
 
 export function AppSidebar() {
-  const locale = useLocale()
+  const locale: string = useLocale()
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -26,6 +29,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <Link href={`/${locale}/${item.link}`}>
                       <item.icon />
+
                       <span>{item.name}</span>
                     </Link>
                   </SidebarMenuButton>
