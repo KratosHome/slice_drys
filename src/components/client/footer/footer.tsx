@@ -127,7 +127,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           variant="light"
         />
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
-          <Socials variant="light" />
+          <Socials variant="light" size={33} />
         </div>
         <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-nowrap text-end uppercase md:order-none md:mt-[18px]">
           &copy; {new Date().getFullYear()} SLICE&DRY’S

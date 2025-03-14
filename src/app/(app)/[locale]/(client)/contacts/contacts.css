@@ -1,0 +1,11 @@
+.contacts-info-text {
+  button {
+    &:hover {
+      svg {
+        path {
+          @apply fill-red-500 text-red-500;
+        }
+      }
+    }
+  }
+}

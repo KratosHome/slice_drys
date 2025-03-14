@@ -140,7 +140,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
             >
-              <Socials variant="dark" />
+              <Socials variant="dark" size={33} />
             </div>
           </div>
 
