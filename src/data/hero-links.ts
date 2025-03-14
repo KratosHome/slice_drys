@@ -32,7 +32,7 @@ const slidersUk = [
     color: colorConstants.orange,
   },
   {
-    title: 'Овочеві сушені',
+    title: 'Овочі сушені',
     image: '/slider/veggie.webp',
     subImages: veggieSubImages,
     color: colorConstants.green,
