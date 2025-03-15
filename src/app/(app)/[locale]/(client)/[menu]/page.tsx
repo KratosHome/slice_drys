@@ -160,6 +160,8 @@ export default async function MenuPage(props: {
     return <NotFoundPage />
   }
 
+  console.log('categoriesData', categoriesData)
+
   const content = JSON.parse(currentCategories.data.description[locale])
   const converter = new QuillDeltaToHtmlConverter(content.ops)
   const html = converter.convert()
