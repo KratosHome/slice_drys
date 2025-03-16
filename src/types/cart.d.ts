@@ -1,7 +1,3 @@
-// P {
-// value: string
-// label: string
-// }
 interface IDeliveryInfo<T extends 'branch' | 'postomat' | 'courier', P> {
   city?: T extends 'branch' | 'postomat' ? P : never
   branch?: T extends 'branch' | 'postomat' ? P : never
@@ -36,14 +32,6 @@ interface ICartItem {
 interface ICart {
   itemList?: ICartItem[] | undefined
   userData?:
-    | IUserData<
-        IDeliveryInfo<
-          'branch' | 'postomat' | 'courier',
-          {
-            value: string
-            label: string
-          }
-        >
-      >
+    | IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>>
     | undefined
 }

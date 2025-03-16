@@ -26,13 +26,7 @@ interface ICartState {
 interface ICartActions {
   setCartUserData: (
     data: IUserData<
-      IDeliveryInfo<
-        'branch' | 'postomat' | 'courier',
-        {
-          value: string
-          label: string
-        }
-      >
+      IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
     >,
   ) => void
   addItemToCart: (props: IAddItemToCartProps) => void
@@ -70,8 +64,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
               deliveryInfo: {
                 deliveryMethod: 'branch',
                 deliveryProvider: 'novaPoshta',
-                paymentInfo: 'card-payment',
               },
+              paymentInfo: 'card-payment',
             },
           },
           openCart: false,

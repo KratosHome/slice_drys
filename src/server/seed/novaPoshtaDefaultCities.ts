@@ -1,15 +1,20 @@
 import { connectToDb } from '@/server/connectToDb'
-import { NovaPoshtaCities } from '@/server/delivery/novaPoshtaSchema'
+import {
+  NovaPoshtaCities,
+  NovaPoshtaDefaultCities,
+} from '@/server/delivery/novaPoshtaSchema'
+import { getNPCityOnline } from '../delivery/get-cities.server'
 
 export const seedNovaPoshtaDefaultCities = async () => {
   try {
     await connectToDb()
 
-    const count = await NovaPoshtaCities.countDocuments()
+    const count = await NovaPoshtaDefaultCities.countDocuments()
     if (count !== 0) {
       return {
         success: false,
-        message: 'Directory of cities already exists. No changes were made.',
+        message:
+          'Directory of default cities already exists. No changes were made.',
       }
     }
 
@@ -97,7 +102,57 @@ export const seedNovaPoshtaDefaultCities = async () => {
       },
     ]
 
-    await NovaPoshtaCities.create(citiesData)
+    await NovaPoshtaDefaultCities.create(citiesData)
+
+    return {
+      success: true,
+      message: 'Directory of default cities seeded successfully',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: `Error: ${error}`,
+    }
+  }
+}
+
+const formatCityName = ({
+  SettlementTypeDescription,
+  Description,
+  AreaDescription,
+}: {
+  SettlementTypeDescription: string
+  Description: string
+  AreaDescription: string
+}) => {
+  const cityType =
+    SettlementTypeDescription.split(' ').length > 1
+      ? SettlementTypeDescription.split(' ')
+          .map((word) => word[0])
+          .join()
+      : SettlementTypeDescription[0] + '.'
+  return cityType.concat(' ', Description, ' ', '(', AreaDescription, ' обл.)')
+}
+
+export const seedNovaPoshtaCitiesDictionary = async () => {
+  const newData = await getNPCityOnline()
+  if (!newData?.success) return
+
+  const newCitiesData = newData.data.map(({ Ref, ...rest }) => ({
+    ref: Ref,
+    city: formatCityName(rest),
+  }))
+  try {
+    await connectToDb()
+
+    const count = await NovaPoshtaCities.countDocuments()
+    if (count !== 0) {
+      return {
+        success: false,
+        message: 'Directory of cities already exists. No changes were made.',
+      }
+    }
+    await NovaPoshtaCities.create(newCitiesData)
 
     return {
       success: true,

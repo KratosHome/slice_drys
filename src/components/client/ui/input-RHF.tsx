@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { useController, UseControllerProps } from 'react-hook-form'
-import { cn } from '@/utils/cn'
+
 import { ErrorMessage } from '@hookform/error-message'
-import { useCartStore } from '@/store/cartStore'
+import { cn } from '@/utils/cn'
 
 type InputProps = {
   helpText?: string
@@ -32,7 +32,6 @@ function Input(props: InputProps) {
     defaultValue,
     disabled,
   })
-  const setUserData = useCartStore((state) => state.setCartUserData)
   return (
     <div>
       <input
@@ -41,12 +40,6 @@ function Input(props: InputProps) {
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           if (props.onChange) {
             props.onChange(event)
-          } else {
-            field.onChange(event)
-            setUserData({
-              ...useCartStore.getState().cart.userData,
-              [event.target.name]: event.target.value,
-            })
           }
         }}
         placeholder={props.placeholder}

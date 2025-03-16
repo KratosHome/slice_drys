@@ -10,12 +10,16 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 import ToTheTop from '@/components/client/ui/to-the-top'
-import { seedNovaPoshtaDefaultCities } from '@/server/seed/novaPoshtaDefaultCities'
+import {
+  seedNovaPoshtaCitiesDictionary,
+  seedNovaPoshtaDefaultCities,
+} from '@/server/seed/novaPoshtaDefaultCities'
 import { getDefaultNPCitiesFromDictionary } from '@/server/delivery/get-cities.server'
 
 export default async function OrderPage() {
   if (process.env.NODE_ENV === 'development') {
     await seedNovaPoshtaDefaultCities()
+    await seedNovaPoshtaCitiesDictionary()
   }
   const t = await getTranslations('Breadcrumbs')
   const defaultCities = await getDefaultNPCitiesFromDictionary()

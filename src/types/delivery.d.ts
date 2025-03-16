@@ -1,3 +1,8 @@
+interface IComboboxData {
+  value: string
+  label: string
+}
+
 interface IDirectoryCity {
   city: string
   ref: string
@@ -7,18 +12,19 @@ interface IDirectoryBranch {
   branchRef: string
   branchName: string
   branchType: string
-  // branchType: Capitalize<Omit<IDeliveryMethods, 'courier'>>
 }
 
 interface IDirectoryBranches {
   city: string
   cityRef: string
-  branches: IDeliveryBranch[]
+  branches: IDirectoryBranch[]
 }
 
 interface INovaPoshtaApiCity {
-  Present: string
-  DeliveryCity: string
+  Ref: string //id населеного пункту
+  SettlementTypeDescription: string //тип населеного пункту
+  Description: string //назва міста
+  AreaDescription: string //назва області
 }
 
 interface INovaPoshtaApiBranch {
@@ -30,6 +36,7 @@ interface INovaPoshtaApiBranch {
 }
 
 interface INovaPoshtaApiResponse<T> {
+  success: boolean
   data: T
   info?: { totalCount: number }
 }

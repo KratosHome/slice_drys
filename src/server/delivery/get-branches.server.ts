@@ -60,12 +60,15 @@ export async function getNPBranchesByCityRefOnline(cityRef: string): Promise<
         CityRef: cityRef,
       },
     )
+    if (!branches.success) return []
     return branches.data.map((branch) => ({
       cityRef: branch.CityRef,
       city: branch.CityDescription,
       branchRef: branch.Ref,
       branchName: branch.Description,
-      branchType: branch.CategoryOfWarehouse,
+      branchType: !branch.CategoryOfWarehouse.toLowerCase().includes('postomat')
+        ? 'Branch'
+        : branch.CategoryOfWarehouse,
     }))
   } catch (error) {
     console.error('Помилка при отриманні відділень Нова Пошта з API:', error)
@@ -105,4 +108,42 @@ export async function getNPBranchesByCityRefFromDirectory(
 
 //     throw error
 //   }
+// }
+
+// {
+// 	"success": true,
+// 	"data": [
+// 		{
+// 			"Ref": "6f8c7162-4b72-4b0a-88e5-906948c6a92f",
+// 			"Description": "Поштове відділення з обмеження",
+// 			"DescriptionRu": "Parcel Shop"                    Store
+// 		},
+// 		{
+// 			"Ref": "841339c7-591a-42e2-8233-7a0a00f0ed6f",   Branch
+// 			"Description": "Поштове(ий)",
+// 			"DescriptionRu": "Почтовое отделение"
+// 		},
+// 		{
+// 			"Ref": "95dc212d-479c-4ffb-a8ab-8c1b9073d0bc",
+// 			"Description": "Поштомат ПриватБанку",
+// 			"DescriptionRu": "Почтомат приват банка"
+// 		},
+// 		{
+// 			"Ref": "9a68df70-0267-42a8-bb5c-37f427e36ee4", Branch
+// 			"Description": "Вантажне(ий)",
+// 			"DescriptionRu": "Грузовое отделение"
+// 		},
+// 		{
+// 			"Ref": "f9316480-5f2d-425d-bc2c-ac7cd29decf0",    Postomat
+// 			"Description": "Поштомат",
+// 			"DescriptionRu": "Почтомат"
+// 		}
+// 	],
+// 	"errors": [],
+// 	"warnings": [],
+// 	"info": [],
+// 	"messageCodes": [],
+// 	"errorCodes": [],
+// 	"warningCodes": [],
+// 	"infoCodes": []
 // }

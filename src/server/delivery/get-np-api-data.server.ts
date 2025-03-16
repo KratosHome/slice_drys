@@ -1,10 +1,5 @@
 'use server'
 
-interface INovaPoshtaApiResponse<T> {
-  data: T
-  info?: { totalCount: number }
-}
-
 export async function getNovaPoshtaApiData<T>(
   calledMethod: 'getCities' | 'getWarehouses',
   methodProperties?: Record<string, unknown>,
