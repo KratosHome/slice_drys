@@ -195,6 +195,8 @@ export const Hero = ({
                         top: isDesktop ? `0` : `${top}px`,
                         left: isDesktop ? `0` : `${left}px`,
                         transform: `rotate(${item.rotate || 0}deg)`,
+                        display:
+                          isMobile && item.isMobileDiz ? 'none' : 'block',
                       }}
                       width={isDesktop ? item.width : item.width / 2}
                       height={isDesktop ? item.height : item.height / 2}

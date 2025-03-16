@@ -4,32 +4,21 @@ import { Product } from '@/server/products/productSchema'
 
 export async function getProductsSliderProduct(
   locale: ILocale,
-  categories: string[],
-  productId: string,
+  productSlug: string,
 ) {
   try {
     await connectToDb()
 
-    let relatedProducts = await Product.find({
-      categories: { $in: categories },
-      _id: { $ne: productId },
-    })
-      .limit(7)
-      .lean<IProductLocal[]>()
+    const aggregatedProducts = await Product.aggregate([
+      { $match: { slug: { $ne: productSlug } } },
+      { $unwind: '$categories' },
+      { $group: { _id: '$categories', product: { $first: '$$ROOT' } } },
+      { $group: { _id: '$product._id', product: { $first: '$product' } } },
+      { $limit: 7 },
+    ])
 
-    if (relatedProducts.length < 7) {
-      const popularProducts = await Product.find({
-        _id: { $ne: productId, $nin: relatedProducts.map((p) => p._id) },
-      })
-        .sort({ visited: -1 })
-        .limit(7 - relatedProducts.length)
-        .lean<IProductLocal[]>()
-
-      relatedProducts = [...relatedProducts, ...popularProducts]
-    }
-
-    const formattedProducts: IProduct[] = relatedProducts.map(
-      (product: IProductLocal) => ({
+    const formattedProducts: IProduct[] = aggregatedProducts.map(
+      ({ product }: { product: IProductLocal }) => ({
         ...product,
         _id: product._id?.toString(),
         name: product.name[locale],
@@ -47,9 +36,13 @@ export async function getProductsSliderProduct(
       }),
     )
 
+    const uniqueProducts = Array.from(
+      new Map(formattedProducts.map((item) => [item._id, item])).values(),
+    )
+
     return {
       success: true,
-      data: formattedProducts,
+      data: uniqueProducts,
       message: 'Products retrieved',
     }
   } catch (error) {

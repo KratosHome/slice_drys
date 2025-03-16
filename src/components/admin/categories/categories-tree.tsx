@@ -1,17 +1,45 @@
 'use client'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import CategoryNode from '@/components/admin/categories/category-node'
 import UpdateTree from '@/components/admin/categories/update-tree'
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core'
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from '@dnd-kit/sortable'
+import { changePosition } from '@/server/categories/change-position.server'
 
 interface CategoriesTreeProps {
   categories: ICategory[]
 }
 
 const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
+  const [orderedCategories, setOrderedCategories] = useState(categories)
   const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({})
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
     null,
   )
+
+  useEffect(() => {
+    setOrderedCategories(categories)
+  }, [categories])
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+
+    const oldIndex = orderedCategories.findIndex((c) => c._id === active.id)
+    const newIndex = orderedCategories.findIndex((c) => c._id === over.id)
+
+    const newOrder = arrayMove(orderedCategories, oldIndex, newIndex)
+
+    setOrderedCategories(newOrder)
+
+    await changePosition(
+      newOrder.map((cat, index) => ({ ...cat, order: index })),
+    )
+  }
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -21,17 +49,27 @@ const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
     <div className="flex flex-col gap-6 p-6 md:flex-row">
       <div className="w-full rounded-lg border bg-white p-4 shadow md:w-1/3">
         <h2 className="mb-4 text-lg font-semibold">Категорії</h2>
-        <ul>
-          {categories.map((category) => (
-            <CategoryNode
-              key={category._id}
-              category={category}
-              expanded={expanded}
-              toggleExpand={toggleExpand}
-              setSelectedCategory={setSelectedCategory}
-            />
-          ))}
-        </ul>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={orderedCategories.map((cat) => cat._id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <ul className="list">
+              {orderedCategories.map((category) => (
+                <CategoryNode
+                  key={category._id}
+                  category={category}
+                  expanded={expanded}
+                  toggleExpand={toggleExpand}
+                  setSelectedCategory={setSelectedCategory}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
       </div>
 
       <div className="w-full rounded-lg border bg-white p-4 shadow md:w-2/3">

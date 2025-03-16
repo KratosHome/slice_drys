@@ -1,12 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 type Props = { post: InstaFeed }
 
 function InstaCard({ post }: Props) {
   return (
-    <div className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white shadow-xl transition-all duration-300 will-change-transform active:translate-y-1 active:shadow-2xl md:max-w-none md:hover:-translate-y-1 md:hover:shadow-2xl">
+    <motion.div
+      className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white will-change-transform md:max-w-none"
+      whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px] font-dmsans">
         <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px]">
           <Image
@@ -50,7 +55,7 @@ function InstaCard({ post }: Props) {
           : post.caption}
       </p>
       <CardFooter />
-    </div>
+    </motion.div>
   )
 }
 const Dots = ({ number }: { number: number }) => {

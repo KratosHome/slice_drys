@@ -63,7 +63,7 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
             {t('nutritional_value')}
           </AccordionTrigger>
         </motion.div>
-        <AccordionContent className="border border-t-0">
+        <AccordionContent className="border border-t-0 px-4">
           <section className="my-6 grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2">
             <div className="flex w-full max-w-[290px] justify-between">
               <span className="font-bold">{t('proteins')}</span>

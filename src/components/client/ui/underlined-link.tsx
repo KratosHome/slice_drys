@@ -1,28 +1,50 @@
 import React from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
-
 import { cn } from '@/utils/cn'
 
-const UnderlinedLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<'a'> & React.RefAttributes<HTMLAnchorElement>
->(({ href, children, className, ...restProps }, ref) => {
-  const locale = useLocale()
+interface UnderlinedLinkButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  as: 'button'
+}
 
-  return (
-    <Link
-      ref={ref}
-      href={href || '/'}
-      className={cn(
-        'group relative flex items-center justify-start gap-3 bg-transparent px-6 py-2 text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] font-medium transition-all duration-300 ease-in-out lg:hover:bg-transparent',
-        locale === 'uk'
-          ? 'min-w-[260px] lg:min-w-[290px]'
-          : 'min-w-[220px] lg:min-w-[240px]',
-        className,
-      )}
-      {...restProps}
-    >
+interface UnderlinedLinkAnchorProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  as?: 'a'
+  href?: string
+}
+
+type UnderlinedLinkProps = (
+  | UnderlinedLinkButtonProps
+  | UnderlinedLinkAnchorProps
+) & {
+  target?: '_blank' | '_self' | '_parent' | '_top'
+  className?: string
+}
+
+const UnderlinedLink = React.forwardRef<
+  HTMLAnchorElement | HTMLButtonElement,
+  UnderlinedLinkProps
+>((props, ref) => {
+  const {
+    as = 'a',
+    className,
+    children,
+    target = '_blank',
+    ...restProps
+  } = props
+
+  const locale = useLocale()
+  const classes = cn(
+    'group relative flex items-center justify-start gap-3 bg-transparent px-6 py-2 text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] font-medium transition-all duration-300 ease-in-out lg:hover:bg-transparent',
+    locale === 'uk'
+      ? 'min-w-[260px] lg:min-w-[290px]'
+      : 'min-w-[220px] lg:min-w-[240px]',
+    className,
+  )
+
+  const content = (
+    <>
       <span>{children}</span>
       <svg
         viewBox="0 0 42 15"
@@ -50,8 +72,38 @@ const UnderlinedLink = React.forwardRef<
           />
         </svg>
       </span>
-    </Link>
+    </>
   )
+
+  if (as === 'button') {
+    const { ...buttonProps } =
+      restProps as React.ButtonHTMLAttributes<HTMLButtonElement>
+    return (
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        className={classes}
+        {...buttonProps}
+      >
+        {content}
+      </button>
+    )
+  } else {
+    const { href, ...anchorProps } =
+      restProps as React.AnchorHTMLAttributes<HTMLAnchorElement>
+    return (
+      <Link href={href || '/'} passHref legacyBehavior>
+        <a
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          className={classes}
+          target={target}
+          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+          {...anchorProps}
+        >
+          {content}
+        </a>
+      </Link>
+    )
+  }
 })
 
 UnderlinedLink.displayName = 'UnderlinedLink'

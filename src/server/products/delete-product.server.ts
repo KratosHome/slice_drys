@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 import cloudinary from '../cloudinaryConfig'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function deleteProduct(id?: string) {
   'use server'
@@ -23,6 +25,9 @@ export async function deleteProduct(id?: string) {
         invalidate: true,
       })
     }
+
+    revalidateTag(fetchTags.products)
+    revalidateTag(fetchTags.product)
 
     return { success: true, message: 'Product was deleted' }
   } catch (error) {

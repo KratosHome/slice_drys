@@ -37,7 +37,15 @@
     },
     "reviews": {
       "title": "відгуки",
-      "say-those": "кажуть ті, хто вже скуштував сушеники "
+      "say-those": "кажуть ті, хто вже скуштував сушеники ",
+      "thanks_for_the_feedback": "Дякуємо за відгук!",
+      "add_new_review": "Додати новий відгук",
+      "name": "Ім'я",
+      "enter_name": "Введіть ваше ім'я",
+      "feedback": "Відгук",
+      "enter_text": "Введіть текст",
+      "back": "Назад",
+      "send": "Відправити"
     },
     "our-partners": "Наші партнери",
     "more-about-us": {
@@ -45,8 +53,7 @@
       "more-btn": "Дізнатися більше"
     },
     "instafeed": {
-      "title-md": "Подорожуйте з нами",
-      "title": "Мандруйте разом з нами"
+      "title": "Подорожуйте з нами"
     },
     "burger-menu": {
       "catalog": "Каталог",
@@ -116,7 +123,7 @@
     "novelty": "Новинка",
     "sale": "Розпродаж",
     "expect_soon": "Очікуйте скоро!",
-    "add_to_cart": "Додати в кошик",
+    "add_to_cart": "Купити",
     "with_this_product_buy": "З цим товаром купують",
     "something_that_will_come_handy_along_with_your_choice": "Щось корисне до вашого вибору!",
     "composition": "Склад",
@@ -174,6 +181,31 @@
     "success": "Вітання!",
     "error": "Помилка!",
     "info": "Інформація"
+  },
+  "wholesale": {
+    "home": "Головна",
+    "wholesale": "Опт",
+    "wholesale_dried_fruits_in_bulk": "Опт - сушеники гуртом!",
+    "do_you_have_business": "Маєш бізнес і хочеш замовити наші смаколики оптом? Чудова ідея! Напиши нам – і ми підберемо найкращі умови, щоб твої полички завжди були з крутим запасом наших сушеників!",
+    "why_us": "Чому ми?",
+    "join_us": "Приєднуйся до нас",
+    "thank_you_we_will_contact_you": "Дякуємо! Ми зв'яжемося з вами найближчим часом.",
+    "error": "Упс! Щось пішло не так. Спробуйте ще раз або зателефонуйте нам.",
+    "icon_cart": "іконка кошика",
+    "fill_out_form": "Заповни форму",
+    "start_cooperation": "Почати співпрацю",
+    "name": "Ім'я",
+    "this_field_is_required": "Це поле є обов'язковим",
+    "minimum_characters": "Мінімум 2 символи",
+    "maximum_characters": "Максимум 50 символів",
+    "enter-phone-number": "Введіть номер телефону",
+    "enter-full-phone-number": "Введіть повний номер телефону",
+    "invalid_email_format": "Invalid email format",
+    "where_you_going_sell": "Де плануєш продавати?",
+    "maximum_100_characters": "Максимум 100 символів",
+    "link_company_name": "Посилання або назва компанії",
+    "how_did_you_find_about_us": "Як ти дізнався про нас?",
+    "send": "Відправити"
   },
   "order": {
     "page_title": "Оформлення замовлення",

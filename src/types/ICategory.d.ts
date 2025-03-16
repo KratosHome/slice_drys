@@ -9,4 +9,5 @@ interface ICategory {
   image?: string
   children: ICategory[]
   parentCategory?: string
+  order: number
 }

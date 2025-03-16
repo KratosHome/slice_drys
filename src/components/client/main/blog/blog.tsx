@@ -90,6 +90,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
         </div>
         <div className="mt-[40px] w-full max-w-[400px] md:mt-[80px] md:max-w-none">
           <Splide
+            aria-labelledby="blog section"
             className="blog-slider"
             options={{
               arrowPath: Arrow(),

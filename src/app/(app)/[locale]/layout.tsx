@@ -11,6 +11,11 @@ import { Toaster } from '@/components/admin/ui/toaster'
 import Footer from '@/components/client/footer/footer'
 
 import '../globals.css'
+import { routing } from '@/i18n/routing'
+import NotFoundPage from '@/components/not-found'
+import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { fetchTags } from '@/data/fetch-tags'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -48,10 +53,21 @@ export default async function LocaleLayout(props: {
   const { locale } = params
   const { children } = props
 
+  if (!routing.locales.includes(locale as ILocale)) {
+    return (
+      <html>
+        <body>
+          <NotFoundPage />
+        </body>
+      </html>
+    )
+  }
+
   const messages = await getMessages()
 
   const categoriesData = await fetch(`${url}/api/categories`, {
-    next: { revalidate: 60 },
+    cache: 'force-cache',
+    next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
 
   if (process.env.NODE_ENV === 'development') {
@@ -63,6 +79,8 @@ export default async function LocaleLayout(props: {
       lang={locale}
       className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
     >
+      <SpeedInsights />
+      <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
           <Header productLinks={categoriesData.data} />

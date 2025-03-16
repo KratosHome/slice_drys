@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 import cloudinary from '../cloudinaryConfig'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function deletePost(id: string) {
   try {
@@ -23,6 +25,8 @@ export async function deletePost(id: string) {
       })
     }
 
+    revalidateTag(fetchTags.posts)
+    revalidateTag(fetchTags.post)
     return { success: true, message: 'Post was deleted' }
   } catch (error) {
     return { success: false, message: "Can't delete post" + error }

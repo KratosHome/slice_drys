@@ -78,7 +78,7 @@ export default async function NotFoundPage() {
             <span className="relative mx-4">
               <div className="absolute z-[-1] size-32 rounded-full bg-gradient-to-r from-yellow-200 to-orange-300 opacity-[0.5] blur-3xl md:size-64" />
               <Image
-                src="/slider/fruit.png"
+                src="/slider/fruit.webp"
                 alt={t('fruitAlt')}
                 className="w-32 md:w-64"
                 width={232}
@@ -103,7 +103,7 @@ export default async function NotFoundPage() {
         {fruits.map((fruit, index) => (
           <Image
             key={index}
-            src={`/slider/fruit/${fruit.src}.png`}
+            src={`/slider/fruit/${fruit.src}.webp`}
             alt={fruit.alt}
             className={fruit.className}
             width={132}

@@ -85,7 +85,7 @@ export default function ProductSlider({
     },
     classes: {
       arrows: 'splide__arrows custom__arrows',
-      arrow: 'splide__arrow custom__arrow',
+      arrow: 'splide__arrow custom__arrow mx-5',
       prev: 'splide__arrow--prev custom__arrow-prev',
       next: 'splide__arrow--next custom__arrow-next',
       pagination: 'splide__pagination custom__pagination',
@@ -107,7 +107,7 @@ export default function ProductSlider({
         </h2>
       </div>
       <Splide
-        aria-labelledby="Main slider"
+        aria-labelledby={`${title} slider`}
         options={splideOptions}
         className="products-slider mb-14 h-full w-full lg:mb-20"
       >
