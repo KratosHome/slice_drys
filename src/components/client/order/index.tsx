@@ -29,11 +29,18 @@ export default function Order({ defaultCities }: Props) {
   }
 
   return (
-    <div className="alls mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row">
+    <div className="allq mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start">
       <OrderForm ref={formRef} defaultCities={defaultCities} />
 
-      <div className="w-full">
-        <div className="bg-black text-center text-white">
+      <div
+        className="max-h-[100%] w-full border-[0.5px] border-transparent lg:px-6 lg:py-8"
+        style={{
+          borderImageSource:
+            'linear-gradient(0deg, #0F0F0F, #0F0F0F), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))',
+          borderImageSlice: '1',
+        }}
+      >
+        <div className="bg-black py-3 text-center font-rubik text-[30px] text-white lg:text-[32px]">
           Перегляд замовлення
         </div>
 
