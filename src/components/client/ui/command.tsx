@@ -138,7 +138,7 @@ const CommandShortcut = ({
   )
 }
 CommandShortcut.displayName = 'CommandShortcut'
-
+const CommandLoading = CommandPrimitive.Loading
 export {
   Command,
   CommandDialog,
@@ -149,4 +149,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  CommandLoading,
 }

@@ -342,7 +342,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </main>
     </>

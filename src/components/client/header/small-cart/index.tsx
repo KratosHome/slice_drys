@@ -197,7 +197,7 @@ export default function SmallCart() {
                   </motion.div>
 
                   <Link
-                    href={`/${local}/cart`}
+                    href={`/${local}/order`}
                     onClick={() => setOpenCart(false)}
                     className="w-full"
                   >

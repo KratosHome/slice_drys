@@ -13,7 +13,9 @@ body {
     background-color: #FBFBFB;
     color: #0f0f0f;
 }
-
+.all * {
+    @apply outline outline-1 outline-red-500;
+  }
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -49,6 +51,9 @@ body {
         --sidebar-accent-foreground: 240 5.9% 10%;
         --sidebar-border: 220 13% 91%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+        --order-text: 0 0% 38%;
+        --order-background: 0 0% 89%;
+
     }
 
     .dark {
