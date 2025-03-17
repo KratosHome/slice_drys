@@ -35,7 +35,7 @@ export default function CartProductCard({
               width={32}
               height={32}
               className="cursor-pointer"
-              onClick={() => removeItemFromCart(id)}
+              onClick={() => removeItemFromCart(id, weight)}
             />
           </div>
 

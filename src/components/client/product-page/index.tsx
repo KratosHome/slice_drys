@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Select,
@@ -20,6 +20,7 @@ import Button from '@/components/client/ui/button'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const t = useTranslations('product')
@@ -34,7 +35,11 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
       (product.variant ?? variables[0])
     : (product.variant ?? variables[0])
 
-  const { addItemToCart, setOpenCart } = useCartStore((state) => state)
+  const [mounted, setMounted] = useState(false)
+
+  const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
+    (state) => state,
+  )
 
   const [selectedVariable, setSelectedVariable] = useState(
     initialSelectedVariable,
@@ -42,8 +47,23 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
 
   const [quantity, setQuantity] = useState(1)
 
+  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await increaseProductVisit(product.slug)
+    }
+
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const handleAddToCart = () => {
-    if (product._id && product.img)
+    if (product._id && product.img) {
       addItemToCart({
         id: product._id,
         quantity: quantity,
@@ -53,6 +73,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })
+    }
     setOpenCart(true)
   }
 
@@ -162,7 +183,11 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               disabled={selectedVariable.count === 0}
               onClick={handleAddToCart}
             >
-              {t('add_to_cart')}
+              {mounted
+                ? isInCart
+                  ? t('in_cart')
+                  : t('add_to_cart')
+                : t('add_to_cart')}
             </Button>
           </div>
         </div>

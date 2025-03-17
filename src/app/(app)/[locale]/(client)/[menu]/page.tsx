@@ -247,9 +247,7 @@ export default async function MenuPage(props: {
             />
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
               {flattenedProducts.map((product: IProduct) => (
-                <>
-                  <Product key={product.slug} product={product} />
-                </>
+                <Product key={product.slug} product={product} />
               ))}
             </div>
           </div>

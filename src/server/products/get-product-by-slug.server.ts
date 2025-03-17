@@ -28,6 +28,7 @@ export async function getProductBySlug({
         title: 1,
         metaDescription: 1,
         keywords: 1,
+        slug: 1,
       },
     ).populate('categories')
 
@@ -51,7 +52,7 @@ export async function getProductBySlug({
     }))
 
     const data = {
-      id: product._id,
+      _id: product._id,
       title: product.title[locale],
       metaDescription: product.metaDescription[locale],
       keywords: product.keywords[locale],
@@ -64,6 +65,7 @@ export async function getProductBySlug({
       nutritionalValue: product.nutritionalValue,
       statusLabel: product.statusLabel,
       visited: product.visited,
+      slug: product.slug,
       categories,
     }
 

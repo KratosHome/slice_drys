@@ -6,16 +6,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/client/ui/popover'
-import Link from 'next/link'
-
 import { useCartStore } from '@/store/cartStore'
 import { useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
+import Button from '@/components/client/ui/button'
+import { useRouter } from 'next/navigation'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
   const local = useLocale()
+
+  const router = useRouter()
+
   const {
     openCart,
     setOpenCart,
@@ -32,6 +35,11 @@ export default function SmallCart() {
   useEffect(() => {
     setIsClient(true)
   }, [])
+
+  const openCat = () => {
+    router.push(`/${local}/order`)
+    setOpenCart(false)
+  }
 
   return (
     <div className="relative flex flex-col justify-center">
@@ -95,7 +103,7 @@ export default function SmallCart() {
               <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[70px] md:pt-[150px]">
                 {cart.itemList?.map((item) => (
                   <div
-                    key={item.id}
+                    key={item.id + item.weight}
                     className="flex items-center justify-between gap-4 p-2 transition-transform duration-200 hover:scale-[1.02] hover:shadow-md"
                   >
                     <Image
@@ -113,7 +121,9 @@ export default function SmallCart() {
                         </div>
 
                         <div
-                          onClick={() => removeItemFromCart(item.id)}
+                          onClick={() =>
+                            removeItemFromCart(item.id, item.weight)
+                          }
                           className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-90"
                         >
                           <Image
@@ -142,6 +152,7 @@ export default function SmallCart() {
                                 item.id,
                                 item.quantity - 1,
                                 item.maxQuantity,
+                                item.weight,
                               )
                             }
                           >
@@ -157,6 +168,7 @@ export default function SmallCart() {
                                 item.id,
                                 item.quantity + 1,
                                 item.maxQuantity,
+                                item.weight,
                               )
                             }
                           >
@@ -195,11 +207,11 @@ export default function SmallCart() {
                   >
                     {t('continue-shopping')}
                   </motion.div>
-
-                  <Link
-                    href={`/${local}/order`}
-                    onClick={() => setOpenCart(false)}
+                  <Button
+                    variant={'outline'}
                     className="w-full"
+                    disabled={totalPrice < minOrderAmount}
+                    onClick={openCat}
                   >
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -208,7 +220,7 @@ export default function SmallCart() {
                     >
                       {t('order')}
                     </motion.div>
-                  </Link>
+                  </Button>
                 </div>
               </div>
             </>
