@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { cn } from '@/utils/cn'
 import { useTranslations } from 'next-intl'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 
 interface NumberCallProps {
   className?: string

@@ -246,6 +246,13 @@
     "address": "Cherkasy, Nadpilna St. 248A.",
     "button": "Send",
     "placeholder": "Phone",
-    "phone_field_description": "In format +38 (093) 12 34 567"
+    "information_title": "Information",
+    "phone_field_description": "In format +38 (093) 12 34 567",
+    "thank_you_we_will_contact_you_shortly": "Thank you! We will contact you shortly.",
+    "hand_bag": "Hand bag",
+    "mail_icon": "Mail Icon",
+    "phone_icon": "Phone Icon",
+    "home_icon": "Home Icon",
+    "enter_full_phone_number": "Enter full phone number"
   }
 }
