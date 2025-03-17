@@ -51,7 +51,11 @@ export async function getProductsList({
     }
 
     const skip = (page - 1) * limit
-    const products = await Product.find(query).skip(skip).limit(limit).lean()
+    const products = await Product.find(query)
+      .sort({ visited: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
 
     const totalItems = await Product.countDocuments(query)
     const totalPages = Math.ceil(totalItems / limit)
