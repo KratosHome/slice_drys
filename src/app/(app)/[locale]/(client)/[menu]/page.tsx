@@ -66,7 +66,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${categoriesParam}`
+  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -78,6 +78,13 @@ export async function generateMetadata({
     description: currentCategories.data.metaDescription?.[locale],
     keywords: metaKeywordsArray,
     robots: 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: currentCategories.data.name?.[locale],
       description,
@@ -240,9 +247,7 @@ export default async function MenuPage(props: {
             />
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
               {flattenedProducts.map((product: IProduct) => (
-                <>
-                  <Product key={product.slug} product={product} />
-                </>
+                <Product key={product.slug} product={product} />
               ))}
             </div>
           </div>
@@ -335,7 +340,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </main>
     </>

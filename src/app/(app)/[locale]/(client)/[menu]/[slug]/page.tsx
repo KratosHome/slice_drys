@@ -50,6 +50,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: 'index, follow',
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
     },
     openGraph: {
       title: productData.data.title,
@@ -138,7 +142,7 @@ export default async function ProductPage({ params }: Props) {
           title={t('also_buy')}
           message={t('something_that_will_come_handy_along_with_your_choice')}
         />
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </div>
     </>

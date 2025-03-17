@@ -46,6 +46,8 @@ export async function generateMetadata({
 
   const ogImage = `${baseUrl}/blog-image.webp`
 
+  const canonicalUrl = `${baseUrl}/${locale}/blog`
+
   const url =
     page && +page > 1
       ? `${baseUrl}/${locale}/blog?page=${page}`
@@ -56,11 +58,19 @@ export async function generateMetadata({
     description: blogMetaData[locale].description,
     keywords: blogMetaData[locale].keywords,
     robots: 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: blogMetaData[locale].openGraphTitle,
       description: blogMetaData[locale].openGraphDescription,
       url,
       type: 'website',
+      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
       images: [
         {
           url: ogImage,

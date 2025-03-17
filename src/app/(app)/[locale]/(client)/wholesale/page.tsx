@@ -16,6 +16,49 @@ import { getTranslations } from 'next-intl/server'
 import WholesaleForm from '@/components/client/wholesale/wholesale-form'
 import { helpData } from '@/data/wholesale-about'
 import { whyWe } from '@/data/wholesale-why-wr'
+import WholesaleJsonLd from '@/components/client/json-ld/wholesale-json-ld'
+
+const baseUrl = process.env.NEXT_URL
+
+export async function generateMetadata({ params }: { params: Params }) {
+  const { locale } = await params
+  const isUk = locale === 'uk'
+
+  const keywords = isUk
+    ? ['сушеники', 'опт', 'сушені продукти', 'закупівлі', 'slice&drys']
+    : ['dried', 'wholesale', 'dried products', 'bulk', 'slice&drys']
+
+  const canonicalUrl = `${baseUrl}/${locale}/wholesale`
+
+  return {
+    title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+    description: isUk
+      ? 'Сторінка оптових закупівель наших сушеників'
+      : 'Our wholesale page for dried products',
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
+    openGraph: {
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+      description: isUk
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
+      url: `${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+      description: isUk
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
+    },
+  }
+}
 
 export default async function Home(props: { params: Params }) {
   const { locale } = await props.params
@@ -23,6 +66,7 @@ export default async function Home(props: { params: Params }) {
 
   return (
     <>
+      <WholesaleJsonLd locale={locale} />
       <div className="relative mx-auto max-w-[1280px] px-4">
         <Breadcrumb className={'mt-5'}>
           <BreadcrumbList>

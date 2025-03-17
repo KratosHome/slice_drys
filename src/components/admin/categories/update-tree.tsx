@@ -45,6 +45,7 @@ interface FormData {
     uk: string
     en: string
   }
+  slug: string
 }
 
 const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
@@ -104,6 +105,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
         uk: selectedCategory.metaDescription?.uk ?? '',
         en: selectedCategory.metaDescription?.en ?? '',
       },
+      slug: selectedCategory.slug ?? '',
     })
   }, [selectedCategory, reset])
 
@@ -151,10 +153,20 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
         <Label htmlFor="picture">Додати зображення</Label>
         <Input id="picture" type="file" onChange={handleImageChange} />
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 rounded-lg border p-4"
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-3">
+          <Label className="block font-bold">Посилання:</Label>
+          <Input
+            type="text"
+            className="w-full border p-2"
+            {...register(`slug`, {
+              required: 'Ключові слова обовʼязкові',
+            })}
+          />
+          {errors.slug && (
+            <p className="text-sm text-red-500">{errors.slug?.message}</p>
+          )}
+        </div>
         <div className="flex justify-between gap-4">
           {locales.map((lang) => (
             <div key={lang} className="mb-4 w-full border-b pb-4">

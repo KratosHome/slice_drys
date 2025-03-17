@@ -24,15 +24,21 @@ interface ICartState {
 }
 
 interface ICartActions {
-  setCartUserData: (data: IUserData) => void
+  setCartUserData: (
+    data: IUserData<
+      IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
+    >,
+  ) => void
   addItemToCart: (props: IAddItemToCartProps) => void
+  hasItemInCart: (id: string, weight: number) => boolean
   updateItemQuantity: (
     id: string,
     quantity: number,
     maxQuantity: number,
+    weight: number,
   ) => void
   clearCart: () => void
-  removeItemFromCart: (id: string) => void
+  removeItemFromCart: (id: string, weight: number) => void
   setOpenCart: (openCart: boolean) => void
   submitOrder: () => Promise<IResponse>
 }
@@ -54,7 +60,16 @@ export const useCartStore = create<ICartState & ICartActions>()(
         }
 
         return {
-          cart: { itemList: [], userData: {} },
+          cart: {
+            itemList: [],
+            userData: {
+              deliveryInfo: {
+                deliveryMethod: 'branch',
+                deliveryProvider: 'novaPoshta',
+              },
+              paymentInfo: 'card-payment',
+            },
+          },
           openCart: false,
           totalPrice: 0,
           totalProducts: 0,
@@ -73,7 +88,9 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
             set((state) => {
               const existingItem: ICartItem | undefined =
-                state.cart.itemList?.find((item) => item.id === id)
+                state.cart.itemList?.find(
+                  (item) => item.id === id && item.weight === weight,
+                )
 
               let updatedItemList: ICartItem[] | undefined
 
@@ -99,7 +116,19 @@ export const useCartStore = create<ICartState & ICartActions>()(
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          updateItemQuantity: (id, quantity, maxQuantity) => {
+          hasItemInCart: (id, weight) => {
+            return (
+              get().cart.itemList?.some(
+                (item) => item.id === id && item.weight === weight,
+              ) ?? false
+            )
+          },
+          updateItemQuantity: (
+            id: string,
+            quantity: number,
+            maxQuantity: number,
+            weight: number,
+          ) => {
             set((state) => {
               const newQuantity: number = Math.min(
                 Math.max(quantity, 1),
@@ -108,7 +137,9 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
               const updatedItemList: ICartItem[] | undefined =
                 state.cart.itemList?.map((item) =>
-                  item.id === id ? { ...item, quantity: newQuantity } : item,
+                  item.id === id && item.weight === weight
+                    ? { ...item, quantity: newQuantity }
+                    : item,
                 )
 
               const updatedCart = { ...state.cart, itemList: updatedItemList }
@@ -116,10 +147,12 @@ export const useCartStore = create<ICartState & ICartActions>()(
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          removeItemFromCart: (id: string) => {
+          removeItemFromCart: (id: string, weight: number) => {
             set((state) => {
               const updatedItemList: ICartItem[] =
-                state.cart.itemList?.filter((item) => item.id !== id) || []
+                state.cart.itemList?.filter(
+                  (item) => !(item.id === id && item.weight === weight),
+                ) || []
 
               const updatedCart = { ...state.cart, itemList: updatedItemList }
 
@@ -168,8 +201,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
             }
 
             const deliveryToSubmit: IOrderDelivery = {
-              city: cart.userData?.deliveryInfo?.city || '',
-              department: cart.userData?.deliveryInfo?.brunch || '',
+              city: cart.userData?.deliveryInfo?.city?.label || '',
+              department: cart.userData?.deliveryInfo?.branch?.label || '',
               phone: cart.userData?.phoneNumber || '',
             }
 
