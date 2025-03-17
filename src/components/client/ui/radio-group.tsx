@@ -1,8 +1,10 @@
 'use client'
 
 import * as React from 'react'
-import { CheckIcon } from '@radix-ui/react-icons'
+import { cva, type VariantProps } from 'class-variance-authority'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
+import { CheckIcon } from '@radix-ui/react-icons'
+
 import { cn } from '@/utils/cn'
 
 const RadioGroup = React.forwardRef<
@@ -19,10 +21,23 @@ const RadioGroup = React.forwardRef<
 })
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
+const radioStyles = cva('', {
+  variants: {
+    iconSize: {
+      default: 'h-3.5 w-3.5 ',
+      large: 'h-4.5 w-4.5',
+    },
+  },
+  defaultVariants: {
+    iconSize: 'default',
+  },
+})
+
 const RadioGroupItem = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> &
+    VariantProps<typeof radioStyles>
+>(({ className, iconSize, ...props }, ref) => {
   return (
     <RadioGroupPrimitive.Item
       ref={ref}
@@ -33,7 +48,7 @@ const RadioGroupItem = React.forwardRef<
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <CheckIcon className="h-3.5 w-3.5 fill-primary" />
+        <CheckIcon className={cn('fill-primary', radioStyles({ iconSize }))} />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

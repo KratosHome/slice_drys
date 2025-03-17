@@ -88,7 +88,8 @@
   "Breadcrumbs": {
     "Home": "Home",
     "Blog": "Blog",
-    "Page": "Page"
+    "Page": "Page",
+    "Order":"Order processing"
   },
   "share": {
     "Share": "Share",
@@ -176,11 +177,40 @@
   },
   "promo-banner": {
     "free_delivery": "Free delivery!",
-    "when_ordering_from": "When ordering from",
-    "uah": "UAH",
+    "when_ordering_from": "When ordering from <bold>{amount} UAH</bold>",
     "get_free_delivery": "Get free delivery",
     "icon_cart": "icon cart",
     "icon_instagram": "icon instagram"
+  },
+  "order": {
+    "page_title": "Checkout",
+    "contacts_title": "Contact details",
+    "surname_placeholder": "Surname",
+    "name_placeholder": "Name",
+    "phone_placeholder": "Phone",
+    "delivery_title": "Delivery",
+    "delivery_method_to_branch": "To the branch",
+    "delivery_method_to_postomat": "To the postomat",
+    "delivery_method_courier": "By courier",
+    "city_placeholder": "Enter a locality",
+    "city_search_placeholder": "Try changing your query",
+    "branch_placeholder": "Select {type, select, branch {branch} postomat {postomat} other {}}",
+    "branch_search_placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
+    "courier_placeholder": "Enter delivery address (city, street, house number)",
+    "payment_title": "Payment method",
+    "card-payment": "Payment via payment system",
+    "COD": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
+    "comment_title": "Order comment",
+    "comment_placeholder": "If necessary, leave a comment for the order",
+    "no_comments":"No comments",
+    "personal_data_consent": "I agree to the processing of my personal data",
+    "no_call": "Do not call me to confirm the order",
+    "btn_continue": "Continue",
+    "btn_order": "Place order",
+    "validation_required": "This field is required",
+    "validation_length": "Invalid number length",
+    "validation_email_format": "Incorrect email format",
+    "area-edit": "Edit"
   },
   "wholesale": {
     "home": "Home",
