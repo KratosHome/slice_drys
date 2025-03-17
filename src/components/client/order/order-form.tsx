@@ -339,7 +339,6 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                 name="phoneNumber"
                 id="phoneNumber"
                 control={control}
-                // defaultValue={userData?.phoneNumber ?? ''}
                 helpText="У форматі +38 (093) 123 45 67"
                 rules={{
                   required: {
@@ -491,7 +490,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                         <RadioGroup
                           onValueChange={handleDeliveryMethodChange}
                           value={userData?.deliveryInfo?.deliveryMethod}
-                          className="mx-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
+                          className="ml-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
                         >
                           <Label
                             htmlFor="NP-b"
@@ -645,7 +644,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                       </>
                     )}
                   </div>
-                  <Label
+                  {/* <Label
                     htmlFor="UP"
                     className="mt-8 flex cursor-pointer select-none items-center gap-10 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal"
                   >
@@ -665,7 +664,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                       />{' '}
                       {deliveryProviderLabels.ukrPoshta.label[locale]}
                     </span>
-                  </Label>
+                  </Label> */}
                 </RadioGroup>
               </motion.div>
             ) : null}
@@ -813,68 +812,88 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
       )}
 
       {userData?.formStep && userData.formStep >= 3 && (
-        <fieldset
-          id="step4"
-          className={cn(
-            'relative flex flex-col',
-            userData?.formStep === 5 && 'bg-[hsl(var(--order-background))] p-6',
-            userData?.formStep === 5 &&
-              showFieldset.step4 &&
-              'border border-black bg-transparent',
-          )}
-        >
-          <legend className="sr-only">{t('comment_title')}</legend>
-          <h3 className={cn(legendStyle)}>{t('comment_title')}</h3>
-          <AnimatePresence initial={false}>
-            {(userData?.formStep ?? 1) < 5 || showFieldset.step4 ? (
-              <motion.div
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: '0' }}
-                initial={{ opacity: 0, height: '0' }}
-                transition={{ duration: 0.3 }}
-                style={{ overflow: 'hidden' }}
-              >
-                <Textarea
-                  name="comment"
-                  placeholder={t('comment_placeholder')}
-                  rows={5}
-                  control={control}
-                  id="comment"
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    const comment = event.target.value
-                    setValue('comment', comment)
-                    clearErrors('comment')
-                    setUserData({
-                      ...useCartStore.getState().cart.userData,
-                      comment,
-                    })
-                  }}
-                  className="mt-8 resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
-                />
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-
-          {userData?.formStep === 5 && !showFieldset.step4 ? (
-            <div className="mt-8 text-[hsl(var(--order-text))]">
-              {userData.comment || t('no_comments')}
-            </div>
-          ) : null}
-          <Button
-            area-label={t('area-edit')}
-            variant={'icons'}
+        <>
+          <fieldset
+            id="step4"
             className={cn(
-              'absolute right-6 top-[30px] hidden',
-              userData?.formStep === 5 && 'block',
+              'relative flex flex-col',
+              userData?.formStep === 5 &&
+                'bg-[hsl(var(--order-background))] p-6',
+              userData?.formStep === 5 &&
+                showFieldset.step4 &&
+                'border border-black bg-transparent',
             )}
-            onClick={() => handleEditStep('step4')}
           >
-            <PencilLine size={24} />
-          </Button>
-        </fieldset>
+            <legend className="sr-only">{t('comment_title')}</legend>
+            <h3 className={cn(legendStyle)}>{t('comment_title')}</h3>
+            <AnimatePresence initial={false}>
+              {(userData?.formStep ?? 1) < 5 || showFieldset.step4 ? (
+                <motion.div
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: '0' }}
+                  initial={{ opacity: 0, height: '0' }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <Textarea
+                    name="comment"
+                    placeholder={t('comment_placeholder')}
+                    rows={5}
+                    control={control}
+                    id="comment"
+                    onChange={(
+                      event: React.ChangeEvent<HTMLTextAreaElement>,
+                    ) => {
+                      const comment = event.target.value
+                      setValue('comment', comment)
+                      clearErrors('comment')
+                      setUserData({
+                        ...useCartStore.getState().cart.userData,
+                        comment,
+                      })
+                    }}
+                    className="mt-8 resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+
+            {userData?.formStep === 5 && !showFieldset.step4 ? (
+              <div className="mt-8 text-[hsl(var(--order-text))]">
+                {userData.comment || t('no_comments')}
+              </div>
+            ) : null}
+            <Button
+              area-label={t('area-edit')}
+              variant={'icons'}
+              className={cn(
+                'absolute right-6 top-[30px] hidden',
+                userData?.formStep === 5 && 'block',
+              )}
+              onClick={() => handleEditStep('step4')}
+            >
+              <PencilLine size={24} />
+            </Button>
+          </fieldset>
+          <CheckboxSimple
+            label={t('no_call')}
+            {...register('noCall')}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              const noCall = event.target.checked
+              setValue('noCall', noCall)
+              clearErrors('noCall')
+              setUserData({
+                ...useCartStore.getState().cart.userData,
+                noCall,
+              })
+            }}
+            isValid={Boolean(errors.noCall)}
+            isChecked={watch('noCall')}
+          />
+        </>
       )}
 
-      {userData?.formStep && userData.formStep >= 4 && (
+      {/* {userData?.formStep && userData.formStep >= 4 && (
         <fieldset
           aria-disabled={userData?.formStep === 5 && showFieldset.step5}
           tabIndex={userData?.formStep === 5 && showFieldset.step5 ? -1 : 0}
@@ -947,7 +966,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             <PencilLine size={24} />
           </Button>
         </fieldset>
-      )}
+      )} */}
 
       {(!userData || (userData?.formStep ?? 0) <= 4) && (
         <button

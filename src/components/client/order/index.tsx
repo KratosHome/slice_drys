@@ -29,7 +29,7 @@ export default function Order({ defaultCities }: Props) {
   }
 
   return (
-    <div className="allq mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start">
+    <div className="allq mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
       <OrderForm ref={formRef} defaultCities={defaultCities} />
 
       <div
