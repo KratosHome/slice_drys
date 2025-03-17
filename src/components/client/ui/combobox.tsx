@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useController, UseControllerProps } from 'react-hook-form'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
@@ -143,17 +143,12 @@ export function Combobox({
   const deliveryMethod = useCartStore(
     (state) => state.cart.userData?.deliveryInfo?.deliveryMethod,
   )
-  const lastSearchRef = useRef<string>('')
 
   const handleUpdateDataList = useMemo(() => {
     if (name === 'deliveryInfo.city') {
       return handleCitySearch
     } else {
-      return () =>
-        handleBranchSearch(
-          // deliveryInfo?.deliveryMethod as Omit<IDeliveryMethods, 'courier'>,
-          deliveryInfo?.city?.value,
-        )
+      return () => handleBranchSearch(deliveryInfo?.city?.value)
     }
   }, [name, deliveryInfo])
 
@@ -165,7 +160,6 @@ export function Combobox({
   }, [deliveryInfo?.city?.value])
 
   useEffect(() => {
-    // if (debouncedSearchValue === lastSearchRef.current) return // Попереджуємо повторні запити
     if (name === 'deliveryInfo.city') {
       ;(async () => {
         setLoading(true)
@@ -175,7 +169,6 @@ export function Combobox({
           )) as IComboboxData[]
 
           setElements(data)
-          lastSearchRef.current = debouncedSearchValue
         } catch (error) {
           console.error(
             `Error fetching data with (${name.split('.')[1]}): `,
