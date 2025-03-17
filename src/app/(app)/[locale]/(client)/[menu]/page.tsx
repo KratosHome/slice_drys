@@ -66,7 +66,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${categoriesParam}`
+  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -78,6 +78,13 @@ export async function generateMetadata({
     description: currentCategories.data.metaDescription?.[locale],
     keywords: metaKeywordsArray,
     robots: 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: currentCategories.data.name?.[locale],
       description,

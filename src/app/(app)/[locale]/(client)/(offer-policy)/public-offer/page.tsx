@@ -29,6 +29,10 @@ export async function generateMetadata({ params }: { params: Params }) {
     },
     alternates: {
       canonical: `${baseUrl}/${locale}/public-offer`,
+      languages: {
+        en: `${baseUrl}/${locale}/public-offer`,
+        uk: `${baseUrl}/${locale}/public-offer`,
+      },
     },
   }
 }

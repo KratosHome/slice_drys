@@ -28,18 +28,27 @@ export async function generateMetadata({ params }: { params: Params }) {
     ? ['сушеники', 'опт', 'сушені продукти', 'закупівлі', 'slice&drys']
     : ['dried', 'wholesale', 'dried products', 'bulk', 'slice&drys']
 
+  const canonicalUrl = `${baseUrl}/${locale}/wholesale`
+
   return {
     title: isUk ? 'Оптові закупівлі' : 'Wholesale',
     description: isUk
       ? 'Сторінка оптових закупівель наших сушеників'
       : 'Our wholesale page for dried products',
     keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: isUk ? 'Оптові закупівлі' : 'Wholesale',
       description: isUk
         ? 'Сторінка оптових закупівель наших сушеників'
         : 'Our wholesale page for dried products',
-      url: `${baseUrl}/${locale}/wholesale`,
+      url: `${canonicalUrl}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -47,9 +56,6 @@ export async function generateMetadata({ params }: { params: Params }) {
       description: isUk
         ? 'Сторінка оптових закупівель наших сушеників'
         : 'Our wholesale page for dried products',
-    },
-    alternates: {
-      canonical: `${baseUrl}/${locale}/wholesale`,
     },
   }
 }

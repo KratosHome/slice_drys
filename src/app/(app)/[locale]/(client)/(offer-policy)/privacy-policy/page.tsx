@@ -29,6 +29,10 @@ export async function generateMetadata({ params }: { params: Params }) {
     },
     alternates: {
       canonical: `${baseUrl}/${locale}/privacy-policy`,
+      languages: {
+        en: `${baseUrl}/${locale}/privacy-policy`,
+        uk: `${baseUrl}/${locale}/privacy-policy`,
+      },
     },
   }
 }
