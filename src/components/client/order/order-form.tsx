@@ -50,7 +50,7 @@ const deliveryProviderLabels = {
       en: 'Nova Poshta',
     },
     icon: {
-      src: '/images/nova-poshta.png',
+      src: '/images/nova-poshta.webp',
       alt: {
         uk: 'Укрпошта лого',
         en: 'Nova Poshta logo',
@@ -65,7 +65,7 @@ const deliveryProviderLabels = {
       en: 'Ukrposhta',
     },
     icon: {
-      src: '/images/ukrposhta.png',
+      src: '/images/ukrposhta.webp',
       alt: {
         uk: 'Укрпошта лого',
         en: 'Ukrposhta logo',

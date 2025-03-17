@@ -53,7 +53,7 @@ const Delivery = async ({ className }: Props) => {
       </div>
       <div className="absolute -right-[clamp(50px,calc(50px+40*(100vw-375px)/1065),90px)] top-[clamp(-210px,calc(120px-330*(100vw-375px)/1065),120px)] aspect-[816/770] w-full max-w-[clamp(300px,calc(320px+330*(100vw-375px)/1065),650px)]">
         <Image
-          src={'/images/cart-group-banner.png'}
+          src={'/images/cart-group-banner.webp'}
           alt={t('icon_cart')}
           fill
           className="object-contain"
