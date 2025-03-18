@@ -15,12 +15,82 @@ import {
   seedNovaPoshtaDefaultCities,
 } from '@/server/seed/novaPoshtaDefaultCities'
 import { getDefaultNPCitiesFromDictionary } from '@/server/delivery/get-cities.server'
+import { locales } from '@/data/locales'
+
+export async function generateStaticParams() {
+  await seedNovaPoshtaDefaultCities()
+  await seedNovaPoshtaCitiesDictionary()
+  return locales.map((locale) => ({ locale }))
+}
+
+export const revalidate = 604800 //7 days
+const baseUrl = process.env.NEXT_URL
+
+export async function generateMetadata({ params }: { params: Params }) {
+  const { locale } = await params
+  const isUk = locale === 'uk'
+
+  const keywords = isUk
+    ? [
+        'оформлення замовлення',
+        'доставка сушеників',
+        'оплата сушеників',
+        'нова пошта',
+        'сушеники',
+        'сушені продукти',
+        'замовлення сушеників',
+        'способи доставки',
+        'способи оплати',
+        'slice&drys',
+      ]
+    : [
+        'order checkout',
+        'delivery of dry snacks',
+        'payment for dry snacks',
+        'nova poshta',
+        'dry snacks',
+        'dried products',
+        'dry snacks order',
+        'delivery options',
+        'payment methods',
+        'slice&drys',
+      ]
+
+  const canonicalUrl = `${baseUrl}/${locale}/order`
+
+  return {
+    title: isUk
+      ? 'Оформлення замовлення Slice&Drys'
+      : 'Order processing Slice&Drys',
+    description: isUk
+      ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+      : 'Here you can easily make an order on our website.',
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
+    openGraph: {
+      title: isUk ? 'Оформлення замовлення' : 'Order processing',
+      description: isUk
+        ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+        : 'Here you can easily make an order on our website.',
+      url: `${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isUk ? 'Оформлення замовлення' : 'Order processing',
+      description: isUk
+        ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+        : 'Here you can easily make an order on our website.',
+    },
+  }
+}
 
 export default async function OrderPage() {
-  if (process.env.NODE_ENV === 'development') {
-    await seedNovaPoshtaDefaultCities()
-    await seedNovaPoshtaCitiesDictionary()
-  }
   const t = await getTranslations('Breadcrumbs')
   const defaultCities = await getDefaultNPCitiesFromDictionary()
   return (

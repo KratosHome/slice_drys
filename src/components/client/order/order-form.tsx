@@ -346,7 +346,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                 name="phoneNumber"
                 id="phoneNumber"
                 control={control}
-                helpText="У форматі +38 (093) 123 45 67"
+                helpText={t('phone_field_description')}
                 rules={{
                   required: {
                     value: true,
@@ -866,7 +866,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                         comment,
                       })
                     }}
-                    className="m-0.5 mt-8 w-full resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
+                    className="m-0.5 mt-8 w-[99%] resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
                   />
                 </motion.div>
               ) : null}

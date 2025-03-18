@@ -216,6 +216,7 @@
     "surname_placeholder": "Прізвище",
     "name_placeholder": "Ім'я",
     "phone_placeholder": "Телефон",
+    "phone_field_description": "У форматі +38 (093) 123 45 67",
     "delivery_title": "Доставка",
     "delivery_method_to_branch": "У відділення",
     "delivery_method_to_postomat": "У поштомат",

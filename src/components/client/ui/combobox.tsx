@@ -242,7 +242,10 @@ export function Combobox({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[calc(100vw-40px)] max-w-[550px] p-0 lg:w-[38vw]">
+        <PopoverContent
+          className="w-[calc(100vw-40px)] max-w-[575px] p-0 lg:w-[45vw]"
+          asChild
+        >
           <Command>
             <CommandInput
               placeholder={placeholder}
