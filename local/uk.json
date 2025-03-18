@@ -179,6 +179,12 @@
     "icon_cart": "іконка кошика",
     "icon_instagram": "іконка Instagram"
   },
+  "promo-banner-join-community": {
+    "title": "Приєднуйся до нашої спільноти !",
+    "description": "Будь першим, хто дізнається про спеціальні пропозиції та отримує ексклюзивні знижки.",
+    "text": "КУСЬ !",
+    "icon_instagram": "іконка Instagram"
+  },
   "toast": {
     "success": "Вітання!",
     "error": "Помилка!",
