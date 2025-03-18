@@ -14,6 +14,7 @@ import NotFoundPage from '@/components/not-found'
 import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { fetchTags } from '@/data/fetch-tags'
+import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -77,6 +78,7 @@ export default async function LocaleLayout(props: {
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
+          <ScrollToTop />
           <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer productLinks={categoriesData.data} />
