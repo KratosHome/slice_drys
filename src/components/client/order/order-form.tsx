@@ -25,7 +25,7 @@ import { cn } from '@/utils/cn'
 import Button from '../ui/button'
 
 interface OrderFormRef {
-  submit: () => void
+  reset: () => void
 }
 type Props = {
   defaultCities: {
@@ -100,6 +100,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
     clearErrors,
     watch,
     trigger,
+    reset,
   } = useForm<
     IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', string>>
   >({
@@ -175,13 +176,19 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
       if (errors.deliveryInfo?.city) clearErrors('deliveryInfo.city')
     }
 
-    // alert('unregistered form data: \n' + JSON.stringify(getValues(), null, 2))
     const partialData: IUserData<
       IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
     > = {
       ...userData,
       deliveryInfo: {
         ...userData?.deliveryInfo,
+        city:
+          value === 'courier'
+            ? {
+                value: '',
+                label: '',
+              }
+            : userData?.deliveryInfo?.city,
         branch: {
           value: '',
           label: '',
@@ -191,7 +198,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
     }
     setUserData(partialData)
   }
-  const handlePaymentMethodChange = (value: string): void => {
+  const handlePaymentMethodChange = (value: PaymentMethods): void => {
     setValue('paymentInfo', value)
 
     const partialData: IUserData<
@@ -227,8 +234,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
   const onSubmit = (
     data: IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', string>>,
   ): void => {
-    // alert('form data: \n' + JSON.stringify(getValues(), null, 2))
-    if (!userData?.formStep || userData.formStep < 5) {
+    if (!userData?.formStep || userData.formStep < 4) {
       const deliveryInfo: IDeliveryInfo<
         'branch' | 'postomat' | 'courier',
         IComboboxData
@@ -259,6 +265,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
 
   useImperativeHandle(ref, () => ({
     submit: handleSubmit(onSubmit),
+    reset,
   }))
 
   return (
@@ -270,8 +277,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
         id="step1"
         className={cn(
           'relative flex flex-col',
-          userData?.formStep === 5 && 'bg-[hsl(var(--order-background))] p-6',
-          userData?.formStep === 5 &&
+          userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+          userData?.formStep === 4 &&
             showFieldset.step1 &&
             'border border-black bg-transparent',
         )}
@@ -279,7 +286,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
         <legend className="sr-only">{t('contacts_title')}</legend>
         <h3 className={cn(legendStyle, 'mb-8')}>{t('contacts_title')}</h3>
         <AnimatePresence initial={false}>
-          {(userData?.formStep ?? 1) < 5 || showFieldset.step1 ? (
+          {(userData?.formStep ?? 1) < 4 || showFieldset.step1 ? (
             <motion.div
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: '0' }}
@@ -411,7 +418,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             </motion.div>
           ) : null}
         </AnimatePresence>
-        {userData?.formStep === 5 && !showFieldset.step1 ? (
+        {userData?.formStep === 4 && !showFieldset.step1 ? (
           <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
             <p>{userData?.name + ' ' + userData?.surname}</p>
             <p>{userData?.phoneNumber}</p>
@@ -424,7 +431,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           variant={'icons'}
           className={cn(
             'absolute right-6 top-[30px] hidden',
-            userData?.formStep === 5 && 'block',
+            userData?.formStep === 4 && 'block',
           )}
           onClick={() =>
             handleEditStep('step1', ['name', 'surname', 'phoneNumber', 'email'])
@@ -439,8 +446,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           id="step2"
           className={cn(
             'relative flex flex-col',
-            userData?.formStep === 5 && 'bg-[hsl(var(--order-background))] p-6',
-            userData?.formStep === 5 &&
+            userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+            userData?.formStep === 4 &&
               showFieldset.step2 &&
               'border border-black bg-transparent',
           )}
@@ -448,7 +455,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           <legend className="sr-only">{t('delivery_title')}</legend>
           <h3 className={cn(legendStyle, 'mb-8')}>{t('delivery_title')}</h3>
           <AnimatePresence initial={false}>
-            {(userData?.formStep ?? 1) < 5 || showFieldset.step2 ? (
+            {(userData?.formStep ?? 1) < 4 || showFieldset.step2 ? (
               <motion.div
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: '0' }}
@@ -618,7 +625,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                                     })
                                   }}
                                   placeholder={t('courier_placeholder')}
-                                  className="flex h-[60px] w-full rounded-md border border-input bg-transparent px-4 py-[18px] text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
+                                  className="m-0.5 flex h-[60px] w-full rounded-md border border-input bg-transparent px-4 py-[18px] text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
                                 />
                                 <ErrorMessage
                                   errors={errors}
@@ -670,7 +677,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             ) : null}
           </AnimatePresence>
 
-          {userData?.formStep === 5 && !showFieldset.step2 ? (
+          {userData?.formStep === 4 && !showFieldset.step2 ? (
             <>
               <div className="mb-7 text-xl font-bold md:text-2xl">
                 {userData.deliveryInfo?.deliveryProvider && (
@@ -711,14 +718,22 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                   </span>
                 )}
               </div>
-              <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
-                <p className="text-[hsl(var(--order-text))]">
-                  {userData?.deliveryInfo?.city?.label}
-                </p>
-                <p className="text-[hsl(var(--order-text))]">
-                  {userData?.deliveryInfo?.branch?.label}
-                </p>
-              </div>
+              {userData.deliveryInfo?.courierInfo ? (
+                <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
+                  <p className="text-[hsl(var(--order-text))]">
+                    {userData?.deliveryInfo?.courierInfo}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
+                  <p className="text-[hsl(var(--order-text))]">
+                    {userData?.deliveryInfo?.city?.label}
+                  </p>
+                  <p className="text-[hsl(var(--order-text))]">
+                    {userData?.deliveryInfo?.branch?.label}
+                  </p>
+                </div>
+              )}
             </>
           ) : null}
           <Button
@@ -726,7 +741,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             variant={'icons'}
             className={cn(
               'absolute right-6 top-[30px] hidden',
-              userData?.formStep === 5 && 'block',
+              userData?.formStep === 4 && 'block',
             )}
             onClick={() => handleEditStep('step2')}
           >
@@ -740,8 +755,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           id="step3"
           className={cn(
             'relative flex flex-col',
-            userData?.formStep === 5 && 'bg-[hsl(var(--order-background))] p-6',
-            userData?.formStep === 5 &&
+            userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+            userData?.formStep === 4 &&
               showFieldset.step3 &&
               'border border-black bg-transparent',
           )}
@@ -749,7 +764,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           <legend className="sr-only">{t('payment_title')}</legend>
           <h3 className={cn(legendStyle, 'mb-8')}>{t('payment_title')}</h3>
           <AnimatePresence initial={false}>
-            {(userData?.formStep ?? 1) < 5 || showFieldset.step3 ? (
+            {(userData?.formStep ?? 1) < 4 || showFieldset.step3 ? (
               <motion.div
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: '0' }}
@@ -759,40 +774,39 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
               >
                 <RadioGroup
                   onValueChange={handlePaymentMethodChange}
-                  value={userData?.paymentInfo || 'card-payment'}
+                  value={userData?.paymentInfo || 'card'}
                   className="flex flex-col items-start gap-6 py-[10px]"
                 >
                   <Label
-                    htmlFor="card-payment"
+                    htmlFor="card"
                     className="flex cursor-pointer select-none items-center gap-10 text-base font-normal md:text-xl"
                   >
                     <RadioGroupItem
-                      value="card-payment"
-                      id="card-payment"
+                      value="card"
+                      id="card"
                       className={cn(radioItemStyle, radioItemFilledStyle)}
                       iconSize="large"
                     />
-                    {t('card-payment')}
+                    {t('card')}
                   </Label>
                   <Label
-                    htmlFor="COD"
+                    htmlFor="cash"
                     className="flex cursor-pointer select-none items-center gap-10 text-base font-normal md:text-xl"
                   >
-                    {/* Cash On Delivery */}
                     <RadioGroupItem
-                      value="COD"
-                      id="COD"
+                      value="cash"
+                      id="cash"
                       className={cn(radioItemStyle, radioItemFilledStyle)}
                       iconSize="large"
                     />
-                    {t('COD')}
+                    {t('cash')}
                   </Label>
                 </RadioGroup>
               </motion.div>
             ) : null}
           </AnimatePresence>
 
-          {userData?.formStep === 5 && !showFieldset.step3 ? (
+          {userData?.formStep === 4 && !showFieldset.step3 ? (
             <div className="text-[hsl(var(--order-text))]">
               {t(userData.paymentInfo)}
             </div>
@@ -802,7 +816,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             variant={'icons'}
             className={cn(
               'absolute right-6 top-[30px] hidden',
-              userData?.formStep === 5 && 'block',
+              userData?.formStep === 4 && 'block',
             )}
             onClick={() => handleEditStep('step3')}
           >
@@ -817,9 +831,9 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             id="step4"
             className={cn(
               'relative flex flex-col',
-              userData?.formStep === 5 &&
+              userData?.formStep === 4 &&
                 'bg-[hsl(var(--order-background))] p-6',
-              userData?.formStep === 5 &&
+              userData?.formStep === 4 &&
                 showFieldset.step4 &&
                 'border border-black bg-transparent',
             )}
@@ -827,13 +841,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             <legend className="sr-only">{t('comment_title')}</legend>
             <h3 className={cn(legendStyle)}>{t('comment_title')}</h3>
             <AnimatePresence initial={false}>
-              {(userData?.formStep ?? 1) < 5 || showFieldset.step4 ? (
+              {(userData?.formStep ?? 1) < 4 || showFieldset.step4 ? (
                 <motion.div
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: '0' }}
                   initial={{ opacity: 0, height: '0' }}
                   transition={{ duration: 0.3 }}
-                  style={{ overflow: 'hidden' }}
+                  style={{ overflow: 'hidden', width: '100%' }}
                 >
                   <Textarea
                     name="comment"
@@ -852,13 +866,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                         comment,
                       })
                     }}
-                    className="mt-8 resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
+                    className="m-0.5 mt-8 w-full resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
                   />
                 </motion.div>
               ) : null}
             </AnimatePresence>
 
-            {userData?.formStep === 5 && !showFieldset.step4 ? (
+            {userData?.formStep === 4 && !showFieldset.step4 ? (
               <div className="mt-8 text-[hsl(var(--order-text))]">
                 {userData.comment || t('no_comments')}
               </div>
@@ -868,7 +882,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
               variant={'icons'}
               className={cn(
                 'absolute right-6 top-[30px] hidden',
-                userData?.formStep === 5 && 'block',
+                userData?.formStep === 4 && 'block',
               )}
               onClick={() => handleEditStep('step4')}
             >
@@ -968,7 +982,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
         </fieldset>
       )} */}
 
-      {(!userData || (userData?.formStep ?? 0) <= 4) && (
+      {(!userData || (userData?.formStep ?? 0) <= 3) && (
         <button
           type="submit"
           className="max-w-[180px] self-center bg-black px-5 py-2 text-white"

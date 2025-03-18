@@ -1,5 +1,20 @@
 import mongoose from 'mongoose'
 
+interface DepartmentDelivery {
+  city: string
+  department: string
+  phone: string
+}
+
+interface CourierDelivery {
+  courier: string
+  phone: string
+}
+
+type Delivery = DepartmentDelivery | CourierDelivery
+interface DeliveryValidationProps {
+  value: Delivery
+}
 const orderSchema = new mongoose.Schema(
   {
     status: {
@@ -66,22 +81,42 @@ const orderSchema = new mongoose.Schema(
       },
     },
     delivery: {
-      city: {
-        type: String,
-        required: true,
-      },
-      department: {
-        type: String,
-        required: true,
-      },
-      phone: {
-        type: String,
-        required: true,
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+      validate: {
+        validator: function (value: Delivery) {
+          if ('city' in value && 'department' in value) {
+            return (
+              'phone' in value &&
+              typeof value.city === 'string' &&
+              value.city.length > 0 &&
+              typeof value.department === 'string' &&
+              value.department.length > 0 &&
+              typeof value.phone === 'string' &&
+              !('courier' in value)
+            )
+          }
+
+          if ('courier' in value) {
+            return (
+              'phone' in value &&
+              typeof value.courier === 'string' &&
+              value.courier.length > 0 &&
+              typeof value.phone === 'string' &&
+              !('city' in value) &&
+              !('department' in value)
+            )
+          }
+          return false
+        },
+        message: (props: DeliveryValidationProps) =>
+          `Invalid delivery structure: ${JSON.stringify(props.value)}. Must be either {city, department, phone} or {courier, phone}`,
       },
     },
     payment: {
       method: {
         type: String,
+        enum: ['cash', 'card'],
         required: true,
       },
     },
