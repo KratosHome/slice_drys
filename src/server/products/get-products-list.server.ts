@@ -52,7 +52,7 @@ export async function getProductsList({
 
     const skip = (page - 1) * limit
     const products = await Product.find(query)
-      .sort({ visited: -1 })
+      .sort({ visited: -1, _id: 1 })
       .skip(skip)
       .limit(limit)
       .lean()
