@@ -4,6 +4,8 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { callMeBack } from '@/server/info/call-me-back'
 import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+import { toast } from '@/hooks/use-toast'
+import { useTranslations } from 'next-intl'
 
 interface ContactFormData {
   name: string
@@ -21,6 +23,8 @@ const ContactForm = ({
   placeholder: string
   form_description: string
 }) => {
+  const t = useTranslations('contacts')
+
   const {
     handleSubmit,
     control,
@@ -38,6 +42,11 @@ const ContactForm = ({
       name: '',
       phoneNumber: data.phoneNumber,
     })
+
+    toast({
+      title: t('thank_you_we_will_contact_you_shortly'),
+    })
+
     reset()
   }
 
@@ -61,7 +70,9 @@ const ContactForm = ({
           rules={{
             required: `${phone_field_description}`,
             validate: (value: string) =>
-              value && value.length === 18 ? true : `Enter full phone number`,
+              value && value.length === 18
+                ? true
+                : t('enter_full_phone_number'),
           }}
           render={({ field: { onChange, onBlur, value, ref } }) => {
             const prefix = '+38 (0'

@@ -7,7 +7,7 @@ import InstaCard from './instaCard'
 import { UnderlinedLink } from '../../ui/underlined-link'
 import { Arrow } from '@/components/client/ui/arrow'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 import './InstaFeed.css'
 
 type Props = Readonly<{ data: InstaFeed[]; title: string }>

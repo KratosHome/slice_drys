@@ -251,6 +251,12 @@
     "button": "Відправити",
     "placeholder": "Телефон",
     "information_title": "Інформація",
-    "phone_field_description": "У форматі +38 (093) 12 34 567"
+    "phone_field_description": "У форматі +38 (093) 12 34 567",
+    "thank_you_we_will_contact_you_shortly": "Дякую! Ми зв'яжемося з вами найближчим часом",
+    "hand_bag": "фото сумки для покупок",
+    "mail_icon": "іконка пошти",
+    "phone_icon": "іконка телефону",
+    "home_icon": "іконка дому",
+    "enter_full_phone_number": "Введіть повний номер телефону"
   }
 }

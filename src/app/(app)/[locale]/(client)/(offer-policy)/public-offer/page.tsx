@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Params }) {
   }
 }
 
-export default async function Page({ params }: { params: Params }) {
+export default async function PublicOffer({ params }: { params: Params }) {
   const { locale } = await params
 
   let MarkdownToHtml

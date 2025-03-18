@@ -1,10 +1,12 @@
-import { contacts } from '@/data/main/contacts'
-import { useLocale } from 'next-intl'
+import { contacts } from '@/data/contacts'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 
 const ContactInfo = ({ block_title }: { block_title: string }) => {
   const locale = useLocale() as ILocale
+
+  const t = useTranslations('contacts')
 
   return (
     <div className="info px-3 py-6 md:p-10">
@@ -15,7 +17,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
         <div className="info-item mail mb-8 flex items-center gap-x-3">
           <Image
             src={'/icons/mail_white.svg'}
-            alt={'Mail Icon'}
+            alt={t('mail_icon')}
             width={32}
             height={32}
           />
@@ -26,7 +28,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
         <div className="info-item phone mb-8 flex items-center gap-x-3">
           <Image
             src={'/icons/phone_white.svg'}
-            alt={'Phone Icon'}
+            alt={t('phone_icon')}
             width={32}
             height={32}
           />
@@ -37,7 +39,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
         <div className="info-item location mb-8 flex items-center gap-x-3">
           <Image
             src={'/icons/home_white.svg'}
-            alt={'Home Icon'}
+            alt={t('home_icon')}
             width={32}
             height={32}
           />
@@ -46,7 +48,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
         <div className="info-item time flex items-center gap-x-3">
           <Image
             src={'/icons/time_white.svg'}
-            alt={'Mail Icon'}
+            alt={t('mail_icon')}
             width={32}
             height={32}
           />

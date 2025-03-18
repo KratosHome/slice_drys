@@ -9,28 +9,73 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
+import Delivery from '@/components/client/promo-banner/delivery'
+import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
 
-import './contacts.css'
+const baseUrl = process.env.NEXT_URL
 
-export default async function Contact() {
+export async function generateMetadata({ params }: { params: Params }) {
+  const { locale } = await params
+  const isUk = locale === 'uk'
+
+  const keywords = isUk
+    ? ['контакти', 'запитання', 'замовлення', 'звʼязок', 'slice&drys']
+    : ['contacts', 'questions', 'orders', 'communication', 'slice&drys']
+
+  const canonicalUrl = `${baseUrl}/${locale}/contacts`
+
+  return {
+    title: isUk ? 'Контакти Slice&Drys' : 'Contacts Slice&Drys',
+    description: isUk
+      ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+      : 'Contact us for inquiries, orders, or cooperation.',
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
+    openGraph: {
+      title: isUk ? 'Контакти' : 'Contacts',
+      description: isUk
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
+      url: `${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isUk ? 'Контакти' : 'Contacts',
+      description: isUk
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
+    },
+  }
+}
+
+export default async function ContactsPage(props: { params: Params }) {
+  const { locale } = await props.params
   const t = await getTranslations('Breadcrumbs')
 
   return (
-    <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t('Contacts')}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <div className="mx-auto flex flex-col items-center font-bold">
+    <>
+      <ContactsJsonLd locale={locale} />
+      <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t('Contacts')}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <Contacts />
+        <Delivery className="my-[150px] mb-[100px] md:mt-[50px]" />
       </div>
-    </div>
+    </>
   )
 }

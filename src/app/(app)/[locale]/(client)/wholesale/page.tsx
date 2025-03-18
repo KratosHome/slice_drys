@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: { params: Params }) {
   }
 }
 
-export default async function Home(props: { params: Params }) {
+export default async function Wholesale(props: { params: Params }) {
   const { locale } = await props.params
   const t = await getTranslations('wholesale')
 

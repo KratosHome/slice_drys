@@ -3,12 +3,13 @@ import Socials from '../ui/Socials'
 import Image from 'next/image'
 import ContactInfo from './ContactInfo'
 import ContactForm from './ContactForm'
+import './contacts.css'
 
 const Contacts = async () => {
   const t = await getTranslations('contacts')
 
   return (
-    <section>
+    <section className="mx-auto flex flex-col items-center font-bold">
       <div className="mt-4 w-full flex-wrap items-center justify-between gap-[26px] md:flex md:items-start md:gap-[54px] lg:flex-nowrap lg:gap-[154px]">
         <div className="contacts-info-text relative">
           <h1 className="mb-[27px] w-full font-rubik text-[clamp(48px,calc(64px+64*(100vw-768px)/672),96px)] font-normal md:w-fit">
@@ -24,7 +25,7 @@ const Contacts = async () => {
             <Image
               src="/images/Вag-Logo.webp"
               fill
-              alt={'Hand bag'}
+              alt={t('hand_bag')}
               sizes="(max-width: 300px) 100vw, 50vw"
               className="bottom-0 max-h-[143px] max-w-[160px] md:max-h-[400px] md:max-w-[390px]"
             />
