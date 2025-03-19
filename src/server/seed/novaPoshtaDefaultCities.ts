@@ -129,12 +129,21 @@ const formatCityName = ({
     SettlementTypeDescription.split(' ').length > 1
       ? SettlementTypeDescription.split(' ')
           .map((word) => word[0])
-          .join()
+          .join('')
       : SettlementTypeDescription[0] + '.'
-  return cityType.concat(' ', Description, ' ', '(', AreaDescription, ' обл.)')
+
+  return cityType.concat(
+    ' ',
+    Description,
+    Description.includes(AreaDescription)
+      ? ''
+      : ' ' + '(' + AreaDescription + ' обл.)',
+  )
 }
 
-export const seedNovaPoshtaCitiesDictionary = async () => {
+export const seedNovaPoshtaCitiesDictionary = async (
+  force: boolean = false,
+) => {
   const newData = await getNPCityOnline()
   if (!newData?.success) return
 
@@ -145,18 +154,46 @@ export const seedNovaPoshtaCitiesDictionary = async () => {
   try {
     await connectToDb()
 
-    const count = await NovaPoshtaCities.countDocuments()
-    if (count !== 0) {
+    if (force) {
+      await NovaPoshtaCities.deleteMany({})
+      await NovaPoshtaCities.insertMany(newCitiesData, { ordered: false })
       return {
-        success: false,
-        message: 'Directory of cities already exists. No changes were made.',
+        success: true,
+        message: 'Directory of cities seeded successfully',
       }
     }
-    await NovaPoshtaCities.create(newCitiesData)
+
+    const count = await NovaPoshtaCities.countDocuments()
+    if (count === 0) {
+      await NovaPoshtaCities.insertMany(newCitiesData, { ordered: false })
+      return {
+        success: true,
+        message: 'Directory of cities seeded successfully',
+      }
+    }
+
+    const createdAt = await NovaPoshtaCities.find()
+      .sort({ createdAt: -1 })
+      .limit(1)
+      .select<{ createdAt: Date }>('createdAt')
+    const now = Date.now()
+
+    const diff = now - createdAt[0].createdAt.getTime()
+    const days = Math.round(diff / (1000 * 60 * 60 * 24))
+    if (days < 7) {
+      return {
+        success: false,
+        message:
+          'Directory of cities already exists and is up to date. No changes were made.',
+      }
+    }
+
+    await NovaPoshtaCities.deleteMany({})
+    await NovaPoshtaCities.insertMany(newCitiesData, { ordered: false })
 
     return {
       success: true,
-      message: 'Directory of cities seeded successfully',
+      message: 'Directory of cities updated successfully',
     }
   } catch (error) {
     return {

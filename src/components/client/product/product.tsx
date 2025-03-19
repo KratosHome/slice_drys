@@ -53,7 +53,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         quantity: 1,
         image: product.img,
         name: product.name,
-        price: selectedVariable.price,
+        price: selectedVariable.newPrice || selectedVariable.price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })

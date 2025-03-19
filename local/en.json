@@ -72,7 +72,8 @@
     "total": "Total",
     "minimum-order-amount": "Minimum order amount",
     "continue-shopping": "Continue shopping",
-    "order": "Order"
+    "order": "Order",
+    "clear_cart": "Remove all goods"
   },
   "blog": {
     "paginationButtonLeft": "Previous",
@@ -196,6 +197,7 @@
     "surname_placeholder": "Surname",
     "name_placeholder": "Name",
     "phone_placeholder": "Phone",
+    "phone_field_description": "In format +38 (093) 123 45 67",
     "delivery_title": "Delivery",
     "delivery_method_to_branch": "To the branch",
     "delivery_method_to_postomat": "To the postomat",
@@ -206,19 +208,21 @@
     "branch_search_placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
     "courier_placeholder": "Enter delivery address (city, street, house number)",
     "payment_title": "Payment method",
-    "card-payment": "Payment via payment system",
-    "COD": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
+    "card": "Payment via payment system",
+    "cash": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
     "comment_title": "Order comment",
     "comment_placeholder": "If necessary, leave a comment for the order",
     "no_comments":"No comments",
-    "personal_data_consent": "I agree to the processing of my personal data",
     "no_call": "Do not call me to confirm the order",
+    "view_order": "View order",
     "btn_continue": "Continue",
     "btn_order": "Place order",
     "validation_required": "This field is required",
     "validation_length": "Invalid number length",
     "validation_email_format": "Incorrect email format",
-    "area-edit": "Edit"
+    "area-edit": "Edit",
+    "error": "Oops! Something went wrong. Please try again or give us a call.",
+    "success": "Order has been placed successfully!"
   },
   "wholesale": {
     "home": "Home",

@@ -2,6 +2,7 @@
 
 import { Combobox, transformToCombo } from '@/components/client/ui/combobox'
 import { useCartStore } from '@/store/cartStore'
+import { useTranslations } from 'next-intl'
 import { UseControllerProps } from 'react-hook-form'
 
 interface DeliveryProviderProps {
@@ -17,6 +18,7 @@ export default function DeliveryProvider({
   defaultValues,
   onBranchChange,
 }: DeliveryProviderProps) {
+  const t = useTranslations('order')
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
   )
@@ -36,7 +38,7 @@ export default function DeliveryProvider({
         rules={{
           required: {
             value: true,
-            message: 'Це поле є обов’язковим',
+            message: t('validation_required'),
           },
         }}
         defaultValues={defaultValues?.map((city) =>
@@ -44,7 +46,7 @@ export default function DeliveryProvider({
         )}
         control={control}
         onSelect={handleCitySelect}
-        placeholder="Вкажи населений пункт"
+        placeholder={t('city_placeholder')}
       />
       {deliveryInfo?.city?.label && (
         <Combobox
@@ -52,12 +54,14 @@ export default function DeliveryProvider({
           rules={{
             required: {
               value: true,
-              message: 'Це поле є обов’язковим',
+              message: t('validation_required'),
             },
           }}
           control={control}
           onSelect={handleBranchSelect}
-          placeholder={`Вибери ${deliveryInfo?.deliveryMethod === 'branch' ? 'відділення' : 'поштомат'} `}
+          placeholder={t('branch_placeholder', {
+            type: deliveryInfo?.deliveryMethod,
+          })}
         />
       )}
     </>
