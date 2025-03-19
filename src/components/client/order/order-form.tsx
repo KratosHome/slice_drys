@@ -264,7 +264,6 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
   }
 
   useImperativeHandle(ref, () => ({
-    submit: handleSubmit(onSubmit),
     reset,
   }))
 
