@@ -19,7 +19,7 @@ import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-poppins',
+  variable: '--font-montserrat',
   weight: ['400', '500', '600', '700', '800'],
 })
 
