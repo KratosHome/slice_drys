@@ -37,10 +37,17 @@ interface ICartActions {
     maxQuantity: number,
     weight: number,
   ) => void
-  clearCart: () => void
+  clearCart: (full?: boolean) => void
   removeItemFromCart: (id: string, weight: number) => void
   setOpenCart: (openCart: boolean) => void
-  submitOrder: () => Promise<IResponse>
+  submitOrder: (cb: (resp: IOrderResponse) => void) => void
+}
+const initialUserData = {
+  deliveryInfo: {
+    deliveryMethod: 'branch' as IDeliveryMethods,
+    deliveryProvider: 'novaPoshta',
+  },
+  paymentInfo: 'card' as PaymentMethods,
 }
 
 export const useCartStore = create<ICartState & ICartActions>()(
@@ -62,13 +69,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
         return {
           cart: {
             itemList: [],
-            userData: {
-              deliveryInfo: {
-                deliveryMethod: 'branch',
-                deliveryProvider: 'novaPoshta',
-              },
-              paymentInfo: 'card-payment',
-            },
+            userData: initialUserData,
           },
           openCart: false,
           totalPrice: 0,
@@ -159,12 +160,20 @@ export const useCartStore = create<ICartState & ICartActions>()(
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          clearCart: () => {
+          clearCart: (full: boolean = false) => {
             set(() => {
               localStorage.removeItem('slice-drys-cart')
 
               return {
-                cart: { itemList: [], userData: {} },
+                cart: full
+                  ? {
+                      itemList: [],
+                      userData: initialUserData,
+                    }
+                  : {
+                      itemList: [],
+                      userData: get().cart.userData,
+                    },
                 totalPrice: 0,
                 totalProducts: 0,
               }
@@ -173,7 +182,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
           setCartUserData: (data) => {
             set((state) => ({ cart: { ...state.cart, userData: data } }))
           },
-          submitOrder: async () => {
+          submitOrder: async (cb: (response: IOrderResponse) => void) => {
             const { cart, totalPrice, clearCart } = get()
 
             if (!cart.itemList || cart.itemList.length === 0) {
@@ -220,18 +229,12 @@ export const useCartStore = create<ICartState & ICartActions>()(
               comment: cart.userData?.comment || '',
             }
 
-            try {
-              const response: IResponse = await createOrder(orderData)
+            const response: IOrderResponse = await createOrder(orderData)
 
-              if (response.success) clearCart()
-
-              return response
-            } catch (error) {
-              return {
-                success: false,
-                message: `Failed to create order: ${error}`,
-              }
+            if (response.success) {
+              clearCart(true)
             }
+            cb(response)
           },
         }
       },

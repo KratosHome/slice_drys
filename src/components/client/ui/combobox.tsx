@@ -85,18 +85,10 @@ const handleCitySearch = async (city?: string) => {
   return allCities ? allCities.map((c) => transformToCombo(c)) : []
 }
 
-const handleBranchSearch = async (
-  // branchType: Omit<IDeliveryMethods, 'courier'>,
-  cityRef?: string,
-) => {
+const handleBranchSearch = async (cityRef?: string) => {
   if (!cityRef) return []
   const branches = await getNPBranchesByCityRef(cityRef)
   return branches ?? []
-  // return (
-  //   branches
-  //     ?.filter((branch) => branch.branchType.toLowerCase() === branchType)
-  //     .map((branch) => transformToCombo(branch, 'branch')) ?? []
-  // )
 }
 
 const Loading = () => {
@@ -238,7 +230,7 @@ export function Combobox({
           <Button
             role="combobox"
             aria-expanded={open}
-            className="grid w-full grid-cols-[1fr_auto] rounded-md border border-input bg-transparent px-4 py-[15px] text-left !text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal !text-black shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 lg:w-[38vw] lg:max-w-[550px]"
+            className="grid w-full grid-cols-[1fr_auto] rounded-md border border-input bg-transparent px-4 py-[15px] text-left !text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal !text-black shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="truncate">
               {selectedValue.label || placeholder}
@@ -250,7 +242,10 @@ export function Combobox({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[calc(100vw-40px)] max-w-[550px] p-0 lg:w-[38vw]">
+        <PopoverContent
+          className="w-[calc(100vw-40px)] max-w-[575px] p-0 lg:w-[45vw]"
+          asChild
+        >
           <Command>
             <CommandInput
               placeholder={placeholder}

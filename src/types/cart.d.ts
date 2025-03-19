@@ -6,6 +6,8 @@ interface IDeliveryInfo<T extends 'branch' | 'postomat' | 'courier', P> {
   courierInfo?: T extends 'courier' ? string : never
 }
 
+type PaymentMethods = 'cash' | 'card'
+
 interface IUserData<T> {
   name?: string
   surname?: string
@@ -13,7 +15,7 @@ interface IUserData<T> {
   email?: string
   formStep?: number
   deliveryInfo?: T
-  paymentInfo?: string
+  paymentInfo?: PaymentMethods
   comment?: string
   acceptTerms?: boolean
   noCall?: boolean
