@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@theme {
+  --breakpoint-xs: 24rem;
+}
+
 html {
     scrollbar-gutter: stable;
 }
