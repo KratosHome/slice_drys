@@ -9,8 +9,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
-import Delivery from '@/components/client/promo-banner/delivery'
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
+import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -74,7 +74,7 @@ export default async function ContactsPage(props: { params: Params }) {
           </BreadcrumbList>
         </Breadcrumb>
         <Contacts />
-        <Delivery className="my-[150px] mb-[100px] md:mt-[50px]" />
+        <JoinCommunity className="my-[150px] mb-[100px] md:mt-[50px]" />
       </div>
     </>
   )

@@ -185,6 +185,12 @@
     "icon_cart": "icon cart",
     "icon_instagram": "icon instagram"
   },
+  "promo-banner-join-community": {
+    "title": "Join our community!",
+    "description": "Be the first to know about special offers and receive exclusive discounts.",
+    "text": "nom-nom !",
+    "icon_instagram": "Instagram icon"
+  },
   "order": {
     "page_title": "Checkout",
     "contacts_title": "Contact details",
