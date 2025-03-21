@@ -10,6 +10,13 @@ export async function middleware(request: NextRequest) {
   const auth = request.headers.get('authorization')
 
   if (isTesting) {
+    const { pathname } = request.nextUrl
+    const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
+
+    if (adminRegex.test(pathname)) {
+      return new Response('Access forbidden', { status: 403 })
+    }
+
     if (
       !auth ||
       auth !==
@@ -30,12 +37,3 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/', '/(en|uk)/:path*'],
 }
-
-/*
-    const { pathname } = request.nextUrl
-    const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
-
-    if (adminRegex.test(pathname)) {
-      return new Response('Access forbidden', { status: 403 })
-    }
- */
