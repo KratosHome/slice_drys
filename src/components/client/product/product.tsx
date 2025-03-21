@@ -114,7 +114,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               {product.name}
             </CardItem>
             <CardItem translateZ={60}>
-              <div onClick={(e) => e.stopPropagation()}>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+              >
                 <Select
                   onValueChange={handleVariableChange}
                   value={String(selectedVariable._id)}
