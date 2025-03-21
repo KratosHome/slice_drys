@@ -6,8 +6,8 @@ const isTesting = process.env.NEXT_STATUS === 'test'
 const USERNAME = '1'
 const PASSWORD = '1'
 
-const ADMIN_USERNAME = process.env.NEXT_ADMIN_LOGIN
-const ADMIN_PASSWORD = process.env.NEXT_ADMIN_PASS
+const ADMIN_USERNAME = 2
+const ADMIN_PASSWORD = 2
 
 export async function middleware(request: NextRequest) {
   const auth = request.headers.get('authorization')
