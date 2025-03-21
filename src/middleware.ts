@@ -6,17 +6,15 @@ const isTesting = process.env.NEXT_STATUS === 'test'
 const USERNAME = '1'
 const PASSWORD = '1'
 
+const ADMIN_USERNAME = process.env.NEXT_ADMIN_LOGIN
+const ADMIN_PASSWORD = process.env.NEXT_ADMIN_PASS
+
 export async function middleware(request: NextRequest) {
   const auth = request.headers.get('authorization')
+  const { pathname } = request.nextUrl
+  const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
 
   if (isTesting) {
-    const { pathname } = request.nextUrl
-    const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
-
-    if (adminRegex.test(pathname)) {
-      return new Response('Access forbidden', { status: 403 })
-    }
-
     if (
       !auth ||
       auth !==
@@ -26,6 +24,21 @@ export async function middleware(request: NextRequest) {
         status: 401,
         headers: {
           'WWW-Authenticate': 'Basic realm="Protected"',
+        },
+      })
+    }
+  }
+
+  if (adminRegex.test(pathname)) {
+    if (
+      !auth ||
+      auth !==
+        `Basic ${Buffer.from(`${ADMIN_USERNAME}:${ADMIN_PASSWORD}`).toString('base64')}`
+    ) {
+      return new Response('Admin authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Admin Protected"',
         },
       })
     }
