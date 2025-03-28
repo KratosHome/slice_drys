@@ -53,8 +53,7 @@
       "more-btn": "Learn more"
     },
     "instafeed": {
-      "title": "Travel with us",
-      "title-md": "Travel with us"
+      "title": "Travel with us"
     },
     "burger-menu": {
       "catalog": "Catalog",
@@ -73,7 +72,8 @@
     "total": "Total",
     "minimum-order-amount": "Minimum order amount",
     "continue-shopping": "Continue shopping",
-    "order": "Order"
+    "order": "Order",
+    "clear_cart": "Remove all goods"
   },
   "blog": {
     "paginationButtonLeft": "Previous",
@@ -86,26 +86,12 @@
     "email-placeholder": "Fill in your email",
     "submit-btn": "Submit"
   },
-  "breadcrumbs": {
+  "Breadcrumbs": {
     "Home": "Home",
     "Blog": "Blog",
     "Page": "Page",
+    "Order":"Order processing",
     "Contacts": "Contacts"
-  },
-  "Contacts": {
-    "pageTitle": "Contacts",
-    "email": "slice&drys@gmail.com",
-    "phone": "+380123456789",
-    "location": "Cherkasy city, str. Nadpilna, 248A",
-    "openTime": "10:00",
-    "closeTime": "19:00",
-    "addressTitle": "Information",
-    "contactDescription": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
-    "sendDescription": "Do you want us to call?",
-    "sendButton": "Send",
-    "inputDescription": "Phone",
-    "inputHint": "In the format +38 (093) 12 34 567",
-    "advertTitle": "Join our community!"
   },
   "share": {
     "Share": "Share",
@@ -140,6 +126,7 @@
     "sale": "Sale",
     "expect_soon": "Expect soon!",
     "add_to_cart": "Buy",
+    "in_cart": "In cart",
     "with_this_product_buy": "With this product buy",
     "something_that_will_come_handy_along_with_your_choice": "Something that will come in handy along with your choice!",
     "composition": "composition",
@@ -193,10 +180,89 @@
   },
   "promo-banner": {
     "free_delivery": "Free delivery!",
-    "when_ordering_from": "When ordering from",
-    "uah": "UAH",
+    "when_ordering_from": "When ordering from <bold>{amount} UAH</bold>",
     "get_free_delivery": "Get free delivery",
     "icon_cart": "icon cart",
     "icon_instagram": "icon instagram"
+  },
+  "promo-banner-join-community": {
+    "title": "Join our community!",
+    "description": "Be the first to know about special offers and receive exclusive discounts.",
+    "text": "nom-nom !",
+    "icon_instagram": "Instagram icon"
+  },
+  "order": {
+    "page_title": "Checkout",
+    "contacts_title": "Contact details",
+    "surname_placeholder": "Surname",
+    "name_placeholder": "Name",
+    "phone_placeholder": "Phone",
+    "phone_field_description": "In format +38 (093) 123 45 67",
+    "delivery_title": "Delivery",
+    "delivery_method_to_branch": "To the branch",
+    "delivery_method_to_postomat": "To the postomat",
+    "delivery_method_courier": "By courier",
+    "city_placeholder": "Enter a locality",
+    "city_search_placeholder": "Try changing your query",
+    "branch_placeholder": "Select {type, select, branch {branch} postomat {postomat} other {}}",
+    "branch_search_placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
+    "courier_placeholder": "Enter delivery address (city, street, house number)",
+    "payment_title": "Payment method",
+    "card": "Payment via payment system",
+    "cash": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
+    "comment_title": "Order comment",
+    "comment_placeholder": "If necessary, leave a comment for the order",
+    "no_comments":"No comments",
+    "no_call": "Do not call me to confirm the order",
+    "view_order": "View order",
+    "btn_continue": "Continue",
+    "btn_order": "Place order",
+    "validation_required": "This field is required",
+    "validation_length": "Invalid number length",
+    "validation_email_format": "Incorrect email format",
+    "area-edit": "Edit",
+    "error": "Oops! Something went wrong. Please try again or give us a call.",
+    "success": "Order has been placed successfully!"
+  },
+  "wholesale": {
+    "home": "Home",
+    "wholesale": "Wholesale",
+    "wholesale_dried_fruits_in_bulk": "Wholesale - Dried Fruits in Bulk!",
+    "do_you_have_business": "Do you have a business and want to order our treats in bulk? Great idea! Write to us – and we will find the best conditions so your shelves are always stocked with our delicious dried fruits!",
+    "why_us": "Why Us?",
+    "join_us": "Join Us",
+    "thank_you_we_will_contact_you": "Thank you! We will contact you shortly.",
+    "error": "Oops! Something went wrong. Please try again or give us a call.",
+    "icon_cart": "cart icon",
+    "fill_out_form": "Fill out the form",
+    "start_cooperation": "Start Cooperation",
+    "name": "Name",
+    "this_field_is_required": "This field is required",
+    "minimum_characters": "Minimum 2 characters",
+    "maximum_characters": "Maximum 50 characters",
+    "enter-phone-number": "Enter phone number",
+    "enter-full-phone-number": "Enter full phone number",
+    "invalid_email_format": "Invalid email format",
+    "where_you_going_sell": "Where do you plan to sell?",
+    "maximum_100_characters": "Maximum 100 characters",
+    "link_company_name": "Link or company name",
+    "how_did_you_find_about_us": "How did you find out about us?",
+    "send": "Send"
+  },
+  "contacts" : {
+    "title": "Contacts",
+    "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
+    "form_description": "Do you want us to call?",
+    "address": "Cherkasy, Nadpilna St. 248A.",
+    "button": "Send",
+    "placeholder": "Phone",
+    "information_title": "Information",
+    "phone_field_description": "In format +38 (093) 12 34 567",
+    "thank_you_we_will_contact_you_shortly": "Thank you! We will contact you shortly.",
+    "hand_bag": "Hand bag",
+    "mail_icon": "Mail Icon",
+    "phone_icon": "Phone Icon",
+    "home_icon": "Home Icon",
+    "enter_full_phone_number": "Enter full phone number"
   }
 }

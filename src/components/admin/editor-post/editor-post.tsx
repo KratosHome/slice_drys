@@ -157,6 +157,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setImageFile(file)
     }
   }
+
   const handleDelete = async () => {
     if (!post || !post._id) {
       return toast({ title: 'Post is not defined' })
@@ -174,6 +175,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
     router.refresh()
   }
+
   const ConfirmDeletePopup = () => (
     <AlertDialog
       open={isConfirmDeleteOpen}

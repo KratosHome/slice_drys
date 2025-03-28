@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -30,11 +30,21 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   const locale = useLocale() as ILocale
   const t = useTranslations('product')
 
-  const { addItemToCart, setOpenCart } = useCartStore((state) => state)
+  const [mounted, setMounted] = useState(false)
+
+  const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
+    (state) => state,
+  )
 
   const [selectedVariable, setSelectedVariable] = useState(
     product.variant ?? product.variables[0],
   )
+
+  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleAddToCart = () => {
     if (product._id && product.img)
@@ -43,7 +53,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
         quantity: 1,
         image: product.img,
         name: product.name,
-        price: selectedVariable.price,
+        price: selectedVariable.newPrice || selectedVariable.price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })
@@ -104,7 +114,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               {product.name}
             </CardItem>
             <CardItem translateZ={60}>
-              <div onClick={(e) => e.stopPropagation()}>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+              >
                 <Select
                   onValueChange={handleVariableChange}
                   value={String(selectedVariable._id)}
@@ -164,7 +179,11 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   variant="button"
                   onClick={handleAddToCart}
                 >
-                  {t('add_to_cart')}
+                  {mounted
+                    ? isInCart
+                      ? t('in_cart')
+                      : t('add_to_cart')
+                    : t('add_to_cart')}
                 </Button>
               </div>
             </CardItem>

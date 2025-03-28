@@ -1,18 +1,21 @@
-interface IDeliveryInfo {
-  city?: string
-  brunch?: string
-  deliveryMethod?: string
-  courierInfo?: string
+interface IDeliveryInfo<T extends 'branch' | 'postomat' | 'courier', P> {
+  city?: T extends 'branch' | 'postomat' ? P : never
+  branch?: T extends 'branch' | 'postomat' ? P : never
+  deliveryProvider?: string
+  deliveryMethod?: T
+  courierInfo?: T extends 'courier' ? string : never
 }
 
-interface IUserData {
+type PaymentMethods = 'cash' | 'card'
+
+interface IUserData<T> {
   name?: string
   surname?: string
   phoneNumber?: string
   email?: string
   formStep?: number
-  deliveryInfo?: IDeliveryInfo
-  paymentInfo?: string
+  deliveryInfo?: T
+  paymentInfo?: PaymentMethods
   comment?: string
   acceptTerms?: boolean
   noCall?: boolean
@@ -30,5 +33,7 @@ interface ICartItem {
 
 interface ICart {
   itemList?: ICartItem[] | undefined
-  userData?: IUserData | undefined
+  userData?:
+    | IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>>
+    | undefined
 }

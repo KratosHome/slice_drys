@@ -13,6 +13,7 @@ export async function getProductsSliderProduct(
       { $match: { slug: { $ne: productSlug } } },
       { $unwind: '$categories' },
       { $group: { _id: '$categories', product: { $first: '$$ROOT' } } },
+      { $group: { _id: '$product._id', product: { $first: '$product' } } },
       { $limit: 7 },
     ])
 
@@ -35,9 +36,13 @@ export async function getProductsSliderProduct(
       }),
     )
 
+    const uniqueProducts = Array.from(
+      new Map(formattedProducts.map((item) => [item._id, item])).values(),
+    )
+
     return {
       success: true,
-      data: formattedProducts,
+      data: uniqueProducts,
       message: 'Products retrieved',
     }
   } catch (error) {

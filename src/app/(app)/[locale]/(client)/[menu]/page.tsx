@@ -30,6 +30,9 @@ import { getPaginationRange } from '@/utils/get-pagination-range'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import NotFoundPage from '@/components/not-found'
+import { fetchTags } from '@/data/fetch-tags'
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import 'quill/dist/quill.snow.css'
 
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -51,7 +54,7 @@ export async function generateMetadata({
 
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
-    {},
+    { cache: 'force-cache', next: { tags: [`${fetchTags.products}`] } },
   ).then((res) => res.json())
 
   if (currentCategories.success === false) {
@@ -63,7 +66,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${categoriesParam}`
+  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -75,6 +78,13 @@ export async function generateMetadata({
     description: currentCategories.data.metaDescription?.[locale],
     keywords: metaKeywordsArray,
     robots: 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: currentCategories.data.name?.[locale],
       description,
@@ -133,22 +143,23 @@ export default async function MenuPage(props: {
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
-        {
-          next: { revalidate: 60 },
-        },
+        { cache: 'force-cache', next: { tags: [`${fetchTags.products}`] } },
       ).then((res) => res.json()),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        next: { revalidate: 60 },
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
     ])
 
@@ -156,16 +167,18 @@ export default async function MenuPage(props: {
     return <NotFoundPage />
   }
 
-  const descriptionHTML = currentCategories.data.description[locale]
-  const isLongText = currentCategories.data.description[locale].length > 500
+  const content = JSON.parse(currentCategories.data.description[locale])
+  const converter = new QuillDeltaToHtmlConverter(content.ops)
+  const html = converter.convert()
 
-  let firstPart = descriptionHTML
+  const isLongText = html.length > 500
+  let firstPart = html
   let secondPart = ''
 
   if (isLongText) {
-    const mid = Math.ceil(descriptionHTML.length / 2)
-    firstPart = descriptionHTML.substring(0, mid)
-    secondPart = descriptionHTML.substring(mid)
+    const mid = Math.ceil(html.length / 2)
+    firstPart = html.substring(0, mid)
+    secondPart = html.substring(mid)
   }
 
   const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
@@ -233,10 +246,8 @@ export default async function MenuPage(props: {
               weights={weightData.data}
             />
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-              {flattenedProducts.map((product: IProduct) => (
-                <>
-                  <Product key={product.slug} product={product} />
-                </>
+              {flattenedProducts.map((product: IProduct & { key: string }) => (
+                <Product key={product.key} product={product} />
               ))}
             </div>
           </div>
@@ -290,8 +301,8 @@ export default async function MenuPage(props: {
         )}
 
         <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] px-5">
-            <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold">
+          <div className="mx-auto max-w-[1280px] px-5 py-[40px]">
+            <h2 className="mb-6 text-center font-rubik text-[36px] font-bold leading-none lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>
             <div
@@ -311,9 +322,7 @@ export default async function MenuPage(props: {
               ) : (
                 <article
                   className="ql-editor prose lg:prose-xl"
-                  dangerouslySetInnerHTML={{
-                    __html: currentCategories.data.description[locale],
-                  }}
+                  dangerouslySetInnerHTML={{ __html: html }}
                 />
               )}
             </div>
@@ -321,7 +330,7 @@ export default async function MenuPage(props: {
               {productBgImg.map((fruit, index) => (
                 <Image
                   key={index}
-                  src={`/slider/fruit/${fruit.src}.png`}
+                  src={`/slider/fruit/${fruit.src}.webp`}
                   alt={fruit.alt}
                   className={fruit.className}
                   width={132}
@@ -331,7 +340,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </main>
     </>

@@ -1,41 +1,81 @@
-import ContactsAdvert from '@/components/client/contacts/contacts-advert'
-import ContactsBreadcrumbs from '@/components/client/contacts/contacts-breadcrumbs'
-import ContactsInfo from '@/components/client/contacts/contacts-info'
-import ContactsSendPhone from '@/components/client/contacts/contacts-send-phone'
-import ToTheTop from '@/components/client/ui/to-the-top'
+import { getTranslations } from 'next-intl/server'
+import Contacts from '@/components/client/contacts/Contacts'
 
-type Props = {
-  params: Promise<{ locale: ILocale }>
-}
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/client/ui/breadcrumbs'
+import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
+import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
 
-const translations = {
-  en: {
-    title: 'Contacts',
-    description: 'This is the contact page.',
-    keywords: ['contacts', 'address', 'phone'],
-  },
-  uk: {
-    title: 'Контакти',
-    description: 'Це сторінка контактів.',
-    keywords: ['контакти', 'адреса', 'телефон'],
-  },
-}
+const baseUrl = process.env.NEXT_URL
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: { params: Params }) {
   const { locale } = await params
-  return translations[locale]
+  const isUk = locale === 'uk'
+
+  const keywords = isUk
+    ? ['контакти', 'запитання', 'замовлення', 'звʼязок', 'slice&drys']
+    : ['contacts', 'questions', 'orders', 'communication', 'slice&drys']
+
+  const canonicalUrl = `${baseUrl}/${locale}/contacts`
+
+  return {
+    title: isUk ? 'Контакти Slice&Drys' : 'Contacts Slice&Drys',
+    description: isUk
+      ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+      : 'Contact us for inquiries, orders, or cooperation.',
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
+    openGraph: {
+      title: isUk ? 'Контакти' : 'Contacts',
+      description: isUk
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
+      url: `${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isUk ? 'Контакти' : 'Contacts',
+      description: isUk
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
+    },
+  }
 }
 
-export default async function Contacts() {
+export default async function ContactsPage(props: { params: Params }) {
+  const { locale } = await props.params
+  const t = await getTranslations('Breadcrumbs')
+
   return (
     <>
-      <div className="mx-auto w-full max-w-[375px] lg:max-w-screen-xl">
-        <ContactsBreadcrumbs />
-        <ContactsInfo />
-        <ContactsSendPhone />
-        <ContactsAdvert />
+      <ContactsJsonLd locale={locale} />
+      <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t('Contacts')}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Contacts />
+        <JoinCommunity className="my-[150px] mb-[100px] md:mt-[50px]" />
       </div>
-      <ToTheTop />
     </>
   )
 }

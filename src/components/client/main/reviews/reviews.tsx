@@ -92,9 +92,9 @@ export default function Reviews({ reviews }: ReviewsProps) {
   return (
     <section
       aria-labelledby="reviews"
-      className="section relative w-full max-w-[1280px] overflow-x-clip before:absolute before:-left-14 before:top-[50px] before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:-right-20 after:top-[-10px] after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.png')] after:bg-no-repeat 1440:overflow-visible md:before:bg-[url('/images/jerky.png')] md:after:-right-4 md:after:top-[40%] lg:before:left-0"
+      className="section relative w-full max-w-[1280px] overflow-x-clip before:absolute before:-left-14 before:top-[50px] before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:-right-20 after:top-[-10px] after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat 1440:overflow-visible md:before:bg-[url('/images/jerky.webp')] md:after:-right-4 md:after:top-[40%] lg:before:left-0"
     >
-      <span className="absolute inset-0 z-[-1] before:absolute before:-left-24 before:bottom-[210px] before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.png')]"></span>
+      <span className="absolute inset-0 z-[-1] before:absolute before:-left-24 before:bottom-[210px] before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]"></span>
       <div className="mx-auto w-full max-w-[910px] px-[20px] pb-[50px] lg:px-0">
         <h2 className="title-section text-center">{t('title')}</h2>
         <p className="underline-wave relative mb-8 mt-5 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">

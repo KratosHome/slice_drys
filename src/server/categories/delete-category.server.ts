@@ -1,6 +1,8 @@
 'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function deleteCategory(categoryId: string) {
   'use server'
@@ -23,6 +25,9 @@ export async function deleteCategory(categoryId: string) {
     }
 
     await Category.deleteOne({ _id: categoryId })
+
+    revalidateTag(fetchTags.menu)
+    revalidateTag(fetchTags.products)
 
     return {
       success: true,

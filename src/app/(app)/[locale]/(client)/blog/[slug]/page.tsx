@@ -6,6 +6,7 @@ import NotFoundPage from '@/components/not-found'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
+import { fetchTags } from '@/data/fetch-tags'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -18,7 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
-    {},
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.post}`] },
+    },
   ).then((res) => res.json())
 
   if (!data.success || !data.post.length) {
@@ -66,7 +70,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: url,
       languages: {
-        [locale]: url,
+        en: `${url}`,
+        uk: `${url}`,
       },
     },
   }
@@ -87,7 +92,10 @@ export default async function PostPage({ params }: Props) {
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-    {},
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.post}`] },
+    },
   ).then((res) => res.json())
 
   if (!data.success) {
@@ -108,14 +116,13 @@ export default async function PostPage({ params }: Props) {
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
         <div className="mt-10"></div>
         <div className="my-20 px-20">
-          <div className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <h1 className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
             {title}
-          </div>
+          </h1>
         </div>
         <div className="h-10"></div>
         <div className="mx-auto max-w-[1280px]">
           <article
-            id="editor"
             className="ql-editor prose lg:prose-xl"
             dangerouslySetInnerHTML={{ __html: html }}
           />

@@ -11,18 +11,7 @@ import { AspectRatio } from '../../ui/aspect-ratio'
 import './help.css'
 
 interface HelpProps {
-  data: {
-    title: string
-    subTitle: string
-    text: string
-    button: string
-    link: string
-    img: {
-      src: string
-      alt: string
-      link: string
-    }[]
-  }
+  data: IHelpLocal
 }
 
 const Help: FC<HelpProps> = ({ data }) => {
@@ -30,8 +19,9 @@ const Help: FC<HelpProps> = ({ data }) => {
     window.open(link, '_blank')
   }
   const isMobile = useIsMobile()
+
   useEffect(() => {
-    const target = document.querySelector('.products-slider')
+    const target = document.querySelector('.help-slider')
     if (!target) return
     const handleResize = () => {
       let k: number
@@ -51,7 +41,7 @@ const Help: FC<HelpProps> = ({ data }) => {
         default:
           k = 30
       }
-      const x = data.img.length * k
+      const x = data.images.length * k
       const prev = document.querySelector(
         '.help .splide__arrow--prev.custom__arrow-prev',
       ) as HTMLElement
@@ -77,11 +67,13 @@ const Help: FC<HelpProps> = ({ data }) => {
       }
     }
   }, [data])
+
   return (
     <section aria-labelledby="help" className="help section">
       <div className="help__wrapper">
         <div className="splide-wrapper">
           <Splide
+            className="help-slider"
             options={{
               arrowPath: Arrow(),
               type: 'loop',
@@ -98,7 +90,7 @@ const Help: FC<HelpProps> = ({ data }) => {
               },
               classes: {
                 arrows: 'splide__arrows custom__arrows',
-                arrow: 'splide__arrow custom__arrow',
+                arrow: 'splide__arrow custom__arrow px-3',
                 prev: 'splide__arrow--prev custom__arrow-prev',
                 next: 'splide__arrow--next custom__arrow-next',
                 pagination: 'splide__pagination custom__pagination',
@@ -106,12 +98,12 @@ const Help: FC<HelpProps> = ({ data }) => {
               },
             }}
           >
-            {data?.img.map((slide, index) => (
+            {data?.images.map((slide, index) => (
               <SplideSlide key={index}>
                 <AspectRatio ratio={isMobile ? 1.42 : 1.32} className="h-full">
                   <Image
-                    src={slide.src}
-                    alt={slide.alt}
+                    src={slide}
+                    alt={slide}
                     fill={true}
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="rounded-lg object-cover"
@@ -121,10 +113,9 @@ const Help: FC<HelpProps> = ({ data }) => {
             ))}
           </Splide>
         </div>
-        <div className="help__content">
+        <div className="help__content max-h-[790px]">
           <h1 className="help__title font-rubik">{data.title}</h1>
-          <p className="help__text">{data.text}</p>
-          <h2 className="help__subtitle">{data.subTitle}</h2>
+          <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"
             className="help__btn"

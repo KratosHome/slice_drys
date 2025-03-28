@@ -97,118 +97,122 @@ export const Hero = ({
   )
 
   return (
-    <div className="container mb-[255px] overflow-x-clip sm:pt-9 xl:overflow-x-visible">
-      <div className="px-[20px]">
-        <div
-          className={cn(
-            'relative w-fit origin-left -rotate-[2.92deg] transform text-[28px] font-bold leading-10 text-white',
-            'sm:text-[40px] sm:leading-snug md:text-[48px] lg:text-[64px]',
-          )}
-          ref={titleRef}
-        >
-          <h1 className="mt-11 bg-black px-2.5 text-white lg:px-9">
-            {slidersLocale[hoveredIndex].title}
-          </h1>
-
+    <div className="overflow-hidden">
+      <div className="container mb-[255px] overflow-x-clip sm:pt-9 xl:overflow-x-visible">
+        <div className="px-[20px]">
           <div
-            className="absolute top-0 -z-10 h-full w-full origin-left translate-x-1 translate-y-1 rotate-[0.58deg] lg:translate-x-2 lg:translate-y-2"
-            style={{ background: hoverHexColor }}
-          />
-        </div>
-      </div>
-
-      <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
-        {productLinks.map((item, index) => (
-          <div
-            key={item.slug}
             className={cn(
-              'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
-
-              index === 0 && '-rotate-[50deg] lg:-rotate-[60deg]',
-              index === 1 && '-rotate-[25deg] lg:-rotate-[30deg]',
-              index === 2 && 'rotate-[0deg]',
-              index === 3 && 'rotate-[25deg] lg:rotate-[30deg]',
-              index === 4 && 'rotate-[50deg] lg:rotate-[60deg]',
+              'relative w-fit origin-left -rotate-[2.92deg] transform text-[28px] font-bold leading-10 text-white',
+              'sm:text-[40px] sm:leading-snug md:text-[48px] lg:text-[64px]',
             )}
+            ref={titleRef}
           >
-            <Link
-              href={`${locale}/${item.slug}`}
-              className={cn(
-                'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
-                'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
-              )}
-              onMouseEnter={() => setHoveredIndex(index)}
-            >
-              <SliderItem
-                title={item.name[locale]}
-                hoverHexColor={hoverHexColor}
-                isHovered={hoveredIndex === index}
-              />
-            </Link>
-          </div>
-        ))}
+            <h1 className="mt-11 bg-black px-2.5 text-white lg:px-9">
+              {slidersLocale[hoveredIndex].title}
+            </h1>
 
-        <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
-          <Arcs color={hoverHexColor} />
-
-          <div className="absolute -bottom-2 right-1/2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
-            <Image
-              ref={imgRef}
-              src={slidersLocale[hoveredIndex].image}
-              alt="slider image"
-              fill
-              className="object-contain"
-              sizes="(max-width: 550px) 100vw, 50vw"
-              onMouseEnter={() => {
-                handleMainImageAnimation(true)
-              }}
-              onMouseLeave={() => handleMainImageAnimation(false)}
+            <div
+              className="absolute top-0 -z-10 h-full w-full origin-left translate-x-1 translate-y-1 rotate-[0.58deg] lg:translate-x-2 lg:translate-y-2"
+              style={{ background: hoverHexColor }}
             />
           </div>
-
-          {slidersLocale[hoveredIndex].subImages && (
-            <div className="hero__animation absolute -bottom-2 right-1/2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
-              <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
-                {slidersLocale[hoveredIndex].subImages.map((item, index) => {
-                  const top = isMobile
-                    ? isTablet
-                      ? item.position?.tablet?.y
-                      : item.position?.mobile?.y
-                    : item.position?.desktop?.y
-                  const left = isMobile
-                    ? isTablet
-                      ? item.position?.tablet?.x
-                      : item.position?.mobile?.x
-                    : item.position?.desktop?.x
-
-                  return (
-                    <Image
-                      key={index}
-                      src={item.path}
-                      alt="animation"
-                      className={cn(
-                        `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
-                        isMobile ? `opacity-1` : '',
-                        isDesktop ? `w-[${item.width}px]` : '',
-                      )}
-                      style={{
-                        top: isDesktop ? `0` : `${top}px`,
-                        left: isDesktop ? `0` : `${left}px`,
-                        transform: `rotate(${item.rotate || 0}deg)`,
-                      }}
-                      width={isDesktop ? item.width : item.width / 2}
-                      height={isDesktop ? item.height : item.height / 2}
-                      ref={(el) => {
-                        if (el) subImagesRefs.current[index] = el
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          )}
         </div>
-      </nav>
+
+        <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
+          {productLinks.map((item, index) => (
+            <div
+              key={item.slug}
+              className={cn(
+                'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
+
+                index === 0 && '-rotate-[50deg] lg:-rotate-[60deg]',
+                index === 1 && '-rotate-[25deg] lg:-rotate-[30deg]',
+                index === 2 && 'rotate-[0deg]',
+                index === 3 && 'rotate-[25deg] lg:rotate-[30deg]',
+                index === 4 && 'rotate-[50deg] lg:rotate-[60deg]',
+              )}
+            >
+              <Link
+                href={`${locale}/${item.slug}`}
+                className={cn(
+                  'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
+                  'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
+                )}
+                onMouseEnter={() => setHoveredIndex(index)}
+              >
+                <SliderItem
+                  title={item.name[locale]}
+                  hoverHexColor={hoverHexColor}
+                  isHovered={hoveredIndex === index}
+                />
+              </Link>
+            </div>
+          ))}
+
+          <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
+            <Arcs color={hoverHexColor} />
+
+            <div className="absolute -bottom-2 right-1/2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
+              <Image
+                ref={imgRef}
+                src={slidersLocale[hoveredIndex].image}
+                alt="slider image"
+                fill
+                className="object-contain"
+                sizes="(max-width: 550px) 100vw, 50vw"
+                onMouseEnter={() => {
+                  handleMainImageAnimation(true)
+                }}
+                onMouseLeave={() => handleMainImageAnimation(false)}
+              />
+            </div>
+
+            {slidersLocale[hoveredIndex].subImages && (
+              <div className="hero__animation absolute -bottom-2 right-1/2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
+                <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
+                  {slidersLocale[hoveredIndex].subImages.map((item, index) => {
+                    const top = isMobile
+                      ? isTablet
+                        ? item.position?.tablet?.y
+                        : item.position?.mobile?.y
+                      : item.position?.desktop?.y
+                    const left = isMobile
+                      ? isTablet
+                        ? item.position?.tablet?.x
+                        : item.position?.mobile?.x
+                      : item.position?.desktop?.x
+
+                    return (
+                      <Image
+                        key={index}
+                        src={item.path}
+                        alt="animation"
+                        className={cn(
+                          `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                          isMobile ? `opacity-1` : '',
+                          isDesktop ? `w-[${item.width}px]` : '',
+                        )}
+                        style={{
+                          top: isDesktop ? `0` : `${top}px`,
+                          left: isDesktop ? `0` : `${left}px`,
+                          transform: `rotate(${item.rotate || 0}deg)`,
+                          display:
+                            isMobile && item.isMobileDiz ? 'none' : 'block',
+                        }}
+                        width={isDesktop ? item.width : item.width / 2}
+                        height={isDesktop ? item.height : item.height / 2}
+                        ref={(el) => {
+                          if (el) subImagesRefs.current[index] = el
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </nav>
+      </div>
     </div>
   )
 }

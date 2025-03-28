@@ -6,11 +6,10 @@ import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
 import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import SmallCart from '@/components/client/header/small-cart'
 import Socials from '../ui/Socials'
 import { Separator } from '@/components/admin/ui/separator'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 import { cn } from '@/utils/cn'
 
 interface IHamburgerMenuProps {
@@ -23,7 +22,7 @@ export default function HamburgerMenu({
   hamburgerLinksOther,
 }: IHamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false) // новий стан для відслідковування скролу
+  const [isScrolled, setIsScrolled] = useState(false)
   const locale = useLocale() as ILocale
 
   const t = useTranslations('main.burger-menu')
@@ -81,7 +80,6 @@ export default function HamburgerMenu({
                 'data-[closed]:-translate-x-full',
                 'data-[leave]:duration-500 data-[leave]:ease-in-out',
                 'data-[leave]:data-[closed]:-translate-x-full',
-                // замість прямого доступу до document використовується стан isScrolled
                 isScrolled ? '' : 'top-[33px]',
               )}
             >
@@ -106,11 +104,8 @@ export default function HamburgerMenu({
                       height={46}
                     />
                   </Link>
-
+                  <div />
                   <LocaleChange />
-                  <div onClick={closeMenu}>
-                    <SmallCart />
-                  </div>
                 </div>
 
                 <div className="mt-5 px-8 text-base">

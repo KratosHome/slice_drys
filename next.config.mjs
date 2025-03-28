@@ -41,6 +41,8 @@ const nextConfig = {
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_BOT_CHAT_ID: process.env.TELEGRAM_BOT_CHAT_ID,
+    NEXT_ADMIN_PASS: process.env.NEXT_ADMIN_PASS,
+    NEXT_ADMIN_LOGIN: process.env.NEXT_ADMIN_LOGIN,
   },
 }
 

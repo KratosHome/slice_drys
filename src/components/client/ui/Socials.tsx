@@ -4,11 +4,15 @@ import React from 'react'
 
 import Button from '@/components/client/ui/button'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 
-type Props = Readonly<{ variant: 'light' | 'dark' }>
-
-function Socials({ variant }: Props) {
+function Socials({
+  variant,
+  size = 33,
+}: {
+  variant: 'light' | 'dark'
+  size?: number
+}) {
   return (
     <>
       <Button
@@ -18,8 +22,8 @@ function Socials({ variant }: Props) {
         }
       >
         <svg
-          width="32"
-          height="33"
+          width={size}
+          height={size}
           viewBox="0 0 32 33"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -49,8 +53,8 @@ function Socials({ variant }: Props) {
         }
       >
         <svg
-          width="32"
-          height="33"
+          width={size}
+          height={size}
           viewBox="0 0 32 33"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

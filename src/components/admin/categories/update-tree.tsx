@@ -18,6 +18,7 @@ import {
 import { locales } from '@/data/locales'
 import Image from 'next/image'
 import { convertToBase64 } from '@/utils/convertToBase64'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
 interface UpdateTreeProps {
   selectedCategory: ICategory
@@ -44,6 +45,7 @@ interface FormData {
     uk: string
     en: string
   }
+  slug: string
 }
 
 const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
@@ -52,6 +54,9 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
 
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+
+  const [descriptionUk, setDescriptionUk] = useState<string>('')
+  const [descriptionEn, setDescriptionEn] = useState<string>('')
 
   useEffect(() => {
     let url: string | null = null
@@ -74,6 +79,11 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
   } = useForm<FormData>()
 
   useEffect(() => {
+    setDescriptionUk(selectedCategory.description?.uk ?? '')
+    setDescriptionEn(selectedCategory.description?.en ?? '')
+  }, [selectedCategory.description])
+
+  useEffect(() => {
     reset({
       name: {
         uk: selectedCategory.name?.uk ?? '',
@@ -83,51 +93,38 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
         uk: selectedCategory.metaTitle?.uk ?? '',
         en: selectedCategory.metaTitle?.en ?? '',
       },
-      description: {
-        uk: selectedCategory.description?.uk ?? '',
-        en: selectedCategory.description?.en ?? '',
-      },
       metaKeywords: {
         uk: selectedCategory.metaKeywords?.uk ?? '',
         en: selectedCategory.metaKeywords?.en ?? '',
+      },
+      description: {
+        uk: selectedCategory.description?.uk ?? '',
+        en: selectedCategory.description?.en ?? '',
       },
       metaDescription: {
         uk: selectedCategory.metaDescription?.uk ?? '',
         en: selectedCategory.metaDescription?.en ?? '',
       },
+      slug: selectedCategory.slug ?? '',
     })
   }, [selectedCategory, reset])
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const image = imageFile ? await convertToBase64(imageFile) : ''
 
+    data.description.uk = descriptionUk
+    data.description.en = descriptionEn
+
     const result = await updateCategory(selectedCategory._id, data, image)
 
-    if (result.success) {
-      toast({
-        title: result.message,
-      })
-    } else {
-      toast({
-        title: result.message,
-      })
-    }
+    toast({ title: result.message })
     router.refresh()
   }
 
   const deleteCat = async () => {
     setIsConfirmDeleteOpen(false)
     const result = await deleteCategory(selectedCategory._id)
-
-    if (result.success) {
-      toast({
-        title: result.message,
-      })
-    } else {
-      toast({
-        title: result.message,
-      })
-    }
+    toast({ title: result.message })
     router.refresh()
   }
 
@@ -156,10 +153,20 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
         <Label htmlFor="picture">Додати зображення</Label>
         <Input id="picture" type="file" onChange={handleImageChange} />
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 rounded-lg border p-4"
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-3">
+          <Label className="block font-bold">Посилання:</Label>
+          <Input
+            type="text"
+            className="w-full border p-2"
+            {...register(`slug`, {
+              required: 'Ключові слова обовʼязкові',
+            })}
+          />
+          {errors.slug && (
+            <p className="text-sm text-red-500">{errors.slug?.message}</p>
+          )}
+        </div>
         <div className="flex justify-between gap-4">
           {locales.map((lang) => (
             <div key={lang} className="mb-4 w-full border-b pb-4">
@@ -199,17 +206,19 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
               </div>
 
               <div className="mt-3">
-                <Label className="block font-bold">Опис:</Label>
-                <textarea
-                  className="w-full border p-2"
-                  {...register(`description.${lang}`, {
-                    required: 'Опис обовʼязковий',
-                  })}
-                />
-                {errors.description?.[lang] && (
-                  <p className="text-sm text-red-500">
-                    {errors.description[lang]?.message}
-                  </p>
+                <Label className="block">Опис:</Label>
+                {lang === 'uk' ? (
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionUk}
+                    setContent={setDescriptionUk}
+                  />
+                ) : (
+                  <QuillEditor
+                    className="min-h-96"
+                    content={descriptionEn}
+                    setContent={setDescriptionEn}
+                  />
                 )}
               </div>
 

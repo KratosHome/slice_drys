@@ -47,7 +47,7 @@ export const Item = forwardRef<HTMLDivElement, FAQProps>(function Item(
           isOpen ? 'max-h-[500px]' : 'max-h-0',
         )}
       >
-        <div className="w-full items-center border border-dotted border-black p-2 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)]">
+        <div className="w-full items-center border border-dotted border-black p-2 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] backdrop-blur-[5px]">
           {answer}
         </div>
       </div>

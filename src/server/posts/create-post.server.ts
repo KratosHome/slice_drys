@@ -2,6 +2,8 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Post } from './postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function createPost(formData: IPostLocal, image: string) {
   'use server'
@@ -25,6 +27,9 @@ export async function createPost(formData: IPostLocal, image: string) {
 
     const post = new Post(postData)
     await post.save()
+
+    revalidateTag(fetchTags.posts)
+    revalidateTag(fetchTags.post)
     return { success: true, message: 'Post created' }
   } catch (error) {
     return {

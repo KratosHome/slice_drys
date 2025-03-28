@@ -1,30 +1,30 @@
 const partnersUk = [
   {
     name: 'Robin bobbin',
-    logo: '/main/robinbobbin.png',
+    logo: '/main/robinbobbin.webp',
   },
   {
     name: 'silpo',
-    logo: '/main/silpo.png',
+    logo: '/main/silpo.webp',
   },
   {
     name: 'Delicatc',
-    logo: '/main/delicat.png',
+    logo: '/main/delicat.webp',
   },
 ]
 
 const partnersEn = [
   {
     name: 'Robin bobbin',
-    logo: '/main/robinbobbin.png',
+    logo: '/main/robinbobbin.webp',
   },
   {
     name: 'silpo',
-    logo: '/main/silpo.png',
+    logo: '/main/silpo.webp',
   },
   {
     name: 'Delicatc',
-    logo: '/main/delicat.png',
+    logo: '/main/delicat.webp',
   },
 ]
 

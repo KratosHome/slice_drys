@@ -35,9 +35,9 @@ export const appSidebarData = [
   },
   {
     id: 5,
-    name: 'Сторінки',
+    name: 'Блоки',
     icon: StickyNote,
-    link: 'admin/pages',
+    link: 'admin/block',
   },
   {
     id: 6,

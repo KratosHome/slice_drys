@@ -3,8 +3,6 @@ import { Options } from '@splidejs/splide'
 import Image from 'next/image'
 import React from 'react'
 
-import './styles.css'
-
 const SliderWithThumbnails = ({
   images,
   img,
@@ -45,7 +43,7 @@ const SliderWithThumbnails = ({
         <Splide
           options={thumbsOptions}
           className="flex justify-center"
-          aria-label="The carousel with thumbnails"
+          aria-labelledby={`product curd ${img}`}
         >
           {slides.map((src, index) => (
             <SplideSlide key={src}>

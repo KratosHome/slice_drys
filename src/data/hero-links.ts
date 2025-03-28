@@ -20,32 +20,32 @@ import {
 
 const slidersUk = [
   {
-    title: "М'ясні сушені",
-    image: '/slider/meat.png',
+    title: "М'ясні джерки",
+    image: '/slider/meat.webp',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
-    title: 'Фруктові сушені',
-    image: '/slider/fruit.png',
+    title: 'Фруктові джерки',
+    image: '/slider/fruit.webp',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
-    title: 'Овочеві сушені',
-    image: '/slider/veggie.png',
+    title: 'Овочеві джерки',
+    image: '/slider/veggie.webp',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
-    title: 'Мікс сушені',
+    title: 'Мікс джеркків',
     subImages: mixSubImages,
-    image: '/slider/mix.png',
+    image: '/slider/mix.webp',
     color: colorConstants.purple,
   },
   {
     title: 'Акційна пропозиція',
-    image: '/slider/promo.png',
+    image: '/slider/promo.webp',
     subImages: actionSubImages,
     color: colorConstants.red,
   },
@@ -54,31 +54,31 @@ const slidersUk = [
 const slidersEn = [
   {
     title: 'Meat drys',
-    image: '/slider/meat.png',
+    image: '/slider/meat.webp',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
     title: 'Fruit drys',
-    image: '/slider/fruit.png',
+    image: '/slider/fruit.webp',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
     title: 'Veggie drys',
-    image: '/slider/veggie.png',
+    image: '/slider/veggie.webp',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
     title: 'Mixed drys',
-    image: '/slider/mix.png',
+    image: '/slider/mix.webp',
     subImages: mixSubImages,
     color: colorConstants.purple,
   },
   {
     title: 'Special offer',
-    image: '/slider/promo.png',
+    image: '/slider/promo.webp',
     subImages: actionSubImages,
     color: colorConstants.red,
   },

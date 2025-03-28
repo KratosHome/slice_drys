@@ -112,7 +112,9 @@ export async function getPost({ locale, slug, isVisited }: GetPostOptions) {
           { slug },
           { $inc: { visited: 1 } },
           { new: true, select: getSelectedFields(locale) },
-        ).lean()) as IPostLocal | null)
+        )
+          .sort({ createdAt: -1 })
+          .lean()) as IPostLocal | null)
       : ((await Post.findOne(
           { slug },
           getSelectedFields(locale),
