@@ -2,21 +2,15 @@ import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { NextRequest } from 'next/server'
 
-const isTesting = process.env.NEXT_STATUS === 'test'
-const USERNAME = '1'
-const PASSWORD = '1'
+const USERNAME = process.env.NEXT_ADMIN_LOGIN
+const PASSWORD = process.env.NEXT_ADMIN_PASS
 
 export async function middleware(request: NextRequest) {
   const auth = request.headers.get('authorization')
+  const { pathname } = request.nextUrl
+  const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
 
-  if (isTesting) {
-    const { pathname } = request.nextUrl
-    const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
-
-    if (adminRegex.test(pathname)) {
-      return new Response('Access forbidden', { status: 403 })
-    }
-
+  if (adminRegex.test(pathname)) {
     if (
       !auth ||
       auth !==
@@ -35,14 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/(en|uk)/:path*'],
+  matcher: ['/admin/:path*', '/(en|uk)/admin/:path*'],
 }
-
-/*
-    const { pathname } = request.nextUrl
-    const adminRegex = /^\/((en|uk)\/)?admin(\/|$)/
-
-    if (adminRegex.test(pathname)) {
-      return new Response('Access forbidden', { status: 403 })
-    }
- */
