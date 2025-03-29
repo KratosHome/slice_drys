@@ -96,6 +96,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               fill={true}
               className="relative aspect-square h-full w-full"
               priority={true}
+              quality={70}
               style={{
                 objectFit: 'cover',
               }}
