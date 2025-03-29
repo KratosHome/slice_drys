@@ -301,7 +301,7 @@ export default async function MenuPage(props: {
         )}
 
         <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] px-5 py-[40px]">
+          <div className="mx-auto max-w-[1280px] rounded-md !bg-white/60 px-5 py-[40px]">
             <h2 className="mb-6 text-center font-rubik text-[36px] font-bold leading-none lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>
