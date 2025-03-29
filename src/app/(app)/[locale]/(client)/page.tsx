@@ -2,7 +2,6 @@ import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
 import { Hero } from '@/components/client/main/hero'
-import ProductSlider from '@/components/client/product-slider/product-slider'
 import { detectDevice } from '@/utils/deviceDetection'
 import { faqData } from '@/data/main/faq'
 import type { Metadata } from 'next'
@@ -11,15 +10,51 @@ import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
-import Help from '@/components/client/main/help/help'
-import Faq from '@/components/client/main/faq/faq'
-import Partners from '@/components/client/main/partners'
 import { partnersData } from '@/data/main/partners'
-import BlogSection from '@/components/client/main/blog/blog'
-import Reviews from '@/components/client/main/reviews/reviews'
-import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/client/ui/to-the-top'
+import { Loader } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+const ProductSlider = dynamic(
+  () => import('@/components/client/product-slider/product-slider'),
+  {
+    loading: () => <Loader />,
+  },
+)
+
+const Help = dynamic(() => import('@/components/client/main/help/help'), {
+  loading: () => <Loader />,
+})
+
+const Faq = dynamic(() => import('@/components/client/main/faq/faq'), {
+  loading: () => <Loader />,
+})
+
+const Partners = dynamic(() => import('@/components/client/main/partners'), {
+  loading: () => <Loader />,
+})
+
+const BlogSection = dynamic(
+  () => import('@/components/client/main/blog/blog'),
+  {
+    loading: () => <Loader />,
+  },
+)
+
+const Reviews = dynamic(
+  () => import('@/components/client/main/reviews/reviews'),
+  {
+    loading: () => <Loader />,
+  },
+)
+
+const InstaFeed = dynamic(
+  () => import('@/components/client/main/instaFeed/InstaFeed'),
+  {
+    loading: () => <Loader />,
+  },
+)
 
 export async function generateMetadata({
   params,

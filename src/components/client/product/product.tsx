@@ -95,6 +95,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               width={229}
               height={229}
               className="relative aspect-square h-full w-full object-contain"
+              priority={true}
             />
           </CardItem>
           {selectedVariable.count > 0 && <div className="h-6 sm:hidden"></div>}
