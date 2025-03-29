@@ -75,7 +75,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       className="block px-2 py-8 sm:px-3 md:px-4"
     >
       <CardContainer className="relative h-full w-full rounded-sm">
-        <CardBody className="relative mb-[20px] flex h-full w-full flex-col items-center justify-between gap-4">
+        <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
           <div className="absolute left-0 top-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
             {product.statusLabel?.includes('top') && <TopLabel />}
             {product.statusLabel?.includes('new') && <NewLabel />}
@@ -87,13 +87,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </div>
           <CardItem
             translateZ={70}
-            className="z-2 relative grid max-w-[229px] grow-0 place-content-center px-2 pb-2 pt-8 sm:pb-8"
+            className="z-2 relative grid h-[229px] w-[170px] place-content-center md:w-[229px]"
           >
             <Image
               src={product.img!}
               alt={product.name}
-              width={229}
-              height={229}
+              fill={true}
               className="relative aspect-square h-full w-full object-contain"
               priority={true}
             />
