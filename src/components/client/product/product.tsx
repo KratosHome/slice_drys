@@ -87,14 +87,18 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </div>
           <CardItem
             translateZ={70}
-            className="z-2 relative grid h-[229px] w-[170px] place-content-center md:w-[229px]"
+            className="z-2 relative grid h-[229px] w-[140px] place-content-center md:w-[229px]"
           >
             <Image
               src={product.img!}
               alt={product.name}
+              sizes="(min-width: 808px) 50vw, 100vw"
               fill={true}
-              className="relative aspect-square h-full w-full object-contain"
+              className="relative aspect-square h-full w-full"
               priority={true}
+              style={{
+                objectFit: 'cover',
+              }}
             />
           </CardItem>
           {selectedVariable.count > 0 && <div className="h-6 sm:hidden"></div>}
