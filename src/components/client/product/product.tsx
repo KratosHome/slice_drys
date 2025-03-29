@@ -98,7 +98,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               priority={true}
               quality={70}
               style={{
-                objectFit: 'cover',
+                objectFit: 'contain',
               }}
             />
           </CardItem>
