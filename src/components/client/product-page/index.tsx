@@ -95,7 +95,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
 
       <div className="lg:w-1/2">
         <h1 className="relative bg-black py-2 pl-3 text-[40px] font-bold text-white">
-          {name}
+          {t('dried-jerky')} {name} {selectedVariable.weight} {t('g')}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-8 sm:top-0 sm:text-xs lg:text-sm">
               {t('expect_soon')}

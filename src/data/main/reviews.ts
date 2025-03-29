@@ -1,4 +1,3 @@
-// Українські відгуки залишаються без змін
 export const reviewsDataUk = [
   {
     author: 'Оля',
@@ -32,7 +31,6 @@ export const reviewsDataUk = [
   },
 ]
 
-// Переклад англійською. Кожен об'єкт відповідає перекладу відповідного відгуку.
 export const reviewsDataEn = [
   {
     author: 'Olya',
