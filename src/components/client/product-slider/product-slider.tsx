@@ -6,6 +6,7 @@ import { Arrow } from '@/components/client/ui/arrow'
 import Product from '@/components/client/product/product'
 
 import './product-slider.css'
+import '@splidejs/react-splide/css'
 
 interface ProductSlider {
   products: IProduct[]

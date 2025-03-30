@@ -7,8 +7,9 @@ import { Arrow } from '@/components/client/ui/arrow'
 import Button from '@/components/client/ui/button'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { AspectRatio } from '../../ui/aspect-ratio'
+import '@splidejs/react-splide/css'
 
-import './help.css'
+import './help.scss'
 
 interface HelpProps {
   data: IHelpLocal
