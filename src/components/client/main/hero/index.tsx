@@ -158,7 +158,10 @@ export const Hero = ({
                 src={slidersLocale[hoveredIndex].image}
                 alt="slider image"
                 fill
+                priority={true}
+                quality={70}
                 className="object-contain"
+                fetchPriority="high"
                 sizes="(max-width: 550px) 100vw, 50vw"
                 onMouseEnter={() => {
                   handleMainImageAnimation(true)

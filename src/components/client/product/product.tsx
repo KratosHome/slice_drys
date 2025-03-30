@@ -94,6 +94,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               alt={product.name}
               sizes="(min-width: 808px) 50vw, 100vw"
               fill={true}
+              fetchPriority="high"
               className="relative aspect-square h-full w-full"
               priority={true}
               quality={70}

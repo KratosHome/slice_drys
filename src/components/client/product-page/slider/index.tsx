@@ -37,6 +37,7 @@ const SliderWithThumbnails = ({
           src={img || images[0]}
           alt={`Slider ${img}`}
           fill
+          fetchPriority="high"
           priority={true}
           sizes="(min-width: 808px) 50vw, 100vw"
           quality={70}
