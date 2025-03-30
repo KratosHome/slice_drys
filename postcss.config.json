@@ -1,0 +1,24 @@
+{
+  "plugins": [
+    "postcss-flexbugs-fixes",
+    [
+      "postcss-preset-env",
+      {
+        "autoprefixer": {
+          "flexbox": "no-2009"
+        },
+        "stage": 3,
+        "features": {
+          "custom-properties": false
+        }
+      }
+    ],
+    [
+      "@fullhuman/postcss-purgecss",
+      {
+        "content": ["./src/**/*.html", "./src/**/*.js", "./src/**/*.ts", "./src/**/*.vue", "./src/**/*.jsx", "./src/**/*.tsx"],
+        "defaultExtractor": "content => content.match(/[^<>'\"\\s]*[^<>'\"\\s:]/g) || []"
+      }
+    ]
+  ]
+}
