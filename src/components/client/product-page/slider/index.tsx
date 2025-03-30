@@ -39,7 +39,8 @@ const SliderWithThumbnails = ({
           fill
           fetchPriority="high"
           priority={true}
-          sizes="(min-width: 808px) 50vw, 100vw"
+          loading="eager"
+          sizes="(min-width: 1024px) 344px, 100vw"
           quality={70}
           style={{
             objectFit: 'contain',

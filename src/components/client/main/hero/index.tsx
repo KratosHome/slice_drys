@@ -159,6 +159,7 @@ export const Hero = ({
                 alt="slider image"
                 fill
                 priority={true}
+                loading="eager"
                 quality={70}
                 className="object-contain"
                 fetchPriority="high"
@@ -192,6 +193,7 @@ export const Hero = ({
                         alt="animation"
                         priority={true}
                         quality={70}
+                        loading="eager"
                         className={cn(
                           `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
                           isMobile ? `opacity-1` : '',

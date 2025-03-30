@@ -245,13 +245,9 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         <div className="md:hidden">
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger className="flex items-center gap-2">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className="font-rubik text-xl sm:text-2xl"
-              >
+              <div className="font-rubik text-xl sm:text-2xl">
                 {t('filter')}
-              </motion.div>
+              </div>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
@@ -283,23 +279,16 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     className="mb-2"
                   >
                     <AccordionItem value="item-1">
-                      <motion.div
-                        whileHover={{ scale: 1.03 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
-                      >
-                        <AccordionTrigger className="font-rubik !text-[36px]">
-                          {t('type')}
-                        </AccordionTrigger>
-                      </motion.div>
+                      <AccordionTrigger className="font-rubik !text-[36px]">
+                        {t('type')}
+                      </AccordionTrigger>
                       <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
                         {categories.length > 0 ? (
                           categories.map((category) => (
-                            <motion.label
+                            <label
                               key={category.slug}
                               htmlFor={category.slug}
                               className="flex cursor-pointer items-center gap-[24px]"
-                              whileHover={{ scale: 1.05, marginLeft: 15 }}
-                              transition={{ type: 'spring', stiffness: 300 }}
                             >
                               <CheckboxPrimitive.Root
                                 id={category.slug}
@@ -319,7 +308,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                               <span className="font-poppins text-[20px] text-xl font-normal uppercase">
                                 {category.name[locale]}
                               </span>
-                            </motion.label>
+                            </label>
                           ))
                         ) : (
                           <div>{t('no_categories_available')}</div>
@@ -330,14 +319,9 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                   <Accordion type="single" collapsible defaultValue="item-2">
                     <AccordionItem value="item-2">
-                      <motion.div
-                        whileHover={{ scale: 1.03 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
-                      >
-                        <AccordionTrigger className="font-rubik !text-[36px]">
-                          {t('weight')}
-                        </AccordionTrigger>
-                      </motion.div>
+                      <AccordionTrigger className="font-rubik !text-[36px]">
+                        {t('weight')}
+                      </AccordionTrigger>
                       <AccordionContent>
                         <div className="my-[50px]">
                           <Slider

@@ -92,11 +92,12 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             <Image
               src={product.img!}
               alt={product.name}
-              sizes="(min-width: 808px) 50vw, 100vw"
+              sizes="(min-width: 768px) 229px, 140px"
               fill={true}
               fetchPriority="high"
               className="relative aspect-square h-full w-full"
               priority={true}
+              loading="eager"
               quality={70}
               style={{
                 objectFit: 'contain',
