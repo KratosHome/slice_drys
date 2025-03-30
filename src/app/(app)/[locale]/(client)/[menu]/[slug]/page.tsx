@@ -1,3 +1,5 @@
+import dynamic from 'next/dynamic'
+
 export const dynamicParams = true
 import { getProductsUrls } from '@/server/products/get-products-urls.server'
 import { locales } from '@/data/locales'
@@ -7,12 +9,25 @@ import NotFoundPage from '@/components/not-found'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 import { ProductInfo } from '@/components/client/product-page'
-import ProductSlider from '@/components/client/product-slider/product-slider'
 import { Accordions } from '@/components/client/product-page/accordions'
-import Delivery from '@/components/client/promo-banner/delivery'
 import ToTheTop from '@/components/client/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
+import { Loader } from 'lucide-react'
+
+const ProductSlider = dynamic(
+  () => import('@/components/client/product-slider/product-slider'),
+  {
+    loading: () => <Loader />,
+  },
+)
+
+const Delivery = dynamic(
+  () => import('@/components/client/promo-banner/delivery'),
+  {
+    loading: () => <Loader />,
+  },
+)
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>

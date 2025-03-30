@@ -110,6 +110,8 @@
     "filter": "Фільтр",
     "reset_all": "Скинути все",
     "show": "Показати",
+    "page": "cторінка",
+    "weightUnit": "г",
     "fruit": {
       "orange": "Апельсин",
       "mango": "Манго",

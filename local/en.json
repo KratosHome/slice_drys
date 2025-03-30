@@ -110,6 +110,8 @@
     "filter": "Filter",
     "reset_all": "Reset all",
     "show": "Show",
+    "page": "Page",
+    "weightUnit": "g",
     "fruit": {
       "orange": "Orange",
       "mango": "Mango",
