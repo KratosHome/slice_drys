@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import {
   Popover,
@@ -14,6 +13,7 @@ import {
 import { useCartStore } from '@/store/cartStore'
 import Button from '@/components/client/ui/button'
 import CartProductCard from './cart-product-card'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
@@ -45,7 +45,10 @@ export default function SmallCart() {
     <div className="relative flex flex-col justify-center">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
-          <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">
+          <ResponsiveMotion
+            whileHover={{ scale: 1.1 }}
+            className="cursor-pointer"
+          >
             <Image src="/icons/bin.svg" width={32} height={32} alt="cart" />
 
             {isClient && cart.itemList?.length ? (
@@ -53,7 +56,7 @@ export default function SmallCart() {
                 {cart.itemList.length}
               </span>
             ) : null}
-          </motion.div>
+          </ResponsiveMotion>
         </PopoverTrigger>
 
         <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
@@ -63,7 +66,7 @@ export default function SmallCart() {
                 {t('basket')}
               </div>
 
-              <motion.div
+              <ResponsiveMotion
                 initial={{ rotate: 0, scale: 1 }}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ rotate: 90, scale: 0.9, opacity: 0.8 }}
@@ -78,7 +81,7 @@ export default function SmallCart() {
                   alt={`${t('close')}`}
                   className="h-8 w-8 md:h-12 md:w-12"
                 />
-              </motion.div>
+              </ResponsiveMotion>
             </div>
           </div>
 
@@ -127,27 +130,27 @@ export default function SmallCart() {
                 )}
 
                 <div className="mt-[32px] flex h-[60px] gap-[16px]">
-                  <motion.div
+                  <ResponsiveMotion
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex w-full cursor-pointer items-center justify-center border-[1px] border-black text-center"
                     onClick={() => setOpenCart(false)}
                   >
                     {t('continue-shopping')}
-                  </motion.div>
+                  </ResponsiveMotion>
                   <Button
                     variant={'outline'}
                     className="w-full"
                     disabled={totalPrice < minOrderAmount}
                     onClick={openCat}
                   >
-                    <motion.div
+                    <ResponsiveMotion
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="flex h-[60px] cursor-pointer items-center justify-center bg-black text-center text-white"
                     >
                       {t('order')}
-                    </motion.div>
+                    </ResponsiveMotion>
                   </Button>
                 </div>
               </div>

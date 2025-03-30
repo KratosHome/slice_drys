@@ -1,15 +1,32 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react'
-import MaskedInput, { MaskedInputProps } from 'react-text-mask'
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  Suspense,
+  lazy,
+} from 'react'
+import type { MaskedInputProps } from 'react-text-mask'
+
+const LazyMaskedInput = lazy(() =>
+  import('react-text-mask').then((module) => ({
+    default: module.default as React.ComponentType<MaskedInputProps>,
+  })),
+)
 
 const ForwardedMaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
   (props, ref) => {
-    const maskedInputRef = useRef<MaskedInput>(null)
+    const maskedInputRef = useRef<any>(null)
 
-    useImperativeHandle(ref, () => {
-      return maskedInputRef.current?.inputElement as HTMLInputElement
-    })
+    useImperativeHandle(
+      ref,
+      () => maskedInputRef.current?.inputElement as HTMLInputElement,
+    )
 
-    return <MaskedInput {...props} ref={maskedInputRef} />
+    return (
+      <Suspense fallback={<input {...props} />}>
+        <LazyMaskedInput {...props} ref={maskedInputRef} />
+      </Suspense>
+    )
   },
 )
 

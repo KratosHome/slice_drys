@@ -148,6 +148,8 @@ const Header = ({ productLinks }: IHeaderProps) => {
             <Image
               src="/icons/logo.svg"
               alt={`${t('logo')}`}
+              priority={true}
+              loading="eager"
               className="h-full"
               width={86}
               height={100}
