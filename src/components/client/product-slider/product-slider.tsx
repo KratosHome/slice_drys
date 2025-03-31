@@ -72,7 +72,7 @@ export default function ProductSlider({
     type: 'loop',
     autoplay: true,
     interval: 3000,
-    perPage: 3,
+    perPage: Math.min(products.length, 3),
     perMove: 1,
     gap: '18px',
     focus: 0,

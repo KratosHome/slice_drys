@@ -10,7 +10,7 @@ export async function getProductsSliderMain(locale: ILocale) {
     const products = await Product.find()
       .populate('categories', 'slug')
       .sort({ visited: -1 })
-      .limit(7)
+      .limit(5)
       .lean<IProductLocal[]>()
 
     const formattedProducts: IProduct[] = products.map(

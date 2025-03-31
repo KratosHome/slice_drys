@@ -102,7 +102,7 @@ export default function InstaFeed({ data, title }: Props) {
           }}
           className="insta-slider mt-[clamp(32px,calc(32px+68*(100vw-375px)/1065),100px)]"
         >
-          {data.map((post, index) => (
+          {data.slice(0, 5).map((post, index) => (
             <SplideSlide key={index} className="flex flex-col items-center">
               <InstaCard post={post} />
             </SplideSlide>
