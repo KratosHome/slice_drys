@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
 import { Marquee } from '../ui/marque'
@@ -25,10 +24,8 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
 
         <Marquee className="mt-8 md:mt-[60px]">
           {data?.map((partner) => (
-            <Link
+            <div
               className="mr-[20px] block w-[150px] transition-all duration-300 will-change-transform hover:scale-105"
-              href={`https://letmegooglethat.com/?q=${partner.name}%20супермаркет`}
-              target="_blank"
               key={partner.name}
             >
               <AspectRatio ratio={352 / 188}>
@@ -39,7 +36,7 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
                   className="object-contain"
                 />
               </AspectRatio>
-            </Link>
+            </div>
           ))}
         </Marquee>
       </div>
