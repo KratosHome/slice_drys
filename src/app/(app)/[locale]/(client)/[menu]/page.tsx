@@ -10,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/client/ui/breadcrumbs'
 import ToTheTop from '@/components/client/ui/to-the-top'
-import 'quill/dist/quill.snow.css'
 import {
   Pagination,
   PaginationContent,
