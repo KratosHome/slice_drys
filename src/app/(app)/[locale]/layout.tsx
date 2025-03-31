@@ -4,16 +4,15 @@ import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
 import Header from '@/components/client/header'
-import { Toaster } from '@/components/admin/ui/toaster'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
 import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
 import { fetchTags } from '@/data/fetch-tags'
-import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
+import ClientDynamicMain from '@/components/client/dynamic-imports/min'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -69,11 +68,10 @@ export default async function LocaleLayout(props: {
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
-          <ScrollToTop />
+          <ClientDynamicMain />
           <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer productLinks={categoriesData.data} />
-          <Toaster />
         </body>
       </NextIntlClientProvider>
     </html>
