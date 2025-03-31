@@ -262,7 +262,7 @@ export function Combobox({
                     {name === 'deliveryInfo.city'
                       ? t('city_search_placeholder')
                       : t('branch_search_placeholder', {
-                          type: deliveryInfo?.deliveryMethod,
+                          type: deliveryInfo?.deliveryMethod || '',
                         })}
                   </CommandEmpty>
                   <CommandGroup>

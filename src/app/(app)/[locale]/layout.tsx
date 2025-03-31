@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { NextIntlClientProvider } from 'next-intl'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
@@ -43,7 +43,7 @@ export default async function LocaleLayout(props: {
   const { locale } = params
   const { children } = props
 
-  if (!routing.locales.includes(locale as ILocale)) {
+  if (!hasLocale(routing.locales, locale)) {
     return (
       <html>
         <body>
@@ -66,14 +66,14 @@ export default async function LocaleLayout(props: {
       className={`${montserrat.variable} ${rubikDoodleShadow.variable}`}
     >
       <GoogleTagManager />
-      <NextIntlClientProvider messages={messages}>
-        <body className="flex min-h-svh flex-col">
+      <body className="flex min-h-svh flex-col">
+        <NextIntlClientProvider messages={messages}>
           <ClientDynamicMain />
           <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer productLinks={categoriesData.data} />
-        </body>
-      </NextIntlClientProvider>
+        </NextIntlClientProvider>
+      </body>
     </html>
   )
 }

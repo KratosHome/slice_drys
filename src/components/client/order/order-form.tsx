@@ -807,7 +807,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
 
           {userData?.formStep === 4 && !showFieldset.step3 ? (
             <div className="text-[hsl(var(--order-text))]">
-              {t(userData.paymentInfo)}
+              {userData.paymentInfo}
             </div>
           ) : null}
           <Button

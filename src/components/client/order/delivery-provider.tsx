@@ -60,7 +60,7 @@ export default function DeliveryProvider({
           control={control}
           onSelect={handleBranchSelect}
           placeholder={t('branch_placeholder', {
-            type: deliveryInfo?.deliveryMethod,
+            type: deliveryInfo?.deliveryMethod || '',
           })}
         />
       )}
