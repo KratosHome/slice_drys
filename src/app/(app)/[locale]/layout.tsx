@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
+import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
 import Header from '@/components/client/header'
 import { Toaster } from '@/components/admin/ui/toaster'
@@ -30,13 +30,6 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-rubik-doodle-shadow',
-  weight: ['400'],
-})
-
-const DMSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-dm-sans',
   weight: ['400'],
 })
 
@@ -71,7 +64,7 @@ export default async function LocaleLayout(props: {
   return (
     <html
       lang={locale}
-      className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
+      className={`${montserrat.variable} ${rubikDoodleShadow.variable}`}
     >
       <GoogleTagManager />
       <NextIntlClientProvider messages={messages}>
