@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
-import { seedCategories } from '@/server/seed/category'
 
 import Header from '@/components/client/header'
 import { Toaster } from '@/components/admin/ui/toaster'
@@ -68,10 +67,6 @@ export default async function LocaleLayout(props: {
     cache: 'force-cache',
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
-
-  if (process.env.NODE_ENV === 'development') {
-    await seedCategories()
-  }
 
   return (
     <html
