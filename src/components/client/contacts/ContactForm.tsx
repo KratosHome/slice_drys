@@ -1,11 +1,11 @@
 'use client'
-import Button from '../ui/button'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { callMeBack } from '@/server/info/call-me-back'
-import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
 import { toast } from '@/hooks/use-toast'
 import { useTranslations } from 'next-intl'
+import { Button } from '@/components/ui/button'
 
 interface ContactFormData {
   name: string
@@ -53,13 +53,13 @@ const ContactForm = ({
   return (
     <form
       onSubmit={handleSubmit(sendCall)}
-      className="mx-auto mb-[205px] mt-[110px] flex max-w-[570px] flex-col items-center justify-center md:mb-[229px] md:mt-9"
+      className="mx-auto mt-[110px] mb-[205px] flex max-w-[570px] flex-col items-center justify-center md:mt-9 md:mb-[229px]"
     >
-      <div className="form-description text-center font-rubik text-[32px] font-normal md:text-2xl">
+      <div className="form-description font-rubik text-center text-[32px] font-normal md:text-2xl">
         {form_description}
       </div>
       <div>
-        <span className="block rotate-90 animate-follow font-rubik text-[108px] font-normal leading-none">
+        <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none font-normal">
           {'>'}
         </span>
       </div>
@@ -112,7 +112,7 @@ const ContactForm = ({
                 onChange={handleChange}
                 value={value}
                 ref={ref}
-                className="!h-[60px] w-full max-w-[550px] rounded-md border p-4 text-base font-medium leading-normal shadow-sm md:px-4 md:py-[18px] md:text-xl"
+                className="h-[60px]! w-full max-w-[550px] rounded-md border p-4 text-base leading-normal font-medium shadow-xs md:px-4 md:py-[18px] md:text-xl"
               />
             )
           }}
@@ -127,7 +127,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
-        className="flex h-[60px] items-center px-[60px] font-poppins text-2xl font-medium md:mt-[90px]"
+        className="font-poppins flex h-[60px] items-center px-[60px] text-2xl font-medium md:mt-[90px]"
       >
         {button}
       </Button>

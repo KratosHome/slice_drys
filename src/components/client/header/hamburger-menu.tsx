@@ -4,13 +4,13 @@ import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
-import Button from '@/components/client/ui/button'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Socials from '../ui/Socials'
-import { Separator } from '@/components/admin/ui/separator'
+import Socials from '@/components/ui/Socials'
+import { Separator } from '@/components/ui/separator'
 
 import { contacts } from '@/data/contacts'
 import { cn } from '@/utils/cn'
+import { Button } from '@/components/ui/button'
 
 interface IHamburgerMenuProps {
   productLinks: ICategory[]
@@ -69,21 +69,21 @@ export default function HamburgerMenu({
         <Portal>
           <TransitionChild>
             <div
-              className="fixed inset-0 z-[500] hidden bg-black/30 transition duration-300 data-[closed]:opacity-0 sm:block"
+              className="fixed inset-0 z-500 hidden bg-black/30 transition duration-300 data-closed:opacity-0 sm:block"
               onClick={() => setIsOpen(false)}
             />
           </TransitionChild>
           <TransitionChild>
             <div
               className={cn(
-                'f-[100svh] fixed inset-y-0 z-[500] w-full bg-[#E4E4E4] py-6 transition duration-500 sm:w-[50%] lg:hidden',
-                'data-[closed]:-translate-x-full',
-                'data-[leave]:duration-500 data-[leave]:ease-in-out',
-                'data-[leave]:data-[closed]:-translate-x-full',
+                'f-[100svh] fixed inset-y-0 z-500 w-full bg-[#E4E4E4] py-6 transition duration-500 sm:w-[50%] lg:hidden',
+                'data-closed:-translate-x-full',
+                'data-leave:duration-500 data-leave:ease-in-out',
+                'data-leave:data-closed:-translate-x-full',
                 isScrolled ? '' : 'top-[33px]',
               )}
             >
-              <div className="flex flex-col font-poppins">
+              <div className="font-poppins flex flex-col">
                 <div className="grid grid-cols-7 items-center justify-items-end px-5">
                   <button
                     onClick={closeMenu}

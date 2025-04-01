@@ -1,8 +1,4 @@
 .products-slider {
-    .splide__pagination.custom__pagination {
-        @apply bottom-[-33px] md:bottom-[-43px] lg:bottom-[-50px]
-    }
-
     .splide__arrow {
         background-color: transparent;
     }

@@ -31,7 +31,7 @@ const SliderWithThumbnails = ({
 
   return (
     <div className="flex w-full justify-center">
-      <div className="relative aspect-[12/9] w-full max-w-[344px] lg:aspect-auto">
+      <div className="relative aspect-12/9 w-full max-w-[344px] lg:aspect-auto">
         <Image
           className="object-contain"
           src={img || images[0]}

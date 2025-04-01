@@ -9,18 +9,18 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/client/ui/doodle-select'
+} from '@/components/ui/doodle-select'
 import { MinusIcon, PlusIcon } from './icons'
 import SliderWithThumbnails from './slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import { useCartStore } from '@/store/cartStore'
 import SaleLabel from '@/components/client/labels/sale-label'
-import Button from '@/components/client/ui/button'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
+import { Button } from '@/components/ui/button'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const t = useTranslations('product')
@@ -97,7 +97,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         <h1 className="relative bg-black py-2 pl-3 text-[40px] font-bold text-white">
           {t('dried-jerky')} {name} {selectedVariable.weight} {t('g')}.
           {selectedVariable.count === 0 && (
-            <div className="flex w-fit items-center bg-red-700 px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-8 sm:top-0 sm:text-xs lg:text-sm">
+            <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
               {t('expect_soon')}
             </div>
           )}
@@ -149,7 +149,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           </div>
         </div>
         <div className="flex flex-col items-end justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
-          <div className="w-full whitespace-nowrap text-center md:w-max">
+          <div className="w-full text-center whitespace-nowrap md:w-max">
             {selectedVariable.newPrice ? (
               <>
                 {selectedVariable.price && (
@@ -208,7 +208,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             </Button>
           </div>
         </div>
-        <div className="underline-wave relative ml-auto flex w-fit justify-end gap-2 pb-4 pr-5">
+        <div className="underline-wave relative ml-auto flex w-fit justify-end gap-2 pr-5 pb-4">
           <Image
             src={'/icons/haccp_certified.svg'}
             alt={''}

@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/admin/ui/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
 export default function AnimatedLoader() {
@@ -13,7 +13,7 @@ export default function AnimatedLoader() {
         <Skeleton className="h-[105px] w-[390px] rounded-xl" />
         <Skeleton className="h-[105px] w-full rounded-xl" />
       </div>
-      <div className="mt-[50px] flex flex-col gap-[44] lg:mt-[108px]">
+      <div className="mt-[50px] flex flex-col gap-44 lg:mt-[108px]">
         <div className="grid justify-center gap-7 md:grid-cols-2 md:gap-[50px]">
           <Skeleton className="h-[405px] w-full rounded-xl" />
           <Skeleton className="h-[405px] w-full rounded-xl" />

@@ -8,7 +8,7 @@ export default function PostList({ posts }: BlogProps) {
   if (!posts.length) return <h1>Оце трагедія! Біжимо писати для вас пости!</h1>
 
   return (
-    <div className="mt-[50px] flex flex-col gap-[44] lg:mt-[108px]">
+    <div className="mt-[50px] flex flex-col gap-44 lg:mt-[108px]">
       <div className="grid justify-center gap-7 md:grid-cols-2 md:gap-[50px]">
         {posts.slice(0, 2).map((post, index) => (
           <PostCard

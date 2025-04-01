@@ -7,20 +7,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/client/ui/select'
+} from '@/components/ui/select'
 import Link from 'next/link'
-import {
-  CardBody,
-  CardContainer,
-  CardItem,
-} from '@/components/client/ui/3d-card'
+import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
 import Image from 'next/image'
-import Button from '@/components/client/ui/button'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cartStore'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import SaleLabel from '@/components/client/labels/sale-label'
+import { Button } from '@/components/ui/button'
 
 interface ProductProps {
   product: IProduct
@@ -76,7 +72,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     >
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
-          <div className="absolute left-0 top-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
+          <div className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
             {product.statusLabel?.includes('top') && <TopLabel />}
             {product.statusLabel?.includes('new') && <NewLabel />}
             {product.statusLabel?.includes('sale') && (
@@ -87,7 +83,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </div>
           <CardItem
             translateZ={70}
-            className="z-2 relative grid h-[229px] w-[140px] place-content-center md:w-[229px]"
+            className="relative z-2 grid h-[229px] w-[140px] place-content-center md:w-[229px]"
           >
             <Image
               src={product.img!}
@@ -108,7 +104,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           {selectedVariable.count === 0 && (
             <CardItem
               translateZ={30}
-              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-0 sm:top-0 sm:text-xs lg:text-sm"
+              className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-0 sm:text-xs lg:text-sm"
             >
               {t('expect_soon')}
             </CardItem>
@@ -131,7 +127,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                   onValueChange={handleVariableChange}
                   value={String(selectedVariable._id)}
                 >
-                  <SelectTrigger className="w-fit border-none shadow-none outline-none">
+                  <SelectTrigger className="w-fit border-none shadow-none outline-hidden">
                     <SelectValue
                       placeholder={selectedVariable.weight.toString()}
                     />
@@ -181,7 +177,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                 }}
               >
                 <Button
-                  className="!z-50"
+                  className="z-50!"
                   type="button"
                   variant="button"
                   onClick={handleAddToCart}

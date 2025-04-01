@@ -10,7 +10,7 @@ import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 import { ProductInfo } from '@/components/client/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
-import ToTheTop from '@/components/client/ui/to-the-top'
+import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: Props) {
           title={t('also_buy')}
           message={t('something_that_will_come_handy_along_with_your_choice')}
         />
-        <Delivery className="mb-[200px] mt-[330px]" />
+        <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />
       </div>
     </>

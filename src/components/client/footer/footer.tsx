@@ -2,7 +2,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 import NumberCall from '../header/number-call/number-call'
-import Socials from '../ui/Socials'
+import Socials from '@/components/ui/Socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
@@ -21,7 +21,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
   const t = useTranslations('main.footer')
   return (
     <footer className="bg-black text-white">
-      <nav className="relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pb-[26px] pt-[40px] md:pb-[33px] md:pt-[60px]">
+      <nav className="relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px]">
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
           {pageLinks[locale].slice(0, 3)?.map((link: ILink) => (
             <li key={link.id} className={cn(linkStyle, 'pl-0')}>
@@ -44,7 +44,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             <Image
               src={'/icons/logo-white.svg'}
               alt="LOGO"
-              className="!w-auto px-5 transition-transform duration-300 ease-in-out md:!h-full md:px-0"
+              className="w-auto! px-5 transition-transform duration-300 ease-in-out md:h-full! md:px-0"
               width={86}
               height={100}
             />
@@ -78,7 +78,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           ))}
         </ul>
 
-        <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mb-[35px] md:mt-[10px] md:justify-start">
+        <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mt-[10px] md:mb-[35px] md:justify-start">
           <Image
             src={'/icons/visa.svg'}
             alt="logo-visa"
@@ -92,7 +92,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             height={47}
           />
         </div>
-        <ul className="col-start-1 col-end-4 mb-[35px] mt-[57px] flex flex-col gap-[14px] text-end md:col-span-2 md:col-start-2 md:mt-[10px] md:gap-[10px]">
+        <ul className="col-start-1 col-end-4 mt-[57px] mb-[35px] flex flex-col gap-[14px] text-end md:col-span-2 md:col-start-2 md:mt-[10px] md:gap-[10px]">
           <li>
             <Link
               href={`/${locale}/public-offer`}
@@ -118,7 +118,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </ul>
         {/* Curved line in the middle of the footer */}
         <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:absolute after:left-0 after:h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:w-full after:bg-[url('/icons/underline-white.svg')]"></div>
-        <div className="order-1 col-start-1 col-end-4 flex justify-center gap-3 text-center font-rubik text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] md:order-none">
+        <div className="font-rubik order-1 col-start-1 col-end-4 flex justify-center gap-3 text-center text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] md:order-none">
           <span>{t('CTA-socials')}</span>
           <span className="inline-block rotate-90">&gt;</span>
         </div>
@@ -129,7 +129,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
           <Socials variant="light" size={33} />
         </div>
-        <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-nowrap text-end uppercase md:order-none md:mt-[18px]">
+        <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-end text-nowrap uppercase md:order-none md:mt-[18px]">
           &copy; {new Date().getFullYear()} SLICE&DRY’S
         </div>
       </nav>

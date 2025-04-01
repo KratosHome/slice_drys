@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/client/ui/accordion'
+} from '@/components/ui/accordion'
 import 'quill/dist/quill.snow.css'
 import { FC } from 'react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'

@@ -6,13 +6,13 @@ import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from '@/components/client/ui/arrow'
+import { Arrow } from '@/components/ui/arrow'
 import { formatDate } from '@/utils/format-date'
-import { AspectRatio } from '@/components/client/ui/aspect-ratio'
-import { UnderlinedLink } from '@/components/client/ui/underlined-link'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { useIsMobile } from '@/hooks/use-mobile'
 import '@splidejs/react-splide/css'
-import './blog.scss'
+import './blog.css'
 
 interface BlogSectionProps {
   data: IPost[]
@@ -76,14 +76,14 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
       aria-labelledby="more about us"
       className="section about-us bg-black text-white"
     >
-      <div className="about__wrapper">
+      <div className="mx-auto flex max-w-[1440px] flex-col items-center px-[20px] py-[32px] md:block md:px-[clamp(20px,calc(20px+80*(100vw-768px)/672),100px)] lg:py-[52px]">
         <div className="mb-6 contents items-center justify-between md:flex md:gap-[40px]">
-          <h2 className="title-section text-center !normal-case md:text-start">
+          <h2 className="title-section text-center normal-case! md:text-start">
             {t('title')}
           </h2>
           <UnderlinedLink
             href={`${locale}/blog`}
-            className="md:order-0 order-1"
+            className="order-1 md:order-0"
           >
             {t('more-btn')}
           </UnderlinedLink>
@@ -107,14 +107,15 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                 arrow: 'splide__arrow custom__arrow',
                 prev: 'splide__arrow--prev custom__arrow-prev',
                 next: 'splide__arrow--next custom__arrow-next',
-                pagination: 'splide__pagination custom__pagination',
+                pagination:
+                  'bottom-[-80px] gap-[3px] md:bottom-[-77px] xl:bottom-[-79px]',
                 page: 'splide__pagination__page custom__pagination-page',
               },
             }}
           >
             {data.map((post) => (
               <SplideSlide key={post._id}>
-                <div className="about__card">
+                <div className="relative h-full rounded-xl bg-gray-900 transition-all duration-300 ease-in-out will-change-transform active:-translate-y-1 active:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)] lg:hover:-translate-y-1 lg:hover:shadow-[0px_4px_10px_3px_rgba(255,255,255,0.15)]">
                   <AspectRatio ratio={355 / 285} className="h-full">
                     <Image
                       src={post.img}
@@ -129,7 +130,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                     </p>
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="card__link"
+                      className="text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-medium text-balance before:absolute before:inset-0 before:cursor-pointer"
                     >
                       {post.title}
                     </Link>

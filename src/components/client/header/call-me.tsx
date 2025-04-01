@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/client/ui/dialog'
-import Button from '@/components/client/ui/button'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
+import { Button } from '@/components/ui/button'
 
 interface FormData {
   name: string

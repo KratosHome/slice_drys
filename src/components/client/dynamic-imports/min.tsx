@@ -9,7 +9,7 @@ const ScrollToTop = dynamic(
   },
 )
 
-const Toaster = dynamic(() => import('@/components/admin/ui/toaster'), {
+const Toaster = dynamic(() => import('@/components/ui/toaster'), {
   ssr: false,
 })
 

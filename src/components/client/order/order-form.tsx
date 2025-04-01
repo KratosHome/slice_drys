@@ -9,24 +9,25 @@ import {
 } from 'react'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
-import { RadioGroup, RadioGroupItem } from '@/components/client/ui/radio-group'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Controller, useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
-import { Label } from '@/components/admin/ui/label'
+import { Label } from '@/components/ui/label'
 import { PencilLine } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import DeliveryProvider from './delivery-provider'
-import CheckboxSimple from '../ui/checkbox-simple'
+import CheckboxSimple from '@/components/ui/checkbox-simple'
 import { useCartStore } from '@/store/cartStore'
-import Textarea from '../ui/textarea-RHF'
-import { Input } from '../ui/input-RHF'
+import Textarea from '@/components/ui/textarea-RHF'
+import { Input } from '@/components/ui/input-RHF'
 import { cn } from '@/utils/cn'
-import Button from '../ui/button'
+import { Button } from '@/components/ui/button'
 
 interface OrderFormRef {
   reset: () => void
 }
+
 type Props = {
   defaultCities: {
     novaPoshta?: IDirectoryCity[]
@@ -429,7 +430,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           area-label={t('area-edit')}
           variant={'icons'}
           className={cn(
-            'absolute right-6 top-[30px] hidden',
+            'absolute top-[30px] right-6 hidden',
             userData?.formStep === 4 && 'block',
           )}
           onClick={() =>
@@ -469,7 +470,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                   <div className="flex flex-col gap-10">
                     <Label
                       htmlFor="NP"
-                      className="flex cursor-pointer select-none items-center gap-10 text-xl font-semibold"
+                      className="flex cursor-pointer items-center gap-10 text-xl font-semibold select-none"
                     >
                       <RadioGroupItem
                         value="novaPoshta"
@@ -500,7 +501,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                         >
                           <Label
                             htmlFor="NP-b"
-                            className="flex cursor-pointer select-none items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal"
+                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
                           >
                             <RadioGroupItem
                               value="branch"
@@ -513,7 +514,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
 
                           <Label
                             htmlFor="NP-p"
-                            className="flex cursor-pointer select-none items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal"
+                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
                           >
                             <RadioGroupItem
                               value="postomat"
@@ -526,7 +527,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
 
                           <Label
                             htmlFor="NP-c"
-                            className="flex cursor-pointer select-none items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal"
+                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
                           >
                             <RadioGroupItem
                               value="courier"
@@ -624,7 +625,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                                     })
                                   }}
                                   placeholder={t('courier_placeholder')}
-                                  className="m-0.5 flex h-[60px] w-full rounded-md border border-input bg-transparent px-4 py-[18px] text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
+                                  className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
                                 />
                                 <ErrorMessage
                                   errors={errors}
@@ -739,7 +740,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             area-label={t('area-edit')}
             variant={'icons'}
             className={cn(
-              'absolute right-6 top-[30px] hidden',
+              'absolute top-[30px] right-6 hidden',
               userData?.formStep === 4 && 'block',
             )}
             onClick={() => handleEditStep('step2')}
@@ -778,7 +779,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                 >
                   <Label
                     htmlFor="card"
-                    className="flex cursor-pointer select-none items-center gap-10 text-base font-normal md:text-xl"
+                    className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
                   >
                     <RadioGroupItem
                       value="card"
@@ -790,7 +791,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                   </Label>
                   <Label
                     htmlFor="cash"
-                    className="flex cursor-pointer select-none items-center gap-10 text-base font-normal md:text-xl"
+                    className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
                   >
                     <RadioGroupItem
                       value="cash"
@@ -814,7 +815,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             area-label={t('area-edit')}
             variant={'icons'}
             className={cn(
-              'absolute right-6 top-[30px] hidden',
+              'absolute top-[30px] right-6 hidden',
               userData?.formStep === 4 && 'block',
             )}
             onClick={() => handleEditStep('step3')}
@@ -880,7 +881,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
               area-label={t('area-edit')}
               variant={'icons'}
               className={cn(
-                'absolute right-6 top-[30px] hidden',
+                'absolute top-[30px] right-6 hidden',
                 userData?.formStep === 4 && 'block',
               )}
               onClick={() => handleEditStep('step4')}

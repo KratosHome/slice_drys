@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server'
 import { detectDevice } from '@/utils/deviceDetection'
 
 import { cn } from '@/utils/cn'
-import Socials from '../ui/Socials'
+import Socials from '@/components/ui/Socials'
 
 type Props = Readonly<{
   className?: string
@@ -20,18 +20,18 @@ const JoinCommunity = async ({ className }: Props) => {
   return (
     <section
       className={cn(
-        'mx-auto flex max-w-[1440px] flex-col overflow-x-clip bg-black px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] font-poppins text-white md:relative md:flex-row md:flex-row-reverse md:pb-[88px]',
+        'font-poppins mx-auto flex max-w-[1440px] flex-col overflow-x-clip bg-black px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] text-white md:relative md:flex-row md:flex-row-reverse md:pb-[88px]',
         className,
       )}
     >
       <div className="banner-info relative w-full md:relative md:w-3/5 md:pt-[60px]">
-        <div className="mb-[14px] font-rubik text-[25px] font-normal leading-[0.9] text-white md:mb-6 md:text-[42px] lg:text-[clamp(32px,calc(32px+32*(100vw-375px)/1065),64px)]">
+        <div className="font-rubik mb-[14px] text-[25px] leading-[0.9] font-normal text-white md:mb-6 md:text-[42px] lg:text-[clamp(32px,calc(32px+32*(100vw-375px)/1065),64px)]">
           {t('title')}
         </div>
-        <div className="w-full max-w-[250px] text-wrap text-base sm:max-w-full md:block md:max-w-max md:text-xl">
+        <div className="w-full max-w-[250px] text-base text-wrap sm:max-w-full md:block md:max-w-max md:text-xl">
           {t('description')}
         </div>
-        <div className="social-wrapper absolute -left-[30px] top-[275px] z-10 flex -rotate-[12deg] flex-row-reverse items-center justify-start gap-[25px] bg-red-700 p-[15px_15px_15px_40px] sm:-left-[40px] sm:p-[15px_15px_15px_60px] md:-right-[110px] md:left-auto md:gap-[50px] md:p-[20px_20px_20px_40px] md:pr-[160px]">
+        <div className="social-wrapper absolute top-[275px] -left-[30px] z-10 flex -rotate-[12deg] flex-row-reverse items-center justify-start gap-[25px] bg-red-700 p-[15px_15px_15px_40px] sm:-left-[40px] sm:p-[15px_15px_15px_60px] md:-right-[110px] md:left-auto md:gap-[50px] md:p-[20px_20px_20px_40px] md:pr-[160px]">
           <Socials variant="light" size={isMobile ? 40 : 60} />
         </div>
         <Link
@@ -52,14 +52,14 @@ const JoinCommunity = async ({ className }: Props) => {
         </Link>
       </div>
       <div className="banner-image relative min-h-[250px] w-full md:static md:w-2/5 md:pt-[140px] lg:pt-[50px] xl:pt-0">
-        <div className="banner-text absolute -right-[10px] -top-[90px] rotate-[11deg] font-rubik text-xl font-normal text-[#A90909] md:left-[50px] md:right-auto md:top-[69px] md:-rotate-[17deg] md:text-5xl">
+        <div className="banner-text font-rubik absolute -top-[90px] -right-[10px] rotate-[11deg] text-xl font-normal text-[#A90909] md:top-[69px] md:right-auto md:left-[50px] md:-rotate-[17deg] md:text-5xl">
           {t('text')}
         </div>
-        <div className="relative aspect-[523/443] md:max-w-[523px]">
+        <div className="relative aspect-523/443 md:max-w-[523px]">
           <Image
             src={'/images/promo-banner-join-community.webp'}
             alt={t('title')}
-            className="!-right-[40px] !-top-[60px] !bottom-auto !left-auto max-w-[150px] object-contain sm:max-w-[70%] md:!right-0 md:!top-0 md:max-w-[503px]"
+            className="-top-[60px]! -right-[40px]! bottom-auto! left-auto! max-w-[150px] object-contain sm:max-w-[70%] md:top-0! md:right-0! md:max-w-[503px]"
             fill
           />
         </div>

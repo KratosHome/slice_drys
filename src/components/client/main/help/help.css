@@ -1,0 +1,13 @@
+.help {
+    .splide__arrow {
+        background-color: transparent;
+    }
+
+    .splide__pagination__page {
+        background-color: transparent;
+    }
+
+    .splide__arrow svg {
+        fill: white;
+    }
+}

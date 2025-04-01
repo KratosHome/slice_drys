@@ -31,7 +31,7 @@ export default function CartList() {
           </div>
           <div className="mt-1 px-6 text-right text-base">
             <span
-              className="relative inline-block cursor-pointer select-none before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-left before:scale-x-0 before:bg-foreground before:opacity-100 before:transition-transform before:duration-300 before:ease-in-out hover:before:scale-x-100"
+              className="before:bg-foreground relative inline-block cursor-pointer select-none before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-left before:scale-x-0 before:opacity-100 before:transition-transform before:duration-300 before:ease-in-out hover:before:scale-x-100"
               onClick={() => clearCart()}
             >
               {t('clear_cart')}

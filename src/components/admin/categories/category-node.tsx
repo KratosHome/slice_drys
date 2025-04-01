@@ -50,7 +50,7 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
       </div>
 
       {expanded[category._id] && category.children && (
-        <ul className="ml-4 mt-2 border-l border-gray-300 pl-2">
+        <ul className="mt-2 ml-4 border-l border-gray-300 pl-2">
           {category.children.map((child) => (
             <CategoryNode
               key={child._id}

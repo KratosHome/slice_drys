@@ -15,15 +15,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 
-import { Button } from '@/components/admin/ui/button'
-import { Checkbox } from '@/components/admin/ui/checkbox'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/admin/ui/dropdown-menu'
-import { Input } from '@/components/admin/ui/input'
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -31,10 +30,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/admin/ui/table'
+} from '@/components/ui/table'
 import Image from 'next/image'
 import { FC } from 'react'
 import EditorProduct from '@/components/admin/editor-product/editor-product'
+import { Button } from '@/components/ui/button'
 
 interface IProductList {
   data: IGetProduct
@@ -305,7 +305,7 @@ export const ProductList: FC<IProductList> = ({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>

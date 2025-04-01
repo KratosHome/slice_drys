@@ -12,7 +12,7 @@ import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
 import { partnersData } from '@/data/main/partners'
 import { instaData } from '@/data/main/insta-data'
-import ToTheTop from '@/components/client/ui/to-the-top'
+import ToTheTop from '@/components/ui/to-the-top'
 import { Loader } from 'lucide-react'
 import dynamic from 'next/dynamic'
 

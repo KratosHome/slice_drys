@@ -1,6 +1,6 @@
 'use client'
 
-import { Combobox, transformToCombo } from '@/components/client/ui/combobox'
+import { Combobox, transformToCombo } from '@/components/ui/combobox'
 import { useCartStore } from '@/store/cartStore'
 import { useTranslations } from 'next-intl'
 import { UseControllerProps } from 'react-hook-form'

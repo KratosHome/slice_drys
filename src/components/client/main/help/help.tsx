@@ -3,13 +3,13 @@ import { FC, useEffect } from 'react'
 import Image from 'next/image'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from '@/components/client/ui/arrow'
-import Button from '@/components/client/ui/button'
+import { Arrow } from '@/components/ui/arrow'
+import { Button } from '@/components/ui/button'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { AspectRatio } from '../../ui/aspect-ratio'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import '@splidejs/react-splide/css'
 
-import './help.scss'
+import './help.css'
 
 interface HelpProps {
   data: IHelpLocal

@@ -10,7 +10,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
 
   return (
     <div className="info px-3 py-6 md:p-10">
-      <div className="block-title font-white mb-8 text-center font-rubik text-4xl font-normal md:text-5xl">
+      <div className="block-title font-white font-rubik mb-8 text-center text-4xl font-normal md:text-5xl">
         {block_title}
       </div>
       <div className="info-items font-poppins text-base font-medium">

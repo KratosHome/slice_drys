@@ -20,7 +20,7 @@ export default function LocaleLayout({
 
   const statusStyles: Record<string, string> = {
     new: 'bg-red-500 text-white',
-    'awaiting-payment': '!bg-amber-400 text-white',
+    'awaiting-payment': 'bg-amber-400! text-white',
     'awaiting-shipment': 'bg-blue-500 text-white',
     shipped: 'bg-green-500 text-whit e',
     'awaiting-return': 'bg-orange-500 text-white',
@@ -49,7 +49,7 @@ export default function LocaleLayout({
             >
               {count > 0 && (
                 <div
-                  className={`absolute -right-2 -top-2 flex size-6 items-center justify-center overflow-hidden rounded-full ${badgeStyles}`}
+                  className={`absolute -top-2 -right-2 flex size-6 items-center justify-center overflow-hidden rounded-full ${badgeStyles}`}
                 >
                   {count}
                 </div>

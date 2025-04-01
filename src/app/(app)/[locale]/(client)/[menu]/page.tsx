@@ -8,8 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
-import ToTheTop from '@/components/client/ui/to-the-top'
+} from '@/components/ui/breadcrumbs'
+import ToTheTop from '@/components/ui/to-the-top'
 import {
   Pagination,
   PaginationContent,
@@ -18,7 +18,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/client/ui/pagination'
+} from '@/components/ui/pagination'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
@@ -241,7 +241,7 @@ export default async function MenuPage(props: {
           </Breadcrumb>
 
           <div className="flex items-end justify-between border border-[#E4E4E4]">
-            <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
+            <h1 className="p-[20px] text-[32px] leading-none font-black text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
               {currentCategories.data.name[locale]} {pageInfo} {weightInfo}
             </h1>
           </div>
@@ -306,8 +306,8 @@ export default async function MenuPage(props: {
         )}
 
         <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] rounded-md !bg-white/60 px-5 py-[40px]">
-            <h2 className="mb-6 text-center font-rubik text-[36px] font-bold leading-none lg:text-[64px]">
+          <div className="mx-auto max-w-[1280px] rounded-md bg-white/60! px-5 py-[40px]">
+            <h2 className="font-rubik mb-6 text-center text-[36px] leading-none font-bold lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>
             <div
@@ -345,7 +345,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
-        <Delivery className="mb-[200px] mt-[330px]" />
+        <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />
       </main>
     </>

@@ -2,8 +2,8 @@ import { FC } from 'react'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 
-import { Marquee } from '../ui/marque'
-import { AspectRatio } from '../ui/aspect-ratio'
+import { Marquee } from '@/components/ui/marque'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 interface PartnersProps {
   data: {
@@ -18,7 +18,7 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
   return (
     <section aria-labelledby="partners" className="section px-5">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center font-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] font-normal leading-[1.2]">
+        <h2 className="font-rubik text-center text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] leading-[1.2] font-normal">
           {t('our-partners')}
         </h2>
 
