@@ -1,24 +1,33 @@
-import { useLocale, useTranslations } from 'next-intl'
-import Link from 'next/link'
-
-import NumberCall from '../header/number-call/number-call'
-import Socials from '../ui/Socials'
+'use client'
 
 import { pageLinks } from '@/data/main/nav-links'
-import { cn } from '@/utils/cn'
+
+import Link from 'next/link'
+import NumberCall from '../number-call/'
+import Socials from '../ui/Socials'
 import Image from 'next/image'
-import { FC } from 'react'
+
+import { useLocale, useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
+import { cn } from '@/utils/cn'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
 
-interface FooterP {
+interface IFooterProps {
   productLinks: ICategory[]
 }
 
-const Footer: FC<FooterP> = ({ productLinks }) => {
+const Footer = ({ productLinks }: IFooterProps) => {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
+
+  const [year, setYear] = useState<number | null>(null)
+
+  useEffect(() => {
+    setYear(new Date().getFullYear())
+  }, [])
+
   return (
     <footer className="bg-black text-white">
       <nav className="relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pb-[26px] pt-[40px] md:pb-[33px] md:pt-[60px]">
@@ -29,6 +38,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
+
         <ul className="flex flex-col gap-[19px] justify-self-start md:hidden">
           {productLinks.map((link) => (
             <li key={link.slug} className={linkStyle}>
@@ -42,7 +52,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         <div className="self-stretch justify-self-center">
           <Link href={`/${locale}`} className="block h-full">
             <Image
-              src={'/icons/logo-white.svg'}
+              src="/icons/logo-white.svg"
               alt="LOGO"
               className="!w-auto px-5 transition-transform duration-300 ease-in-out md:!h-full md:px-0"
               width={86}
@@ -64,6 +74,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
+
         <ul className="g-[10px] hidden flex-col justify-self-end text-end md:flex">
           {pageLinks[locale].slice(3, 5)?.map((link: ILink) => (
             <li
@@ -79,19 +90,16 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </ul>
 
         <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mb-[35px] md:mt-[10px] md:justify-start">
+          <Image src="/icons/visa.svg" alt="logo-visa" width={49} height={50} />
+
           <Image
-            src={'/icons/visa.svg'}
-            alt="logo-visa"
-            width={49}
-            height={50}
-          />
-          <Image
-            src={'/icons/mastercard.svg'}
+            src="/icons/mastercard.svg"
             alt="logo-mastercard"
             width={46}
             height={47}
           />
         </div>
+
         <ul className="col-start-1 col-end-4 mb-[35px] mt-[57px] flex flex-col gap-[14px] text-end md:col-span-2 md:col-start-2 md:mt-[10px] md:gap-[10px]">
           <li>
             <Link
@@ -104,6 +112,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
               {t('public-offer')}
             </Link>
           </li>
+
           <li>
             <Link
               href={`/${locale}/privacy-policy`}
@@ -116,24 +125,31 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </Link>
           </li>
         </ul>
+
         {/* Curved line in the middle of the footer */}
-        <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:absolute after:left-0 after:h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:w-full after:bg-[url('/icons/underline-white.svg')]"></div>
+        <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:absolute after:left-0 after:h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:w-full after:bg-[url('/icons/underline-white.svg')]" />
+
         <div className="order-1 col-start-1 col-end-4 flex justify-center gap-3 text-center font-rubik text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] md:order-none">
           <span>{t('CTA-socials')}</span>
+
           <span className="inline-block rotate-90">&gt;</span>
         </div>
+
         <NumberCall
           className="order-2 col-start-1 col-end-2 mt-[24px] justify-self-start text-nowrap md:order-none md:mt-[18px]"
           variant="light"
         />
+
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
-          <Socials variant="light" />
+          <Socials variant="light" size={33} />
         </div>
+
         <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-nowrap text-end uppercase md:order-none md:mt-[18px]">
-          &copy; {new Date().getFullYear()} SLICE&DRY’S
+          &copy; {year ?? '—'} SLICE&DRY’S
         </div>
       </nav>
     </footer>
   )
 }
+
 export default Footer

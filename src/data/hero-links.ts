@@ -20,25 +20,25 @@ import {
 
 const slidersUk = [
   {
-    title: "М'ясні сушені",
+    title: "М'ясні джерки",
     image: '/slider/meat.webp',
     subImages: meatSubImages,
     color: colorConstants.red,
   },
   {
-    title: 'Фруктові сушені',
+    title: 'Фруктові джерки',
     image: '/slider/fruit.webp',
     subImages: fruitSubImages,
     color: colorConstants.orange,
   },
   {
-    title: 'Овочеві сушені',
+    title: 'Овочеві джерки',
     image: '/slider/veggie.webp',
     subImages: veggieSubImages,
     color: colorConstants.green,
   },
   {
-    title: 'Мікс сушені',
+    title: 'Мікс джеркків',
     subImages: mixSubImages,
     image: '/slider/mix.webp',
     color: colorConstants.purple,

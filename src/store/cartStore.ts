@@ -24,17 +24,30 @@ interface ICartState {
 }
 
 interface ICartActions {
-  setCartUserData: (data: IUserData) => void
+  setCartUserData: (
+    data: IUserData<
+      IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
+    >,
+  ) => void
   addItemToCart: (props: IAddItemToCartProps) => void
+  hasItemInCart: (id: string, weight: number) => boolean
   updateItemQuantity: (
     id: string,
     quantity: number,
     maxQuantity: number,
+    weight: number,
   ) => void
-  clearCart: () => void
-  removeItemFromCart: (id: string) => void
+  clearCart: (full?: boolean) => void
+  removeItemFromCart: (id: string, weight: number) => void
   setOpenCart: (openCart: boolean) => void
-  submitOrder: () => Promise<IResponse>
+  submitOrder: (cb: (resp: IOrderResponse) => void) => void
+}
+const initialUserData = {
+  deliveryInfo: {
+    deliveryMethod: 'branch' as IDeliveryMethods,
+    deliveryProvider: 'novaPoshta',
+  },
+  paymentInfo: 'card' as PaymentMethods,
 }
 
 export const useCartStore = create<ICartState & ICartActions>()(
@@ -54,7 +67,10 @@ export const useCartStore = create<ICartState & ICartActions>()(
         }
 
         return {
-          cart: { itemList: [], userData: {} },
+          cart: {
+            itemList: [],
+            userData: initialUserData,
+          },
           openCart: false,
           totalPrice: 0,
           totalProducts: 0,
@@ -73,7 +89,9 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
             set((state) => {
               const existingItem: ICartItem | undefined =
-                state.cart.itemList?.find((item) => item.id === id)
+                state.cart.itemList?.find(
+                  (item) => item.id === id && item.weight === weight,
+                )
 
               let updatedItemList: ICartItem[] | undefined
 
@@ -99,7 +117,19 @@ export const useCartStore = create<ICartState & ICartActions>()(
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          updateItemQuantity: (id, quantity, maxQuantity) => {
+          hasItemInCart: (id, weight) => {
+            return (
+              get().cart.itemList?.some(
+                (item) => item.id === id && item.weight === weight,
+              ) ?? false
+            )
+          },
+          updateItemQuantity: (
+            id: string,
+            quantity: number,
+            maxQuantity: number,
+            weight: number,
+          ) => {
             set((state) => {
               const newQuantity: number = Math.min(
                 Math.max(quantity, 1),
@@ -108,7 +138,9 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
               const updatedItemList: ICartItem[] | undefined =
                 state.cart.itemList?.map((item) =>
-                  item.id === id ? { ...item, quantity: newQuantity } : item,
+                  item.id === id && item.weight === weight
+                    ? { ...item, quantity: newQuantity }
+                    : item,
                 )
 
               const updatedCart = { ...state.cart, itemList: updatedItemList }
@@ -116,22 +148,32 @@ export const useCartStore = create<ICartState & ICartActions>()(
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          removeItemFromCart: (id: string) => {
+          removeItemFromCart: (id: string, weight: number) => {
             set((state) => {
               const updatedItemList: ICartItem[] =
-                state.cart.itemList?.filter((item) => item.id !== id) || []
+                state.cart.itemList?.filter(
+                  (item) => !(item.id === id && item.weight === weight),
+                ) || []
 
               const updatedCart = { ...state.cart, itemList: updatedItemList }
 
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
           },
-          clearCart: () => {
+          clearCart: (full: boolean = false) => {
             set(() => {
               localStorage.removeItem('slice-drys-cart')
 
               return {
-                cart: { itemList: [], userData: {} },
+                cart: full
+                  ? {
+                      itemList: [],
+                      userData: initialUserData,
+                    }
+                  : {
+                      itemList: [],
+                      userData: get().cart.userData,
+                    },
                 totalPrice: 0,
                 totalProducts: 0,
               }
@@ -140,7 +182,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
           setCartUserData: (data) => {
             set((state) => ({ cart: { ...state.cart, userData: data } }))
           },
-          submitOrder: async () => {
+          submitOrder: async (cb: (response: IOrderResponse) => void) => {
             const { cart, totalPrice, clearCart } = get()
 
             if (!cart.itemList || cart.itemList.length === 0) {
@@ -168,8 +210,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
             }
 
             const deliveryToSubmit: IOrderDelivery = {
-              city: cart.userData?.deliveryInfo?.city || '',
-              department: cart.userData?.deliveryInfo?.brunch || '',
+              city: cart.userData?.deliveryInfo?.city?.label || '',
+              department: cart.userData?.deliveryInfo?.branch?.label || '',
               phone: cart.userData?.phoneNumber || '',
             }
 
@@ -187,18 +229,12 @@ export const useCartStore = create<ICartState & ICartActions>()(
               comment: cart.userData?.comment || '',
             }
 
-            try {
-              const response: IResponse = await createOrder(orderData)
+            const response: IOrderResponse = await createOrder(orderData)
 
-              if (response.success) clearCart()
-
-              return response
-            } catch (error) {
-              return {
-                success: false,
-                message: `Failed to create order: ${error}`,
-              }
+            if (response.success) {
+              clearCart(true)
             }
+            cb(response)
           },
         }
       },

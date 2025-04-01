@@ -66,7 +66,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${categoriesParam}`
+  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -78,6 +78,13 @@ export async function generateMetadata({
     description: currentCategories.data.metaDescription?.[locale],
     keywords: metaKeywordsArray,
     robots: 'index, follow',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
     openGraph: {
       title: currentCategories.data.name?.[locale],
       description,
@@ -160,6 +167,12 @@ export default async function MenuPage(props: {
     return <NotFoundPage />
   }
 
+  const pageInfo = page ? ` - ${t('page')} ${page}` : ''
+  const weightInfo =
+    minWeight && maxWeight
+      ? ` (${minWeight}-${maxWeight} ${t('weightUnit')})`
+      : ''
+
   const content = JSON.parse(currentCategories.data.description[locale])
   const converter = new QuillDeltaToHtmlConverter(content.ops)
   const html = converter.convert()
@@ -230,7 +243,7 @@ export default async function MenuPage(props: {
 
           <div className="flex items-end justify-between border border-[#E4E4E4]">
             <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
-              {currentCategories.data.name[locale]}
+              {currentCategories.data.name[locale]} {pageInfo} {weightInfo}
             </h1>
           </div>
           <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
@@ -239,10 +252,8 @@ export default async function MenuPage(props: {
               weights={weightData.data}
             />
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-              {flattenedProducts.map((product: IProduct) => (
-                <>
-                  <Product key={product.slug} product={product} />
-                </>
+              {flattenedProducts.map((product: IProduct & { key: string }) => (
+                <Product key={product.key} product={product} />
               ))}
             </div>
           </div>
@@ -296,8 +307,8 @@ export default async function MenuPage(props: {
         )}
 
         <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] px-5 py-[40px]">
-            <h2 className="mb-6 text-center font-rubik text-3xl text-[64px] font-bold leading-none">
+          <div className="mx-auto max-w-[1280px] rounded-md !bg-white/60 px-5 py-[40px]">
+            <h2 className="mb-6 text-center font-rubik text-[36px] font-bold leading-none lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>
             <div
@@ -335,7 +346,7 @@ export default async function MenuPage(props: {
             </div>
           </div>
         </div>
-        <Delivery />
+        <Delivery className="mb-[200px] mt-[330px]" />
         <ToTheTop />
       </main>
     </>

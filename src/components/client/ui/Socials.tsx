@@ -1,25 +1,27 @@
 'use client'
 
-import React from 'react'
+import { contacts } from '@/data/contacts'
 
 import Button from '@/components/client/ui/button'
 
-import { contacts } from '@/data/main/contacts'
-
-type Props = Readonly<{ variant: 'light' | 'dark' }>
-
-function Socials({ variant }: Props) {
+function Socials({
+  variant,
+  size = 33,
+}: {
+  variant: 'light' | 'dark'
+  size?: number
+}) {
   return (
     <>
       <Button
-        variant={'icons'}
+        variant="icons"
         onClick={() =>
           window.open(contacts.facebook, '_blank', 'noopener,noreferrer')
         }
       >
         <svg
-          width="32"
-          height="33"
+          width={size}
+          height={size}
           viewBox="0 0 32 33"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +32,7 @@ function Socials({ variant }: Props) {
               fill={`${variant === 'dark' ? '#0F0F0F' : 'white'}`}
             />
           </g>
+
           <defs>
             <clipPath id="clip0_2003_13">
               <rect
@@ -42,15 +45,16 @@ function Socials({ variant }: Props) {
           </defs>
         </svg>
       </Button>
+
       <Button
-        variant={'icons'}
+        variant="icons"
         onClick={() =>
           window.open(contacts.instagram, '_blank', 'noopener,noreferrer')
         }
       >
         <svg
-          width="32"
-          height="33"
+          width={size}
+          height={size}
           viewBox="0 0 32 33"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -59,12 +63,14 @@ function Socials({ variant }: Props) {
             d="M16 19.2507C14.5 19.2507 13.2 18.0507 13.2 16.4507C13.2 14.9507 14.4 13.6507 16 13.6507C17.5 13.6507 18.8 14.8507 18.8 16.4507C18.8 17.9507 17.5 19.2507 16 19.2507Z"
             fill={`${variant === 'dark' ? '#0F0F0F' : 'white'}`}
           />
+
           <path
             fillRule="evenodd"
             clipRule="evenodd"
             d="M19.4 9.65068H12.6C11.8 9.75068 11.4 9.85068 11.1 9.95068C10.7 10.0507 10.4 10.2507 10.1 10.5507C9.86261 10.7881 9.75045 11.0255 9.61489 11.3124C9.57916 11.388 9.5417 11.4673 9.5 11.5507C9.48453 11.5971 9.46667 11.6459 9.44752 11.6982C9.34291 11.984 9.2 12.3744 9.2 13.0507V19.8507C9.3 20.6507 9.4 21.0507 9.5 21.3507C9.6 21.7507 9.8 22.0507 10.1 22.3507C10.3374 22.5881 10.5748 22.7002 10.8617 22.8358C10.9374 22.8716 11.0165 22.9089 11.1 22.9507C11.1464 22.9662 11.1952 22.984 11.2475 23.0032C11.5333 23.1078 11.9238 23.2507 12.6 23.2507H19.4C20.2 23.1507 20.6 23.0507 20.9 22.9507C21.3 22.8507 21.6 22.6507 21.9 22.3507C22.1374 22.1133 22.2495 21.8759 22.3851 21.589C22.4209 21.5133 22.4583 21.4341 22.5 21.3507C22.5155 21.3043 22.5333 21.2555 22.5525 21.2032C22.6571 20.9173 22.8 20.5269 22.8 19.8507V13.0507C22.7 12.2507 22.6 11.8507 22.5 11.5507C22.4 11.1507 22.2 10.8507 21.9 10.5507C21.6626 10.3133 21.4252 10.2011 21.1383 10.0656C21.0627 10.0299 20.9833 9.99235 20.9 9.95068C20.8536 9.93521 20.8048 9.91735 20.7525 9.8982C20.4667 9.79359 20.0762 9.65068 19.4 9.65068ZM16 12.1507C13.6 12.1507 11.7 14.0507 11.7 16.4507C11.7 18.8507 13.6 20.7507 16 20.7507C18.4 20.7507 20.3 18.8507 20.3 16.4507C20.3 14.0507 18.4 12.1507 16 12.1507ZM21.4 12.0507C21.4 12.603 20.9523 13.0507 20.4 13.0507C19.8477 13.0507 19.4 12.603 19.4 12.0507C19.4 11.4984 19.8477 11.0507 20.4 11.0507C20.9523 11.0507 21.4 11.4984 21.4 12.0507Z"
             fill={`${variant === 'dark' ? '#0F0F0F' : 'white'}`}
           />
+
           <path
             fillRule="evenodd"
             clipRule="evenodd"

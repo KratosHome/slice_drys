@@ -6,7 +6,7 @@ import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
 import SmallCart from '@/components/client/header/small-cart'
-import NumberCall from '@/components/client/header/number-call/number-call'
+import NumberCall from '@/components/client/number-call'
 import CallMe from '@/components/client/header/call-me'
 import Socials from '../ui/Socials'
 
@@ -140,7 +140,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
               ref={socialRef}
               className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
             >
-              <Socials variant="dark" />
+              <Socials variant="dark" size={33} />
             </div>
           </div>
 
@@ -148,6 +148,8 @@ const Header = ({ productLinks }: IHeaderProps) => {
             <Image
               src="/icons/logo.svg"
               alt={`${t('logo')}`}
+              priority={true}
+              loading="eager"
               className="h-full"
               width={86}
               height={100}

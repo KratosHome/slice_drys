@@ -9,7 +9,7 @@ import LocaleChange from '@/components/client/header/locale-change/locale-change
 import Socials from '../ui/Socials'
 import { Separator } from '@/components/admin/ui/separator'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 import { cn } from '@/utils/cn'
 
 interface IHamburgerMenuProps {

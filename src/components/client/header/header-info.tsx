@@ -28,9 +28,9 @@ export default function Info({ title }: Props) {
 
   return (
     <div ref={infoRef} className="absolute top-0 h-8 w-full bg-black opacity-0">
-      <h1 className="text-center text-base font-medium leading-[180%] text-white">
+      <p className="text-center text-base font-medium leading-[180%] text-white">
         {title}
-      </h1>
+      </p>
     </div>
   )
 }

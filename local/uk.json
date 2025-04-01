@@ -1,7 +1,7 @@
 {
   "main": {
     "header": {
-      "free-delivery-from": "Free delivery from 1000 UAH.",
+      "free-delivery-from": "Безкоштовна доставка від 1000 грн.",
       "blog": "Блог",
       "wholesale": "Опт",
       "contacts": "Контакти",
@@ -53,8 +53,7 @@
       "more-btn": "Дізнатися більше"
     },
     "instafeed": {
-      "title-md": "Подорожуйте з нами",
-      "title": "Мандруйте разом з нами"
+      "title": "Подорожуйте з нами"
     },
     "burger-menu": {
       "catalog": "Каталог",
@@ -73,7 +72,8 @@
     "total": "До сплати",
     "minimum-order-amount": "Мінімальна сума замовлення",
     "continue-shopping": "Продовжити покупки",
-    "order": "Оформити замовлення"
+    "order": "Оформити замовлення",
+    "clear_cart": "Видалити всі товари"
   },
   "blog": {
     "paginationButtonLeft": "Попередня",
@@ -89,7 +89,9 @@
   "Breadcrumbs": {
     "Home": "Головна",
     "Blog": "Блог",
-    "Page": "Сторінка"
+    "Page": "Сторінка",
+    "Order":"Оформлення замовлення",
+    "Contacts": "Контакти"
   },
   "share": {
     "Share": "Поділитись",
@@ -108,6 +110,8 @@
     "filter": "Фільтр",
     "reset_all": "Скинути все",
     "show": "Показати",
+    "page": "cторінка",
+    "weightUnit": "г",
     "fruit": {
       "orange": "Апельсин",
       "mango": "Манго",
@@ -124,6 +128,7 @@
     "sale": "Розпродаж",
     "expect_soon": "Очікуйте скоро!",
     "add_to_cart": "Купити",
+    "in_cart": "У кошику",
     "with_this_product_buy": "З цим товаром купують",
     "something_that_will_come_handy_along_with_your_choice": "Щось корисне до вашого вибору!",
     "composition": "Склад",
@@ -154,7 +159,8 @@
     "cash_on_delivery_payment_upon_receipt_nova_poshta_branch": "Накладений платіж (оплата при отриманні) у відділенні Нової Пошти.",
     "cashless_payment_for_corporate_clients_and_large_orders": "Безготівковий розрахунок для корпоративних клієнтів та великих замовлень.",
     "delivery_cost": "Вартість доставки",
-    "also_buy": "Також купують"
+    "also_buy": "Також купують",
+    "dried-jerky": "Сушені джерки"
   },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",
@@ -172,10 +178,15 @@
   },
   "promo-banner": {
     "free_delivery": "Безкоштовна доставка!",
-    "when_ordering_from": "При замовленні від",
-    "uah": "грн",
+    "when_ordering_from": "При замовленні від <bold>{amount} грн</bold>",
     "get_free_delivery": "Отримати безкоштовну доставку",
     "icon_cart": "іконка кошика",
+    "icon_instagram": "іконка Instagram"
+  },
+  "promo-banner-join-community": {
+    "title": "Приєднуйся до нашої спільноти !",
+    "description": "Будь першим, хто дізнається про спеціальні пропозиції та отримує ексклюзивні знижки.",
+    "text": "КУСЬ !",
     "icon_instagram": "іконка Instagram"
   },
   "toast": {
@@ -188,6 +199,74 @@
     "wholesale": "Опт",
     "wholesale_dried_fruits_in_bulk": "Опт - сушеники гуртом!",
     "do_you_have_business": "Маєш бізнес і хочеш замовити наші смаколики оптом? Чудова ідея! Напиши нам – і ми підберемо найкращі умови, щоб твої полички завжди були з крутим запасом наших сушеників!",
-    "why_us": "Чому ми?"
+    "why_us": "Чому ми?",
+    "join_us": "Приєднуйся до нас",
+    "thank_you_we_will_contact_you": "Дякуємо! Ми зв'яжемося з вами найближчим часом.",
+    "error": "Упс! Щось пішло не так. Спробуйте ще раз або зателефонуйте нам.",
+    "icon_cart": "іконка кошика",
+    "fill_out_form": "Заповни форму",
+    "start_cooperation": "Почати співпрацю",
+    "name": "Ім'я",
+    "this_field_is_required": "Це поле є обов'язковим",
+    "minimum_characters": "Мінімум 2 символи",
+    "maximum_characters": "Максимум 50 символів",
+    "enter-phone-number": "Введіть номер телефону",
+    "enter-full-phone-number": "Введіть повний номер телефону",
+    "invalid_email_format": "Invalid email format",
+    "where_you_going_sell": "Де плануєш продавати?",
+    "maximum_100_characters": "Максимум 100 символів",
+    "link_company_name": "Посилання або назва компанії",
+    "how_did_you_find_about_us": "Як ти дізнався про нас?",
+    "send": "Відправити"
+  },
+  "order": {
+    "page_title": "Оформлення замовлення",
+    "contacts_title": "Контактні дані",
+    "surname_placeholder": "Прізвище",
+    "name_placeholder": "Ім'я",
+    "phone_placeholder": "Телефон",
+    "phone_field_description": "У форматі +38 (093) 123 45 67",
+    "delivery_title": "Доставка",
+    "delivery_method_to_branch": "У відділення",
+    "delivery_method_to_postomat": "У поштомат",
+    "delivery_method_courier": "Кур'єром",
+    "city_placeholder": "Вкажи населений пункт",
+    "city_search_placeholder": "Спробуй змінити запит",
+    "branch_placeholder": "Вибери {type, select, branch {відділення} postomat {поштомат} other {}}",
+    "branch_search_placeholder": "Відсутні {type, select, branch {відділення} postomat {поштомати} other {}} або спробуй змінити запит",
+    "courier_placeholder": "Вкажіть адресу доставки (місто, вулиця, будинок)",
+    "payment_title": "Спосіб оплати",
+    "card": "Оплата через платіжну систему",
+    "cash": "Накладений платіж (комісія 20 грн. + 2% від суми)",
+    "comment_title": "Коментар до замовлення",
+    "comment_placeholder": "За потреби напишіть коментар до замовлення",
+    "no_comments":"Немає коментарів",
+    "no_call": "Не телефонувати мені для підтвердження замовлення",
+    "view_order": "Перегляд замовлення",
+    "btn_continue": "Продовжити",
+    "btn_order": "Оформити замовлення",
+    "validation_required": "Це поле є обов’язковим",
+    "validation_length": "Не вірна довжина номера",
+    "validation_email_format": "Некоректний формат електронної пошти",
+    "area-edit": "Редагувати",
+    "success": "Замовлення успішно оформлено",
+    "error": "Помилка при оформленні замовлення. Спробуйте ще раз або зателефонуйте нам"
+
+  },
+  "contacts" : {
+    "title": "Контакти",
+    "description": "Маєш питання, ідеї чи хочеш зробити замовлення? Ми завжди раді допомогти.",
+    "form_description": "Хочеш, щоб ми зателефонували?",
+    "address": "м. Черкаси, вул. Надпільна 248A.",
+    "button": "Відправити",
+    "placeholder": "Телефон",
+    "information_title": "Інформація",
+    "phone_field_description": "У форматі +38 (093) 12 34 567",
+    "thank_you_we_will_contact_you_shortly": "Дякую! Ми зв'яжемося з вами найближчим часом",
+    "hand_bag": "фото сумки для покупок",
+    "mail_icon": "іконка пошти",
+    "phone_icon": "іконка телефону",
+    "home_icon": "іконка дому",
+    "enter_full_phone_number": "Введіть повний номер телефону"
   }
 }

@@ -20,7 +20,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import Image from 'next/image'
-import EditorPost from '../editor-post/editor-post'
+import EditorPost from '../editor-post'
 import { Button } from '@/components/admin/ui/button'
 
 interface IPostList {

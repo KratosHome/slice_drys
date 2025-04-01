@@ -2,19 +2,30 @@
 
 import { connectToDb } from '@/server/connectToDb'
 import { Order } from './orderSchema'
+import { getLocale, getTranslations } from 'next-intl/server'
 
-export async function createOrder(orderData: IOrder): Promise<IResponse> {
+export async function createOrder(orderData: IOrder): Promise<IOrderResponse> {
+  const t = await getTranslations('order')
+  const locale = (await getLocale()) as ILocale
   try {
     await connectToDb()
 
     const order = new Order(orderData)
     await order.save()
 
-    return { success: true, message: 'Order created' }
+    return {
+      success: true,
+      message: {
+        [locale]: t('success'),
+      },
+    }
   } catch (error) {
+    console.error('Error creating order: ', error)
     return {
       success: false,
-      message: `Can't create order: ${error}`,
+      message: {
+        [locale]: t('error'),
+      },
     }
   }
 }

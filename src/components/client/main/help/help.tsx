@@ -7,8 +7,9 @@ import { Arrow } from '@/components/client/ui/arrow'
 import Button from '@/components/client/ui/button'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { AspectRatio } from '../../ui/aspect-ratio'
+import '@splidejs/react-splide/css'
 
-import './help.css'
+import './help.scss'
 
 interface HelpProps {
   data: IHelpLocal
@@ -113,8 +114,8 @@ const Help: FC<HelpProps> = ({ data }) => {
             ))}
           </Splide>
         </div>
-        <div className="help__content max-h-[490px]">
-          <h1 className="help__title font-rubik">{data.title}</h1>
+        <div className="help__content max-h-[790px]">
+          <h2 className="help__title font-rubik">{data.title}</h2>
           <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"

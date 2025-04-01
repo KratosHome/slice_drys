@@ -2,6 +2,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 import { Category } from '@/server/categories/categories-schema'
+import cloudinary from '../cloudinaryConfig'
 
 interface IGetProductsParams {
   page: number
@@ -51,7 +52,11 @@ export async function getProductsList({
     }
 
     const skip = (page - 1) * limit
-    const products = await Product.find(query).skip(skip).limit(limit).lean()
+    const products = await Product.find(query)
+      .sort({ visited: -1, _id: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean()
 
     const totalItems = await Product.countDocuments(query)
     const totalPages = Math.ceil(totalItems / limit)
@@ -62,6 +67,17 @@ export async function getProductsList({
       description: product.description[locale],
       menu: product.menu[locale],
       composition: product.composition[locale],
+      images: product.images
+        ? [
+            cloudinary.url(`${product.images}`, {
+              transformation: [
+                { width: 500, crop: 'scale' },
+                { quality: 35 },
+                { fetch_format: 'auto' },
+              ],
+            }),
+          ]
+        : [],
     }))
 
     return {

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 
 import { cn } from '@/utils/cn'
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -42,18 +42,14 @@ interface ButtonProps
   onClick?: () => void
 }
 
-export default function Button({
-  variant,
-  size,
-  type,
-  children,
-  className,
-  onClick,
-  ...props
-}: ButtonProps) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { variant, size, type, children, className, onClick, ...props },
+  ref,
+) {
   return (
     <button
       type={type}
+      ref={ref}
       className={cn(buttonStyles({ variant, size }), className)}
       onClick={onClick}
       {...props}
@@ -61,4 +57,6 @@ export default function Button({
       {children}
     </button>
   )
-}
+})
+
+export { Button as default, buttonStyles }

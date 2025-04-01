@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, useState } from 'react'
+
 import { Button } from '@/components/admin/ui/button'
 import {
   Dialog,
@@ -10,19 +10,21 @@ import {
   DialogTrigger,
 } from '@/components/client/ui/dialog'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
+import { Label } from '@/components/admin/ui/label'
+import QuillEditor from '@/components/admin/quill-editor'
+
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { createCategory } from '@/server/categories/create-categories.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { locales } from '@/data/locales'
-import { Label } from '@/components/admin/ui/label'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
 
-interface CategoriesTreeProps {
+interface ICategoriesTreeProps {
   categories: ICategory[]
 }
 
-interface FormData {
+interface IFormData {
   name: {
     uk: string
     en: string
@@ -45,17 +47,17 @@ interface FormData {
   }
 }
 
-const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
+const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
   const router = useRouter()
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const [descriptionUk, setDescriptionUk] = useState<string>('')
   const [descriptionEn, setDescriptionEn] = useState<string>('')
 
-  const handleCategoryChange = (categoryId: string) => {
+  const handleCategoryChange = (categoryId: string): void => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId) ? [] : [categoryId],
     )
@@ -66,9 +68,9 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<IFormData>()
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<IFormData> = async (data) => {
     type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 
     const formattedData: CreateCategoryDTO = {
@@ -110,9 +112,11 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
         <DialogTrigger asChild>
           <Button variant="outline">Create</Button>
         </DialogTrigger>
+
         <DialogContent className="max-h-screen overflow-auto">
           <DialogHeader>
             <DialogTitle>Create categories</DialogTitle>
+
             <DialogDescription>
               Choose the categories you want to create
             </DialogDescription>
@@ -122,6 +126,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
             Оберіть батьківську категорію <br />
             (якщо не обрати ви створите корневу меню)
           </div>
+
           <div className="max-h-[300px] overflow-auto border">
             <CategoryTreeCheckbox
               categories={categories}
@@ -129,6 +134,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
               onCategoryChange={handleCategoryChange}
             />
           </div>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 rounded-lg border p-4"
@@ -139,8 +145,10 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                   <h3 className="text-lg font-bold uppercase">
                     {lang === 'uk' ? 'Українська' : 'English'}
                   </h3>
+
                   <div>
                     <label className="block text-xl font-bold">Назва:</label>
+
                     <input
                       type="text"
                       className="w-full border p-2"
@@ -148,6 +156,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                         required: 'Назва обовʼязкова',
                       })}
                     />
+
                     {errors.name?.[lang] && (
                       <p className="text-sm text-red-500">
                         {errors.name[lang]?.message}
@@ -157,6 +166,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
 
                   <div>
                     <label className="block font-bold">Мета Заголовок:</label>
+
                     <input
                       type="text"
                       className="w-full border p-2"
@@ -164,6 +174,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                         required: 'Мета заголовок обовʼязковий',
                       })}
                     />
+
                     {errors.metaTitle?.[lang] && (
                       <p className="text-sm text-red-500">
                         {errors.metaTitle[lang]?.message}
@@ -173,6 +184,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
 
                   <div className="mt-3">
                     <Label className="block">Опис:</Label>
+
                     {lang === 'uk' ? (
                       <QuillEditor
                         className="min-h-96"
@@ -190,6 +202,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
 
                   <div>
                     <label className="block font-bold">Ключові слова:</label>
+
                     <input
                       type="text"
                       className="w-full border p-2"
@@ -197,6 +210,7 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
                         required: 'Ключові слова обовʼязкові',
                       })}
                     />
+
                     {errors.metaKeywords?.[lang] && (
                       <p className="text-sm text-red-500">
                         {errors.metaKeywords[lang]?.message}
@@ -206,12 +220,14 @@ const CreateCategories: FC<CategoriesTreeProps> = ({ categories }) => {
 
                   <div>
                     <label className="block font-bold">Мета Опис:</label>
+
                     <textarea
                       className="w-full border p-2"
                       {...register(`metaDescription.${lang}`, {
                         required: 'Мета опис обовʼязковий',
                       })}
                     />
+
                     {errors.metaDescription?.[lang] && (
                       <p className="text-sm text-red-500">
                         {errors.metaDescription[lang]?.message}

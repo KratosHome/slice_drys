@@ -1,8 +1,10 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Post } from '@/server/posts/postSchema'
 
-type GetPostsOptions = {
+import { connectToDb } from '@/server/connectToDb'
+
+interface IGetPostsOptions {
   locale: ILocale
   page: number
   limit: number
@@ -21,7 +23,7 @@ const getSelectedFields = (locale: ILocale) => ({
   createdAt: 1,
 })
 
-const formatPost = (post: IPostLocal, locale: ILocale) => ({
+const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
   _id: post._id?.toString(),
   slug: post.slug,
   img: post.img,
@@ -35,11 +37,11 @@ const formatPost = (post: IPostLocal, locale: ILocale) => ({
   createdAt: post.createdAt,
 })
 
-export async function getPosts({ locale, page, limit }: GetPostsOptions) {
+export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
   try {
     await connectToDb()
 
-    const skip = (page - 1) * limit
+    const skip: number = (page - 1) * limit
 
     const [posts, totalPostsCount] = await Promise.all([
       Post.find({}, getSelectedFields(locale))
@@ -51,7 +53,7 @@ export async function getPosts({ locale, page, limit }: GetPostsOptions) {
     ])
 
     return {
-      postsLocalized: posts.map((p: IPostLocal) => formatPost(p, locale)),
+      postsLocalized: posts.map((post: IPostLocal) => formatPost(post, locale)),
       currentPage: page,
       totalPages: Math.ceil(totalPostsCount / limit),
       totalPosts: totalPostsCount,
@@ -61,10 +63,10 @@ export async function getPosts({ locale, page, limit }: GetPostsOptions) {
   } catch (error) {
     return {
       success: false,
+      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
       postAll: [],
       post: [],
       totalPosts: 0,
-      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
     }
   }
 }
@@ -83,16 +85,21 @@ export async function getAllPosts({ locale }: GetAllPostsOptions) {
 
     return {
       success: true,
-      postsLocalized: allPosts.map((p: IPostLocal) => formatPost(p, locale)),
-      postsAll: allPosts.map((p) => ({ ...p, _id: p._id?.toString() })),
+      postsLocalized: allPosts.map((post: IPostLocal) =>
+        formatPost(post, locale),
+      ),
+      postsAll: allPosts.map((post) => ({
+        ...post,
+        _id: post._id?.toString(),
+      })),
       message: 'Posts retrieved',
     }
   } catch (error) {
     return {
       success: false,
+      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
       postsAll: [],
       postsLocalized: [],
-      message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
     }
   }
 }

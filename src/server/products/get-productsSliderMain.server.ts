@@ -1,6 +1,7 @@
 'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
+import cloudinary from '../cloudinaryConfig'
 
 export async function getProductsSliderMain(locale: ILocale) {
   try {
@@ -18,6 +19,15 @@ export async function getProductsSliderMain(locale: ILocale) {
           _id: string
           slug: string
         }[]
+
+        const transformedImage = cloudinary.url(`${product.images}`, {
+          transformation: [
+            { width: 500, crop: 'scale' },
+            { quality: 35 },
+            { fetch_format: 'auto' },
+          ],
+        })
+
         return {
           ...product,
           _id: product._id?.toString(),
@@ -38,7 +48,7 @@ export async function getProductsSliderMain(locale: ILocale) {
           title: product.title[locale],
           metaDescription: product.metaDescription[locale],
           keywords: product.keywords[locale],
-          images: product.images,
+          images: [transformedImage],
         }
       },
     )

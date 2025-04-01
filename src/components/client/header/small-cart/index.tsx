@@ -1,29 +1,32 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/client/ui/popover'
-import Link from 'next/link'
 
 import { useCartStore } from '@/store/cartStore'
-import { useEffect, useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
-import { motion } from 'framer-motion'
+import Button from '@/components/client/ui/button'
+import CartProductCard from './cart-product-card'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
   const local = useLocale()
+
+  const router = useRouter()
+
   const {
     openCart,
     setOpenCart,
     cart,
     totalPrice,
     totalProducts,
-    removeItemFromCart,
-    updateItemQuantity,
     minOrderAmount,
   } = useCartStore((state) => state)
 
@@ -33,11 +36,19 @@ export default function SmallCart() {
     setIsClient(true)
   }, [])
 
+  const openCat = () => {
+    router.push(`/${local}/order`)
+    setOpenCart(false)
+  }
+
   return (
     <div className="relative flex flex-col justify-center">
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
-          <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer">
+          <ResponsiveMotion
+            whileHover={{ scale: 1.1 }}
+            className="cursor-pointer"
+          >
             <Image src="/icons/bin.svg" width={32} height={32} alt="cart" />
 
             {isClient && cart.itemList?.length ? (
@@ -45,7 +56,7 @@ export default function SmallCart() {
                 {cart.itemList.length}
               </span>
             ) : null}
-          </motion.div>
+          </ResponsiveMotion>
         </PopoverTrigger>
 
         <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
@@ -55,7 +66,7 @@ export default function SmallCart() {
                 {t('basket')}
               </div>
 
-              <motion.div
+              <ResponsiveMotion
                 initial={{ rotate: 0, scale: 1 }}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ rotate: 90, scale: 0.9, opacity: 0.8 }}
@@ -70,7 +81,7 @@ export default function SmallCart() {
                   alt={`${t('close')}`}
                   className="h-8 w-8 md:h-12 md:w-12"
                 />
-              </motion.div>
+              </ResponsiveMotion>
             </div>
           </div>
 
@@ -94,78 +105,10 @@ export default function SmallCart() {
 
               <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[70px] md:pt-[150px]">
                 {cart.itemList?.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between gap-4 p-2 transition-transform duration-200 hover:scale-[1.02] hover:shadow-md"
-                  >
-                    <Image
-                      src={item.image}
-                      width={335}
-                      height={335}
-                      alt={item.name}
-                      className="size-[85px] md:size-[135px]"
-                    />
-
-                    <div className="flex w-full flex-col gap-2 md:ml-[55px]">
-                      <div className="flex items-center justify-between">
-                        <div className="text-[20px] capitalize">
-                          {item.name}
-                        </div>
-
-                        <div
-                          onClick={() => removeItemFromCart(item.id)}
-                          className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-90"
-                        >
-                          <Image
-                            src="/icons/delete.svg"
-                            width={24}
-                            height={24}
-                            alt={t('delete')}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="font-bold text-[#7D7D7D]">
-                        {item.weight} {t('g')}
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="text-[20px] text-[#0F0F0F]">
-                          {item.price} {t('uah')}.
-                        </div>
-
-                        <div className="flex w-[115px] items-center justify-between bg-black px-[12px] text-white">
-                          <div
-                            className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
-                            onClick={() =>
-                              updateItemQuantity(
-                                item.id,
-                                item.quantity - 1,
-                                item.maxQuantity,
-                              )
-                            }
-                          >
-                            -
-                          </div>
-
-                          <span className="text-[24px]">{item.quantity}</span>
-
-                          <div
-                            className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
-                            onClick={() =>
-                              updateItemQuantity(
-                                item.id,
-                                item.quantity + 1,
-                                item.maxQuantity,
-                              )
-                            }
-                          >
-                            +
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <CartProductCard
+                    itemData={item}
+                    key={item.id + item.weight}
+                  />
                 ))}
               </div>
 
@@ -187,28 +130,28 @@ export default function SmallCart() {
                 )}
 
                 <div className="mt-[32px] flex h-[60px] gap-[16px]">
-                  <motion.div
+                  <ResponsiveMotion
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex w-full cursor-pointer items-center justify-center border-[1px] border-black text-center"
                     onClick={() => setOpenCart(false)}
                   >
                     {t('continue-shopping')}
-                  </motion.div>
-
-                  <Link
-                    href={`/${local}/cart`}
-                    onClick={() => setOpenCart(false)}
+                  </ResponsiveMotion>
+                  <Button
+                    variant={'outline'}
                     className="w-full"
+                    disabled={totalPrice < minOrderAmount}
+                    onClick={openCat}
                   >
-                    <motion.div
+                    <ResponsiveMotion
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="flex h-[60px] cursor-pointer items-center justify-center bg-black text-center text-white"
                     >
                       {t('order')}
-                    </motion.div>
-                  </Link>
+                    </ResponsiveMotion>
+                  </Button>
                 </div>
               </div>
             </>

@@ -16,13 +16,57 @@ import { getTranslations } from 'next-intl/server'
 import WholesaleForm from '@/components/client/wholesale/wholesale-form'
 import { helpData } from '@/data/wholesale-about'
 import { whyWe } from '@/data/wholesale-why-wr'
+import WholesaleJsonLd from '@/components/client/json-ld/wholesale-json-ld'
 
-export default async function Home(props: { params: Params }) {
+const baseUrl = process.env.NEXT_URL
+
+export async function generateMetadata({ params }: { params: Params }) {
+  const { locale } = await params
+  const isUk = locale === 'uk'
+
+  const keywords = isUk
+    ? ['сушеники', 'опт', 'сушені продукти', 'закупівлі', 'slice&drys']
+    : ['dried', 'wholesale', 'dried products', 'bulk', 'slice&drys']
+
+  const canonicalUrl = `${baseUrl}/${locale}/wholesale`
+
+  return {
+    title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+    description: isUk
+      ? 'Сторінка оптових закупівель наших сушеників'
+      : 'Our wholesale page for dried products',
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: `${canonicalUrl}`,
+        uk: `${canonicalUrl}`,
+      },
+    },
+    openGraph: {
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+      description: isUk
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
+      url: `${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
+      description: isUk
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
+    },
+  }
+}
+
+export default async function Wholesale(props: { params: Params }) {
   const { locale } = await props.params
   const t = await getTranslations('wholesale')
 
   return (
     <>
+      <WholesaleJsonLd locale={locale} />
       <div className="relative mx-auto max-w-[1280px] px-4">
         <Breadcrumb className={'mt-5'}>
           <BreadcrumbList>
@@ -35,7 +79,7 @@ export default async function Home(props: { params: Params }) {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="mb-[66px] mt-[66px] font-rubik text-[98px] leading-[88px]">
+        <h1 className="mb-[66px] mt-[40px] text-center font-rubik text-[40px] leading-[38px] lg:mt-[66px] lg:text-[98px] lg:leading-[88px]">
           {t('wholesale_dried_fruits_in_bulk')}
         </h1>
         <div className="flex justify-center">
@@ -43,16 +87,16 @@ export default async function Home(props: { params: Params }) {
             {t('do_you_have_business')}
           </div>
         </div>
-        <div className="mt-[130px] text-center font-rubik text-[64px]">
+        <div className="mt-[77px] text-center font-rubik text-[32px] lg:mt-[130px] lg:text-[64px]">
           {t('why_us')}
         </div>
         <div className="mt-[71px] grid grid-cols-1 gap-[29px] md:grid-cols-3">
           {whyWe[locale].map((item) => (
             <div key={item.title} className="w-full">
-              <div className="w-full bg-black p-[16px] text-center font-rubik text-[32px] text-white">
+              <div className="w-full bg-black p-[16px] text-center font-rubik text-[24px] text-white lg:text-[32px]">
                 {item.title}
               </div>
-              <div className="h-[110px] w-full border border-dashed p-[14px] text-center">
+              <div className="w-full border border-dashed border-black p-[14px] text-center text-[16px] lg:text-[18px]">
                 {item.content}
               </div>
             </div>
@@ -63,7 +107,7 @@ export default async function Home(props: { params: Params }) {
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">
         <WholesaleForm />
-        <InstaFeed data={instaData[locale]} />
+        <InstaFeed title={t('join_us')} data={instaData[locale]} />
         <ToTheTop />
       </div>
     </>

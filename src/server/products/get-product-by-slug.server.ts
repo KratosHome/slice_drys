@@ -1,3 +1,4 @@
+import cloudinary from '../cloudinaryConfig'
 import { connectToDb } from '../connectToDb'
 import { Product } from './productSchema'
 
@@ -28,6 +29,7 @@ export async function getProductBySlug({
         title: 1,
         metaDescription: 1,
         keywords: 1,
+        slug: 1,
       },
     ).populate('categories')
 
@@ -38,6 +40,14 @@ export async function getProductBySlug({
         message: 'Product not found',
       }
     }
+
+    const transformedImg = cloudinary.url(`${product.img}`, {
+      transformation: [
+        { width: 500, crop: 'scale' },
+        { quality: 35 },
+        { fetch_format: 'auto' },
+      ],
+    })
 
     const categories = product.categories.map((category: ICategory) => ({
       id: category._id,
@@ -51,7 +61,7 @@ export async function getProductBySlug({
     }))
 
     const data = {
-      id: product._id,
+      _id: product._id,
       title: product.title[locale],
       metaDescription: product.metaDescription[locale],
       keywords: product.keywords[locale],
@@ -59,11 +69,12 @@ export async function getProductBySlug({
       description: product.description?.[locale],
       menu: product.menu?.[locale],
       composition: product.composition?.[locale],
-      img: product.img,
+      img: transformedImg,
       variables: product.variables,
       nutritionalValue: product.nutritionalValue,
       statusLabel: product.statusLabel,
       visited: product.visited,
+      slug: product.slug,
       categories,
     }
 

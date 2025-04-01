@@ -37,6 +37,14 @@ const SliderWithThumbnails = ({
           src={img || images[0]}
           alt={`Slider ${img}`}
           fill
+          fetchPriority="high"
+          priority={true}
+          loading="eager"
+          sizes="(min-width: 1024px) 344px, 100vw"
+          quality={70}
+          style={{
+            objectFit: 'contain',
+          }}
         />
       </div>
       {slides.length >= 3 && (

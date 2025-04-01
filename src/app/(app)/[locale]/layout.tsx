@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import type { Metadata } from 'next'
 
 import { routing } from '@/i18n/routing'
 import { fetchTags } from '@/data/fetch-tags'
@@ -12,16 +11,17 @@ import { seedCategories } from '@/server/seed/category'
 
 import Header from '@/components/client/header'
 import { Toaster } from '@/components/admin/ui/toaster'
-import Footer from '@/components/client/footer/footer'
 import NotFoundPage from '@/components/not-found'
+import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
 import { GoogleAnalytics } from '@/components/client/google-analytics'
+import Footer from '@/components/client/footer'
 
 import '../globals.css'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-poppins',
+  variable: '--font-montserrat',
   weight: ['400', '500', '600', '700', '800'],
 })
 
@@ -39,11 +39,6 @@ const DMSans = DM_Sans({
   weight: ['400'],
 })
 
-export const metadata: Metadata = {
-  title: `Slice Dry's`,
-  description: 'The best dried products',
-}
-
 interface ILocaleLayoutProps {
   children: ReactNode
   params: Promise<{ locale: LanguageType }>
@@ -51,6 +46,7 @@ interface ILocaleLayoutProps {
 
 export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const SITE_URL: string | undefined = process.env.NEXT_URL
+
   const params = await props.params
 
   const { locale } = params
@@ -73,9 +69,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
 
-  if (process.env.NODE_ENV === 'development') {
-    await seedCategories()
-  }
+  if (process.env.NODE_ENV === 'development') await seedCategories()
 
   return (
     <html
@@ -88,6 +82,8 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
 
       <NextIntlClientProvider messages={messages}>
         <body className="flex min-h-svh flex-col">
+          <ScrollToTop />
+
           <Header productLinks={categoriesData.data} />
 
           <main className="flex-1">{children}</main>

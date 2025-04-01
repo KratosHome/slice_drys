@@ -6,6 +6,7 @@ import { Arrow } from '@/components/client/ui/arrow'
 import Product from '@/components/client/product/product'
 
 import './product-slider.css'
+import '@splidejs/react-splide/css'
 
 interface ProductSlider {
   products: IProduct[]
@@ -99,9 +100,9 @@ export default function ProductSlider({
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
       <div className="md:px-[20px] md:pb-16">
-        <h1 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
+        <h2 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
           {title}
-        </h1>
+        </h2>
         <h2 className="underline-wave relative w-fit pb-4 font-poppins text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
           {message}
         </h2>

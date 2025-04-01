@@ -1,16 +1,17 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Category } from '@/server/categories/categories-schema'
-import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function deleteCategory(categoryId: string) {
-  'use server'
+import { connectToDb } from '@/server/connectToDb'
+import { revalidateTag } from 'next/cache'
 
+export async function deleteCategory(categoryId: string): Promise<IResponse> {
   try {
     await connectToDb()
 
     const category = await Category.findById(categoryId)
+
     if (!category) {
       return {
         success: false,

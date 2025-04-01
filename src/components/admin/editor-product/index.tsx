@@ -16,7 +16,7 @@ import { Checkbox } from '@/components/admin/ui/checkbox'
 import Loading from '@/components/admin/ui/loading'
 import Image from 'next/image'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
+import QuillEditor from '@/components/admin/quill-editor'
 
 import { type ChangeEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'

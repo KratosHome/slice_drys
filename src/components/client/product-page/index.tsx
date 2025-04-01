@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Select,
@@ -20,6 +20,7 @@ import Button from '@/components/client/ui/button'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const t = useTranslations('product')
@@ -34,7 +35,11 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
       (product.variant ?? variables[0])
     : (product.variant ?? variables[0])
 
-  const { addItemToCart, setOpenCart } = useCartStore((state) => state)
+  const [mounted, setMounted] = useState(false)
+
+  const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
+    (state) => state,
+  )
 
   const [selectedVariable, setSelectedVariable] = useState(
     initialSelectedVariable,
@@ -42,17 +47,33 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
 
   const [quantity, setQuantity] = useState(1)
 
+  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await increaseProductVisit(product.slug)
+    }
+
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const handleAddToCart = () => {
-    if (product._id && product.img)
+    if (product._id && product.img) {
       addItemToCart({
         id: product._id,
         quantity: quantity,
         image: product.img,
         name: product.name,
-        price: selectedVariable.price,
+        price: selectedVariable.newPrice || selectedVariable.price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })
+    }
     setOpenCart(true)
   }
 
@@ -74,7 +95,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
 
       <div className="lg:w-1/2">
         <h1 className="relative bg-black py-2 pl-3 text-[40px] font-bold text-white">
-          {name}
+          {t('dried-jerky')} {name} {selectedVariable.weight} {t('g')}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 !text-[11px] font-medium text-white sm:absolute sm:right-8 sm:top-0 sm:text-xs lg:text-sm">
               {t('expect_soon')}
@@ -129,7 +150,24 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         </div>
         <div className="flex flex-col items-end justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
           <div className="w-full whitespace-nowrap text-center md:w-max">
-            {selectedVariable.price} {selectedVariable.currency}
+            {selectedVariable.newPrice ? (
+              <>
+                {selectedVariable.price && (
+                  <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
+                    {selectedVariable.price} {selectedVariable.currency}
+                  </p>
+                )}
+                <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                  {selectedVariable.newPrice} {selectedVariable.currency}
+                </p>
+              </>
+            ) : (
+              selectedVariable.price && (
+                <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                  {selectedVariable.price} {selectedVariable.currency}
+                </p>
+              )
+            )}
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 pr-4 md:items-stretch">
             <div className="flex h-[50px] items-center gap-5 bg-black px-2.5 font-bold text-white">
@@ -162,7 +200,11 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               disabled={selectedVariable.count === 0}
               onClick={handleAddToCart}
             >
-              {t('add_to_cart')}
+              {mounted
+                ? isInCart
+                  ? t('in_cart')
+                  : t('add_to_cart')
+                : t('add_to_cart')}
             </Button>
           </div>
         </div>

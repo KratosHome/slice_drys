@@ -1,20 +1,22 @@
 'use server'
+
+import { Post } from '@/server/posts/postSchema'
+import { fetchTags } from '@/data/fetch-tags'
+
 import { revalidateTag } from 'next/cache'
 import { connectToDb } from '@/server/connectToDb'
-import { Post } from '@/server/posts/postSchema'
 import cloudinary from '@/server/cloudinaryConfig'
-import { fetchTags } from '@/data/fetch-tags'
 
 export async function editPost(
   id: string,
   formData: IPostLocal,
   image?: string,
-) {
-  'use server'
+): Promise<IResponse> {
   try {
     await connectToDb()
 
     const existingPost = await Post.findById(id)
+
     if (!existingPost) return { success: false, message: 'Post not found' }
 
     let imageUrl = existingPost.img
@@ -40,6 +42,7 @@ export async function editPost(
     }
 
     await Post.findByIdAndUpdate(id, updatedData, { new: true })
+
     revalidateTag(fetchTags.posts)
     revalidateTag(fetchTags.post)
 

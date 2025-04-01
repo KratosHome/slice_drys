@@ -1,20 +1,19 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 import InstaCard from './instaCard'
 import { UnderlinedLink } from '../../ui/underlined-link'
 import { Arrow } from '@/components/client/ui/arrow'
 
-import { contacts } from '@/data/main/contacts'
+import { contacts } from '@/data/contacts'
 import './InstaFeed.css'
+import '@splidejs/react-splide/css'
 
-type Props = Readonly<{ data: InstaFeed[] }>
+type Props = Readonly<{ data: InstaFeed[]; title: string }>
 
-export default function InstaFeed({ data }: Props) {
-  const t = useTranslations('main.instafeed')
+export default function InstaFeed({ data, title }: Props) {
   useEffect(() => {
     const target = document.querySelector('.insta-slider')
     if (!target) return
@@ -67,9 +66,8 @@ export default function InstaFeed({ data }: Props) {
     <section className="section instafeed px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
         <div className="flex items-center justify-center gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)] md:justify-end">
-          <h2 className="title-section text-balance text-center md:text-start">
-            <span className="block md:hidden">{t('title')}</span>
-            <span className="hidden md:block">{t('title-md')}</span>
+          <h2 className="title-rubik text-balance text-center text-[42px] md:text-start lg:text-[64px]">
+            {title}
           </h2>
           <UnderlinedLink
             href={contacts.instagram}
