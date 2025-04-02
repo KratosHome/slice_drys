@@ -1,7 +1,7 @@
 {
   "main": {
     "header": {
-      "free-delivery-from": "Free delivery from 1000 UAH.",
+      "free-delivery-from": "Безкоштовна доставка від 1000 грн.",
       "blog": "Блог",
       "wholesale": "Опт",
       "contacts": "Контакти",
@@ -110,6 +110,8 @@
     "filter": "Фільтр",
     "reset_all": "Скинути все",
     "show": "Показати",
+    "page": "cторінка",
+    "weightUnit": "г",
     "fruit": {
       "orange": "Апельсин",
       "mango": "Манго",
@@ -157,7 +159,8 @@
     "cash_on_delivery_payment_upon_receipt_nova_poshta_branch": "Накладений платіж (оплата при отриманні) у відділенні Нової Пошти.",
     "cashless_payment_for_corporate_clients_and_large_orders": "Безготівковий розрахунок для корпоративних клієнтів та великих замовлень.",
     "delivery_cost": "Вартість доставки",
-    "also_buy": "Також купують"
+    "also_buy": "Також купують",
+    "dried-jerky": "Сушені джерки"
   },
   "not_found_page": {
     "fruitAlt": "Декоративні фрукти",

@@ -167,6 +167,12 @@ export default async function MenuPage(props: {
     return <NotFoundPage />
   }
 
+  const pageInfo = page ? ` - ${t('page')} ${page}` : ''
+  const weightInfo =
+    minWeight && maxWeight
+      ? ` (${minWeight}-${maxWeight} ${t('weightUnit')})`
+      : ''
+
   const content = JSON.parse(currentCategories.data.description[locale])
   const converter = new QuillDeltaToHtmlConverter(content.ops)
   const html = converter.convert()
@@ -237,7 +243,7 @@ export default async function MenuPage(props: {
 
           <div className="flex items-end justify-between border border-[#E4E4E4]">
             <h1 className="p-[20px] text-[32px] font-black leading-none text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
-              {currentCategories.data.name[locale]}
+              {currentCategories.data.name[locale]} {pageInfo} {weightInfo}
             </h1>
           </div>
           <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
@@ -301,7 +307,7 @@ export default async function MenuPage(props: {
         )}
 
         <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] px-5 py-[40px]">
+          <div className="mx-auto max-w-[1280px] rounded-md !bg-white/60 px-5 py-[40px]">
             <h2 className="mb-6 text-center font-rubik text-[36px] font-bold leading-none lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>

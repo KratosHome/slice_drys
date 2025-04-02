@@ -1,6 +1,19 @@
 /*слайдер*/
 
 .about-us {
+
+  .splide__arrow svg {
+    fill: white;
+  }
+
+  .splide__arrow{
+    background-color: transparent;
+  }
+
+  .splide__pagination__page {
+    background-color: transparent;
+  }
+
   .about__wrapper {
     @apply mx-auto flex flex-col items-center md:block
       px-[20px] py-[32px] lg:py-[52px] md:px-[clamp(20px,calc(20px+80*(100vw-768px)/672),100px)]  max-w-[1440px]

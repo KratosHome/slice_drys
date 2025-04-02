@@ -158,7 +158,11 @@ export const Hero = ({
                 src={slidersLocale[hoveredIndex].image}
                 alt="slider image"
                 fill
+                priority={true}
+                loading="eager"
+                quality={70}
                 className="object-contain"
+                fetchPriority="high"
                 sizes="(max-width: 550px) 100vw, 50vw"
                 onMouseEnter={() => {
                   handleMainImageAnimation(true)
@@ -187,6 +191,9 @@ export const Hero = ({
                         key={index}
                         src={item.path}
                         alt="animation"
+                        priority={true}
+                        quality={70}
+                        loading="eager"
                         className={cn(
                           `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
                           isMobile ? `opacity-1` : '',

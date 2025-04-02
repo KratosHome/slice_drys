@@ -1,4 +1,4 @@
-export const reviewsData = [
+export const reviewsDataUk = [
   {
     author: 'Оля',
     text: 'Якісь нереально смачні ті “сушені чіпси”! Спочатку подумала, що буде жорстко, але навпаки – м’яко і дуже хрустко одночасно. Тепер завжди маю їх в сумочці як перекус. Хочу ще більше різних смаків!',
@@ -30,3 +30,41 @@ export const reviewsData = [
     rating: 5,
   },
 ]
+
+export const reviewsDataEn = [
+  {
+    author: 'Olya',
+    text: "Some incredibly tasty 'dried chips'! At first I thought they'd be tough, but on the contrary – soft and very crunchy at the same time. Now I always have them in my purse as a snack. I want even more different flavors!",
+    rating: 5,
+  },
+  {
+    author: 'Mykola',
+    text: "Extremely aromatic, although the price is steep. But for such quality, it's worth it!",
+    rating: 4,
+  },
+  {
+    author: 'Victoria',
+    text: 'I was looking for something new for a work buffet and stumbled upon these dried chips. They were the hit of the evening – colleagues were asking where to buy them! Now everyone in the office is hooked on them.',
+    rating: 5,
+  },
+  {
+    author: 'Valeriy',
+    text: "I took them fishing as a snack. They turned out to be the perfect option, the taste is amazing. Next time, I'll order more!",
+    rating: 5,
+  },
+  {
+    author: 'Katya',
+    text: 'I thought the meat would be dry and tasteless, but no! I was a bit worried because kids are usually picky, but here they were asking for more. Now it’s our must-have for outings.',
+    rating: 5,
+  },
+  {
+    author: 'Ruslan',
+    text: 'I work out regularly, so I was looking for a protein snack without extra calories. These dried chips are simply a lifesaver! They taste better than I expected.',
+    rating: 5,
+  },
+]
+
+export const reviewsData = {
+  uk: reviewsDataUk,
+  en: reviewsDataEn,
+}

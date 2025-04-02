@@ -1,3 +1,4 @@
+import cloudinary from '../cloudinaryConfig'
 import { connectToDb } from '../connectToDb'
 import { Product } from './productSchema'
 
@@ -40,6 +41,14 @@ export async function getProductBySlug({
       }
     }
 
+    const transformedImg = cloudinary.url(`${product.img}`, {
+      transformation: [
+        { width: 500, crop: 'scale' },
+        { quality: 35 },
+        { fetch_format: 'auto' },
+      ],
+    })
+
     const categories = product.categories.map((category: ICategory) => ({
       id: category._id,
       name: category.name?.[locale],
@@ -60,7 +69,7 @@ export async function getProductBySlug({
       description: product.description?.[locale],
       menu: product.menu?.[locale],
       composition: product.composition?.[locale],
-      img: product.img,
+      img: transformedImg,
       variables: product.variables,
       nutritionalValue: product.nutritionalValue,
       statusLabel: product.statusLabel,

@@ -2,6 +2,7 @@
 import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 import { Category } from '@/server/categories/categories-schema'
+import cloudinary from '../cloudinaryConfig'
 
 interface IGetProductsParams {
   page: number
@@ -66,6 +67,17 @@ export async function getProductsList({
       description: product.description[locale],
       menu: product.menu[locale],
       composition: product.composition[locale],
+      images: product.images
+        ? [
+            cloudinary.url(`${product.images}`, {
+              transformation: [
+                { width: 500, crop: 'scale' },
+                { quality: 35 },
+                { fetch_format: 'auto' },
+              ],
+            }),
+          ]
+        : [],
     }))
 
     return {

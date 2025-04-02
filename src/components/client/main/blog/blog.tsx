@@ -11,8 +11,8 @@ import { formatDate } from '@/utils/format-date'
 import { AspectRatio } from '@/components/client/ui/aspect-ratio'
 import { UnderlinedLink } from '@/components/client/ui/underlined-link'
 import { useIsMobile } from '@/hooks/use-mobile'
-
-import './blog.css'
+import '@splidejs/react-splide/css'
+import './blog.scss'
 
 interface BlogSectionProps {
   data: IPost[]

@@ -9,6 +9,7 @@ import { Arrow } from '@/components/client/ui/arrow'
 
 import { contacts } from '@/data/contacts'
 import './InstaFeed.css'
+import '@splidejs/react-splide/css'
 
 type Props = Readonly<{ data: InstaFeed[]; title: string }>
 

@@ -100,6 +100,11 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
           '@type': 'Person',
           name: review.author,
         },
+        itemReviewed: {
+          '@type': 'WebSite',
+          name: "Slice & Dry's",
+          url: baseUrl,
+        },
       })),
     ],
   }

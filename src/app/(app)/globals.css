@@ -1,11 +1,9 @@
-@import '@splidejs/react-splide/css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @theme {
-  --breakpoint-xs: 24rem;
+    --breakpoint-xs: 24rem;
 }
 
 html {

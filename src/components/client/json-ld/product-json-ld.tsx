@@ -12,7 +12,7 @@ const ProductJsonLd: FC<ProductJsonLdProps> = ({
   const offersList = productData.variables.map((variant) => ({
     '@type': 'Offer',
     url: canonicalUrl,
-    priceCurrency: variant.currency,
+    priceCurrency: 'UAH',
     price: variant.price,
     availability:
       variant.count && variant.count > 0
@@ -24,7 +24,6 @@ const ProductJsonLd: FC<ProductJsonLdProps> = ({
   const prices = productData.variables.map((v) => v.price)
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
-  const priceCurrency = productData.variables[0]?.currency
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -41,7 +40,7 @@ const ProductJsonLd: FC<ProductJsonLdProps> = ({
       '@type': 'AggregateOffer',
       lowPrice: minPrice,
       highPrice: maxPrice,
-      priceCurrency: priceCurrency,
+      priceCurrency: 'UAH',
       offerCount: productData.variables.length,
       offers: offersList,
     },

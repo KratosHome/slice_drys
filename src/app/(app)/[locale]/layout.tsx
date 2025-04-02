@@ -6,7 +6,6 @@ import { seedCategories } from '@/server/seed/category'
 
 import Header from '@/components/client/header'
 import { Toaster } from '@/components/admin/ui/toaster'
-import Footer from '@/components/client/footer/footer'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
@@ -15,6 +14,12 @@ import { GoogleTagManager } from '@/components/client/google-tag-manager/google-
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { fetchTags } from '@/data/fetch-tags'
 import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
+import dynamic from 'next/dynamic'
+import { Loader } from 'lucide-react'
+
+const Footer = dynamic(() => import('@/components/client/footer/footer'), {
+  loading: () => <Loader />,
+})
 
 const montserrat = Montserrat({
   subsets: ['latin'],

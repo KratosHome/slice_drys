@@ -1,13 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 type Props = { post: InstaFeed }
 
 function InstaCard({ post }: Props) {
   return (
-    <motion.div
+    <ResponsiveMotion
       className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white will-change-transform md:max-w-none"
       whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
       transition={{ duration: 0.3 }}
@@ -55,7 +55,7 @@ function InstaCard({ post }: Props) {
           : post.caption}
       </p>
       <CardFooter />
-    </motion.div>
+    </ResponsiveMotion>
   )
 }
 const Dots = ({ number }: { number: number }) => {
