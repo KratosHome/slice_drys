@@ -144,7 +144,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik text-[36px]!">
+                <AccordionTrigger className="font-rubik text-[36px]">
                   {t('type')}
                 </AccordionTrigger>
               </motion.div>
@@ -189,7 +189,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik text-[36px]!">
+                <AccordionTrigger className="font-rubik text-[36px]">
                   {t('weight')}
                 </AccordionTrigger>
               </motion.div>
@@ -279,7 +279,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     className="mb-2"
                   >
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="font-rubik text-[36px]!">
+                      <AccordionTrigger className="font-rubik text-[36px]">
                         {t('type')}
                       </AccordionTrigger>
                       <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
@@ -319,7 +319,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                   <Accordion type="single" collapsible defaultValue="item-2">
                     <AccordionItem value="item-2">
-                      <AccordionTrigger className="font-rubik text-[36px]!">
+                      <AccordionTrigger className="font-rubik text-[36px]">
                         {t('weight')}
                       </AccordionTrigger>
                       <AccordionContent>

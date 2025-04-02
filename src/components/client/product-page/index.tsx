@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import {
   Select,
   SelectContent,
@@ -18,11 +17,13 @@ import { useCartStore } from '@/store/cartStore'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
+  const router = useRouter()
   const t = useTranslations('product')
   const searchParams = useSearchParams()
 
@@ -77,6 +78,16 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
     setOpenCart(true)
   }
 
+  const handleWeightChange = (value: string) => {
+    const newVariable = variables.find((v) => String(v.weight) === value)
+    if (newVariable) {
+      setSelectedVariable(newVariable)
+      setQuantity(1)
+      const currentPath = window.location.pathname
+      router.replace(`${currentPath}?weight=${newVariable.weight}`)
+    }
+  }
+
   return (
     <section className="lg:border-light_gray mb-20 flex flex-col gap-10 pb-10 lg:flex-row lg:border">
       <div className="absolute grid gap-0.5">
@@ -85,14 +96,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         {product.statusLabel?.includes('new') && <NewLabel />}
         {product.statusLabel?.includes('sale') && <SaleLabel />}
       </div>
-      <motion.div
-        className="flex justify-center lg:w-1/2"
-        whileHover={{ scale: 1.05 }}
-        transition={{ type: 'spring', stiffness: 300 }}
-      >
-        <SliderWithThumbnails img={img} images={[]} />
-      </motion.div>
-
+      <SliderWithThumbnails img={img!} />
       <div className="lg:w-1/2">
         <h1 className="relative bg-black py-2 pl-3 text-[40px] font-bold text-white">
           {t('dried-jerky')} {name} {selectedVariable.weight} {t('g')}.
@@ -104,22 +108,14 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         </h1>
         <div className="mt-6 pb-14 sm:mt-3 sm:text-xl sm:leading-8">
           <div className="flex gap-2">
-            <h3 className="font-bold">{t('composition')}:</h3>
+            <p className="font-bold">{t('composition')}:</p>
             <p>{composition.join(', ')}</p>
           </div>
         </div>
         <div className="relative flex items-center justify-center gap-6 pb-[3.75rem] sm:justify-start">
           <Select
             value={String(selectedVariable.weight)}
-            onValueChange={(value: string) => {
-              const newVariable = variables.find(
-                (v) => String(v.weight) === value,
-              )
-              if (newVariable) {
-                setSelectedVariable(newVariable)
-                setQuantity(1)
-              }
-            }}
+            onValueChange={handleWeightChange}
           >
             <SelectTrigger className="relative transition-transform duration-300 hover:scale-105">
               <label
@@ -171,7 +167,8 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 pr-4 md:items-stretch">
             <div className="flex h-[50px] items-center gap-5 bg-black px-2.5 font-bold text-white">
-              <motion.button
+              <ResponsiveMotion
+                className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 onClick={() =>
@@ -179,9 +176,10 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                 }
               >
                 <MinusIcon />
-              </motion.button>
+              </ResponsiveMotion>
               <div className="min-w-4 text-center">{quantity}</div>
-              <motion.button
+              <ResponsiveMotion
+                className="cuitrsor-pointer"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 onClick={() =>
@@ -191,10 +189,10 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                 }
               >
                 <PlusIcon />
-              </motion.button>
+              </ResponsiveMotion>
             </div>
             <Button
-              className="h-[50px]"
+              className="h-[50px] rounded-none"
               type="button"
               variant="danger"
               disabled={selectedVariable.count === 0}

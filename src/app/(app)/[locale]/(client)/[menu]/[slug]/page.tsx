@@ -140,7 +140,7 @@ export default async function ProductPage({ params }: Props) {
         productData={productData.data}
         canonicalUrl={canonicalUrl}
       />
-      <div className="container px-5">
+      <div className="mx-auto max-w-[1280px] px-4">
         <Breadcrumbs
           locale={locale}
           category={productData.data.categories[0].name}
