@@ -116,7 +116,10 @@ export default function Reviews({ reviews }: ReviewsProps) {
       </div>
       <Dialog open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
         <DialogTrigger asChild>
-          <UnderlinedLink as="button" className="order-1 max-w-max md:order-0">
+          <UnderlinedLink
+            as="button"
+            className="order-1 max-w-max cursor-pointer md:order-0"
+          >
             {t('add_new_review')}
           </UnderlinedLink>
         </DialogTrigger>
@@ -155,7 +158,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
             <div className="flex justify-between gap-3">
               <Button
                 variant="outline"
-                className="w-full"
+                className="h-full w-full"
                 onClick={() => setIsReviewsOpen(false)}
               >
                 {t('back')}

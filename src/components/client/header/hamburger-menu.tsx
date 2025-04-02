@@ -57,6 +57,7 @@ export default function HamburgerMenu({
     <>
       <Button
         onClick={() => setIsOpen(!isOpen)}
+        variant="none"
         className="relative bg-transparent active:scale-110 lg:hidden"
       >
         <div className={containerClasses}>
