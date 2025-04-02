@@ -139,15 +139,15 @@ export default function SmallCart() {
                     {t('continue-shopping')}
                   </ResponsiveMotion>
                   <Button
-                    variant={'outline'}
-                    className="w-full"
+                    variant={'none'}
+                    className="mt-3 w-full"
                     disabled={totalPrice < minOrderAmount}
                     onClick={openCat}
                   >
                     <ResponsiveMotion
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex h-[60px] cursor-pointer items-center justify-center bg-black text-center text-white"
+                      className="flex h-[60px] w-full cursor-pointer items-center justify-center bg-black text-center text-white"
                     >
                       {t('order')}
                     </ResponsiveMotion>
