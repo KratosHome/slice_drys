@@ -1,23 +1,9 @@
-.products-slider .splide__pagination.custom__pagination {
-    bottom: -33px;
-}
-
-@media (min-width: 768px) {
-    .products-slider .splide__pagination.custom__pagination {
-        bottom: -43px;
+.products-slider {
+    .splide__arrow {
+        background-color: transparent;
     }
-}
 
-@media (min-width: 1024px) {
-    .products-slider .splide__pagination.custom__pagination {
-        bottom: -50px;
+    .splide__pagination__page {
+        background-color: transparent;
     }
-}
-
-.products-slider .splide__arrow {
-    background-color: transparent;
-}
-
-.products-slider .splide__pagination__page {
-    background-color: transparent;
 }

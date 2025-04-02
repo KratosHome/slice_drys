@@ -5,7 +5,6 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product/product'
 
-import '../styles/slider.css'
 import './product-slider.css'
 import '@splidejs/react-splide/css'
 
