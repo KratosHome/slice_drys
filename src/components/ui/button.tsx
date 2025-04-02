@@ -25,7 +25,7 @@ const buttonVariants = cva(
         yellow:
           'rounded-lg bg-yellow-500 text-white px-6 py-2 font-medium transition-all hover:scale-105 duration-300 hover:bg-yellow-600 hover:shadow-lg',
         transparent:
-          'text-white rounded-none text-[18px] lg:text-[20px] hover:skew-x-[-10deg] font-semibold border-white border-2 p-[16px_20px] leading-[1] transition-all',
+          ' text-white text-[18px] lg:text-[20px] hover:skew-x-[-10deg] font-semibold border-white border-2 p-[16px_20px] leading-none',
         danger:
           'text-nowrap text-[18px] bg-red-500 px-9 py-2.5 text-xl font-semibold tracking-wider text-white transition-all hover:brightness-90 hover:saturate-150 hover:scale-105 hover:shadow-lg',
         none: '',

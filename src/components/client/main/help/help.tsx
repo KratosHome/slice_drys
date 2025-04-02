@@ -9,7 +9,6 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import '@splidejs/react-splide/css'
 
-import '../../styles/slider.css'
 import './help.css'
 
 interface HelpProps {
@@ -120,7 +119,7 @@ const Help: FC<HelpProps> = ({ data }) => {
           <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"
-            className="flex max-w-max self-center px-5 py-6"
+            className="help__btn"
             onClick={() => handleImageClick(data.link)}
           >
             <span>{data.button}</span>
