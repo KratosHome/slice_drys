@@ -8,6 +8,7 @@ import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { Arrow } from '@/components/ui/arrow'
 
 import { contacts } from '@/data/contacts'
+import '../../styles/slider.css'
 import './InstaFeed.css'
 import '@splidejs/react-splide/css'
 

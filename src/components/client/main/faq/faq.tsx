@@ -30,7 +30,16 @@ const Faq: FC<faqProps> = ({ data }) => {
       preventOverlaps: true,
       onToggle: (self) => {
         if (!self.isActive) {
-          gsap.set(faqRef.current, { autoAlpha: 0 })
+          gsap.to(faqRef.current, {
+            autoAlpha: 0,
+            y: self.direction === -1 ? 50 : -50,
+            duration: 0.6,
+            stagger: {
+              each: 0.2,
+              from: self.direction === -1 ? 'start' : 'end',
+            },
+            ease: 'power1.out',
+          })
         } else {
           gsap.fromTo(
             faqRef.current,
