@@ -1,10 +1,50 @@
+.instafeed .splide__arrow {
+    background-color: transparent;
+}
 
-.instafeed {
-    .splide__arrow {
-        background-color: transparent;
-    }
+.instafeed .splide__pagination__page {
+    background-color: transparent;
+}
 
-    .splide__pagination__page {
-        background-color: transparent;
+.instafeed .splide__pagination.custom__pagination {
+    bottom: -33px;
+}
+
+@media (min-width: 768px) {
+    .instafeed .splide__pagination.custom__pagination {
+        bottom: -43px;
     }
+}
+
+@media (min-width: 1024px) {
+    .instafeed .splide__pagination.custom__pagination {
+        bottom: -50px;
+    }
+}
+
+.instafeed .splide__slide {
+    position: relative;
+    align-items: stretch;
+}
+
+@media (min-width: 768px) {
+    .instafeed .splide__slide {
+        margin-right: 1px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .instafeed .splide__slide {
+        margin-right: 2px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+.instafeed .splide__track {
+    padding-bottom: 70px;
+    overflow: visible;
+    overflow-x: clip;
 }
