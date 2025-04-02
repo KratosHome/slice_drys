@@ -23,6 +23,7 @@ export async function getProductsList({
   minWeight,
   maxWeight,
 }: IGetProductsParams) {
+  'use server'
   try {
     await connectToDb()
 

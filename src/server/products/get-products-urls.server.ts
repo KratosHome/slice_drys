@@ -4,6 +4,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Product } from '@/server/products/productSchema'
 
 export async function getProductsUrls() {
+  'use server'
   try {
     await connectToDb()
 

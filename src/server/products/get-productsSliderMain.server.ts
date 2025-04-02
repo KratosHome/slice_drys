@@ -4,6 +4,7 @@ import { Product } from '@/server/products/productSchema'
 import cloudinary from '../cloudinaryConfig'
 
 export async function getProductsSliderMain(locale: ILocale) {
+  'use server'
   try {
     await connectToDb()
 

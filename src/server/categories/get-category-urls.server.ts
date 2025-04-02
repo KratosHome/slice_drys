@@ -2,6 +2,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 
 export async function getCategoryUrls() {
+  'use server'
   try {
     await connectToDb()
 

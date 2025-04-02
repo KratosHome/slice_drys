@@ -12,6 +12,7 @@ export async function getProducts(
   locale: string,
   fetchAll: boolean = false,
 ) {
+  'use server'
   try {
     await connectToDb()
 

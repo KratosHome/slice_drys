@@ -1,3 +1,4 @@
+'use server'
 import cloudinary from '../cloudinaryConfig'
 import { connectToDb } from '../connectToDb'
 import { Product } from './productSchema'

@@ -7,6 +7,7 @@ import { getNovaPoshtaApiData } from './get-np-api-data.server'
 export async function getNPBranchesByCityRef(
   cityRef: string,
 ): Promise<IDirectoryBranch[] | null> {
+  'use server'
   const branches = await getNPBranchesByCityRefFromDirectory(cityRef)
 
   if (!branches) {

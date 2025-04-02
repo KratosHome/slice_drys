@@ -6,6 +6,7 @@ import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
 export async function deletePost(id: string) {
+  'use server'
   try {
     await connectToDb()
 
