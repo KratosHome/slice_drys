@@ -194,7 +194,7 @@ const WholesaleForm = () => {
                     onChange={handleChange}
                     value={value}
                     ref={ref}
-                    className="h-[60px] w-full rounded-none border-[1px] bg-transparent px-[8px] py-[14px] text-[16px] text-black placeholder-black dark:border-white dark:text-[white] dark:placeholder-[#FAFAFA]"
+                    className="placeholder:text-muted-foreground text-foreground border-input h-[58px] w-full rounded-none border-[1px] bg-transparent px-[8px] py-[14px] text-[16px]"
                   />
                 )
               }}
