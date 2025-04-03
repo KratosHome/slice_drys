@@ -114,7 +114,7 @@ export default function Order({ defaultCities }: Props) {
         <Button
           ref={submitBtnRef}
           type="submit"
-          variant={'outline'}
+          variant={'none'}
           className="mx-auto w-full text-base text-nowrap lg:w-min lg:text-xl"
           disabled={totalPrice < minOrderAmount || userData?.formStep !== 4}
           onClick={handleSubmit}

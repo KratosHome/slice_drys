@@ -59,6 +59,7 @@ export default function HamburgerMenu({
         onClick={() => setIsOpen(!isOpen)}
         variant="none"
         className="relative bg-transparent active:scale-110 lg:hidden"
+        aria-label={t('open_main_menu')}
       >
         <div className={containerClasses}>
           <div className="tham-box">

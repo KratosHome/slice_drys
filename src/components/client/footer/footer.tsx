@@ -23,7 +23,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
     <footer className="bg-black text-white">
       <nav className="relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px]">
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
-          {pageLinks[locale].slice(0, 3)?.map((link: ILink) => (
+          {pageLinks[locale].slice(0, 2)?.map((link: ILink) => (
             <li key={link.id} className={cn(linkStyle, 'pl-0')}>
               <Link href={`/${locale}/${link.href}`}>{link.name}</Link>
             </li>
@@ -52,7 +52,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </div>
 
         <ul className="flex flex-col gap-[19px] justify-self-end text-end md:hidden">
-          {pageLinks[locale].slice(1, 5)?.map((link: ILink) => (
+          {pageLinks[locale].slice(1, 2)?.map((link: ILink) => (
             <li
               key={link.id}
               className={cn(
@@ -65,7 +65,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           ))}
         </ul>
         <ul className="g-[10px] hidden flex-col justify-self-end text-end md:flex">
-          {pageLinks[locale].slice(3, 5)?.map((link: ILink) => (
+          {pageLinks[locale].slice(2, 5)?.map((link: ILink) => (
             <li
               key={link.id}
               className={cn(
