@@ -22,10 +22,6 @@ const ProductSlider = dynamic(
   },
 )
 
-const Help = dynamic(() => import('@/components/client/main/help/help'), {
-  loading: () => <Loader />,
-})
-
 const Faq = dynamic(() => import('@/components/client/main/faq/faq'), {
   loading: () => <Loader />,
 })
@@ -75,7 +71,7 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, categoriesData, helpData, blogData] = await Promise.all([
+  const [productsData, categoriesData, blogData] = await Promise.all([
     fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.products}`] },
@@ -84,11 +80,6 @@ export default async function Home(props: {
     await fetch(`${url}/api/categories`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
-    }).then((res) => res.json()),
-
-    await fetch(`${url}/api/block/help?locale=${locale}`, {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.helpMain}`] },
     }).then((res) => res.json()),
 
     fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
@@ -110,7 +101,6 @@ export default async function Home(props: {
         title={t('products-slider.title')}
         message={t('products-slider.message')}
       />
-      <Help data={helpData.data} />
       <Faq data={faqData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData[locale]} />
@@ -119,3 +109,17 @@ export default async function Home(props: {
     </>
   )
 }
+
+/*
+
+    await fetch(`${url}/api/block/help?locale=${locale}`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.helpMain}`] },
+    }).then((res) => res.json()),
+
+const Help = dynamic(() => import('@/components/client/main/help/help'), {
+  loading: () => <Loader />,
+})
+
+
+ */

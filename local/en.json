@@ -10,8 +10,7 @@
       "instagram-icon": "instagram icon",
       "logo-slice-drys": "logo slice drys",
       "telephone-icon": "telephone icon",
-      "logo": "logo",
-      "open_main_menu": "Open main menu"
+      "logo": "logo"
     },
     "products-slider": {
       "title": "top-notch dried sushennyky",
@@ -58,7 +57,8 @@
     },
     "burger-menu": {
       "catalog": "Catalog",
-      "logo": "logo"
+      "logo": "logo",
+      "open_main_menu": "Open main menu"
     }
   },
   "cart": {
