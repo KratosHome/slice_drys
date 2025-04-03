@@ -38,6 +38,7 @@ const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
 })
 
 export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
+  'use server'
   try {
     await connectToDb()
 
@@ -76,6 +77,7 @@ type GetAllPostsOptions = {
 }
 
 export async function getAllPosts({ locale }: GetAllPostsOptions) {
+  'use server'
   try {
     await connectToDb()
 
@@ -111,6 +113,7 @@ type GetPostOptions = {
 }
 
 export async function getPost({ locale, slug, isVisited }: GetPostOptions) {
+  'use server'
   try {
     await connectToDb()
 

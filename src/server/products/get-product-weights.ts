@@ -4,6 +4,7 @@ import { Product } from '@/server/products/productSchema'
 import { Category } from '@/server/categories/categories-schema'
 
 export async function getProductWeights(categorySlug: string) {
+  'use server'
   try {
     await connectToDb()
 

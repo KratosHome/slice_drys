@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/admin/ui/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
 export default function AnimatedLoader() {

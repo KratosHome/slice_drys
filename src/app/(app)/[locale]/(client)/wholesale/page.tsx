@@ -1,6 +1,6 @@
 import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import { instaData } from '@/data/main/insta-data'
-import ToTheTop from '@/components/client/ui/to-the-top'
+import ToTheTop from '@/components/ui/to-the-top'
 import Help from '@/components/client/main/help/help'
 import Partners from '@/components/client/main/partners'
 import { partnersData } from '@/data/main/partners'
@@ -11,7 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
+} from '@/components/ui/breadcrumbs'
 import { getTranslations } from 'next-intl/server'
 import WholesaleForm from '@/components/client/wholesale/wholesale-form'
 import { helpData } from '@/data/wholesale-about'
@@ -79,21 +79,21 @@ export default async function Wholesale(props: { params: Params }) {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="mb-[66px] mt-[40px] text-center font-rubik text-[40px] leading-[38px] lg:mt-[66px] lg:text-[98px] lg:leading-[88px]">
+        <h1 className="font-rubik mt-[40px] mb-[66px] text-center text-[40px] leading-[38px] lg:mt-[66px] lg:text-[98px] lg:leading-[88px]">
           {t('wholesale_dried_fruits_in_bulk')}
         </h1>
         <div className="flex justify-center">
-          <div className="min-h-28 w-[100%] max-w-[790px] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-[20px] leading-[28px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <div className="font-poppins min-h-28 w-[100%] max-w-[790px] items-center justify-center bg-black px-10 py-5 text-left text-[20px] leading-[28px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
             {t('do_you_have_business')}
           </div>
         </div>
-        <div className="mt-[77px] text-center font-rubik text-[32px] lg:mt-[130px] lg:text-[64px]">
+        <div className="font-rubik mt-[77px] text-center text-[32px] lg:mt-[130px] lg:text-[64px]">
           {t('why_us')}
         </div>
         <div className="mt-[71px] grid grid-cols-1 gap-[29px] md:grid-cols-3">
           {whyWe[locale].map((item) => (
             <div key={item.title} className="w-full">
-              <div className="w-full bg-black p-[16px] text-center font-rubik text-[24px] text-white lg:text-[32px]">
+              <div className="font-rubik w-full bg-black p-[16px] text-center text-[24px] text-white lg:text-[32px]">
                 {item.title}
               </div>
               <div className="w-full border border-dashed border-black p-[14px] text-center text-[16px] lg:text-[18px]">

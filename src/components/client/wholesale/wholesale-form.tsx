@@ -1,13 +1,13 @@
 'use client'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Input } from '@/components/admin/ui/input'
-import Button from '@/components/client/ui/button'
-import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+import { Input } from '@/components/ui/input'
+import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
 import { toast } from '@/hooks/use-toast'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 interface FormData {
   name: string
@@ -56,7 +56,7 @@ const WholesaleForm = () => {
   return (
     <div className="grid lg:grid-cols-2">
       <div className="relative overflow-hidden">
-        <div className="absolute z-[-1] mt-6 h-32 w-32 rounded-full bg-gradient-to-r from-red-200 to-red-300 opacity-50 blur-3xl md:mt-24 md:h-64 md:w-64" />
+        <div className="absolute z-[-1] mt-6 h-32 w-32 rounded-full bg-linear-to-r from-red-200 to-red-300 opacity-50 blur-3xl md:mt-24 md:h-64 md:w-64" />
         <Image
           src={'/images/cart.webp'}
           alt={t('icon_cart')}
@@ -76,53 +76,53 @@ const WholesaleForm = () => {
           alt={t('icon_cart')}
           width={150}
           height={150}
-          className="ml-8 mt-5 rotate-[25deg] object-contain md:ml-[380px] md:mt-[20px]"
+          className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
           alt={t('icon_cart')}
           width={100}
           height={100}
-          className="ml-4 mt-5 rotate-[-25deg] object-contain md:ml-[320px] md:mt-[20px]"
+          className="mt-5 ml-4 rotate-[-25deg] object-contain md:mt-[20px] md:ml-[320px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
           alt={t('icon_cart')}
           width={150}
           height={150}
-          className="ml-8 mt-5 rotate-[25deg] object-contain md:ml-[380px] md:mt-[20px]"
+          className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
           alt={t('icon_cart')}
           width={100}
           height={100}
-          className="ml-4 mt-5 rotate-[-25deg] object-contain md:ml-[320px] md:mt-[20px]"
+          className="mt-5 ml-4 rotate-[-25deg] object-contain md:mt-[20px] md:ml-[320px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
           alt={t('icon_cart')}
           width={150}
           height={150}
-          className="ml-8 mt-5 rotate-[25deg] object-contain md:ml-[380px] md:mt-[20px]"
+          className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
         />
       </div>
       <div className="overflow-hidden">
-        <div className="text-center font-rubik text-[32px] lg:text-[54px]">
+        <div className="font-rubik text-center text-[32px] lg:text-[54px]">
           {t('fill_out_form')}:
         </div>
         <div className="relative flex justify-center gap-[46px]">
-          <span className="block rotate-90 animate-follow font-rubik text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
-          <span className="block rotate-90 animate-follow font-rubik text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
-          <span className="block rotate-90 animate-follow font-rubik text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
         </div>
-        <div className="mt-14 bg-black py-5 text-center font-rubik text-[32px] text-white lg:text-[40px]">
+        <div className="font-rubik mt-14 bg-black py-5 text-center text-[32px] text-white lg:text-[40px]">
           {t('start_cooperation')}
         </div>
         <form
@@ -194,7 +194,7 @@ const WholesaleForm = () => {
                     onChange={handleChange}
                     value={value}
                     ref={ref}
-                    className="h-[60px] w-full rounded-none border-[1px] bg-transparent px-[8px] py-[14px] text-[16px] text-black placeholder-black dark:border-white dark:text-[white] dark:placeholder-[#FAFAFA]"
+                    className="placeholder:text-muted-foreground text-foreground border-input h-[58px] w-full rounded-none border-[1px] bg-transparent px-[8px] py-[14px] text-[16px]"
                   />
                 )
               }}
@@ -253,7 +253,7 @@ const WholesaleForm = () => {
             <Button
               variant="button"
               type="submit"
-              className="!h-[60px] !max-w-max px-7"
+              className="h-[60px]! max-w-max! px-7"
             >
               {t('send')}
             </Button>

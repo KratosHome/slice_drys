@@ -2,6 +2,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Post } from '@/server/posts/postSchema'
 
 export async function getPostsUrls() {
+  'use server'
   try {
     await connectToDb()
 

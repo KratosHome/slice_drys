@@ -1,17 +1,19 @@
 'use client'
-
-import { locales } from '@/data/locales'
-
-import { Input } from '@/components/admin/ui/input'
-import { Label } from '@/components/admin/ui/label'
-import { Button } from '@/components/admin/ui/button'
+import React, { FC, useEffect, useState } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { deleteCategory } from '@/server/categories/delete-category.server'
+import { toast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
+import { updateCategory } from '@/server/categories/update-category.server'
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/client/ui/dialog'
+} from '@/components/ui/dialog'
 import Image from 'next/image'
 import QuillEditor from '@/components/admin/quill-editor'
 
@@ -22,6 +24,8 @@ import { updateCategory } from '@/server/categories/update-category.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
+import { Button } from '@/components/ui/button'
 
 interface IUpdateTreeProps {
   selectedCategory: ICategory

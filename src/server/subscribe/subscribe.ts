@@ -3,6 +3,7 @@ import { connectToDb } from '@/server/connectToDb'
 import { Subscription } from './subscriptionSchema'
 
 export async function subscribe(email: string) {
+  'use server'
   try {
     await connectToDb()
 

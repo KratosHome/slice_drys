@@ -4,6 +4,7 @@ export async function getNovaPoshtaApiData<T>(
   calledMethod: 'getCities' | 'getWarehouses',
   methodProperties?: Record<string, unknown>,
 ): Promise<INovaPoshtaApiResponse<T>> {
+  'use server'
   const API_URL: string | undefined = process.env.NOVA_POSHTA_API_URL
   const API_KEY: string | undefined = process.env.NOVA_POSHTA_API_KEY
 

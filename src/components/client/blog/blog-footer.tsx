@@ -3,13 +3,13 @@ import React from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 
-import { AspectRatio } from '../ui/aspect-ratio'
-import { Input } from '@/components/admin/ui/input'
-import Button from '../ui/button'
-import SpinnerBtn from '../ui/spinner-btn'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Input } from '@/components/ui/input'
+import SpinnerBtn from '@/components/ui/spinner-btn'
 import { subscribe } from '@/server/subscribe/subscribe'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/utils/cn'
+import { Button } from '@/components/ui/button'
 
 function BlogFooter() {
   const locale = useLocale() as ILocale
@@ -41,10 +41,10 @@ function BlogFooter() {
   }
   return (
     <section className="container mt-[83px] md:mt-[120px]">
-      <p className="w-[77%] bg-black p-3 font-rubik text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] text-white shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
+      <p className="font-rubik w-[77%] bg-black p-3 text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] text-white shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
         {t('description-bottom')}
       </p>
-      <div className="underline-wave relative ml-auto mt-[50px] w-fit max-w-[73%] pb-3 text-base md:max-w-none md:pb-5 md:text-xl">
+      <div className="underline-wave relative mt-[50px] ml-auto w-fit max-w-[73%] pb-3 text-base md:max-w-none md:pb-5 md:text-xl">
         {t('email-caption')}
       </div>
       <div className="mb-[100px] grid items-center md:grid-cols-2">
@@ -64,7 +64,7 @@ function BlogFooter() {
           className="mt-8 flex flex-col items-center justify-center"
         >
           <div>
-            <span className="block rotate-90 animate-follow font-rubik text-[108px] leading-none">
+            <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
               {'>'}
             </span>
           </div>
@@ -73,12 +73,12 @@ function BlogFooter() {
             type="email"
             required
             name="email"
-            className="mt-[70px] !h-[60px] w-full max-w-[550px] p-4 text-base leading-normal md:px-4 md:py-[18px] md:text-xl"
+            className="mt-[70px] h-[60px]! w-full max-w-[550px] p-4 text-base leading-normal md:px-4 md:py-[18px] md:text-xl"
           ></Input>
           <Button
             variant="button"
             className={cn(
-              'mt-[80px] flex !h-[60px] items-center px-[60px] md:mt-[90px]',
+              'mt-[80px] flex h-[60px]! items-center px-[60px] md:mt-[90px]',
             )}
             disabled={isLoading}
           >

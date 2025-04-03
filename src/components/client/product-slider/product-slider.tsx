@@ -2,9 +2,10 @@
 import { useEffect } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from '@/components/client/ui/arrow'
+import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product/product'
 
+import '../styles/slider.css'
 import './product-slider.css'
 import '@splidejs/react-splide/css'
 
@@ -72,7 +73,7 @@ export default function ProductSlider({
     type: 'loop',
     autoplay: true,
     interval: 3000,
-    perPage: 3,
+    perPage: Math.min(products.length, 3),
     perMove: 1,
     gap: '18px',
     focus: 0,
@@ -103,9 +104,9 @@ export default function ProductSlider({
         <h2 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
           {title}
         </h2>
-        <h2 className="underline-wave relative w-fit pb-4 font-poppins text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
+        <p className="underline-wave font-poppins relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
           {message}
-        </h2>
+        </p>
       </div>
       <Splide
         aria-labelledby={`${title} slider`}

@@ -1,4 +1,5 @@
-import { Checkbox } from '@/components/admin/ui/checkbox'
+import React, { FC } from 'react'
+import { Checkbox } from '@/components/ui/checkbox'
 
 interface ICategoryTreeProps {
   categories: ICategory[]

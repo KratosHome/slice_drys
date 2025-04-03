@@ -71,7 +71,7 @@ const SliderItem = ({
     <div
       style={{ background: hoverHexColor }}
       className={cn(
-        `absolute aspect-[1/1] w-[5rem] rounded opacity-0 md:w-[10rem]`,
+        `absolute aspect-1/1 w-[5rem] rounded opacity-0 md:w-[10rem]`,
         isHovered && 'opacity-30 blur-xl md:blur-3xl',
       )}
     />

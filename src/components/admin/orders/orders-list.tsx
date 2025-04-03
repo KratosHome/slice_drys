@@ -20,10 +20,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from '@/components/admin/ui/dropdown-menu'
-import { Button } from '@/components/admin/ui/button'
-import { Checkbox } from '@/components/admin/ui/checkbox'
-import { Input } from '@/components/admin/ui/input'
+} from '@/components/ui/dropdown-menu'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -31,7 +30,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/admin/ui/table'
+} from '@/components/ui/table'
 import {
   AlertCircle,
   CheckCircle,
@@ -42,6 +41,7 @@ import {
   RefreshCw,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 const statusIcons = {
   new: <Clock className="text-blue-500" />,
@@ -184,7 +184,7 @@ function DataTable<TData>({
       </div>
 
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} з{' '}
           {table.getFilteredRowModel().rows.length} сторінки
         </div>

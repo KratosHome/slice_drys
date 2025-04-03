@@ -5,6 +5,7 @@ import { NovaPoshtaCities, NovaPoshtaDefaultCities } from './novaPoshtaSchema'
 import { getNovaPoshtaApiData } from './get-np-api-data.server'
 
 export async function getDefaultNPCitiesFromDictionary() {
+  'use server'
   try {
     await connectToDb()
     const cities = await NovaPoshtaDefaultCities.find({}).lean<

@@ -1,22 +1,22 @@
 import type { ReactNode } from 'react'
-
-import { routing } from '@/i18n/routing'
-import { fetchTags } from '@/data/fetch-tags'
-
-import { NextIntlClientProvider } from 'next-intl'
-import { SpeedInsights } from '@vercel/speed-insights/next'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
-import { seedCategories } from '@/server/seed/category'
+import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
 import Header from '@/components/client/header'
-import { Toaster } from '@/components/admin/ui/toaster'
-import NotFoundPage from '@/components/not-found'
-import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
-import { GoogleAnalytics } from '@/components/client/google-analytics'
-import Footer from '@/components/client/footer'
 
 import '../globals.css'
+import { routing } from '@/i18n/routing'
+import NotFoundPage from '@/components/not-found'
+import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
+import { fetchTags } from '@/data/fetch-tags'
+import dynamic from 'next/dynamic'
+import { Loader } from 'lucide-react'
+import ClientDynamicMain from '@/components/client/dynamic-imports/min'
+
+const Footer = dynamic(() => import('@/components/client/footer/footer'), {
+  loading: () => <Loader />,
+})
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -29,13 +29,6 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-rubik-doodle-shadow',
-  weight: ['400'],
-})
-
-const DMSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-dm-sans',
   weight: ['400'],
 })
 
@@ -52,7 +45,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const { locale } = params
   const { children } = props
 
-  if (!routing.locales.includes(locale as ILocale)) {
+  if (!hasLocale(routing.locales, locale)) {
     return (
       <html>
         <body>
@@ -69,30 +62,20 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
 
-  if (process.env.NODE_ENV === 'development') await seedCategories()
-
   return (
     <html
       lang={locale}
-      className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
+      className={`${montserrat.variable} ${rubikDoodleShadow.variable}`}
     >
-      <SpeedInsights />
-
-      <GoogleAnalytics />
-
-      <NextIntlClientProvider messages={messages}>
-        <body className="flex min-h-svh flex-col">
-          <ScrollToTop />
-
+      <GoogleTagManager />
+      <body className="flex min-h-svh flex-col">
+        <NextIntlClientProvider messages={messages}>
+          <ClientDynamicMain />
           <Header productLinks={categoriesData.data} />
-
           <main className="flex-1">{children}</main>
-
           <Footer productLinks={categoriesData.data} />
-
-          <Toaster />
-        </body>
-      </NextIntlClientProvider>
+        </NextIntlClientProvider>
+      </body>
     </html>
   )
 }

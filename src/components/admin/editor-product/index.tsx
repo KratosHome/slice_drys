@@ -8,11 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/admin/ui/alert-dialog'
-import { Button } from '@/components/admin/ui/button'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import { Checkbox } from '@/components/admin/ui/checkbox'
+} from '@/components/ui/alert-dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
 import Loading from '@/components/admin/ui/loading'
 import Image from 'next/image'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
@@ -22,10 +21,14 @@ import { type ChangeEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { createProduct } from '@/server/products/create-product.server'
 import { toast } from '@/hooks/use-toast'
+import Loading from '@/components/ui/loading'
 import { editProduct } from '@/server/products/edit-product.server'
 import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import { deleteProduct } from '@/server/products/delete-product.server'
+import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
+import { Button } from '@/components/ui/button'
 
 interface ICrateProduct {
   buttonTitle: string

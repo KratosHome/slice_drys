@@ -12,7 +12,7 @@ function InstaCard({ post }: Props) {
       whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
       transition={{ duration: 0.3 }}
     >
-      <div className="grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px] font-dmsans">
+      <div className="font-dmsans grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px]">
         <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px]">
           <Image
             src={'/icons/logo-white.svg'}
@@ -22,7 +22,7 @@ function InstaCard({ post }: Props) {
             height={100}
           />
         </span>
-        <p className="self-end text-[11px] font-bold leading-[1.3]">
+        <p className="self-end text-[11px] leading-[1.3] font-bold">
           slicedrys
         </p>
         <p className="text-[9px] leading-[1.3]">Kyiv, UA</p>
@@ -49,7 +49,7 @@ function InstaCard({ post }: Props) {
         />
         <Dots number={'children' in post ? post.children.data.length : 0} />
       </div>
-      <p className="line-clamp-2 overflow-hidden overflow-ellipsis text-wrap px-[17px] pt-[12px] text-[14px] lg:text-[16px]">
+      <p className="line-clamp-2 overflow-hidden px-[17px] pt-[12px] text-[14px] text-wrap text-ellipsis lg:text-[16px]">
         {'children' in post
           ? post?.caption || post.children.data[0]?.caption
           : post.caption}
@@ -58,10 +58,11 @@ function InstaCard({ post }: Props) {
     </ResponsiveMotion>
   )
 }
+
 const Dots = ({ number }: { number: number }) => {
   if (!number) return null
   return (
-    <div className="absolute bottom-[20px] right-[50%] flex translate-x-1/2 gap-[4px]">
+    <div className="absolute right-[50%] bottom-[20px] flex translate-x-1/2 gap-[4px]">
       {Array.from({ length: number }).map((_, index) => (
         <span
           className="h-[10px] w-[10px] rounded-full bg-slate-400"
@@ -73,7 +74,7 @@ const Dots = ({ number }: { number: number }) => {
 }
 const CardFooter = () => {
   return (
-    <div className="flex items-center gap-[10px] px-[17px] pb-[14px] pt-[12px]">
+    <div className="flex items-center gap-[10px] px-[17px] pt-[12px] pb-[14px]">
       <svg
         width="25"
         height="25"

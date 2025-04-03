@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/client/ui/accordion'
+} from '@/components/ui/accordion'
 import 'quill/dist/quill.snow.css'
 import { FC } from 'react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
@@ -13,8 +13,8 @@ import {
   ChequeIcon,
   PaperIcon,
 } from '@/components/client/product-page/icons'
-import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 interface AccordionsProps {
   nutrition: INutritionalValue
@@ -35,14 +35,14 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
       className="mx-auto mb-[230px] grid max-w-[988px] gap-6"
     >
       <AccordionItem value="about">
-        <motion.div
+        <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            {t('about_product')}
+            <h2>{t('about_product')}</h2>
           </AccordionTrigger>
-        </motion.div>
+        </ResponsiveMotion>
         <AccordionContent className="border border-t-0">
           <section className="flex flex-wrap gap-5 sm:flex-nowrap">
             <article
@@ -55,30 +55,30 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
       </AccordionItem>
 
       <AccordionItem value={'nutrition'}>
-        <motion.div
+        <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            {t('nutritional_value')}
+            <h2>{t('nutritional_value')}</h2>
           </AccordionTrigger>
-        </motion.div>
+        </ResponsiveMotion>
         <AccordionContent className="border border-t-0 px-4">
           <section className="my-6 grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2">
             <div className="flex w-full max-w-[290px] justify-between">
-              <span className="font-bold">{t('proteins')}</span>
+              <h3 className="font-bold">{t('proteins')}</h3>
               <span>{nutrition.proteins} г</span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
-              <span className="font-bold">{t('fats')}</span>
+              <h3 className="font-bold">{t('fats')}</h3>
               <span>{nutrition.fats} г</span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
-              <span className="font-bold">{t('carbohydrates')}</span>
+              <h3 className="font-bold">{t('carbohydrates')}</h3>
               <span>{nutrition.carbohydrates} г</span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
-              <span className="font-bold">Енергетична цінність</span>
+              <h3 className="font-bold">Енергетична цінність</h3>
               <span>{nutrition.energyValue} г</span>
             </div>
           </section>
@@ -86,14 +86,14 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
       </AccordionItem>
 
       <AccordionItem value={'info'}>
-        <motion.div
+        <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
             {t('shelf_life')}
           </AccordionTrigger>
-        </motion.div>
+        </ResponsiveMotion>
         <AccordionContent className="gap-6 border border-t-0 p-6">
           <section className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
@@ -115,12 +115,12 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
       </AccordionItem>
 
       <AccordionItem value={'delivery'}>
-        <motion.div
+        <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">{t('delivery')}</AccordionTrigger>
-        </motion.div>
+        </ResponsiveMotion>
         <AccordionContent className="gap-6 border border-t-0 p-6">
           <div className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">

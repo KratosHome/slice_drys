@@ -1,7 +1,10 @@
+'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 
 export const seedCategories = async (): Promise<IResponse> => {
+  'use server'
+}
   try {
     await connectToDb()
 

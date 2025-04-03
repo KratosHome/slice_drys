@@ -1,9 +1,6 @@
 'use client'
 
-import type {
-  ToastActionElement,
-  ToastProps,
-} from '@/components/admin/ui/toast'
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 
 import { useEffect, useState, type ReactNode } from 'react'
 

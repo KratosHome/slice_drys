@@ -11,7 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/admin/ui/sidebar'
+} from '@/components/ui/sidebar'
 
 import { useLocale } from 'next-intl'
 

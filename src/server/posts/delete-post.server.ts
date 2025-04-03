@@ -8,6 +8,7 @@ import cloudinary from '../cloudinaryConfig'
 import { revalidateTag } from 'next/cache'
 
 export async function deletePost(id: string): Promise<IResponse> {
+  'use server'
   try {
     await connectToDb()
 

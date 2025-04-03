@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
-import Share from '@/components/client/ui/share'
+import Share from '@/components/ui/share'
 import NotFoundPage from '@/components/not-found'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
@@ -116,7 +116,7 @@ export default async function PostPage({ params }: Props) {
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
         <div className="mt-10"></div>
         <div className="my-20 px-20">
-          <h1 className="flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left font-poppins text-4xl font-bold leading-[48px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <h1 className="font-poppins flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left text-4xl leading-[48px] font-bold text-white drop-shadow-[16px_-16px_0px_#A90909]">
             {title}
           </h1>
         </div>

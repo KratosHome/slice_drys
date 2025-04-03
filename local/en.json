@@ -57,7 +57,8 @@
     },
     "burger-menu": {
       "catalog": "Catalog",
-      "logo": "logo"
+      "logo": "logo",
+      "open_main_menu": "Open main menu"
     }
   },
   "cart": {

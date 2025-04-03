@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   const data = await getPosts({
     locale: (searchParams.get('locale') as ILocale) ?? 'uk',
     page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 8,
+    limit: Number(searchParams.get('limit')) || 5,
   })
   return NextResponse.json(data)
 }

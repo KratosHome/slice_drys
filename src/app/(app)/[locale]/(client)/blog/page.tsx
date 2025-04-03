@@ -9,7 +9,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
   PaginationPrevious,
-} from '@/components/client/ui/pagination'
+} from '@/components/ui/pagination'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,7 +17,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
+} from '@/components/ui/breadcrumbs'
 import PostList from '@/components/client/blog/post-list'
 import BlogTitle from '@/components/client/blog/blog-title'
 import BlogFooter from '@/components/client/blog/blog-footer'
@@ -108,7 +108,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
 
   const postsData = await fetch(
-    `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}`,
+    `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
     {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.posts}`] },

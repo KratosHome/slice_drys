@@ -29,5 +29,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/(en|uk)/:path*'],
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
 }

@@ -25,7 +25,7 @@ const NumberCall = ({ className, variant = 'dark' }: INumberCallProps) => {
     >
       <div
         className={cn(
-          'shrink-0 transform duration-300 group-hover:skew-x-[-5deg] group-hover:scale-110',
+          'shrink-0 transform duration-300 group-hover:scale-110 group-hover:skew-x-[-5deg]',
           variant === 'light' ? '[filter:invert(1)]' : '[filter:invert(0)]',
         )}
       >

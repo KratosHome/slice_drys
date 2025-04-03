@@ -6,13 +6,14 @@ import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from '@/components/client/ui/arrow'
+import { Arrow } from '@/components/ui/arrow'
 import { formatDate } from '@/utils/format-date'
-import { AspectRatio } from '@/components/client/ui/aspect-ratio'
-import { UnderlinedLink } from '@/components/client/ui/underlined-link'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { useIsMobile } from '@/hooks/use-mobile'
+import '../../styles/slider.css'
 import '@splidejs/react-splide/css'
-import './blog.scss'
+import './blog.css'
 
 interface BlogSectionProps {
   data: IPost[]
@@ -83,7 +84,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
           </h2>
           <UnderlinedLink
             href={`${locale}/blog`}
-            className="md:order-0 order-1"
+            className="order-1 md:order-0"
           >
             {t('more-btn')}
           </UnderlinedLink>

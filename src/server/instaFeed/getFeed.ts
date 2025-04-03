@@ -1,6 +1,7 @@
 'use server'
 
 export async function getFeed(limit: number) {
+  'use server'
   const accessToken = process.env.INSTAGRAM_TOKEN
   const userId = process.env.INSTAGRAM_ID
   const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink'
