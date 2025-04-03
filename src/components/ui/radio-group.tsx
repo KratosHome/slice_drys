@@ -1,20 +1,25 @@
-import { Root, Item, Indicator } from '@radix-ui/react-radio-group'
-import { cva, type VariantProps } from 'class-variance-authority'
+'use client'
 
-import {
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-  forwardRef,
-} from 'react'
+import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
+import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { CheckIcon } from '@radix-ui/react-icons'
+
 import { cn } from '@/utils/cn'
 
-const RadioGroup = forwardRef<
-  ComponentRef<typeof Root>,
-  ComponentPropsWithoutRef<typeof Root>
+const RadioGroup = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  return <Root className={cn('grid gap-2', className)} {...props} ref={ref} />
+  return (
+    <RadioGroupPrimitive.Root
+      className={cn('grid gap-2', className)}
+      {...props}
+      ref={ref}
+    />
+  )
 })
+RadioGroup.displayName = RadioGroupPrimitive.Root.displayName
 
 const radioStyles = cva('', {
   variants: {
@@ -34,7 +39,7 @@ const RadioGroupItem = React.forwardRef<
     VariantProps<typeof radioStyles>
 >(({ className, iconSize, ...props }, ref) => {
   return (
-    <Item
+    <RadioGroupPrimitive.Item
       ref={ref}
       className={cn(
         'border-primary text-primary focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow-sm focus:outline-hidden focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
@@ -42,13 +47,12 @@ const RadioGroupItem = React.forwardRef<
       )}
       {...props}
     >
-      <Indicator className="flex items-center justify-center">
+      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
         <CheckIcon className={cn('fill-primary', radioStyles({ iconSize }))} />
-      </Indicator>
-    </Item>
+      </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
   )
 })
-
-RadioGroupItem.displayName = Item.displayName
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName
 
 export { RadioGroup, RadioGroupItem }

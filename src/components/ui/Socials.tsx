@@ -5,8 +5,6 @@ import React from 'react'
 import { contacts } from '@/data/contacts'
 import { Button } from '@/components/ui/button'
 
-import Button from '@/components/client/ui/button'
-
 function Socials({
   variant,
   size = 33,

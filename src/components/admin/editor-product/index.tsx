@@ -12,10 +12,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import Loading from '@/components/admin/ui/loading'
 import Image from 'next/image'
-import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import QuillEditor from '@/components/admin/quill-editor'
 
 import { type ChangeEvent, useEffect, useState } from 'react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
@@ -27,8 +24,8 @@ import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import { deleteProduct } from '@/server/products/delete-product.server'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
 import { Button } from '@/components/ui/button'
+import QuillEditor from '@/components/admin/quill-editor'
 
 interface ICrateProduct {
   buttonTitle: string

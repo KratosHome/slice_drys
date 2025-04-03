@@ -1,5 +1,4 @@
 'use client'
-import React, { FC, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import { Label } from '@/components/admin/ui/label'
+import { Label } from '@/components/ui/label'
 import QuillEditor from '@/components/admin/quill-editor'
 
 import { useState } from 'react'
@@ -18,8 +17,6 @@ import { createCategory } from '@/server/categories/create-categories.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { locales } from '@/data/locales'
-import { Label } from '@/components/ui/label'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
 import { Button } from '@/components/ui/button'
 
 interface ICategoriesTreeProps {

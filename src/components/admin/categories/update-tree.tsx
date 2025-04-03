@@ -1,12 +1,8 @@
 'use client'
-import React, { FC, useEffect, useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import { SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { deleteCategory } from '@/server/categories/delete-category.server'
-import { toast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
-import { updateCategory } from '@/server/categories/update-category.server'
 import {
   Dialog,
   DialogContent,
@@ -18,14 +14,14 @@ import Image from 'next/image'
 import QuillEditor from '@/components/admin/quill-editor'
 
 import { type ChangeEvent, useEffect, useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { deleteCategory } from '@/server/categories/delete-category.server'
 import { updateCategory } from '@/server/categories/update-category.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
 import { Button } from '@/components/ui/button'
+import { locales } from '@/data/locales'
 
 interface IUpdateTreeProps {
   selectedCategory: ICategory
