@@ -10,14 +10,14 @@ const Contacts = async () => {
   return (
     <section className="mx-auto flex flex-col items-center font-bold">
       <div className="mt-4 w-full flex-wrap items-center justify-between gap-[26px] md:flex md:items-start md:gap-[54px] lg:flex-nowrap lg:gap-[154px]">
-        <div className="relative text-red-500">
+        <div className="relative">
           <h1 className="font-rubik mb-[27px] w-full text-[clamp(48px,calc(64px+64*(100vw-768px)/672),96px)] font-normal md:w-fit">
             {t('title')}
           </h1>
-          <p className="description underline-wave font-poppins relative mb-[17px] ml-auto w-fit pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
+          <p className="description underline-wave font-poppins relative mb-[17px] ml-auto w-fit fill-stone-950 pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
             {t('description')}
           </p>
-          <div className="mt-8 flex justify-end gap-x-4">
+          <div className="mt-8 flex justify-end">
             <Socials variant="dark" size={40} />
           </div>
           <div className="relative top-[-30px] z-[-1] mb-8 block min-h-[143px] md:top-0 md:h-[390px]">

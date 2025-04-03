@@ -136,10 +136,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
               productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
-            <div
-              ref={socialRef}
-              className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
-            >
+            <div ref={socialRef} className="mt-5 hidden justify-end lg:flex">
               <Socials variant="dark" size={33} />
             </div>
           </div>
