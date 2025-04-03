@@ -59,7 +59,7 @@ const ContactForm = ({
         {form_description}
       </div>
       <div>
-        <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none font-normal">
+        <span className="animate-follow font-rubik block text-[108px] leading-none font-normal">
           {'>'}
         </span>
       </div>

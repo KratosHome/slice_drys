@@ -112,13 +112,13 @@ const WholesaleForm = () => {
           {t('fill_out_form')}:
         </div>
         <div className="relative flex justify-center gap-[46px]">
-          <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
-          <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
-          <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
+          <span className="animate-follow font-rubik block text-[108px] leading-none">
             {'>'}
           </span>
         </div>

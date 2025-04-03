@@ -64,7 +64,7 @@ function BlogFooter() {
           className="mt-8 flex flex-col items-center justify-center"
         >
           <div>
-            <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
+            <span className="animate-follow font-rubik block text-[108px] leading-none">
               {'>'}
             </span>
           </div>
