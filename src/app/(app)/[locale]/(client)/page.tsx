@@ -10,7 +10,6 @@ import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
-import { partnersData } from '@/data/main/partners'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import { Loader } from 'lucide-react'
@@ -28,10 +27,6 @@ const Help = dynamic(() => import('@/components/client/main/help/help'), {
 })
 
 const Faq = dynamic(() => import('@/components/client/main/faq/faq'), {
-  loading: () => <Loader />,
-})
-
-const Partners = dynamic(() => import('@/components/client/main/partners'), {
   loading: () => <Loader />,
 })
 
@@ -117,7 +112,6 @@ export default async function Home(props: {
       />
       <Help data={helpData.data} />
       <Faq data={faqData[locale]} />
-      <Partners data={partnersData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
       <Reviews reviews={reviewsData[locale]} />
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
