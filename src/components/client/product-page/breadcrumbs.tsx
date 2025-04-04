@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
+} from '@/components/ui/breadcrumbs'
 import React, { FC } from 'react'
 import { getTranslations } from 'next-intl/server'
 

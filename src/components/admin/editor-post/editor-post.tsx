@@ -9,10 +9,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/admin/ui/alert-dialog'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import { RadioGroup, RadioGroupItem } from '@/components/admin/ui/radio-group'
+} from '@/components/ui/alert-dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import Image from 'next/image'
 
@@ -22,12 +21,13 @@ import { createPost } from '@/server/posts/create-post.server'
 import { editPost } from '@/server/posts/edit-post'
 import { deletePost } from '@/server/posts/delete-post.server'
 
-import { Button } from '@/components/admin/ui/button'
-import Spinner from '@/components/admin/ui/spinner'
+import Spinner from '@/components/ui/spinner'
 
 import { useToast } from '@/hooks/use-toast'
 import { toSlug } from '@/utils/toSlug'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 interface ICratePost {
   buttonTitle: string

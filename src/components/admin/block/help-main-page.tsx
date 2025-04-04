@@ -1,13 +1,13 @@
 'use client'
 import React, { FC, useState, useEffect } from 'react'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import { Button } from '@/components/admin/ui/button'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { updateHelpData } from '@/server/block/update-help-main.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import { convertToBase64 } from '@/utils/convertToBase64'
+import { Button } from '@/components/ui/button'
 
 interface FormValues {
   title_en: string

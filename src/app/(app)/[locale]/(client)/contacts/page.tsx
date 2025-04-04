@@ -8,7 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
+} from '@/components/ui/breadcrumbs'
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
 import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
 

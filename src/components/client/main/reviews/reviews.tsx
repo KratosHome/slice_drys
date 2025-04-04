@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/all'
 import { useGSAP } from '@gsap/react'
 
 import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
-import { UnderlinedLink } from '@/components/client/ui/underlined-link'
+import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { useForm } from 'react-hook-form'
 import {
   Dialog,
@@ -14,10 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/client/ui/dialog'
-import Button from '@/components/client/ui/button'
-import { Input } from '@/components/admin/ui/input'
-import { Textarea } from '@/components/admin/ui/textarea'
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import { sendReviews } from '@/server/info/send-reviews.server'
 
@@ -92,12 +92,12 @@ export default function Reviews({ reviews }: ReviewsProps) {
   return (
     <section
       aria-labelledby="reviews"
-      className="section relative w-full max-w-[1280px] overflow-x-clip before:absolute before:-left-14 before:top-[50px] before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:-right-20 after:top-[-10px] after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat 1440:overflow-visible md:before:bg-[url('/images/jerky.webp')] md:after:-right-4 md:after:top-[40%] lg:before:left-0"
+      className="section 1440:overflow-visible relative w-full max-w-[1280px] overflow-x-clip before:absolute before:top-[50px] before:-left-14 before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:top-[-10px] after:-right-20 after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat md:before:bg-[url('/images/jerky.webp')] md:after:top-[40%] md:after:-right-4 lg:before:left-0"
     >
-      <span className="absolute inset-0 z-[-1] before:absolute before:-left-24 before:bottom-[210px] before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]"></span>
+      <span className="absolute inset-0 z-[-1] before:absolute before:bottom-[210px] before:-left-24 before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]"></span>
       <div className="mx-auto w-full max-w-[910px] px-[20px] pb-[50px] lg:px-0">
         <h2 className="title-section text-center">{t('title')}</h2>
-        <p className="underline-wave relative mb-8 mt-5 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">
+        <p className="underline-wave relative mt-5 mb-8 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">
           {t('say-those')}
         </p>
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
@@ -116,13 +116,16 @@ export default function Reviews({ reviews }: ReviewsProps) {
       </div>
       <Dialog open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
         <DialogTrigger asChild>
-          <UnderlinedLink as="button" className="md:order-0 order-1 max-w-max">
+          <UnderlinedLink
+            as="button"
+            className="order-1 max-w-max cursor-pointer md:order-0"
+          >
             {t('add_new_review')}
           </UnderlinedLink>
         </DialogTrigger>
         <DialogContent className="border-none sm:max-w-[425px]">
           <DialogHeader className="absolute left-0 -mt-[1px] flex h-[86px] w-full items-center justify-center bg-black text-white sm:rounded-lg">
-            <DialogTitle className="text-center font-rubik text-[32px]">
+            <DialogTitle className="font-rubik text-center text-[32px]">
               {t('add_new_review')}
             </DialogTitle>
           </DialogHeader>
@@ -155,7 +158,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
             <div className="flex justify-between gap-3">
               <Button
                 variant="outline"
-                className="w-full"
+                className="h-full w-full"
                 onClick={() => setIsReviewsOpen(false)}
               >
                 {t('back')}

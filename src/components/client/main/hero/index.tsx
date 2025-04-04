@@ -98,11 +98,11 @@ export const Hero = ({
 
   return (
     <div className="overflow-hidden">
-      <div className="container mb-[255px] overflow-x-clip sm:pt-9 xl:overflow-x-visible">
+      <div className="container mx-auto mb-[255px] max-w-[1280px] overflow-x-clip px-5 sm:pt-9 xl:overflow-x-visible">
         <div className="px-[20px]">
           <div
             className={cn(
-              'relative w-fit origin-left -rotate-[2.92deg] transform text-[28px] font-bold leading-10 text-white',
+              'relative w-fit origin-left -rotate-[2.92deg] transform text-[28px] leading-10 font-bold text-white',
               'sm:text-[40px] sm:leading-snug md:text-[48px] lg:text-[64px]',
             )}
             ref={titleRef}
@@ -123,7 +123,7 @@ export const Hero = ({
             <div
               key={item.slug}
               className={cn(
-                'z-1 absolute bottom-0 h-[200%] translate-y-1/2',
+                'absolute bottom-0 z-1 h-[200%] translate-y-1/2',
 
                 index === 0 && '-rotate-[50deg] lg:-rotate-[60deg]',
                 index === 1 && '-rotate-[25deg] lg:-rotate-[30deg]',
@@ -152,7 +152,7 @@ export const Hero = ({
           <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
             <Arcs color={hoverHexColor} />
 
-            <div className="absolute -bottom-2 right-1/2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
+            <div className="absolute right-1/2 -bottom-2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
               <Image
                 ref={imgRef}
                 src={slidersLocale[hoveredIndex].image}
@@ -172,7 +172,7 @@ export const Hero = ({
             </div>
 
             {slidersLocale[hoveredIndex].subImages && (
-              <div className="hero__animation absolute -bottom-2 right-1/2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
+              <div className="hero__animation absolute right-1/2 -bottom-2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
                 <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
                   {slidersLocale[hoveredIndex].subImages.map((item, index) => {
                     const top = isMobile
@@ -195,7 +195,7 @@ export const Hero = ({
                         quality={70}
                         loading="eager"
                         className={cn(
-                          `absolute left-1/2 top-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
+                          `absolute top-1/2 left-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
                           isMobile ? `opacity-1` : '',
                           isDesktop ? `w-[${item.width}px]` : '',
                         )}

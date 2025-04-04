@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/client/ui/dialog'
-import Button from '@/components/client/ui/button'
-import { Label } from '@/components/admin/ui/label'
-import { Input } from '@/components/admin/ui/input'
-import ForwardedMaskedInput from '@/components/client/ui/ForwardedMaskedInput'
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
+import { Button } from '@/components/ui/button'
 
 interface FormData {
   name: string
@@ -129,7 +129,7 @@ const CallMe = () => {
                     onChange={handleChange}
                     value={value}
                     ref={ref}
-                    className="h-[48px] w-full rounded-[8px] border-[1px] border-black bg-transparent px-[8px] py-[14px] text-[16px] text-black placeholder-black dark:border-white dark:text-[white] dark:placeholder-[#FAFAFA]"
+                    className="placeholder:text-muted-foreground text-foreground border-input h-[48px] w-full rounded-[8px] border-[1px] bg-transparent px-[8px] py-[14px] text-[16px]"
                   />
                 )
               }}

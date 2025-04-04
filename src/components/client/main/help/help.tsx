@@ -3,13 +3,14 @@ import { FC, useEffect } from 'react'
 import Image from 'next/image'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from '@/components/client/ui/arrow'
-import Button from '@/components/client/ui/button'
+import { Arrow } from '@/components/ui/arrow'
+import { Button } from '@/components/ui/button'
 import { useIsMobile } from '@/hooks/use-mobile'
-import { AspectRatio } from '../../ui/aspect-ratio'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import '@splidejs/react-splide/css'
 
-import './help.scss'
+import '../../styles/slider.css'
+import './help.css'
 
 interface HelpProps {
   data: IHelpLocal
@@ -119,7 +120,7 @@ const Help: FC<HelpProps> = ({ data }) => {
           <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"
-            className="help__btn"
+            className="flex max-w-max self-center px-5 py-6"
             onClick={() => handleImageClick(data.link)}
           >
             <span>{data.button}</span>

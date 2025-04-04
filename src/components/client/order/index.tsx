@@ -8,9 +8,9 @@ import { motion } from 'framer-motion'
 import { sendOrderNotification } from '@/server/info/order notification.server'
 import OrderForm from '@/components/client/order/order-form'
 import OrderList from '@/components/client/order/order-list'
-import Button from '@/components/client/ui/button'
 import { useCartStore } from '@/store/cartStore'
 import { useToast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   defaultCities: {
@@ -96,7 +96,7 @@ export default function Order({ defaultCities }: Props) {
   }
 
   return (
-    <div className="mt-10 flex flex-col items-center gap-[70px] font-poppins lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
+    <div className="font-poppins mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
       <OrderForm ref={formRef} defaultCities={defaultCities} />
 
       <div
@@ -107,15 +107,15 @@ export default function Order({ defaultCities }: Props) {
           borderImageSlice: '1',
         }}
       >
-        <div className="bg-black py-3 text-center font-rubik text-[30px] text-white lg:text-[32px]">
+        <div className="font-rubik bg-black py-3 text-center text-[30px] text-white lg:text-[32px]">
           {tOrder('view_order')}
         </div>
         <OrderList />
         <Button
           ref={submitBtnRef}
           type="submit"
-          variant={'outline'}
-          className="mx-auto w-full text-nowrap text-base lg:w-min lg:text-xl"
+          variant={'none'}
+          className="mx-auto w-full text-base text-nowrap lg:w-min lg:text-xl"
           disabled={totalPrice < minOrderAmount || userData?.formStep !== 4}
           onClick={handleSubmit}
         >

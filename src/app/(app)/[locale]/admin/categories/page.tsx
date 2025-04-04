@@ -1,6 +1,12 @@
 import { getCategories } from '@/server/categories/get-categories.server'
-import CategoriesTree from '@/components/admin/categories/categories-tree'
-import CreateCategories from '@/components/admin/categories/create-categories'
+import dynamic from 'next/dynamic'
+
+const CategoriesTree = dynamic(
+  () => import('@/components/admin/categories/categories-tree'),
+)
+const CreateCategories = dynamic(
+  () => import('@/components/admin/categories/create-categories'),
+)
 
 export default async function Categories() {
   const dataCategories = await getCategories()

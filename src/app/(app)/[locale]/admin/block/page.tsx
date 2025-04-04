@@ -1,9 +1,4 @@
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/admin/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import HelpMainPage from '@/components/admin/block/help-main-page'
 import { getHelpMain } from '@/server/block/get-help-main.server'
 

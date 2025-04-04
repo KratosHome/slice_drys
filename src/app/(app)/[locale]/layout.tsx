@@ -1,21 +1,18 @@
 import type { ReactNode } from 'react'
-import { NextIntlClientProvider } from 'next-intl'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
-import { Rubik_Doodle_Shadow, DM_Sans, Montserrat } from 'next/font/google'
-import { seedCategories } from '@/server/seed/category'
+import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
 import Header from '@/components/client/header'
-import { Toaster } from '@/components/admin/ui/toaster'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
 import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { fetchTags } from '@/data/fetch-tags'
-import ScrollToTop from '@/components/client/scroll-to-top/scroll-to-top'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
+import ClientDynamicMain from '@/components/client/dynamic-imports/min'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -35,13 +32,6 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   weight: ['400'],
 })
 
-const DMSans = DM_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-dm-sans',
-  weight: ['400'],
-})
-
 const url = process.env.NEXT_URL
 
 export default async function LocaleLayout(props: {
@@ -53,7 +43,7 @@ export default async function LocaleLayout(props: {
   const { locale } = params
   const { children } = props
 
-  if (!routing.locales.includes(locale as ILocale)) {
+  if (!hasLocale(routing.locales, locale)) {
     return (
       <html>
         <body>
@@ -70,26 +60,20 @@ export default async function LocaleLayout(props: {
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
 
-  if (process.env.NODE_ENV === 'development') {
-    await seedCategories()
-  }
-
   return (
     <html
       lang={locale}
-      className={`${montserrat.variable} ${rubikDoodleShadow.variable} ${DMSans.variable}`}
+      className={`${montserrat.variable} ${rubikDoodleShadow.variable}`}
     >
-      <SpeedInsights />
       <GoogleTagManager />
-      <NextIntlClientProvider messages={messages}>
-        <body className="flex min-h-svh flex-col">
-          <ScrollToTop />
+      <body className="flex min-h-svh flex-col">
+        <NextIntlClientProvider messages={messages}>
+          <ClientDynamicMain />
           <Header productLinks={categoriesData.data} />
           <main className="flex-1">{children}</main>
           <Footer productLinks={categoriesData.data} />
-          <Toaster />
-        </body>
-      </NextIntlClientProvider>
+        </NextIntlClientProvider>
+      </body>
     </html>
   )
 }

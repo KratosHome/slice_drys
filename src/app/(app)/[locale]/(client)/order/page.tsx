@@ -8,8 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/client/ui/breadcrumbs'
-import ToTheTop from '@/components/client/ui/to-the-top'
+} from '@/components/ui/breadcrumbs'
+import ToTheTop from '@/components/ui/to-the-top'
 import {
   seedNovaPoshtaCitiesDictionary,
   seedNovaPoshtaDefaultCities,
@@ -107,7 +107,7 @@ export default async function OrderPage() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="title-section title-rubik mt-10 !normal-case md:mt-[66px]">
+        <h1 className="title-section title-rubik mt-10 normal-case! md:mt-[66px]">
           {t('Order')}
         </h1>
         <Order

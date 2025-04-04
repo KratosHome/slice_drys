@@ -4,10 +4,11 @@ import { useEffect } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 import InstaCard from './instaCard'
-import { UnderlinedLink } from '../../ui/underlined-link'
-import { Arrow } from '@/components/client/ui/arrow'
+import { UnderlinedLink } from '@/components/ui/underlined-link'
+import { Arrow } from '@/components/ui/arrow'
 
 import { contacts } from '@/data/contacts'
+import '../../styles/slider.css'
 import './InstaFeed.css'
 import '@splidejs/react-splide/css'
 
@@ -66,12 +67,12 @@ export default function InstaFeed({ data, title }: Props) {
     <section className="section instafeed px-6 py-12">
       <div className="mx-auto max-w-[1200px]">
         <div className="flex items-center justify-center gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)] md:justify-end">
-          <h2 className="title-rubik text-balance text-center text-[42px] md:text-start lg:text-[64px]">
+          <h2 className="title-rubik text-center text-[42px] text-balance md:text-start lg:text-[64px]">
             {title}
           </h2>
           <UnderlinedLink
             href={contacts.instagram}
-            className="md:order-0 order-1 hidden !min-w-[220px] md:flex"
+            className="order-1 hidden min-w-[220px]! md:order-0 md:flex"
           >
             @slicedrys
           </UnderlinedLink>
@@ -102,7 +103,7 @@ export default function InstaFeed({ data, title }: Props) {
           }}
           className="insta-slider mt-[clamp(32px,calc(32px+68*(100vw-375px)/1065),100px)]"
         >
-          {data.map((post, index) => (
+          {data.slice(0, 5).map((post, index) => (
             <SplideSlide key={index} className="flex flex-col items-center">
               <InstaCard post={post} />
             </SplideSlide>

@@ -11,19 +11,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/client/ui/dialog'
-import { Button } from '@/components/admin/ui/button'
+} from '@/components/ui/dialog'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/client/ui/accordion'
+} from '@/components/ui/accordion'
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
-import CheckboxRoot from '@/components/client/ui/checkbox-root'
-import CheckboxIndicator from '@/components/client/ui/checkbox-indicator'
-import { Slider } from '@/components/client/ui/slider'
+import CheckboxRoot from '@/components/ui/checkbox-root'
+import CheckboxIndicator from '@/components/ui/checkbox-indicator'
+import { Slider } from '@/components/ui/slider'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 interface ProductFiltersProps {
   categories: ICategory[]
@@ -144,7 +144,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik !text-[36px]">
+                <AccordionTrigger className="font-rubik text-[36px]">
                   {t('type')}
                 </AccordionTrigger>
               </motion.div>
@@ -171,7 +171,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                           <CheckboxIndicator />
                         </CheckboxPrimitive.Indicator>
                       </CheckboxPrimitive.Root>
-                      <span className="font-poppins text-[20px] text-xl font-normal uppercase">
+                      <span className="font-poppins text-xl text-[20px] font-normal uppercase">
                         {category.name[locale]}
                       </span>
                     </motion.label>
@@ -189,7 +189,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik !text-[36px]">
+                <AccordionTrigger className="font-rubik text-[36px]">
                   {t('weight')}
                 </AccordionTrigger>
               </motion.div>
@@ -203,8 +203,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     onValueChange={(value) => setSliderValue(value)}
                   />
                   <div className="mt-10 flex items-center justify-between">
-                    <span className="flex font-poppins text-[20px]">
-                      <div className="mr-5 mt-9">{t('from')}</div>
+                    <span className="font-poppins flex text-[20px]">
+                      <div className="mt-9 mr-5">{t('from')}</div>
                       <div className="relative mt-8">
                         <Image
                           src="/icons/o-oval.svg"
@@ -219,8 +219,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         </div>
                       </div>
                     </span>
-                    <span className="flex font-poppins text-[20px]">
-                      <div className="mr-5 mt-9">{t('to')}</div>
+                    <span className="font-poppins flex text-[20px]">
+                      <div className="mt-9 mr-5">{t('to')}</div>
                       <div className="relative mt-8">
                         <Image
                           src="/icons/o-oval.svg"
@@ -255,7 +255,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                   {t('filter')}
                 </DialogTitle>
                 <DialogDescription>
-                  <div className="flex flex-wrap items-center justify-between gap-2 pb-[40px] pt-[30px]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-[30px] pb-[40px]">
                     <Button
                       className="rounded-none text-base"
                       variant="outline"
@@ -279,7 +279,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     className="mb-2"
                   >
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="font-rubik !text-[36px]">
+                      <AccordionTrigger className="font-rubik text-[36px]">
                         {t('type')}
                       </AccordionTrigger>
                       <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
@@ -305,7 +305,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                   <CheckboxIndicator />
                                 </CheckboxPrimitive.Indicator>
                               </CheckboxPrimitive.Root>
-                              <span className="font-poppins text-[20px] text-xl font-normal uppercase">
+                              <span className="font-poppins text-xl text-[20px] font-normal uppercase">
                                 {category.name[locale]}
                               </span>
                             </label>
@@ -319,7 +319,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                   <Accordion type="single" collapsible defaultValue="item-2">
                     <AccordionItem value="item-2">
-                      <AccordionTrigger className="font-rubik !text-[36px]">
+                      <AccordionTrigger className="font-rubik text-[36px]">
                         {t('weight')}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -332,8 +332,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                             onValueChange={(value) => setSliderValue(value)}
                           />
                           <div className="mt-10 flex items-center justify-between">
-                            <span className="flex font-poppins text-[20px]">
-                              <div className="mr-5 mt-9">{t('from')}</div>
+                            <span className="font-poppins flex text-[20px]">
+                              <div className="mt-9 mr-5">{t('from')}</div>
                               <div className="relative mt-8">
                                 <Image
                                   src="/icons/o-oval.svg"
@@ -348,8 +348,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                 </div>
                               </div>
                             </span>
-                            <span className="flex font-poppins text-[20px]">
-                              <div className="mr-5 mt-9">{t('to')}</div>
+                            <span className="font-poppins flex text-[20px]">
+                              <div className="mt-9 mr-5">{t('to')}</div>
                               <div className="relative mt-8">
                                 <Image
                                   src="/icons/o-oval.svg"

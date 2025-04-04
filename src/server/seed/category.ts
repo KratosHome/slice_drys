@@ -1,7 +1,9 @@
+'use server'
 import { connectToDb } from '@/server/connectToDb'
 import { Category } from '@/server/categories/categories-schema'
 
 export const seedCategories = async () => {
+  'use server'
   try {
     await connectToDb()
 

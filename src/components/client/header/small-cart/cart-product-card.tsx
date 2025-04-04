@@ -16,7 +16,7 @@ function CartProductCard({ itemData: item, className }: Props) {
     <div
       key={item.id + item.weight}
       className={cn(
-        'flex select-none items-center justify-between gap-4 p-2 transition-transform duration-200 will-change-transform hover:scale-[1.02] hover:shadow-md',
+        'flex items-center justify-between gap-4 p-2 transition-transform duration-200 will-change-transform select-none hover:scale-[1.02] hover:shadow-md',
         className,
       )}
     >
@@ -56,7 +56,7 @@ function CartProductCard({ itemData: item, className }: Props) {
 
           <div className="flex w-[115px] items-center justify-between bg-black px-[12px] text-white">
             <div
-              className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+              className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
               onClick={() =>
                 updateItemQuantity(
                   item.id,
@@ -72,7 +72,7 @@ function CartProductCard({ itemData: item, className }: Props) {
             <span className="text-[24px]">{item.quantity}</span>
 
             <div
-              className="cursor-pointer font-rubik text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+              className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
               onClick={() =>
                 updateItemQuantity(
                   item.id,

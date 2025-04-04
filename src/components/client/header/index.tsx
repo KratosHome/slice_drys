@@ -8,7 +8,7 @@ import LocaleChange from '@/components/client/header/locale-change/locale-change
 import SmallCart from '@/components/client/header/small-cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
-import Socials from '../ui/Socials'
+import Socials from '@/components/ui/Socials'
 
 import { useRef } from 'react'
 import { gsap } from 'gsap'
@@ -136,10 +136,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
               productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
-            <div
-              ref={socialRef}
-              className="mt-5 hidden justify-end gap-x-5 pr-3 lg:flex"
-            >
+            <div ref={socialRef} className="mt-5 hidden justify-end lg:flex">
               <Socials variant="dark" size={33} />
             </div>
           </div>

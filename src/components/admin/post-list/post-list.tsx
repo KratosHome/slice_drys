@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/admin/ui/table'
+} from '@/components/ui/table'
 import {
   ColumnDef,
   flexRender,
@@ -21,7 +21,7 @@ import {
 } from '@tanstack/react-table'
 import Image from 'next/image'
 import EditorPost from '../editor-post/editor-post'
-import { Button } from '@/components/admin/ui/button'
+import { Button } from '@/components/ui/button'
 
 interface IPostList {
   data: IGetPostsAdmin

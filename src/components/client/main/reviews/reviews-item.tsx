@@ -9,7 +9,7 @@ interface ReviewsProps {
 }
 
 const quotesStyle =
-  'after:leading-[1] after:block before:block before:leading-[1] relative before:absolute before:font-rubik before:left-0 before:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] before:content-["“"] after:absolute after:left-full after:bottom-0 after:font-rubik after:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] after:content-["”"]'
+  'after:leading-none after:block before:block before:leading-none relative before:absolute before:font-rubik before:left-0 before:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] before:content-["“"] after:absolute after:left-full after:bottom-0 after:font-rubik after:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] after:content-["”"]'
 
 export const ReviewsItem = forwardRef<HTMLLIElement, ReviewsProps>(
   function ReviewsItem({ text, author, variant }, ref) {
@@ -33,7 +33,7 @@ export const ReviewsItem = forwardRef<HTMLLIElement, ReviewsProps>(
           </div>
           <span
             className={cn(
-              'hidden translate-y-[50%] font-rubik text-[clamp(64px,calc(64px+136*(100vw-375px)/1065),200px)] leading-[0.5]',
+              'font-rubik hidden translate-y-[50%] text-[clamp(64px,calc(64px+136*(100vw-375px)/1065),200px)] leading-[0.5]',
               variant === 'black' && 'block',
             )}
           >

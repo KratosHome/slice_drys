@@ -7,6 +7,7 @@ export async function getProductsSliderProduct(
   locale: ILocale,
   productSlug: string,
 ) {
+  'use server'
   try {
     await connectToDb()
 

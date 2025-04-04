@@ -8,12 +8,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/client/ui/popover'
+} from '@/components/ui/popover'
 
 import { useCartStore } from '@/store/cartStore'
-import Button from '@/components/client/ui/button'
 import CartProductCard from './cart-product-card'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { Button } from '@/components/ui/button'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
@@ -60,9 +60,9 @@ export default function SmallCart() {
         </PopoverTrigger>
 
         <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
-          <div className="absolute right-0 top-0 z-20 w-full bg-white px-5 pt-5">
+          <div className="absolute top-0 right-0 z-20 w-full bg-white px-5 pt-5">
             <div className="flex w-full items-center justify-between border-b bg-black p-[12px] text-white md:px-[48px] md:py-[32px]">
-              <div className="p-0 font-rubik text-[32px] uppercase leading-[0.9] md:text-[64px]">
+              <div className="font-rubik p-0 text-[32px] leading-[0.9] uppercase md:text-[64px]">
                 {t('basket')}
               </div>
 
@@ -91,7 +91,7 @@ export default function SmallCart() {
             </div>
           ) : (
             <>
-              <div className="absolute left-0 top-[75px] w-full bg-white px-6 text-right text-[16px] md:top-[140px]">
+              <div className="absolute top-[75px] left-0 w-full bg-white px-6 text-right text-[16px] md:top-[140px]">
                 <span className="mr-[24px] font-semibold text-[#7D7D7D]">
                   {t('added')}
                 </span>
@@ -103,7 +103,7 @@ export default function SmallCart() {
                 </span>
               </div>
 
-              <div className="space-y-4 overflow-y-auto overflow-x-hidden pb-[150px] pt-[70px] md:pt-[150px]">
+              <div className="space-y-4 overflow-x-hidden overflow-y-auto pt-[70px] pb-[150px] md:pt-[150px]">
                 {cart.itemList?.map((item) => (
                   <CartProductCard
                     itemData={item}
@@ -139,15 +139,15 @@ export default function SmallCart() {
                     {t('continue-shopping')}
                   </ResponsiveMotion>
                   <Button
-                    variant={'outline'}
-                    className="w-full"
+                    variant={'none'}
+                    className="mt-3 w-full"
                     disabled={totalPrice < minOrderAmount}
                     onClick={openCat}
                   >
                     <ResponsiveMotion
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex h-[60px] cursor-pointer items-center justify-center bg-black text-center text-white"
+                      className="flex h-[60px] w-full cursor-pointer items-center justify-center bg-black text-center text-white"
                     >
                       {t('order')}
                     </ResponsiveMotion>

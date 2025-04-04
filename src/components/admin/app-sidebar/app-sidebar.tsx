@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/admin/ui/sidebar'
+} from '@/components/ui/sidebar'
 import React from 'react'
 import { appSidebarData } from '@/data/app-sidebar'
 

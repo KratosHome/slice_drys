@@ -4,13 +4,14 @@ import { Product } from '@/server/products/productSchema'
 import cloudinary from '../cloudinaryConfig'
 
 export async function getProductsSliderMain(locale: ILocale) {
+  'use server'
   try {
     await connectToDb()
 
     const products = await Product.find()
       .populate('categories', 'slug')
       .sort({ visited: -1 })
-      .limit(7)
+      .limit(5)
       .lean<IProductLocal[]>()
 
     const formattedProducts: IProduct[] = products.map(

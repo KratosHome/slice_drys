@@ -1,3 +1,4 @@
+'use server'
 import { connectToDb } from '@/server/connectToDb'
 import {
   NovaPoshtaCities,
@@ -6,6 +7,7 @@ import {
 import { getNPCityOnline } from '../delivery/get-cities.server'
 
 export const seedNovaPoshtaDefaultCities = async () => {
+  'use server'
   try {
     await connectToDb()
 

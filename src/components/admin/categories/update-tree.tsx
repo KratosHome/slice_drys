@@ -1,9 +1,8 @@
 'use client'
 import React, { FC, useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Input } from '@/components/admin/ui/input'
-import { Label } from '@/components/admin/ui/label'
-import { Button } from '@/components/admin/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { deleteCategory } from '@/server/categories/delete-category.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
@@ -14,11 +13,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/client/ui/dialog'
+} from '@/components/ui/dialog'
 import { locales } from '@/data/locales'
 import Image from 'next/image'
 import { convertToBase64 } from '@/utils/convertToBase64'
 import QuillEditor from '@/components/admin/editor-post/quill-editor'
+import { Button } from '@/components/ui/button'
 
 interface UpdateTreeProps {
   selectedCategory: ICategory

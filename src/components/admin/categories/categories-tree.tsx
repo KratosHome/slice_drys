@@ -47,7 +47,7 @@ const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
 
   return (
     <div className="flex flex-col gap-6 p-6 md:flex-row">
-      <div className="w-full rounded-lg border bg-white p-4 shadow md:w-1/3">
+      <div className="w-full rounded-lg border bg-white p-4 shadow-sm md:w-1/3">
         <h2 className="mb-4 text-lg font-semibold">Категорії</h2>
         <DndContext
           collisionDetection={closestCenter}
@@ -72,7 +72,7 @@ const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
         </DndContext>
       </div>
 
-      <div className="w-full rounded-lg border bg-white p-4 shadow md:w-2/3">
+      <div className="w-full rounded-lg border bg-white p-4 shadow-sm md:w-2/3">
         <h2 className="mb-4 text-lg font-semibold">Інформація</h2>
         {selectedCategory ? (
           <UpdateTree selectedCategory={selectedCategory} />

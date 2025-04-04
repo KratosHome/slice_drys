@@ -5,6 +5,7 @@ import { Order } from './orderSchema'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 export async function createOrder(orderData: IOrder): Promise<IOrderResponse> {
+  'use server'
   const t = await getTranslations('order')
   const locale = (await getLocale()) as ILocale
   try {
