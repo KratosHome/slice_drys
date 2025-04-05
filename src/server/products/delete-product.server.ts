@@ -1,16 +1,18 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Product } from '@/server/products/productSchema'
-import cloudinary from '../cloudinaryConfig'
-import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function deleteProduct(id?: string) {
-  'use server'
+import { connectToDb } from '@/server/connectToDb'
+import cloudinary from '../cloudinaryConfig'
+import { revalidateTag } from 'next/cache'
+
+export async function deleteProduct(id?: string): Promise<IResponse> {
   try {
     await connectToDb()
 
     const deletedProduct = await Product.findByIdAndDelete(id)
+
     if (!deletedProduct) {
       return { success: false, message: "Product wasn't found" }
     }

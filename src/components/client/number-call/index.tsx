@@ -1,17 +1,19 @@
-import React, { FC } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { cn } from '@/utils/cn'
-import { useTranslations } from 'next-intl'
+'use client'
 
 import { contacts } from '@/data/contacts'
 
-interface NumberCallProps {
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { cn } from '@/utils/cn'
+import { useTranslations } from 'next-intl'
+
+interface INumberCallProps {
   className?: string
   variant?: 'light' | 'dark'
 }
 
-const NumberCall: FC<NumberCallProps> = ({ className, variant = 'dark' }) => {
+const NumberCall = ({ className, variant = 'dark' }: INumberCallProps) => {
   const t = useTranslations('main.header')
 
   return (
@@ -28,12 +30,13 @@ const NumberCall: FC<NumberCallProps> = ({ className, variant = 'dark' }) => {
         )}
       >
         <Image
-          src={'/icons/tel.svg'}
+          src="/icons/tel.svg"
           alt={`${t('telephone-icon')}`}
           width={24}
           height={24}
         />
       </div>
+
       <Link
         href={`tel:${contacts.phone}`}
         className="block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500"

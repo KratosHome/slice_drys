@@ -1,9 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+
 import { Category } from '@/server/categories/categories-schema'
+import { fetchTags } from '@/data/fetch-tags'
+
+import { connectToDb } from '@/server/connectToDb'
 import cloudinary from '@/server/cloudinaryConfig'
 import { revalidateTag } from 'next/cache'
-import { fetchTags } from '@/data/fetch-tags'
 
 type UpdateCategoryDTO = Partial<Omit<ICategory, '_id' | 'children'>>
 
@@ -12,12 +14,11 @@ export async function updateCategory(
   categoryData: UpdateCategoryDTO,
   image?: string,
 ) {
-  'use server'
-
   try {
     await connectToDb()
 
     const existingCategory = await Category.findById(categoryId)
+
     if (!existingCategory) {
       return { success: false, message: 'Категорію не знайдено' }
     }

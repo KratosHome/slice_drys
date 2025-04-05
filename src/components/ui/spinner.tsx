@@ -12,7 +12,7 @@ const Spinner = () => {
           boxSizing: 'border-box',
           animation: 'rotation 1s linear infinite',
         }}
-      ></div>
+      />
     </div>
   )
 }
