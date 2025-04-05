@@ -21,6 +21,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import UnderlineWave from '@/components/ui/underline-wave'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const router = useRouter()
@@ -206,7 +207,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             </Button>
           </div>
         </div>
-        <div className="underline-wave relative ml-auto flex w-fit justify-end gap-2 pr-5 pb-4">
+        <div className="relative ml-auto flex w-fit justify-end gap-2 pr-5 pb-4">
           <Image
             src={'/icons/haccp_certified.svg'}
             alt={''}
@@ -234,6 +235,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             height={65}
             className="mt-5"
           />
+          <UnderlineWave />
         </div>
       </div>
     </section>

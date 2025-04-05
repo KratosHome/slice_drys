@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
@@ -51,7 +50,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
       tl.to(
         headerRef.current,
         {
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          opacity: 0.9,
           backdropFilter: 'blur(10px)',
           height: '80px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
@@ -89,7 +88,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
       tl.to(
         headerRef.current,
         {
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          opacity: 0.95,
           backdropFilter: 'blur(5px)',
           marginTop: '0px',
           boxShadow: '0px 3px 8px rgba(0, 0, 0, 0.08)',
@@ -114,7 +113,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
 
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
+        className="bg-background sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
       >
         <div
           ref={menuRef}
@@ -137,20 +136,24 @@ const Header = ({ productLinks }: IHeaderProps) => {
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
             <div ref={socialRef} className="mt-5 hidden justify-end lg:flex">
-              <Socials variant="dark" size={33} />
+              <Socials size={33} />
             </div>
           </div>
 
-          <Link ref={logoRef} href={`/${locale}`} className="h-full self-start">
-            <Image
-              src="/icons/logo.svg"
-              alt={`${t('logo')}`}
-              priority={true}
-              loading="eager"
+          <Link
+            ref={logoRef}
+            href={`/${locale}`}
+            className="text-foreground h-full self-start"
+          >
+            <svg
+              width="86px"
+              height="100px"
               className="h-full"
-              width={86}
-              height={100}
-            />
+              role="img"
+              aria-label={t('logo-slice-drys')}
+            >
+              <use href="/icons/sprite.svg#logo" />
+            </svg>
           </Link>
 
           <div className="justify-self-end">

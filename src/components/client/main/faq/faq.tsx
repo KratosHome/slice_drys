@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/all'
 
 import { Item } from '@/components/client/main/faq/item'
+import UnderlineWave from '@/components/ui/underline-wave'
 
 interface faqProps {
   data: IFaq[]
@@ -70,8 +71,9 @@ const Faq: FC<faqProps> = ({ data }) => {
         <h2 className="title-section pr-0 text-center md:pr-20">
           {t('all-about-dry-fruits')}
         </h2>
-        <p className="underline-wave relative mt-5 mb-7 ml-auto w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
+        <p className="relative mt-5 mb-7 ml-auto w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
           {t('even-what-did-not-ask')}
+          <UnderlineWave />
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
           {data?.map((item: IFaq, i) => (

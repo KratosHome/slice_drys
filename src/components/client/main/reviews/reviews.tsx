@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/hooks/use-toast'
 import { sendReviews } from '@/server/info/send-reviews.server'
+import UnderlineWave from '@/components/ui/underline-wave'
 
 const variants = ['grey', 'black', 'white']
 
@@ -97,8 +98,9 @@ export default function Reviews({ reviews }: ReviewsProps) {
       <span className="absolute inset-0 z-[-1] before:absolute before:bottom-[210px] before:-left-24 before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]"></span>
       <div className="mx-auto w-full max-w-[910px] px-[20px] pb-[50px] lg:px-0">
         <h2 className="title-section text-center">{t('title')}</h2>
-        <p className="underline-wave relative mt-5 mb-8 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">
+        <p className="relative mt-5 mb-8 hidden pb-2 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] md:ml-auto md:block md:w-fit lg:pb-4">
           {t('say-those')}
+          <UnderlineWave />
         </p>
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
           {reviews.map((review, index) => (

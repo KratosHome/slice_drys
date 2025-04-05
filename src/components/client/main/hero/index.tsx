@@ -107,7 +107,7 @@ export const Hero = ({
             )}
             ref={titleRef}
           >
-            <h1 className="mt-11 bg-black px-2.5 text-white lg:px-9">
+            <h1 className="text-background bg-foreground mt-11 px-2.5 lg:px-9">
               {slidersLocale[hoveredIndex].title}
             </h1>
 

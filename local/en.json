@@ -19,7 +19,10 @@
     "footer": {
       "CTA-socials": "join our social networks",
       "public-offer": "public offer",
-      "privacy-policy": "privacy policy"
+      "privacy-policy": "privacy policy",
+      "logo-visa": "logo visa",
+      "logo-mastercard": "logo mastercard",
+      "logo-slice-drys": "logo slice drys"
     },
     "call-me": {
       "call-back": "Call back",
@@ -91,7 +94,7 @@
     "Home": "Home",
     "Blog": "Blog",
     "Page": "Page",
-    "Order":"Order processing",
+    "Order": "Order processing",
     "Contacts": "Contacts"
   },
   "share": {
@@ -216,7 +219,7 @@
     "cash": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
     "comment_title": "Order comment",
     "comment_placeholder": "If necessary, leave a comment for the order",
-    "no_comments":"No comments",
+    "no_comments": "No comments",
     "no_call": "Do not call me to confirm the order",
     "view_order": "View order",
     "btn_continue": "Continue",
@@ -253,7 +256,7 @@
     "how_did_you_find_about_us": "How did you find out about us?",
     "send": "Send"
   },
-  "contacts" : {
+  "contacts": {
     "title": "Contacts",
     "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
     "form_description": "Do you want us to call?",

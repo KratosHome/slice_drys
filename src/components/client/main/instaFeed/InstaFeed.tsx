@@ -8,9 +8,9 @@ import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { Arrow } from '@/components/ui/arrow'
 
 import { contacts } from '@/data/contacts'
+import '@splidejs/react-splide/css'
 import '../../styles/slider.css'
 import './InstaFeed.css'
-import '@splidejs/react-splide/css'
 
 type Props = Readonly<{ data: InstaFeed[]; title: string }>
 
@@ -86,7 +86,7 @@ export default function InstaFeed({ data, title }: Props) {
             interval: 3000,
             perPage: 3,
             perMove: 1,
-            focus: 0,
+            focus: 'center',
             arrows: true,
             pagination: true,
             breakpoints: {

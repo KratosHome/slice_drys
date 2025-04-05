@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import Image from 'next/image'
 import {
   Popover,
   PopoverContent,
@@ -47,10 +46,11 @@ export default function SmallCart() {
         <PopoverTrigger>
           <ResponsiveMotion
             whileHover={{ scale: 1.1 }}
-            className="cursor-pointer"
+            className="text-foreground cursor-pointer"
           >
-            <Image src="/icons/bin.svg" width={32} height={32} alt="cart" />
-
+            <svg width={32} height={32} role="img" aria-label={t('basket')}>
+              <use href="/icons/sprite.svg#bin"></use>
+            </svg>
             {isClient && cart.itemList?.length ? (
               <span className="-rig ht-1 absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-white">
                 {cart.itemList.length}
@@ -72,15 +72,15 @@ export default function SmallCart() {
                 whileTap={{ rotate: 90, scale: 0.9, opacity: 0.8 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 onClick={() => setOpenCart(false)}
-                className="cursor-pointer"
+                className="cursor-pointer text-red-700"
               >
-                <Image
-                  src="/icons/close.svg"
-                  width={48}
-                  height={48}
-                  alt={`${t('close')}`}
+                <svg
                   className="h-8 w-8 md:h-12 md:w-12"
-                />
+                  role="img"
+                  aria-label={t('close')}
+                >
+                  <use href="/icons/sprite.svg#close"></use>
+                </svg>
               </ResponsiveMotion>
             </div>
           </div>

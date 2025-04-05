@@ -1,35 +1,16 @@
 @import 'tailwindcss';
 
 @config '../../../tailwind.config.ts';
+
 @plugin 'tailwind-hamburgers';
 @plugin 'tailwindcss-animate';
 @plugin '@tailwindcss/typography';
 
 @theme {
   --breakpoint-xs: 24rem;
+  --color-grey-review: hsl(var(--grey-review));
+  --color-black-review: hsl(var(--black-review));
 }
-
-@utility font-rubik {
-  font-family: var(--font-rubik-doodle-shadow), sans-serif;
-}
-
-@utility font-dmsans {
-  font-family: var(--font-dm-sans), sans-serif;
-}
-
-@utility title-rubik {
-  @apply font-rubik leading-[1.2] font-normal;
-}
-
-@utility title-section {
-  @apply title-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] uppercase;
-}
-
-@utility section {
-  @apply mx-auto mt-[80px] lg:mt-[133px];
-}
-
-@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   *,
@@ -78,6 +59,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
     --order-text: 0 0% 38%;
     --order-background: 0 0% 89%;
+    --grey-review: 0 0% 89%;
+    --black-review: 0 0% 0%;
   }
 
   .dark {
@@ -113,8 +96,9 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --grey-review: 0 0% 16%;
+    --black-review: 0 0% 100%;
   }
-
   * {
     @apply border-border outline-ring/50;
   }
@@ -123,3 +107,39 @@
     @apply bg-background text-foreground m-0;
   }
 }
+
+@utility font-rubik {
+  font-family: var(--font-rubik-doodle-shadow), sans-serif;
+}
+
+@utility font-dmsans {
+  font-family: var(--font-dm-sans), sans-serif;
+}
+
+@utility title-rubik {
+  @apply font-rubik leading-[1.2] font-normal;
+}
+
+@utility title-section {
+  @apply title-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] uppercase;
+}
+
+@utility section {
+  @apply mx-auto mt-[80px] lg:mt-[133px];
+}
+@utility underline-wave {
+  position: absolute;
+  color: hsl(var(--foreground));
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: clamp(15px, calc(15px + 10 * (100vw - 375px) / 1065), 25px);
+  @media (min-width: 768px) {
+    bottom: -15px;
+  }
+  @media (min-width: 1024px) {
+    bottom: -20px;
+  }
+}
+
+@custom-variant dark (&:where(.dark, .dark *));

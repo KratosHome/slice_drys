@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         button:
-          'bg-black rounded-none text-white md:h-[40px] xl:h-[50px] px-[10px] lg:text-[20px] hover:enabled:skew-x-[-10deg] hover:enabled:bg-red-500 h-[30px] text-[14px] font-medium will-change-transform transition-all',
+          'bg-foreground text-background rounded-none md:h-[40px] xl:h-[50px] px-[10px] lg:text-[20px] hover:enabled:skew-x-[-10deg] hover:enabled:bg-red-500 h-[30px] text-[14px] font-medium will-change-transform transition-all',
         icons:
           'flex items-center bg-transparent hover:scale-110 transition-transform duration-300 ease-in-out max-w-max',
         yellow:

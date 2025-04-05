@@ -4,10 +4,11 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product/product'
+import UnderlineWave from '@/components/ui/underline-wave'
 
+import '@splidejs/react-splide/css'
 import '../styles/slider.css'
 import './product-slider.css'
-import '@splidejs/react-splide/css'
 
 interface ProductSlider {
   products: IProduct[]
@@ -87,7 +88,7 @@ export default function ProductSlider({
     },
     classes: {
       arrows: 'splide__arrows custom__arrows',
-      arrow: 'splide__arrow custom__arrow mx-5',
+      arrow: 'splide__arrow custom__arrow',
       prev: 'splide__arrow--prev custom__arrow-prev',
       next: 'splide__arrow--next custom__arrow-next',
       pagination: 'splide__pagination custom__pagination',
@@ -104,14 +105,15 @@ export default function ProductSlider({
         <h2 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
           {title}
         </h2>
-        <p className="underline-wave font-poppins relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
+        <p className="font-poppins relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
           {message}
+          <UnderlineWave />
         </p>
       </div>
       <Splide
         aria-labelledby={`${title} slider`}
         options={splideOptions}
-        className="products-slider mb-14 h-full w-full lg:mb-20"
+        className="products-slider text-foreground bg-background mb-14 h-full w-full lg:mb-20"
       >
         {products.map((product) => (
           <SplideSlide key={product._id} className="px-2 py-8 sm:px-3 md:px-4">

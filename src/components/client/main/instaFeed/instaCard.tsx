@@ -8,19 +8,18 @@ type Props = { post: InstaFeed }
 function InstaCard({ post }: Props) {
   return (
     <ResponsiveMotion
-      className="relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl bg-white will-change-transform md:max-w-none"
-      whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
+      className="bg-background relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl will-change-transform md:max-w-none"
+      whileHover={{
+        y: -5,
+        boxShadow: '0px 10px 20px hsla(var(--popover-foreground) / 0.2)',
+      }}
       transition={{ duration: 0.3 }}
     >
       <div className="font-dmsans grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px]">
-        <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px]">
-          <Image
-            src={'/icons/logo-white.svg'}
-            alt="LOGO"
-            className="h-full w-full"
-            width={86}
-            height={100}
-          />
+        <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px] text-white dark:bg-transparent">
+          <svg className="h-full w-full">
+            <use href="/icons/sprite.svg#logo" />
+          </svg>
         </span>
         <p className="self-end text-[11px] leading-[1.3] font-bold">
           slicedrys

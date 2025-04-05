@@ -3,6 +3,7 @@ import Socials from '@/components/ui/Socials'
 import Image from 'next/image'
 import ContactInfo from './ContactInfo'
 import ContactForm from './ContactForm'
+import UnderlineWave from '@/components/ui/underline-wave'
 
 const Contacts = async () => {
   const t = await getTranslations('contacts')
@@ -14,11 +15,12 @@ const Contacts = async () => {
           <h1 className="font-rubik mb-[27px] w-full text-[clamp(48px,calc(64px+64*(100vw-768px)/672),96px)] font-normal md:w-fit">
             {t('title')}
           </h1>
-          <p className="description underline-wave font-poppins relative mb-[17px] ml-auto w-fit fill-stone-950 pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
+          <p className="description font-poppins relative mb-[17px] ml-auto w-fit fill-stone-950 pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
             {t('description')}
+            <UnderlineWave />
           </p>
           <div className="mt-8 flex justify-end">
-            <Socials variant="dark" size={40} />
+            <Socials size={40} />
           </div>
           <div className="relative top-[-30px] z-[-1] mb-8 block min-h-[143px] md:top-0 md:h-[390px]">
             <Image

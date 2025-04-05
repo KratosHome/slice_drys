@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
@@ -6,8 +7,6 @@ import Socials from '@/components/ui/Socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
-import Image from 'next/image'
-import { FC } from 'react'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
@@ -20,8 +19,8 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
   return (
-    <footer className="bg-black text-white">
-      <nav className="relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px]">
+    <footer className="bg-foreground text-background dark:bg-background dark:text-foreground">
+      <nav className="border-background dark:border-foreground relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px] dark:border-t dark:border-dashed">
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
           {pageLinks[locale].slice(0, 2)?.map((link: ILink) => (
             <li key={link.id} className={cn(linkStyle, 'pl-0')}>
@@ -40,14 +39,14 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </ul>
 
         <div className="self-stretch justify-self-center">
-          <Link href={`/${locale}`} className="block h-full">
-            <Image
-              src={'/icons/logo-white.svg'}
-              alt="LOGO"
-              className="w-auto! px-5 transition-transform duration-300 ease-in-out md:h-full! md:px-0"
-              width={86}
-              height={100}
-            />
+          <Link href={`/${locale}`} className="block h-full text-white">
+            <svg
+              className="h-[100px] w-auto! px-5 transition-transform duration-300 ease-in-out md:px-0"
+              role="img"
+              aria-label={t('logo-slice-drys')}
+            >
+              <use href="/icons/sprite.svg#logo" />
+            </svg>
           </Link>
         </div>
 
@@ -79,18 +78,17 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </ul>
 
         <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mt-[10px] md:mb-[35px] md:justify-start">
-          <Image
-            src={'/icons/visa.svg'}
-            alt="logo-visa"
-            width={49}
-            height={50}
-          />
-          <Image
-            src={'/icons/mastercard.svg'}
-            alt="logo-mastercard"
+          <svg width={49} height={50} role="img" aria-label={t('logo-visa')}>
+            <use href="/icons/sprite.svg#visa" />
+          </svg>
+          <svg
             width={46}
             height={47}
-          />
+            role="img"
+            aria-label={t('logo-mastercard')}
+          >
+            <use href="/icons/sprite.svg#mastercard" />
+          </svg>
         </div>
         <ul className="col-start-1 col-end-4 mt-[57px] mb-[35px] flex flex-col gap-[14px] text-end md:col-span-2 md:col-start-2 md:mt-[10px] md:gap-[10px]">
           <li>
