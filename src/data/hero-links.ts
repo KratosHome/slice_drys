@@ -38,7 +38,7 @@ const slidersUk = [
     color: colorConstants.green,
   },
   {
-    title: 'Мікс джеркків',
+    title: 'Мікс джерків',
     subImages: mixSubImages,
     image: '/slider/mix.webp',
     color: colorConstants.purple,
