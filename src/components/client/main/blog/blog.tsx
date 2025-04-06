@@ -79,7 +79,10 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
     >
       <div className="about__wrapper">
         <div className="mb-6 contents items-center justify-between md:flex md:gap-[40px]">
-          <h2 className="title-section text-center !normal-case md:text-start">
+          <h2
+            id="more about us"
+            className="title-section text-center !normal-case md:text-start"
+          >
             {t('title')}
           </h2>
           <UnderlinedLink

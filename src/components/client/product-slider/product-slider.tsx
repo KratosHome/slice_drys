@@ -101,7 +101,10 @@ export default function ProductSlider({
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
       <div className="md:px-[20px] md:pb-16">
-        <h2 className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase">
+        <h2
+          id="popular-products"
+          className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase"
+        >
           {title}
         </h2>
         <p className="underline-wave font-poppins relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
