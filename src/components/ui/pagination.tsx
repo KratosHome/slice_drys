@@ -1,11 +1,11 @@
 'use client'
 import * as React from 'react'
 import Link, { LinkProps } from 'next/link'
-import { motion } from 'framer-motion'
 import { MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import Image from 'next/image'
 import { ButtonProps, buttonVariants } from '@/components/ui/button'
+import { LazyMotion, domAnimation, m, motion } from 'framer-motion'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -84,12 +84,14 @@ const PaginationLink = ({
     >
       {isActive ? (
         <div className="relative mt-8">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: [0, 1.3, 1] }}
-            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-            className="absolute inset-0 rounded-full bg-linear-to-r"
-          />
+          <LazyMotion features={domAnimation}>
+            <m.div
+              initial={{ scale: 0 }}
+              animate={{ scale: [0, 1.3, 1] }}
+              transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+              className="absolute inset-0 rounded-full bg-linear-to-r"
+            />
+          </LazyMotion>
           <Image
             src="/icons/o.svg"
             alt="icon"

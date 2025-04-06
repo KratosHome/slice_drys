@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '@/utils/cn'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
@@ -33,33 +33,40 @@ const Slider = React.forwardRef<
       onValueChange={handleValueChange}
       {...rest}
     >
-      <SliderPrimitive.Track className="bg-primary/20 relative h-[2px] w-full grow overflow-hidden rounded-full">
-        <SliderPrimitive.Range className="bg-primary absolute h-full" />
-      </SliderPrimitive.Track>
-      <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
-        <Image
-          src="/icons/group.svg"
-          alt="icon"
-          width={50}
-          height={50}
-          className="object-contain"
-        />
-      </SliderPrimitive.Thumb>
+      <LazyMotion features={domAnimation}>
+        <SliderPrimitive.Track className="bg-primary/20 relative h-[2px] w-full grow overflow-hidden rounded-full">
+          <SliderPrimitive.Range className="bg-primary absolute h-full" />
+        </SliderPrimitive.Track>
+        <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
+          <m.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <Image
+              src="/icons/group.svg"
+              alt="icon"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
+          </m.div>
+        </SliderPrimitive.Thumb>
 
-      <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <Image
-            src="/icons/group.svg"
-            alt="icon"
-            width={50}
-            height={50}
-            className="object-contain"
-          />
-        </motion.div>
-      </SliderPrimitive.Thumb>
+        <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
+          <m.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <Image
+              src="/icons/group.svg"
+              alt="icon"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
+          </m.div>
+        </SliderPrimitive.Thumb>
+      </LazyMotion>
     </SliderPrimitive.Root>
   )
 })

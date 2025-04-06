@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
 import { sendOrderNotification } from '@/server/info/order notification.server'
 import OrderForm from '@/components/client/order/order-form'
@@ -11,6 +10,7 @@ import OrderList from '@/components/client/order/order-list'
 import { useCartStore } from '@/store/cartStore'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
+import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 
 type Props = {
   defaultCities: {
@@ -119,13 +119,13 @@ export default function Order({ defaultCities }: Props) {
           disabled={totalPrice < minOrderAmount || userData?.formStep !== 4}
           onClick={handleSubmit}
         >
-          <motion.div
+          <ResponsiveMotion
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex h-[60px] min-w-[250px] cursor-pointer items-center justify-center bg-black px-[10px] text-center text-white"
           >
             {t('order')}
-          </motion.div>
+          </ResponsiveMotion>
         </Button>
       </div>
     </div>
