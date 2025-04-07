@@ -10,6 +10,9 @@
   --breakpoint-xs: 24rem;
   --color-grey-review: hsl(var(--grey-review));
   --color-black-review: hsl(var(--black-review));
+  --color-product-article-background: hsla(var(--product-article-background));
+  --color-grey-select: hsl(var(--grey-select));
+  --color-red-cust: hsl(var(--red-cust));
 }
 
 @layer base {
@@ -22,7 +25,7 @@
   }
 
   :root {
-    scrollbar-gutter: stable;
+    /* scrollbar-gutter: stable; */
 
     --background: 0 0% 98%;
     --foreground: 0 0% 6%;
@@ -61,6 +64,9 @@
     --order-background: 0 0% 89%;
     --grey-review: 0 0% 89%;
     --black-review: 0 0% 0%;
+    --product-article-background: 0 90% 35% / 0.02;
+    --grey-select: 0 0% 89%;
+    --red-cust: 0 90% 35%;
   }
 
   .dark {
@@ -98,6 +104,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
     --grey-review: 0 0% 16%;
     --black-review: 0 0% 100%;
+    --product-article-background: 0 0% 89% / 0.05;
+    --grey-select: 0 0% 49%;
   }
   * {
     @apply border-border outline-ring/50;
@@ -143,3 +151,21 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  .prose {
+    * {
+      color: hsl(var(--foreground));
+    }
+    text-wrap: balance;
+
+    &.ql-editor {
+      :where(h1, h2, h3, h4, h5, h6):not(:first-child){
+        margin-top: 16px !important;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        break-after: avoid
+      }
+    }
+  }
+}

@@ -14,7 +14,7 @@ const Delivery = async ({ className }: Props) => {
   return (
     <div
       className={cn(
-        'font-poppins relative mx-auto flex max-w-[1440px] flex-col overflow-x-clip bg-black px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),100px)] pt-[clamp(30px,calc(30px+40*(100vw-375px)/1065),70px)] pb-8 text-white md:flex-row',
+        'font-poppins bg-foreground text-background relative mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),100px)] pt-[clamp(30px,calc(30px+40*(100vw-375px)/1065),70px)] pb-8 md:flex-row',
         className,
       )}
     >
@@ -37,15 +37,17 @@ const Delivery = async ({ className }: Props) => {
         <Link
           href="https://www.instagram.com/slicedrys/#"
           target="_blank"
-          className="group mt-11 flex items-center gap-2 text-white md:mt-6 md:justify-self-end"
+          className="group text-background mt-11 flex items-center gap-2 md:mt-6 md:justify-self-end"
         >
-          <Image
-            src="/icons/instagram2.svg"
-            alt={t('icon_instagram')}
+          <svg
             width={18}
             height={18}
+            role="img"
+            aria-label={t('icon_instagram')}
             className="sm:h-[20px] sm:w-[20px]"
-          />
+          >
+            <use href="/icons/sprite.svg#instagram-square"></use>
+          </svg>
           <span className="origin-left text-sm transition-transform duration-200 will-change-transform group-hover:scale-110 sm:text-base">
             @slicedrys
           </span>

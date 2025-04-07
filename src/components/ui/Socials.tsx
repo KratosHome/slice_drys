@@ -5,13 +5,16 @@ import React from 'react'
 import { contacts } from '@/data/contacts'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
+import { cn } from '@/utils/cn'
 
 function Socials({
   variant = 'dark',
   size = 33,
+  className,
 }: {
   variant?: 'light' | 'dark'
   size?: number
+  className?: string
 }) {
   const t = useTranslations('main.header')
   return (
@@ -21,7 +24,10 @@ function Socials({
         onClick={() =>
           window.open(contacts.facebook, '_blank', 'noopener,noreferrer')
         }
-        className={`${variant === 'light' ? 'text-background' : 'text-foreground'}`}
+        className={cn(
+          variant === 'light' ? 'text-background' : 'text-foreground',
+          className,
+        )}
       >
         <svg
           width={size}
@@ -37,7 +43,10 @@ function Socials({
         onClick={() =>
           window.open(contacts.instagram, '_blank', 'noopener,noreferrer')
         }
-        className={`${variant === 'light' ? 'text-background' : 'text-foreground'}`}
+        className={cn(
+          variant === 'light' ? 'text-background' : 'text-foreground',
+          className,
+        )}
       >
         <svg
           width={size}

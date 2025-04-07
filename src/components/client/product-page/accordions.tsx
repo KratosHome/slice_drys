@@ -67,19 +67,27 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
           <section className="my-6 grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2">
             <div className="flex w-full max-w-[290px] justify-between">
               <h3 className="font-bold">{t('proteins')}</h3>
-              <span>{nutrition.proteins} г</span>
+              <span>
+                {nutrition.proteins} {t('g')}
+              </span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
               <h3 className="font-bold">{t('fats')}</h3>
-              <span>{nutrition.fats} г</span>
+              <span>
+                {nutrition.fats} {t('g')}
+              </span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
               <h3 className="font-bold">{t('carbohydrates')}</h3>
-              <span>{nutrition.carbohydrates} г</span>
+              <span>
+                {nutrition.carbohydrates} {t('g')}
+              </span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
-              <h3 className="font-bold">Енергетична цінність</h3>
-              <span>{nutrition.energyValue} г</span>
+              <h3 className="font-bold">{t('energy_value')}</h3>
+              <span>
+                {nutrition.energyValue} {t('g')}
+              </span>
             </div>
           </section>
         </AccordionContent>

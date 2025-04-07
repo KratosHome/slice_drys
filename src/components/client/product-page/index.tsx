@@ -9,14 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/doodle-select'
-import { MinusIcon, PlusIcon } from './icons'
+import { ChangeQuantityIcon } from './icons'
 import SliderWithThumbnails from './slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import { useCartStore } from '@/store/cartStore'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { useTranslations } from 'next-intl'
-import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
@@ -99,8 +98,8 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
       </div>
       <SliderWithThumbnails img={img!} />
       <div className="lg:w-1/2">
-        <h1 className="relative bg-black py-2 pl-3 text-[40px] font-bold text-white">
-          {t('dried-jerky')} {name} {selectedVariable.weight} {t('g')}.
+        <h1 className="bg-foreground text-background relative py-2 pl-3 text-[40px] font-bold">
+          {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
               {t('expect_soon')}
@@ -113,21 +112,21 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             <p>{composition.join(', ')}</p>
           </div>
         </div>
-        <div className="relative flex items-center justify-center gap-6 pb-[3.75rem] sm:justify-start">
+        <div className="relative flex items-stretch justify-center gap-6 pb-[3.75rem] sm:justify-start">
           <Select
             value={String(selectedVariable.weight)}
             onValueChange={handleWeightChange}
           >
-            <SelectTrigger className="relative transition-transform duration-300 hover:scale-105">
+            <SelectTrigger className="relative">
               <label
                 htmlFor="weight"
-                className="text-dark_gray absolute -top-6 left-0 text-base font-normal text-[#7D7D7D]"
+                className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
               >
                 {t('choose_weight')}
               </label>
               <SelectValue placeholder={t('weight')} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-grey-select">
               <SelectGroup>
                 <SelectLabel>{t('weight')}</SelectLabel>
                 {variables.map((variable) => (
@@ -141,7 +140,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div className="bg-light_gray content-center rounded-sm border px-8 py-2 text-2xl font-medium">
+          <div className="bg-grey-select content-center rounded-sm border px-8 py-2 text-2xl font-medium">
             {selectedVariable.weight} {t('g')}.
           </div>
         </div>
@@ -167,7 +166,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             )}
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 pr-4 md:items-stretch">
-            <div className="flex h-[50px] items-center gap-5 bg-black px-2.5 font-bold text-white">
+            <div className="bg-foreground text-background flex h-[50px] min-w-[115px] items-center justify-between px-2.5 font-bold">
               <ResponsiveMotion
                 className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
@@ -176,11 +175,16 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                   setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
                 }
               >
-                <MinusIcon />
+                <ChangeQuantityIcon
+                  content="-"
+                  aria-label={t('remove')}
+                  disabled={quantity === 1}
+                  aria-disabled={quantity === 1}
+                />
               </ResponsiveMotion>
               <div className="min-w-4 text-center">{quantity}</div>
               <ResponsiveMotion
-                className="cuitrsor-pointer"
+                className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 onClick={() =>
@@ -189,11 +193,12 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                   )
                 }
               >
-                <PlusIcon />
+                <ChangeQuantityIcon content="+" aria-label={t('add')} />
               </ResponsiveMotion>
             </div>
             <Button
-              className="h-[50px] rounded-none"
+              aria-label={isInCart ? t('in_cart') : t('add_to_cart')}
+              className="h-[50px] min-w-[190px] rounded-none"
               type="button"
               variant="danger"
               disabled={selectedVariable.count === 0}
@@ -207,34 +212,19 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             </Button>
           </div>
         </div>
-        <div className="relative ml-auto flex w-fit justify-end gap-2 pr-5 pb-4">
-          <Image
-            src={'/icons/haccp_certified.svg'}
-            alt={''}
-            width={80}
-            height={80}
-          />
-          <Image
-            src={'/icons/gluten_free.svg'}
-            alt={''}
-            width={65}
-            height={65}
-            className="mt-5"
-          />
-          <Image
-            src={'/icons/non_gmo.svg'}
-            alt={''}
-            width={65}
-            height={65}
-            className="mt-5"
-          />
-          <Image
-            src={'/icons/sugar_free.svg'}
-            alt={''}
-            width={65}
-            height={65}
-            className="mt-5"
-          />
+        <div className="relative ml-auto flex w-fit items-stretch justify-end gap-2 pt-5 pr-5 pb-4">
+          <svg className="-mt-2.5 h-[65px] w-[65px]">
+            <use href="/icons/sprite-sertif.svg#haccp_certified" />
+          </svg>
+          <svg className="h-[65px] w-[65px]">
+            <use href="/icons/sprite-sertif.svg#gluten_free" />
+          </svg>
+          <svg className="h-[65px] w-[65px]">
+            <use href="/icons/sprite-sertif.svg#non_gmo" />
+          </svg>
+          <svg className="h-[65px] w-[65px]">
+            <use href="/icons/sprite-sertif.svg#sugar_free" />
+          </svg>
           <UnderlineWave />
         </div>
       </div>

@@ -22,7 +22,6 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import CheckboxRoot from '@/components/ui/checkbox-root'
 import CheckboxIndicator from '@/components/ui/checkbox-indicator'
 import { Slider } from '@/components/ui/slider'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
 interface ProductFiltersProps {
@@ -63,7 +62,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     getInitialSliderValues,
   )
 
-  const [debouncedSliderValue] = useDebounce(sliderValue, 300)
+  const [debouncedSliderValue] = useDebounce(sliderValue, 700)
 
   useEffect(() => {
     setSelectedCategories(getInitialCategories())
@@ -144,11 +143,11 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik text-[36px]">
+                <AccordionTrigger className="font-rubik">
                   {t('type')}
                 </AccordionTrigger>
               </motion.div>
-              <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
+              <AccordionContent className="flex max-h-[400px] flex-col gap-2 pt-8 pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
                     <motion.label
@@ -164,7 +163,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         onCheckedChange={() =>
                           handleToggleCategory(category.slug)
                         }
-                        className="relative z-0 py-2"
+                        className="relative z-0 cursor-pointer py-2"
                       >
                         <CheckboxRoot />
                         <CheckboxPrimitive.Indicator>
@@ -189,7 +188,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <AccordionTrigger className="font-rubik text-[36px]">
+                <AccordionTrigger className="font-rubik">
                   {t('weight')}
                 </AccordionTrigger>
               </motion.div>
@@ -197,44 +196,32 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 <div className="my-[50px]">
                   <Slider
                     value={sliderValue}
-                    step={1}
+                    step={10}
                     min={numericWeights[0]}
                     max={numericWeights[numericWeights.length - 1]}
                     onValueChange={(value) => setSliderValue(value)}
                   />
-                  <div className="mt-10 flex items-center justify-between">
-                    <span className="font-poppins flex text-[20px]">
-                      <div className="mt-9 mr-5">{t('from')}</div>
-                      <div className="relative mt-8">
-                        <Image
-                          src="/icons/o-oval.svg"
-                          alt="icon"
-                          width={70}
-                          height={70}
-                          className="object-contain"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {sliderValue[0]}
-                          {t('g')}
-                        </div>
-                      </div>
-                    </span>
-                    <span className="font-poppins flex text-[20px]">
-                      <div className="mt-9 mr-5">{t('to')}</div>
-                      <div className="relative mt-8">
-                        <Image
-                          src="/icons/o-oval.svg"
-                          alt="icon"
-                          width={70}
-                          height={70}
-                          className="object-contain"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          {sliderValue[1]}
-                          {t('g')}
-                        </div>
-                      </div>
-                    </span>
+                  <div className="mt-10 flex items-center justify-between pt-9 text-xl">
+                    <div className="flex gap-10">
+                      <span className="">{t('from')}</span>
+                      <span className="relative flex items-center justify-center">
+                        {sliderValue[0]}
+                        {t('g')}
+                        <svg className="absolute h-[40px] w-[70px] origin-center">
+                          <use href="/icons/sprite.svg#o-oval" />
+                        </svg>
+                      </span>
+                    </div>
+                    <div className="mr-5 flex gap-10">
+                      <span className="">{t('to')}</span>
+                      <span className="relative flex items-center justify-center">
+                        {sliderValue[1]}
+                        {t('g')}
+                        <svg className="absolute h-[40px] w-[70px] origin-center">
+                          <use href="/icons/sprite.svg#o-oval" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </AccordionContent>
@@ -279,10 +266,10 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     className="mb-2"
                   >
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="font-rubik text-[36px]">
+                      <AccordionTrigger className="font-rubik">
                         {t('type')}
                       </AccordionTrigger>
-                      <AccordionContent className="mt-8 flex max-h-[400px] flex-col gap-2 overflow-auto pb-[40px]">
+                      <AccordionContent className="flex max-h-[400px] flex-col gap-2 pt-8 pb-[40px]">
                         {categories.length > 0 ? (
                           categories.map((category) => (
                             <label
@@ -319,51 +306,39 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                   <Accordion type="single" collapsible defaultValue="item-2">
                     <AccordionItem value="item-2">
-                      <AccordionTrigger className="font-rubik text-[36px]">
+                      <AccordionTrigger className="font-rubik">
                         {t('weight')}
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="my-[50px]">
                           <Slider
                             value={sliderValue}
-                            step={1}
+                            step={10}
                             min={numericWeights[0]}
                             max={numericWeights[numericWeights.length - 1]}
                             onValueChange={(value) => setSliderValue(value)}
                           />
-                          <div className="mt-10 flex items-center justify-between">
-                            <span className="font-poppins flex text-[20px]">
-                              <div className="mt-9 mr-5">{t('from')}</div>
-                              <div className="relative mt-8">
-                                <Image
-                                  src="/icons/o-oval.svg"
-                                  alt="icon"
-                                  width={70}
-                                  height={70}
-                                  className="object-contain"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  {sliderValue[0]}
-                                  {t('g')}
-                                </div>
-                              </div>
-                            </span>
-                            <span className="font-poppins flex text-[20px]">
-                              <div className="mt-9 mr-5">{t('to')}</div>
-                              <div className="relative mt-8">
-                                <Image
-                                  src="/icons/o-oval.svg"
-                                  alt="icon"
-                                  width={70}
-                                  height={70}
-                                  className="object-contain"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  {sliderValue[1]}
-                                  {t('g')}
-                                </div>
-                              </div>
-                            </span>
+                          <div className="mt-10 flex items-center justify-between pt-9 text-xl">
+                            <div className="flex gap-10">
+                              <span className="">{t('from')}</span>
+                              <span className="relative flex items-center justify-center">
+                                {sliderValue[0]}
+                                {t('g')}
+                                <svg className="absolute h-[40px] w-[70px] origin-center">
+                                  <use href="/icons/sprite.svg#o-oval" />
+                                </svg>
+                              </span>
+                            </div>
+                            <div className="mr-5 flex gap-10">
+                              <span className="">{t('to')}</span>
+                              <span className="relative flex items-center justify-center">
+                                {sliderValue[1]}
+                                {t('g')}
+                                <svg className="absolute h-[40px] w-[70px] origin-center">
+                                  <use href="/icons/sprite.svg#o-oval" />
+                                </svg>
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </AccordionContent>

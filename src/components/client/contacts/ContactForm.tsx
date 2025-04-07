@@ -53,7 +53,7 @@ const ContactForm = ({
   return (
     <form
       onSubmit={handleSubmit(sendCall)}
-      className="mx-auto mt-[110px] mb-[205px] flex max-w-[570px] flex-col items-center justify-center md:mt-9 md:mb-[229px]"
+      className="mx-auto mt-[110px] flex max-w-[570px] flex-col items-center justify-center md:mt-9"
     >
       <div className="form-description font-rubik text-center text-[32px] font-normal md:text-2xl">
         {form_description}
@@ -117,7 +117,7 @@ const ContactForm = ({
             )
           }}
         />
-        <div className="description text-poppins mb-[60px] pl-[10px] text-base font-normal">
+        <div className="description text-poppins pl-[10px] text-base font-normal">
           {phone_field_description}
         </div>
         {errors.phoneNumber && (
@@ -127,7 +127,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
-        className="font-poppins flex h-[60px] items-center px-[60px] text-2xl font-medium md:mt-[90px]"
+        className="font-poppins mt-[40px] flex h-[60px] items-center px-[60px] text-2xl font-medium"
       >
         {button}
       </Button>

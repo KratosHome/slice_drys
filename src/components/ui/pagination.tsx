@@ -4,7 +4,6 @@ import Link, { LinkProps } from 'next/link'
 import { motion } from 'framer-motion'
 import { MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/cn'
-import Image from 'next/image'
 import { ButtonProps, buttonVariants } from '@/components/ui/button'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
@@ -43,6 +42,7 @@ PaginationItem.displayName = 'PaginationItem'
 type PaginationLinkProps = {
   isActive?: boolean
   disabled?: boolean
+  label?: string
 } & Pick<ButtonProps, 'size'> &
   React.ComponentProps<'a'> &
   LinkProps
@@ -53,6 +53,7 @@ const PaginationLink = ({
   isActive,
   href,
   onClick,
+  label,
   ...props
 }: PaginationLinkProps) => {
   const variants = {
@@ -77,34 +78,22 @@ const PaginationLink = ({
       whileTap="tap"
       className={cn(
         buttonVariants({ variant: isActive ? 'none' : 'none' }),
+        'font-rubik relative flex items-center justify-center',
         className,
       )}
       href={href}
       onClick={onClick}
+      aria-label={label}
     >
-      {isActive ? (
-        <div className="relative mt-8">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: [0, 1.3, 1] }}
-            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-            className="absolute inset-0 rounded-full bg-linear-to-r"
-          />
-          <Image
-            src="/icons/o.svg"
-            alt="icon"
-            width={50}
-            height={50}
-            className="object-contain sm:h-[70px] sm:w-[70px]"
-          />
-          <div className="font-rubik absolute inset-0 flex items-center justify-center text-xl sm:text-2xl md:text-4xl">
-            {props.children}
-          </div>
-        </div>
-      ) : (
-        <div className="font-rubik text-xl sm:text-2xl md:text-4xl">
-          {props.children}
-        </div>
+      {props.children}
+      {isActive && (
+        <svg
+          role="img"
+          aria-label={'active page'}
+          className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
+        >
+          <use href="/icons/sprite.svg#o" />
+        </svg>
       )}
     </MotionLink>
   )
@@ -114,25 +103,20 @@ PaginationLink.displayName = 'PaginationLink'
 const PaginationPrevious = ({
   className,
   disabled,
+  label,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to previous page"
-    aria-disabled={disabled}
+    label={label}
     size="default"
     className={cn(
-      'gap-1 pl-2.5',
+      'font-rubik gap-1 pl-2.5',
       disabled && 'pointer-events-none opacity-50',
       className,
     )}
     {...props}
   >
-    <Image
-      src={'/icons/pagination-arrow-left.svg'}
-      alt={''}
-      width={24}
-      height={24}
-    />
+    {'<'}
   </PaginationLink>
 )
 PaginationPrevious.displayName = 'PaginationPrevious'
@@ -140,10 +124,11 @@ PaginationPrevious.displayName = 'PaginationPrevious'
 const PaginationNext = ({
   className,
   disabled,
+  label,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to next page"
+    aria-label={label}
     aria-disabled={disabled}
     size="default"
     className={cn(
@@ -153,12 +138,7 @@ const PaginationNext = ({
     )}
     {...props}
   >
-    <Image
-      src={'/icons/pagination-arrow-right.svg'}
-      alt={''}
-      width={24}
-      height={24}
-    />
+    {'>'}
   </PaginationLink>
 )
 PaginationNext.displayName = 'PaginationNext'

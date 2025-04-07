@@ -163,7 +163,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
                   <Link
                     key={link.id}
                     href={`/${locale}/${link.href}`}
-                    className="p-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
+                    className="p-3 text-[20px] transition-all duration-300 ease-in-out will-change-transform hover:scale-105 hover:text-red-500"
                   >
                     {link.name}
                   </Link>

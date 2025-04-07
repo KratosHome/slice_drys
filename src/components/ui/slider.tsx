@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '@/utils/cn'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const Slider = React.forwardRef<
@@ -37,28 +36,19 @@ const Slider = React.forwardRef<
         <SliderPrimitive.Range className="bg-primary absolute h-full" />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
-        <Image
-          src="/icons/group.svg"
-          alt="icon"
-          width={50}
-          height={50}
-          className="object-contain"
-        />
-      </SliderPrimitive.Thumb>
-
-      <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <Image
-            src="/icons/group.svg"
-            alt="icon"
-            width={50}
-            height={50}
-            className="object-contain"
-          />
-        </motion.div>
+          className="h-[50px] w-[50px] bg-[url('/icons/o-circle.png')] bg-contain bg-no-repeat dark:bg-[url('/icons/o-circle-light.png')]"
+        />
+      </SliderPrimitive.Thumb>
+
+      <SliderPrimitive.Thumb className="bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center pr-1 text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className="h-[50px] w-[50px] bg-[url('/icons/o-circle.png')] bg-contain bg-no-repeat dark:bg-[url('/icons/o-circle-light.png')]"
+        />
       </SliderPrimitive.Thumb>
     </SliderPrimitive.Root>
   )

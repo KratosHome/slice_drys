@@ -139,6 +139,8 @@
     "choose_weight": "Choose weight",
     "weight": "Weight",
     "g": "g",
+    "add": "Increase quantity by 1 piece",
+    "remove": "Decrease quantity by 1 piece",
     "about_product": "About product",
     "nutritional_value": "Nutritional value",
     "proteins": "Proteins",
@@ -270,6 +272,13 @@
     "mail_icon": "Mail Icon",
     "phone_icon": "Phone Icon",
     "home_icon": "Home Icon",
+    "time_icon": "Time Icon",
     "enter_full_phone_number": "Enter full phone number"
+  },
+  "pagination": {
+    "previous": "Go to previous",
+    "next": "Go to next",
+    "active-page": "Active page {page}",
+    "go-to-page": "Go to page {page}"
   }
 }

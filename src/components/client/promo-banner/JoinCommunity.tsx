@@ -20,32 +20,37 @@ const JoinCommunity = async ({ className }: Props) => {
   return (
     <section
       className={cn(
-        'font-poppins mx-auto flex max-w-[1440px] flex-col overflow-x-clip bg-black px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] text-white md:relative md:flex-row md:flex-row-reverse md:pb-[88px]',
+        'font-poppins bg-foreground text-background mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] md:relative md:flex-row-reverse md:pb-[88px]',
         className,
       )}
     >
       <div className="banner-info relative w-full md:relative md:w-3/5 md:pt-[60px]">
-        <div className="font-rubik mb-[14px] text-[25px] leading-[0.9] font-normal text-white md:mb-6 md:text-[42px] lg:text-[clamp(32px,calc(32px+32*(100vw-375px)/1065),64px)]">
+        <div className="font-rubik text-background mb-[14px] text-[25px] leading-[0.9] font-normal md:mb-6 md:text-[42px] lg:text-[clamp(32px,calc(32px+32*(100vw-375px)/1065),64px)]">
           {t('title')}
         </div>
         <div className="w-full max-w-[250px] text-base text-wrap sm:max-w-full md:block md:max-w-max md:text-xl">
           {t('description')}
         </div>
         <div className="social-wrapper absolute top-[275px] -left-[30px] z-10 flex -rotate-[12deg] flex-row-reverse items-center justify-start gap-[25px] bg-red-700 p-[15px_15px_15px_40px] sm:-left-[40px] sm:p-[15px_15px_15px_60px] md:-right-[110px] md:left-auto md:gap-[50px] md:p-[20px_20px_20px_40px] md:pr-[160px]">
-          <Socials variant="light" size={isMobile ? 40 : 60} />
+          <Socials
+            className="text-background dark:text-foreground"
+            size={isMobile ? 40 : 60}
+          />
         </div>
         <Link
           href="https://www.instagram.com/slicedrys/#"
           target="_blank"
-          className="group absolute -bottom-[70px] hidden w-full items-center gap-2 text-white md:mt-6 md:flex md:justify-self-end"
+          className="group text-background absolute -bottom-[70px] hidden w-full items-center gap-2 md:mt-6 md:flex md:justify-self-end"
         >
-          <Image
-            src="/icons/instagram2.svg"
-            alt={t('icon_instagram')}
+          <svg
             width={18}
             height={18}
+            role="img"
+            aria-label={t('icon_instagram')}
             className="sm:h-[20px] sm:w-[20px]"
-          />
+          >
+            <use href="/icons/sprite.svg#instagram-square"></use>
+          </svg>
           <span className="origin-left text-sm transition-transform duration-200 will-change-transform group-hover:scale-110 sm:text-base">
             @slicedrys
           </span>

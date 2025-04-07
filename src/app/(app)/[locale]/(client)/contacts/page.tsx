@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/breadcrumbs'
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
 import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
+import ToTheTop from '@/components/ui/to-the-top'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -74,7 +75,8 @@ export default async function ContactsPage(props: { params: Params }) {
           </BreadcrumbList>
         </Breadcrumb>
         <Contacts />
-        <JoinCommunity className="my-[150px] mb-[100px] md:mt-[50px]" />
+        <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
+        <ToTheTop />
       </div>
     </>
   )

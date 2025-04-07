@@ -114,8 +114,11 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </Link>
           </li>
         </ul>
-        {/* Curved line in the middle of the footer */}
-        <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:absolute after:left-0 after:h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] after:w-full after:bg-[url('/icons/underline-white.svg')]"></div>
+        <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)]">
+          <svg className="absolute left-0 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)] w-full">
+            <use href="/icons/sprite.svg#underline-white" />
+          </svg>
+        </div>
         <div className="font-rubik order-1 col-start-1 col-end-4 flex justify-center gap-3 text-center text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] md:order-none">
           <span>{t('CTA-socials')}</span>
           <span className="inline-block rotate-90">&gt;</span>
@@ -125,7 +128,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           variant="light"
         />
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
-          <Socials variant="light" size={33} />
+          <Socials className="text-background dark:text-foreground" size={33} />
         </div>
         <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-end text-nowrap uppercase md:order-none md:mt-[18px]">
           &copy; {new Date().getFullYear()} SLICE&DRY’S

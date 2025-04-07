@@ -32,7 +32,7 @@ const Contacts = async () => {
             />
           </div>
         </div>
-        <div className="font-poppins ml-auto w-full bg-black p-4 text-base text-white shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mt-[99px] md:mr-8 md:text-xl lg:max-w-none">
+        <div className="font-poppins ml-auto w-full text-base shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mt-[99px] md:mr-8 md:text-xl lg:max-w-none">
           <ContactInfo block_title={t('information_title')} />
         </div>
       </div>

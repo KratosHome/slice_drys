@@ -29,6 +29,7 @@ import { blogMetaData } from '@/data/blog/blogMetaData'
 import { locales } from '@/data/locales'
 import NotFoundPage from '@/components/not-found'
 import { fetchTags } from '@/data/fetch-tags'
+import ToTheTop from '@/components/ui/to-the-top'
 
 type PageProps = {
   params: Promise<{ locale: ILocale }>
@@ -150,6 +151,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
                   className={cn(currentPage === 1 && 'cursor-auto')}
                 >
                   <PaginationPrevious
+                    className="text-[36px] md:text-[64px]"
                     disabled={currentPage === 1}
                     href={
                       currentPage > 1
@@ -163,7 +165,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
                     if (item === 'ellipsis') {
                       return (
                         <PaginationItem key={`ellipsis-${index}`}>
-                          <PaginationEllipsis />
+                          <PaginationEllipsis className="text-xl sm:text-2xl md:text-4xl" />
                         </PaginationItem>
                       )
                     }
@@ -172,6 +174,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
                         <PaginationLink
                           href={getPageUrl(item, blogSearchParams)}
                           isActive={postsData.currentPage === item}
+                          className="text-xl sm:text-2xl md:text-4xl"
                         >
                           {item}
                         </PaginationLink>
@@ -184,6 +187,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
                   className={cn(currentPage === totalPages && 'cursor-auto')}
                 >
                   <PaginationNext
+                    className="text-[36px] md:text-[64px]"
                     disabled={currentPage === totalPages}
                     href={
                       currentPage < totalPages
@@ -198,6 +202,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
         </div>
         <BlogFooter />
       </div>
+      <ToTheTop />
     </>
   )
 }
