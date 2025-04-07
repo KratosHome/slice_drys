@@ -18,7 +18,10 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
   return (
     <section aria-labelledby="partners" className="section px-5">
       <div className="mx-auto max-w-6xl">
-        <h2 className="font-rubik text-center text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] leading-[1.2] font-normal">
+        <h2
+          id="partners"
+          className="font-rubik text-center text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] leading-[1.2] font-normal"
+        >
           {t('our-partners')}
         </h2>
 

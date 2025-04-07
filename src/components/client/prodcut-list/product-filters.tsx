@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
@@ -139,41 +139,44 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             className="mb-2"
           >
             <AccordionItem value="item-1">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <AccordionTrigger className="font-rubik">
-                  {t('type')}
-                </AccordionTrigger>
-              </motion.div>
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <AccordionTrigger className="font-rubik">
+                    {t('type')}
+                  </AccordionTrigger>
+                </m.div>
+              </LazyMotion>
               <AccordionContent className="flex max-h-[400px] flex-col gap-2 pt-8 pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
-                    <motion.label
-                      key={category.slug}
-                      htmlFor={category.slug}
-                      className="flex cursor-pointer items-center gap-[24px]"
-                      whileHover={{ scale: 1.05, marginLeft: 15 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                    >
-                      <CheckboxPrimitive.Root
-                        id={category.slug}
-                        checked={selectedCategories.includes(category.slug)}
-                        onCheckedChange={() =>
-                          handleToggleCategory(category.slug)
-                        }
-                        className="relative z-0 cursor-pointer py-2"
+                    <LazyMotion key={category.slug} features={domAnimation}>
+                      <m.label
+                        htmlFor={category.slug}
+                        className="flex cursor-pointer items-center gap-[24px]"
+                        whileHover={{ scale: 1.05, marginLeft: 15 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
                       >
-                        <CheckboxRoot />
-                        <CheckboxPrimitive.Indicator>
-                          <CheckboxIndicator />
-                        </CheckboxPrimitive.Indicator>
-                      </CheckboxPrimitive.Root>
-                      <span className="font-poppins text-xl text-[20px] font-normal uppercase">
-                        {category.name[locale]}
-                      </span>
-                    </motion.label>
+                        <CheckboxPrimitive.Root
+                          id={category.slug}
+                          checked={selectedCategories.includes(category.slug)}
+                          onCheckedChange={() =>
+                            handleToggleCategory(category.slug)
+                          }
+                          className="relative z-0 cursor-pointer py-2"
+                        >
+                          <CheckboxRoot />
+                          <CheckboxPrimitive.Indicator>
+                            <CheckboxIndicator />
+                          </CheckboxPrimitive.Indicator>
+                        </CheckboxPrimitive.Root>
+                        <span className="font-poppins text-xl text-[20px] font-normal uppercase">
+                          {category.name[locale]}
+                        </span>
+                      </m.label>
+                    </LazyMotion>
                   ))
                 ) : (
                   <div>{t('no_categories_available')}</div>
@@ -184,14 +187,16 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
           <Accordion type="single" collapsible defaultValue="item-2">
             <AccordionItem value="item-2">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-              >
-                <AccordionTrigger className="font-rubik">
-                  {t('weight')}
-                </AccordionTrigger>
-              </motion.div>
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <AccordionTrigger className="font-rubik">
+                    {t('weight')}
+                  </AccordionTrigger>
+                </m.div>
+              </LazyMotion>
               <AccordionContent>
                 <div className="my-[50px]">
                   <Slider

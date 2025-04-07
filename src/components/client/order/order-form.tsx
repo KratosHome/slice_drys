@@ -14,7 +14,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { Label } from '@/components/ui/label'
 import { PencilLine } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
 
 import DeliveryProvider from './delivery-provider'
 import CheckboxSimple from '@/components/ui/checkbox-simple'
@@ -23,6 +22,7 @@ import Textarea from '@/components/ui/textarea-RHF'
 import { Input } from '@/components/ui/input-RHF'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion'
 
 interface OrderFormRef {
   reset: () => void
@@ -287,135 +287,137 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
         <h3 className={cn(legendStyle, 'mb-8')}>{t('contacts_title')}</h3>
         <AnimatePresence initial={false}>
           {(userData?.formStep ?? 1) < 4 || showFieldset.step1 ? (
-            <motion.div
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: '0' }}
-              initial={{ opacity: 0, height: '0' }}
-              transition={{ duration: 0.3 }}
-              style={{ overflow: 'hidden' }}
-              className="p-0.5"
-            >
-              <Input
-                placeholder={t('surname_placeholder')}
-                name="surname"
-                id="surname"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t('validation_required'),
-                  },
-                }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const surname = event.target.value
-                  setValue('surname', surname)
-                  clearErrors('surname')
-                  setUserData({
-                    ...useCartStore.getState().cart.userData,
-                    surname,
-                  })
-                }}
-                className="h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
-              />
+            <LazyMotion features={domAnimation}>
+              <m.div
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: '0' }}
+                initial={{ opacity: 0, height: '0' }}
+                transition={{ duration: 0.3 }}
+                style={{ overflow: 'hidden' }}
+                className="p-0.5"
+              >
+                <Input
+                  placeholder={t('surname_placeholder')}
+                  name="surname"
+                  id="surname"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t('validation_required'),
+                    },
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const surname = event.target.value
+                    setValue('surname', surname)
+                    clearErrors('surname')
+                    setUserData({
+                      ...useCartStore.getState().cart.userData,
+                      surname,
+                    })
+                  }}
+                  className="h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                />
 
-              <Input
-                placeholder={t('name_placeholder')}
-                name="name"
-                id="name"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t('validation_required'),
-                  },
-                }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const name = event.target.value
-                  setValue('name', name)
-                  clearErrors('name')
-                  setUserData({
-                    ...useCartStore.getState().cart.userData,
-                    name,
-                  })
-                }}
-                className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
-              />
+                <Input
+                  placeholder={t('name_placeholder')}
+                  name="name"
+                  id="name"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t('validation_required'),
+                    },
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const name = event.target.value
+                    setValue('name', name)
+                    clearErrors('name')
+                    setUserData({
+                      ...useCartStore.getState().cart.userData,
+                      name,
+                    })
+                  }}
+                  className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                />
 
-              <Input
-                placeholder={t('phone_placeholder')}
-                name="phoneNumber"
-                id="phoneNumber"
-                control={control}
-                helpText={t('phone_field_description')}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t('validation_required'),
-                  },
-                  minLength: {
-                    value: 19,
-                    message: t('validation_length'),
-                  },
-                }}
-                onClick={(event) => {
-                  const target = event.target as HTMLInputElement
+                <Input
+                  placeholder={t('phone_placeholder')}
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  control={control}
+                  helpText={t('phone_field_description')}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t('validation_required'),
+                    },
+                    minLength: {
+                      value: 19,
+                      message: t('validation_length'),
+                    },
+                  }}
+                  onClick={(event) => {
+                    const target = event.target as HTMLInputElement
 
-                  setValue(
-                    'phoneNumber',
-                    (target.value =
-                      target.value == '' ? '+38 (0' : target.value),
-                  )
-                }}
-                onChange={(event) => {
-                  const target = (
-                    event.target as HTMLInputElement
-                  ).value.replace(/\D/g, '')
-                  const phoneNumber =
-                    '+38 (0' +
-                    target.substring(3, 5) +
-                    (target.length > 5 ? ') ' : '') +
-                    target.substring(5, 8) +
-                    (target.length > 8 ? ' ' : '') +
-                    target.substring(8, 10) +
-                    (target.length > 10 ? ' ' : '') +
-                    target.substring(10, 12)
-                  setValue('phoneNumber', phoneNumber)
-                  clearErrors('phoneNumber')
-                  setUserData({
-                    ...useCartStore.getState().cart.userData,
-                    phoneNumber,
-                  })
-                }}
-                className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
-              />
+                    setValue(
+                      'phoneNumber',
+                      (target.value =
+                        target.value == '' ? '+38 (0' : target.value),
+                    )
+                  }}
+                  onChange={(event) => {
+                    const target = (
+                      event.target as HTMLInputElement
+                    ).value.replace(/\D/g, '')
+                    const phoneNumber =
+                      '+38 (0' +
+                      target.substring(3, 5) +
+                      (target.length > 5 ? ') ' : '') +
+                      target.substring(5, 8) +
+                      (target.length > 8 ? ' ' : '') +
+                      target.substring(8, 10) +
+                      (target.length > 10 ? ' ' : '') +
+                      target.substring(10, 12)
+                    setValue('phoneNumber', phoneNumber)
+                    clearErrors('phoneNumber')
+                    setUserData({
+                      ...useCartStore.getState().cart.userData,
+                      phoneNumber,
+                    })
+                  }}
+                  className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                />
 
-              <Input
-                placeholder="E-mail"
-                name="email"
-                id="email"
-                control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t('validation_required'),
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: t('validation_email_format'),
-                  },
-                }}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  const email = event.target.value
-                  setValue('email', email)
-                  clearErrors('email')
-                  setUserData({
-                    ...useCartStore.getState().cart.userData,
-                    email,
-                  })
-                }}
-                className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
-              />
-            </motion.div>
+                <Input
+                  placeholder="E-mail"
+                  name="email"
+                  id="email"
+                  control={control}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t('validation_required'),
+                    },
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: t('validation_email_format'),
+                    },
+                  }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const email = event.target.value
+                    setValue('email', email)
+                    clearErrors('email')
+                    setUserData({
+                      ...useCartStore.getState().cart.userData,
+                      email,
+                    })
+                  }}
+                  className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                />
+              </m.div>
+            </LazyMotion>
           ) : null}
         </AnimatePresence>
         {userData?.formStep === 4 && !showFieldset.step1 ? (
@@ -456,202 +458,210 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           <h3 className={cn(legendStyle, 'mb-8')}>{t('delivery_title')}</h3>
           <AnimatePresence initial={false}>
             {(userData?.formStep ?? 1) < 4 || showFieldset.step2 ? (
-              <motion.div
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: '0' }}
-                initial={{ opacity: 0, height: '0' }}
-                transition={{ duration: 0.3 }}
-                style={{ overflow: 'hidden' }}
-              >
-                <RadioGroup
-                  onValueChange={handleDeliveryProviderChange}
-                  value={userData?.deliveryInfo?.deliveryProvider}
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: '0' }}
+                  initial={{ opacity: 0, height: '0' }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: 'hidden' }}
                 >
-                  <div className="flex flex-col gap-10">
-                    <Label
-                      htmlFor="NP"
-                      className="flex cursor-pointer items-center gap-10 text-xl font-semibold select-none"
-                    >
-                      <RadioGroupItem
-                        value="novaPoshta"
-                        id="NP"
-                        className={cn(radioItemStyle, radioItemFilledStyle)}
-                        iconSize="large"
-                      />
-                      <span>
-                        <Image
-                          src={deliveryProviderLabels.novaPoshta.icon.src}
-                          alt={
-                            deliveryProviderLabels.novaPoshta.icon.alt[locale]
-                          }
-                          width={deliveryProviderLabels.novaPoshta.icon.width}
-                          height={deliveryProviderLabels.novaPoshta.icon.height}
-                          className="mr-3 inline-block"
-                        />{' '}
-                        {deliveryProviderLabels.novaPoshta.label[locale]}
-                      </span>
-                    </Label>
-                    {userData?.deliveryInfo?.deliveryProvider ==
-                      'novaPoshta' && (
-                      <>
-                        <RadioGroup
-                          onValueChange={handleDeliveryMethodChange}
-                          value={userData?.deliveryInfo?.deliveryMethod}
-                          className="ml-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
-                        >
-                          <Label
-                            htmlFor="NP-b"
-                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                          >
-                            <RadioGroupItem
-                              value="branch"
-                              id="NP-b"
-                              className={cn(radioItemStyle)}
-                              iconSize="large"
-                            />
-                            {t('delivery_method_to_branch')}
-                          </Label>
-
-                          <Label
-                            htmlFor="NP-p"
-                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                          >
-                            <RadioGroupItem
-                              value="postomat"
-                              id="NP-p"
-                              className={cn(radioItemStyle)}
-                              iconSize="large"
-                            />
-                            {t('delivery_method_to_postomat')}
-                          </Label>
-
-                          <Label
-                            htmlFor="NP-c"
-                            className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                          >
-                            <RadioGroupItem
-                              value="courier"
-                              id="NP-c"
-                              className={cn(radioItemStyle)}
-                              iconSize="large"
-                            />
-                            {t('delivery_method_courier')}
-                          </Label>
-                        </RadioGroup>
-                        {['branch', 'postomat'].some(
-                          (method) =>
-                            method == userData?.deliveryInfo?.deliveryMethod,
-                        ) ? (
-                          <DeliveryProvider
-                            defaultValues={
-                              defaultCities[
-                                userData?.deliveryInfo?.deliveryProvider
-                              ]
+                  <RadioGroup
+                    onValueChange={handleDeliveryProviderChange}
+                    value={userData?.deliveryInfo?.deliveryProvider}
+                  >
+                    <div className="flex flex-col gap-10">
+                      <Label
+                        htmlFor="NP"
+                        className="flex cursor-pointer items-center gap-10 text-xl font-semibold select-none"
+                      >
+                        <RadioGroupItem
+                          value="novaPoshta"
+                          id="NP"
+                          className={cn(radioItemStyle, radioItemFilledStyle)}
+                          iconSize="large"
+                        />
+                        <span>
+                          <Image
+                            src={deliveryProviderLabels.novaPoshta.icon.src}
+                            alt={
+                              deliveryProviderLabels.novaPoshta.icon.alt[locale]
                             }
-                            control={control}
-                            onCityChange={(newCity) => {
-                              setValue('deliveryInfo.city', newCity.label, {
-                                shouldValidate: true,
-                              })
-                              setValue('deliveryInfo.branch', '')
+                            width={deliveryProviderLabels.novaPoshta.icon.width}
+                            height={
+                              deliveryProviderLabels.novaPoshta.icon.height
+                            }
+                            className="mr-3 inline-block"
+                          />{' '}
+                          {deliveryProviderLabels.novaPoshta.label[locale]}
+                        </span>
+                      </Label>
+                      {userData?.deliveryInfo?.deliveryProvider ==
+                        'novaPoshta' && (
+                        <>
+                          <RadioGroup
+                            onValueChange={handleDeliveryMethodChange}
+                            value={userData?.deliveryInfo?.deliveryMethod}
+                            className="ml-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
+                          >
+                            <Label
+                              htmlFor="NP-b"
+                              className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
+                            >
+                              <RadioGroupItem
+                                value="branch"
+                                id="NP-b"
+                                className={cn(radioItemStyle)}
+                                iconSize="large"
+                              />
+                              {t('delivery_method_to_branch')}
+                            </Label>
 
-                              const partialData: IUserData<
-                                IDeliveryInfo<
-                                  'branch' | 'postomat' | 'courier',
-                                  IComboboxData
-                                >
-                              > = {
-                                ...userData,
-                                deliveryInfo: {
-                                  ...userData?.deliveryInfo,
-                                  city: newCity,
-                                  branch: {
-                                    value: '',
-                                    label: '',
+                            <Label
+                              htmlFor="NP-p"
+                              className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
+                            >
+                              <RadioGroupItem
+                                value="postomat"
+                                id="NP-p"
+                                className={cn(radioItemStyle)}
+                                iconSize="large"
+                              />
+                              {t('delivery_method_to_postomat')}
+                            </Label>
+
+                            <Label
+                              htmlFor="NP-c"
+                              className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
+                            >
+                              <RadioGroupItem
+                                value="courier"
+                                id="NP-c"
+                                className={cn(radioItemStyle)}
+                                iconSize="large"
+                              />
+                              {t('delivery_method_courier')}
+                            </Label>
+                          </RadioGroup>
+                          {['branch', 'postomat'].some(
+                            (method) =>
+                              method == userData?.deliveryInfo?.deliveryMethod,
+                          ) ? (
+                            <DeliveryProvider
+                              defaultValues={
+                                defaultCities[
+                                  userData?.deliveryInfo?.deliveryProvider
+                                ]
+                              }
+                              control={control}
+                              onCityChange={(newCity) => {
+                                setValue('deliveryInfo.city', newCity.label, {
+                                  shouldValidate: true,
+                                })
+                                setValue('deliveryInfo.branch', '')
+
+                                const partialData: IUserData<
+                                  IDeliveryInfo<
+                                    'branch' | 'postomat' | 'courier',
+                                    IComboboxData
+                                  >
+                                > = {
+                                  ...userData,
+                                  deliveryInfo: {
+                                    ...userData?.deliveryInfo,
+                                    city: newCity,
+                                    branch: {
+                                      value: '',
+                                      label: '',
+                                    },
                                   },
-                                },
-                              }
-                              setUserData(partialData)
+                                }
+                                setUserData(partialData)
 
-                              if (errors.deliveryInfo?.branch)
-                                clearErrors('deliveryInfo.branch')
-                              if (errors.deliveryInfo?.city)
-                                clearErrors('deliveryInfo.city')
-                            }}
-                            onBranchChange={(newBranch) => {
-                              setValue('deliveryInfo.branch', newBranch.label, {
-                                shouldValidate: true,
-                              })
-                              const partialData: IUserData<
-                                IDeliveryInfo<
-                                  'branch' | 'postomat' | 'courier',
-                                  IComboboxData
-                                >
-                              > = {
-                                ...userData,
-                                deliveryInfo: {
-                                  ...userData?.deliveryInfo,
-                                  branch: newBranch,
+                                if (errors.deliveryInfo?.branch)
+                                  clearErrors('deliveryInfo.branch')
+                                if (errors.deliveryInfo?.city)
+                                  clearErrors('deliveryInfo.city')
+                              }}
+                              onBranchChange={(newBranch) => {
+                                setValue(
+                                  'deliveryInfo.branch',
+                                  newBranch.label,
+                                  {
+                                    shouldValidate: true,
+                                  },
+                                )
+                                const partialData: IUserData<
+                                  IDeliveryInfo<
+                                    'branch' | 'postomat' | 'courier',
+                                    IComboboxData
+                                  >
+                                > = {
+                                  ...userData,
+                                  deliveryInfo: {
+                                    ...userData?.deliveryInfo,
+                                    branch: newBranch,
+                                  },
+                                }
+                                setUserData(partialData)
+                              }}
+                            />
+                          ) : (
+                            <Controller
+                              name="deliveryInfo.courierInfo"
+                              control={control}
+                              rules={{
+                                required: {
+                                  value: true,
+                                  message: t('validation_required'),
                                 },
-                              }
-                              setUserData(partialData)
-                            }}
-                          />
-                        ) : (
-                          <Controller
-                            name="deliveryInfo.courierInfo"
-                            control={control}
-                            rules={{
-                              required: {
-                                value: true,
-                                message: t('validation_required'),
-                              },
-                            }}
-                            render={({ field }) => (
-                              <div>
-                                <input
-                                  {...field}
-                                  onChange={(
-                                    event: React.ChangeEvent<HTMLInputElement>,
-                                  ) => {
-                                    field.onChange(event)
-                                    clearErrors('deliveryInfo.courierInfo')
-                                    setUserData({
-                                      ...useCartStore.getState().cart.userData,
-                                      deliveryInfo: {
-                                        ...userData.deliveryInfo,
-                                        courierInfo: event.target.value,
-                                      },
-                                    })
-                                  }}
-                                  placeholder={t('courier_placeholder')}
-                                  className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
-                                />
-                                <ErrorMessage
-                                  errors={errors}
-                                  name={field.name}
-                                  render={({ messages }) =>
-                                    messages &&
-                                    Object.entries(messages).map(
-                                      ([type, message]) => (
-                                        <p
-                                          key={type}
-                                          className="mt-1 text-xs text-red-600"
-                                        >
-                                          {message}
-                                        </p>
-                                      ),
-                                    )
-                                  }
-                                />
-                              </div>
-                            )}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {/* <Label
+                              }}
+                              render={({ field }) => (
+                                <div>
+                                  <input
+                                    {...field}
+                                    onChange={(
+                                      event: React.ChangeEvent<HTMLInputElement>,
+                                    ) => {
+                                      field.onChange(event)
+                                      clearErrors('deliveryInfo.courierInfo')
+                                      setUserData({
+                                        ...useCartStore.getState().cart
+                                          .userData,
+                                        deliveryInfo: {
+                                          ...userData.deliveryInfo,
+                                          courierInfo: event.target.value,
+                                        },
+                                      })
+                                    }}
+                                    placeholder={t('courier_placeholder')}
+                                    className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
+                                  />
+                                  <ErrorMessage
+                                    errors={errors}
+                                    name={field.name}
+                                    render={({ messages }) =>
+                                      messages &&
+                                      Object.entries(messages).map(
+                                        ([type, message]) => (
+                                          <p
+                                            key={type}
+                                            className="mt-1 text-xs text-red-600"
+                                          >
+                                            {message}
+                                          </p>
+                                        ),
+                                      )
+                                    }
+                                  />
+                                </div>
+                              )}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
+                    {/* <Label
                     htmlFor="UP"
                     className="mt-8 flex cursor-pointer select-none items-center gap-10 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal"
                   >
@@ -672,8 +682,9 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                       {deliveryProviderLabels.ukrPoshta.label[locale]}
                     </span>
                   </Label> */}
-                </RadioGroup>
-              </motion.div>
+                  </RadioGroup>
+                </m.div>
+              </LazyMotion>
             ) : null}
           </AnimatePresence>
 
@@ -765,44 +776,46 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           <h3 className={cn(legendStyle, 'mb-8')}>{t('payment_title')}</h3>
           <AnimatePresence initial={false}>
             {(userData?.formStep ?? 1) < 4 || showFieldset.step3 ? (
-              <motion.div
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: '0' }}
-                initial={{ opacity: 0, height: '0' }}
-                transition={{ duration: 0.3 }}
-                style={{ overflow: 'hidden' }}
-              >
-                <RadioGroup
-                  onValueChange={handlePaymentMethodChange}
-                  value={userData?.paymentInfo || 'card'}
-                  className="flex flex-col items-start gap-6 py-[10px]"
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: '0' }}
+                  initial={{ opacity: 0, height: '0' }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: 'hidden' }}
                 >
-                  <Label
-                    htmlFor="card"
-                    className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
+                  <RadioGroup
+                    onValueChange={handlePaymentMethodChange}
+                    value={userData?.paymentInfo || 'card'}
+                    className="flex flex-col items-start gap-6 py-[10px]"
                   >
-                    <RadioGroupItem
-                      value="card"
-                      id="card"
-                      className={cn(radioItemStyle, radioItemFilledStyle)}
-                      iconSize="large"
-                    />
-                    {t('card')}
-                  </Label>
-                  <Label
-                    htmlFor="cash"
-                    className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
-                  >
-                    <RadioGroupItem
-                      value="cash"
-                      id="cash"
-                      className={cn(radioItemStyle, radioItemFilledStyle)}
-                      iconSize="large"
-                    />
-                    {t('cash')}
-                  </Label>
-                </RadioGroup>
-              </motion.div>
+                    <Label
+                      htmlFor="card"
+                      className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
+                    >
+                      <RadioGroupItem
+                        value="card"
+                        id="card"
+                        className={cn(radioItemStyle, radioItemFilledStyle)}
+                        iconSize="large"
+                      />
+                      {t('card')}
+                    </Label>
+                    <Label
+                      htmlFor="cash"
+                      className="flex cursor-pointer items-center gap-10 text-base font-normal select-none md:text-xl"
+                    >
+                      <RadioGroupItem
+                        value="cash"
+                        id="cash"
+                        className={cn(radioItemStyle, radioItemFilledStyle)}
+                        iconSize="large"
+                      />
+                      {t('cash')}
+                    </Label>
+                  </RadioGroup>
+                </m.div>
+              </LazyMotion>
             ) : null}
           </AnimatePresence>
 
@@ -842,33 +855,35 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             <h3 className={cn(legendStyle)}>{t('comment_title')}</h3>
             <AnimatePresence initial={false}>
               {(userData?.formStep ?? 1) < 4 || showFieldset.step4 ? (
-                <motion.div
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: '0' }}
-                  initial={{ opacity: 0, height: '0' }}
-                  transition={{ duration: 0.3 }}
-                  style={{ overflow: 'hidden', width: '100%' }}
-                >
-                  <Textarea
-                    name="comment"
-                    placeholder={t('comment_placeholder')}
-                    rows={5}
-                    control={control}
-                    id="comment"
-                    onChange={(
-                      event: React.ChangeEvent<HTMLTextAreaElement>,
-                    ) => {
-                      const comment = event.target.value
-                      setValue('comment', comment)
-                      clearErrors('comment')
-                      setUserData({
-                        ...useCartStore.getState().cart.userData,
-                        comment,
-                      })
-                    }}
-                    className="m-0.5 mt-8 w-[99%] resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
-                  />
-                </motion.div>
+                <LazyMotion features={domAnimation}>
+                  <m.div
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: '0' }}
+                    initial={{ opacity: 0, height: '0' }}
+                    transition={{ duration: 0.3 }}
+                    style={{ overflow: 'hidden', width: '100%' }}
+                  >
+                    <Textarea
+                      name="comment"
+                      placeholder={t('comment_placeholder')}
+                      rows={5}
+                      control={control}
+                      id="comment"
+                      onChange={(
+                        event: React.ChangeEvent<HTMLTextAreaElement>,
+                      ) => {
+                        const comment = event.target.value
+                        setValue('comment', comment)
+                        clearErrors('comment')
+                        setUserData({
+                          ...useCartStore.getState().cart.userData,
+                          comment,
+                        })
+                      }}
+                      className="m-0.5 mt-8 w-[99%] resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
+                    />
+                  </m.div>
+                </LazyMotion>
               ) : null}
             </AnimatePresence>
 
