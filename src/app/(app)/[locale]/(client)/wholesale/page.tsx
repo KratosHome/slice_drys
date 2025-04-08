@@ -2,8 +2,8 @@ import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import Help from '@/components/client/main/help/help'
-import Partners from '@/components/client/main/partners'
-import { partnersData } from '@/data/main/partners'
+// import Partners from '@/components/client/main/partners'
+// import { partnersData } from '@/data/main/partners'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -83,7 +83,7 @@ export default async function Wholesale(props: { params: Params }) {
           {t('wholesale_dried_fruits_in_bulk')}
         </h1>
         <div className="flex justify-center">
-          <div className="font-poppins min-h-28 w-[100%] max-w-[790px] items-center justify-center bg-black px-10 py-5 text-left text-[20px] leading-[28px] text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <div className="font-poppins bg-foreground text-background min-h-28 w-[100%] max-w-[790px] items-center justify-center px-10 py-5 text-left text-[20px] leading-[28px] drop-shadow-[16px_-16px_0px_#A90909]">
             {t('do_you_have_business')}
           </div>
         </div>
@@ -93,16 +93,16 @@ export default async function Wholesale(props: { params: Params }) {
         <div className="mt-[71px] grid grid-cols-1 gap-[29px] md:grid-cols-3">
           {whyWe[locale].map((item) => (
             <div key={item.title} className="w-full">
-              <div className="font-rubik w-full bg-black p-[16px] text-center text-[24px] text-white lg:text-[32px]">
+              <div className="font-rubik bg-foreground text-background w-full p-[16px] text-center text-[24px] lg:text-[32px]">
                 {item.title}
               </div>
-              <div className="w-full border border-dashed border-black p-[14px] text-center text-[16px] lg:text-[18px]">
+              <div className="border-foreground w-full border border-dashed p-[14px] text-center text-[16px] lg:text-[18px]">
                 {item.content}
               </div>
             </div>
           ))}
         </div>
-        <Partners data={partnersData[locale]} />
+        {/* <Partners data={partnersData[locale]} /> */}
       </div>
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">

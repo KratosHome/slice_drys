@@ -54,8 +54,8 @@ const WholesaleForm = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-2">
-      <div className="relative overflow-hidden">
+    <div className="grid pt-10 md:pt-[140px] lg:grid-cols-2">
+      <div className="relative">
         <div className="absolute z-[-1] mt-6 h-32 w-32 rounded-full bg-linear-to-r from-red-200 to-red-300 opacity-50 blur-3xl md:mt-24 md:h-64 md:w-64" />
         <Image
           src={'/images/cart.webp'}
@@ -122,12 +122,12 @@ const WholesaleForm = () => {
             {'>'}
           </span>
         </div>
-        <div className="font-rubik mt-14 bg-black py-5 text-center text-[32px] text-white lg:text-[40px]">
+        <div className="font-rubik bg-foreground text-background mt-14 py-5 text-center text-[32px] lg:text-[40px]">
           {t('start_cooperation')}
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-[32px] border border-dashed border-black p-[32px]"
+          className="border-foreground flex flex-col gap-[32px] border border-t-0 border-dashed p-[32px]"
         >
           <div>
             <Input

@@ -64,7 +64,7 @@ export default async function LocaleLayout(props: {
   return (
     <html
       lang={locale}
-      className={`${montserrat.className} ${rubikDoodleShadow.variable} dark`}
+      className={`${montserrat.className} ${rubikDoodleShadow.variable} dasrk`}
     >
       <GoogleTagManager />
       <body className="flex min-h-svh flex-col">
