@@ -26,6 +26,7 @@
 
   :root {
     /* scrollbar-gutter: stable; */
+    scroll-behavior: smooth;
 
     --background: 0 0% 98%;
     --foreground: 0 0% 6%;

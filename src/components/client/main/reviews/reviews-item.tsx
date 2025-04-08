@@ -6,15 +6,20 @@ interface ReviewsProps {
   text: string
   author: string
   variant: string
+  id: string
 }
 
 const quotesStyle =
   'after:leading-none after:block before:block before:leading-none relative before:absolute before:font-rubik before:left-0 before:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] before:content-["“"] after:absolute after:left-full after:bottom-0 after:font-rubik after:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] after:content-["”"] after:text-foreground before:text-foreground dark:before:text-foreground dark:after:text-foreground'
 
 export const ReviewsItem = forwardRef<HTMLLIElement, ReviewsProps>(
-  function ReviewsItem({ text, author, variant }, ref) {
+  function ReviewsItem({ text, author, variant, id }, ref) {
     return (
-      <li className="mx-auto my-10 w-[70%] max-w-[900px] lg:w-full" ref={ref}>
+      <li
+        id={id}
+        className="mx-auto my-10 w-[70%] max-w-[900px] scroll-m-20 lg:w-full"
+        ref={ref}
+      >
         <div
           className={cn(
             'w-full',

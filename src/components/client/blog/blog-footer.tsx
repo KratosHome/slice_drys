@@ -42,7 +42,7 @@ function BlogFooter() {
   }
   return (
     <section className="container mt-[83px] md:mt-[120px]">
-      <p className="font-rubik w-[77%] bg-black p-3 text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] text-white shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
+      <p className="font-rubik bg-foreground text-background w-[77%] p-3 text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
         {t('description-bottom')}
       </p>
       <div className="relative mt-[50px] ml-auto w-fit max-w-[73%] pb-3 text-base md:max-w-none md:pb-5 md:text-xl">

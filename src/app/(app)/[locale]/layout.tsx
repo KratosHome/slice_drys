@@ -13,6 +13,7 @@ import { fetchTags } from '@/data/fetch-tags'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
 import ClientDynamicMain from '@/components/client/dynamic-imports/min'
+import { seedReviews } from '@/server/seed/seedReviews'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -52,7 +53,7 @@ export default async function LocaleLayout(props: {
       </html>
     )
   }
-
+  await seedReviews()
   const messages = await getMessages()
 
   const categoriesData = await fetch(`${url}/api/categories`, {

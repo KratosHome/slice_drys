@@ -6,15 +6,16 @@ import { blogMetaData } from '@/data/blog/blogMetaData'
 
 type JsonLdProps = Readonly<{
   post: IPost
+  reviews: IReviewLocal[]
 }>
 
 const url = process.env.NEXT_URL
 
-const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
+const BlogItemJsonLd: FC<JsonLdProps> = async ({ post, reviews }) => {
   const locale = (await getLocale()) as ILocale
   const t = await getTranslations('Breadcrumbs')
 
-  const canonicalUrl = `${url}/${locale}/blog${post.slug}`
+  const canonicalUrl = `${url}/${locale}/blog/${post.slug}`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -62,6 +63,25 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
         },
       ],
     },
+    hasPart: reviews.map((review) => ({
+      '@type': 'Review',
+      '@id': `${canonicalUrl}/#review-${review._id}`,
+      reviewBody: review.text,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: review.rating.toString(),
+        bestRating: '5',
+      },
+      author: {
+        '@type': 'Person',
+        name: review.author,
+      },
+      itemReviewed: {
+        '@type': 'WebSite',
+        name: "Slice & Dry's",
+        url,
+      },
+    })),
   }
 
   return (

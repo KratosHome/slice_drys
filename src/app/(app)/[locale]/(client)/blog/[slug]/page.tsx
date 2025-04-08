@@ -7,12 +7,25 @@ import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
 import { fetchTags } from '@/data/fetch-tags'
+import { Loader } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { getTranslations } from 'next-intl/server'
+import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
+import ToTheTop from '@/components/ui/to-the-top'
+import { getReviews } from '@/server/reviews/getReviews'
 
 const baseUrl = process.env.NEXT_URL
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
 }
+
+const Reviews = dynamic(
+  () => import('@/components/client/main/reviews/reviews'),
+  {
+    loading: () => <Loader />,
+  },
+)
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
@@ -89,14 +102,18 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
+  const t = await getTranslations('blog')
 
-  const data = await fetch(
-    `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-    {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.post}`] },
-    },
-  ).then((res) => res.json())
+  const [data, reviews] = await Promise.all([
+    await fetch(
+      `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
+      {
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.post}`] },
+      },
+    ).then((res) => res.json()),
+    await getReviews({ locale }),
+  ])
 
   if (!data.success) {
     return <NotFoundPage />
@@ -108,15 +125,17 @@ export default async function PostPage({ params }: Props) {
   const date = new Date(data.post[0].updatedAt).toLocaleDateString('uk-UA')
   const author = data.post[0].author
   const converter = new QuillDeltaToHtmlConverter(content.ops)
-  const html = converter.convert()
+  const html = converter.convert().replace(/(<p>(?:<br\/>)+<\/p>)/g, '')
 
   return (
     <>
-      <BlogItemJsonLd post={data.post[0]} />
+      <BlogItemJsonLd
+        post={data.post[0]}
+        reviews={reviews.success ? reviews.dataLocalized : []}
+      />
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
-        <div className="mt-10"></div>
         <div className="my-20 px-20">
-          <h1 className="font-poppins flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left text-4xl leading-[48px] font-bold text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <h1 className="font-poppins bg-foreground text-background flex min-h-28 w-[100%] items-center justify-center px-10 py-5 text-left text-4xl leading-[48px] font-bold drop-shadow-[16px_-16px_0px_#A90909]">
             {title}
           </h1>
         </div>
@@ -128,14 +147,23 @@ export default async function PostPage({ params }: Props) {
           />
         </div>
         <div className="my-20">
-          <div className="my-4 border-t border-dashed border-black"></div>
+          <div className="border-foreground my-4 border-t border-dashed"></div>
           <div className="flex justify-between">
             <div className="text-gray-500">{date}</div>
             <div className="text-gray-500">{author}</div>
           </div>
         </div>
         <Share title={title} url={url} />
+        {
+          <Reviews
+            reviews={reviews.success ? reviews.dataLocalized : []}
+            pagination
+            title={t('comments')}
+          />
+        }
+        <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
       </div>
+      <ToTheTop />
     </>
   )
 }

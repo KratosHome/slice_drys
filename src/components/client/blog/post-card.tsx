@@ -25,18 +25,23 @@ export default function PostCard({
   }
 
   return (
-    <ResponsiveMotion
-      whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)' }}
-      transition={{ duration: 0.3 }}
-      whileTap={{ scale: 0.95 }}
+    <Link
+      href={`/${local}/blog/${post?.slug}`}
       className={cn(
-        'group w-full rounded-xl p-4 will-change-transform active:scale-[0.95] active:shadow-xl',
-        "relative max-w-[500px] md:max-w-none md:after:absolute md:after:top-0 md:after:h-full md:after:w-0 md:after:border-r md:after:border-dashed md:after:border-black md:after:content-[''] md:last:after:content-none",
+        "md:after:border-foreground relative max-w-[500px] md:max-w-none md:after:absolute md:after:top-0 md:after:h-full md:after:w-0 md:after:border-r md:after:border-dashed md:after:content-[''] md:last:after:content-none",
         variant === 'big' ? 'md:after:-right-[25px]' : 'md:after:-right-[43px]',
         className,
       )}
     >
-      <Link href={`/${local}/blog/${post?.slug}`}>
+      <ResponsiveMotion
+        whileHover={{
+          y: -5,
+          boxShadow: '0px 10px 20px hsla(var(--foreground) / 0.2)',
+        }}
+        transition={{ duration: 0.3 }}
+        whileTap={{ scale: 0.95 }}
+        className="group w-full rounded-xl p-4 will-change-transform active:scale-[0.95] active:shadow-xl"
+      >
         <div>
           <AspectRatio
             ratio={variant === 'big' ? 593 / 475 : 355 / 285}
@@ -73,7 +78,7 @@ export default function PostCard({
             {post?.title}
           </p>
         </div>
-      </Link>
-    </ResponsiveMotion>
+      </ResponsiveMotion>
+    </Link>
   )
 }

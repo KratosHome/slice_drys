@@ -4,7 +4,7 @@ import Link, { LinkProps } from 'next/link'
 import { MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { ButtonProps, buttonVariants } from '@/components/ui/button'
-import { LazyMotion, domAnimation, m, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
