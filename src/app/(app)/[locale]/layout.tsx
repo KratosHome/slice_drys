@@ -14,6 +14,7 @@ import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
 import ClientDynamicMain from '@/components/client/dynamic-imports/min'
 import { seedReviews } from '@/server/seed/seedReviews'
+import ThemeProvider from '@/providers/theme-provider'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -63,17 +64,25 @@ export default async function LocaleLayout(props: {
 
   return (
     <html
+      suppressHydrationWarning
       lang={locale}
-      className={`${montserrat.className} ${rubikDoodleShadow.variable} dark`}
+      className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
       <GoogleTagManager />
       <body className="flex min-h-svh flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <ClientDynamicMain />
-          <Header productLinks={categoriesData.data} />
-          <main className="flex-1">{children}</main>
-          <Footer productLinks={categoriesData.data} />
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>
+            <ClientDynamicMain />
+            <Header productLinks={categoriesData.data} />
+            <main className="flex-1">{children}</main>
+            <Footer productLinks={categoriesData.data} />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

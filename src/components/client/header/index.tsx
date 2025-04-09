@@ -9,12 +9,13 @@ import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
 import Socials from '@/components/ui/Socials'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { pageLinks } from '@/data/main/nav-links'
+import ThemeToggle from '../theme-toggle'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -32,6 +33,12 @@ const Header = ({ productLinks }: IHeaderProps) => {
   const callRef = useRef<HTMLDivElement>(null)
   const cartRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh(true)
+    }, 1)
+  }, [])
+
   useGSAP(() => {
     const mm = gsap.matchMedia()
 
@@ -41,7 +48,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
         scrollTrigger: {
           trigger: headerRef.current,
           start: 'top top',
-          end: '+=200px',
+          end: '+=100px',
           scrub: true,
           toggleActions: 'play none none reverse',
         },
@@ -63,12 +70,24 @@ const Header = ({ productLinks }: IHeaderProps) => {
       tl.to(logoRef.current, { height: 55 }, '<')
       tl.to(
         socialRef.current,
-        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        {
+          autoAlpha: 0,
+          display: 'none',
+          marginTop: -30,
+          scale: 0.5,
+          pointerEvents: 'none',
+        },
         '<',
       )
       tl.to(
         callRef.current,
-        { autoAlpha: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        {
+          autoAlpha: 0,
+          display: 'none',
+          marginTop: -30,
+          scale: 0.5,
+          pointerEvents: 'none',
+        },
         '<',
       )
     })
@@ -101,7 +120,13 @@ const Header = ({ productLinks }: IHeaderProps) => {
       tl.to(logoRef.current, { height: 55 }, '<')
       tl.to(
         callRef.current,
-        { opacity: 0, display: 'none', marginTop: -30, scale: 0.5 },
+        {
+          opacity: 0,
+          display: 'none',
+          marginTop: -30,
+          scale: 0.5,
+          pointerEvents: 'none',
+        },
         '<',
       )
     })
@@ -175,6 +200,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
                 className="flex items-center justify-center gap-x-4 lg:justify-between"
               >
                 <LocaleChange className="hidden lg:block" />
+                <ThemeToggle />
                 <SmallCart />
               </div>
             </div>
