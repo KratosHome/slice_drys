@@ -1,14 +1,14 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
-import cloudinary from '@/server/cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
 import { revalidateTag } from 'next/cache'
 
 export async function createProduct(formData: IProductLocal, image: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const upload = await cloudinary.uploader.upload(image, {
       folder: 'products-slice',

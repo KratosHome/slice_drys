@@ -1,7 +1,6 @@
 'use client'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import Image from 'next/image'
 import { FC } from 'react'
 
 interface shareProps {
@@ -48,39 +47,42 @@ const Share: FC<shareProps> = ({ url, title }) => {
           className="w-fit transform transition-all duration-300 hover:scale-110"
           target="_blank"
         >
-          <Image
-            src={'/icons/facebook.svg'}
-            alt={t('facebook icon')}
+          <svg
             width={32}
             height={32}
-            className="cursor-pointer"
-          />
+            role="img"
+            aria-label={t('facebook icon')}
+          >
+            <use href="/icons/sprite.svg#facebook"></use>
+          </svg>
         </Link>
         <Link
           href="#"
           className="w-fit transform transition-all duration-300 hover:scale-110"
           onClick={handleInstagramShare}
         >
-          <Image
-            src={'/icons/instagram.svg'}
-            alt={t('instagram icon')}
+          <svg
             width={32}
             height={32}
-            className="cursor-pointer"
-          />
+            role="img"
+            aria-label={t('instagram icon')}
+          >
+            <use href="/icons/sprite.svg#instagram"></use>
+          </svg>
         </Link>
         <Link
           href={telegramShareUrl}
           className="w-fit transform transition-all duration-300 hover:scale-110"
           target="_blank"
         >
-          <Image
-            src={'/icons/telegram.svg'}
-            alt={t('telegram icon')}
+          <svg
             width={32}
             height={32}
-            className="cursor-pointer"
-          />
+            role="img"
+            aria-label={t('telegram icon')}
+          >
+            <use href="/icons/sprite.svg#telegram"></use>
+          </svg>
         </Link>
       </div>
     </div>

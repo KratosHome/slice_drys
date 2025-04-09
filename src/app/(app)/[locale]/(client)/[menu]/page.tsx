@@ -1,6 +1,6 @@
 import React from 'react'
 import Product from '@/components/client/product/product'
-import ProductFilters from '@/components/client/prodcut-list/product-filters'
+import ProductFilters from '@/components/client/product-filters/product-filters'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -123,6 +123,7 @@ export default async function MenuPage(props: {
   const params = new URLSearchParams({ locale: String(locale) })
 
   const t = await getTranslations('product-list')
+  const tPagin = await getTranslations('pagination')
 
   const productBgImg = getProductBgImg(t)
   const url = process.env.NEXT_URL
@@ -175,16 +176,7 @@ export default async function MenuPage(props: {
   const content = JSON.parse(currentCategories.data.description[locale])
   const converter = new QuillDeltaToHtmlConverter(content.ops)
   const html = converter.convert()
-
-  const isLongText = html.length > 500
-  let firstPart = html
-  let secondPart = ''
-
-  if (isLongText) {
-    const mid = Math.ceil(html.length / 2)
-    firstPart = html.substring(0, mid)
-    secondPart = html.substring(mid)
-  }
+  // .replace(/(<p>(?:<br\/>)+<\/p>)|((?:<br\/>)+)/g, '')
 
   const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
     product.variables.map((variant: IVariableProduct) => ({
@@ -262,6 +254,8 @@ export default async function MenuPage(props: {
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
+                  className="text-[36px] md:text-[64px]"
+                  label={tPagin('previous')}
                   href={
                     productsData.currentPage > 1
                       ? getPageUrl(productsData.currentPage - 1)
@@ -276,15 +270,27 @@ export default async function MenuPage(props: {
                 if (item === 'ellipsis') {
                   return (
                     <PaginationItem key={`ellipsis-${index}`}>
-                      <PaginationEllipsis />
+                      <PaginationEllipsis className="text-xl sm:text-2xl md:text-4xl" />
                     </PaginationItem>
                   )
                 }
                 return (
                   <PaginationItem key={item}>
                     <PaginationLink
+                      label={
+                        productsData.currentPage === item
+                          ? tPagin('active-page', {
+                              page: productsData.currentPage + 1,
+                            })
+                          : typeof item === 'number'
+                            ? tPagin('go-to-page', {
+                                page: item,
+                              })
+                            : undefined
+                      }
                       href={getPageUrl(item)}
                       isActive={productsData.currentPage === item}
+                      className="text-xl sm:text-2xl md:text-4xl"
                     >
                       {item}
                     </PaginationLink>
@@ -294,6 +300,8 @@ export default async function MenuPage(props: {
 
               <PaginationItem>
                 <PaginationNext
+                  className="text-[36px] md:text-[64px]"
+                  label={tPagin('previous')}
                   href={
                     productsData.currentPage < productsData.totalPages
                       ? getPageUrl(productsData.currentPage + 1)
@@ -305,32 +313,15 @@ export default async function MenuPage(props: {
           </Pagination>
         )}
 
-        <div className="relative mt-[130px] w-full bg-[rgba(169,9,9,0.02)] py-[37px]">
-          <div className="mx-auto max-w-[1280px] rounded-md bg-white/60! px-5 py-[40px]">
+        <div className="bg-product-article-background relative mt-[130px] w-full py-[37px]">
+          <div className="mx-auto max-w-[1280px] rounded-md bg-white/60 px-5 py-[40px] dark:bg-transparent">
             <h2 className="font-rubik mb-6 text-center text-[36px] leading-none font-bold lg:text-[64px]">
               {currentCategories.data.metaTitle[locale]}
             </h2>
-            <div
-              className={`grid gap-6 ${isLongText ? 'md:grid-cols-2' : 'grid-cols-1'}`}
-            >
-              {isLongText ? (
-                <>
-                  <article
-                    className="ql-editor prose lg:prose-xl"
-                    dangerouslySetInnerHTML={{ __html: firstPart }}
-                  />
-                  <article
-                    className="ql-editor prose lg:prose-xl"
-                    dangerouslySetInnerHTML={{ __html: secondPart }}
-                  />
-                </>
-              ) : (
-                <article
-                  className="ql-editor prose lg:prose-xl"
-                  dangerouslySetInnerHTML={{ __html: html }}
-                />
-              )}
-            </div>
+            <article
+              className="ql-editor prose lg:prose-xl columns-1 md:columns-2 md:gap-10"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
             <div className="pointer-events-none absolute inset-0 -z-10 mx-auto max-w-[1380px]">
               {productBgImg.map((fruit, index) => (
                 <Image

@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 import { Separator } from '@/components/ui/separator'
 
 import { contacts } from '@/data/contacts'
@@ -63,7 +62,7 @@ export default function HamburgerMenu({
       >
         <div className={containerClasses}>
           <div className="tham-box">
-            <div className="tham-inner" />
+            <div className="tham-inner bg-foreground" />
           </div>
         </div>
       </Button>
@@ -71,21 +70,21 @@ export default function HamburgerMenu({
         <Portal>
           <TransitionChild>
             <div
-              className="fixed inset-0 z-500 hidden bg-black/30 transition duration-300 data-closed:opacity-0 sm:block"
+              className="bg-foreground fixed inset-0 z-500 hidden transition duration-300 data-closed:opacity-0 sm:block"
               onClick={() => setIsOpen(false)}
             />
           </TransitionChild>
           <TransitionChild>
             <div
               className={cn(
-                'f-[100svh] fixed inset-y-0 z-500 w-full bg-[#E4E4E4] py-6 transition duration-500 sm:w-[50%] lg:hidden',
+                'f-[100svh] bg-background fixed inset-y-0 z-500 w-full py-6 transition duration-500 sm:w-[50%] lg:hidden',
                 'data-closed:-translate-x-full',
                 'data-leave:duration-500 data-leave:ease-in-out',
                 'data-leave:data-closed:-translate-x-full',
                 isScrolled ? '' : 'top-[33px]',
               )}
             >
-              <div className="font-poppins flex flex-col">
+              <div className="flex flex-col">
                 <div className="grid grid-cols-7 items-center justify-items-end px-5">
                   <button
                     onClick={closeMenu}
@@ -97,14 +96,11 @@ export default function HamburgerMenu({
                   <Link
                     href="/"
                     onClick={closeMenu}
-                    className="col-span-3 col-start-3 self-center justify-self-center"
+                    className="text-foreground col-span-3 col-start-3 self-center justify-self-center"
                   >
-                    <Image
-                      src={'/icons/logo.svg'}
-                      alt={`${t('logo')}`}
-                      width={39}
-                      height={46}
-                    />
+                    <svg width="39px" height="46px">
+                      <use href="/icons/sprite.svg#logo" />
+                    </svg>
                   </Link>
                   <div />
                   <LocaleChange />
@@ -129,7 +125,7 @@ export default function HamburgerMenu({
 
                   <Separator
                     orientation="horizontal"
-                    className="my-[26px] bg-black"
+                    className="bg-foreground my-[26px]"
                   />
                   {hamburgerLinksOther?.map((link) => (
                     <Link
@@ -151,20 +147,15 @@ export default function HamburgerMenu({
                   className="flex items-center justify-center gap-x-5 pt-5"
                   onClick={closeMenu}
                 >
-                  {Children.toArray(<Socials variant="dark" />).map(
-                    (child, index) => (
-                      <Fragment key={index}>{child}</Fragment>
-                    ),
-                  )}
+                  {Children.toArray(<Socials />).map((child, index) => (
+                    <Fragment key={index}>{child}</Fragment>
+                  ))}
                 </div>
 
-                <div className="mt-5 flex items-center justify-center gap-3">
-                  <Image
-                    src={'/icons/tel.svg'}
-                    alt="tel icon"
-                    width={24}
-                    height={24}
-                  />
+                <div className="text-foreground mt-5 flex items-center justify-center gap-3">
+                  <svg width="24px" height="24px">
+                    <use href="/icons/sprite.svg#phone" />
+                  </svg>
                   <Link
                     href={`tel:${contacts.phone}`}
                     onClick={closeMenu}

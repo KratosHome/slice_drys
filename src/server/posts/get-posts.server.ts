@@ -1,6 +1,6 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Post } from '@/server/posts/postSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Post } from '@/server/posts/post-schema.server'
 
 type GetPostsOptions = {
   locale: ILocale
@@ -38,7 +38,7 @@ const formatPost = (post: IPostLocal, locale: ILocale) => ({
 export async function getPosts({ locale, page, limit }: GetPostsOptions) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const skip = (page - 1) * limit
 
@@ -77,7 +77,7 @@ type GetAllPostsOptions = {
 export async function getAllPosts({ locale }: GetAllPostsOptions) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const allPosts = await Post.find()
       .sort({ createdAt: -1 })
@@ -108,7 +108,7 @@ type GetPostOptions = {
 export async function getPost({ locale, slug, isVisited }: GetPostOptions) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const post: IPostLocal | null = isVisited
       ? ((await Post.findOneAndUpdate(

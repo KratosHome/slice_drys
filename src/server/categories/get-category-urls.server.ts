@@ -1,10 +1,10 @@
-import { connectToDb } from '@/server/connectToDb'
-import { Category } from '@/server/categories/categories-schema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
 
 export async function getCategoryUrls() {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const categories = await Category.find({}).select('slug').lean()
 

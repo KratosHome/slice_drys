@@ -12,19 +12,19 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { convertToBase64 } from '@/utils/convertToBase64'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
 import Image from 'next/image'
 
 import QuillEditor from './quill-editor'
 import 'quill/dist/quill.snow.css'
 import { createPost } from '@/server/posts/create-post.server'
-import { editPost } from '@/server/posts/edit-post'
+import { editPostServer } from '@/server/posts/edit-post.server'
 import { deletePost } from '@/server/posts/delete-post.server'
 
 import Spinner from '@/components/ui/spinner'
 
 import { useToast } from '@/hooks/use-toast'
-import { toSlug } from '@/utils/toSlug'
+import { toSlug } from '@/utils/to-slug'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -117,7 +117,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       setContentError(null)
       let response
       if (post?._id) {
-        response = await editPost(post._id, data, image)
+        response = await editPostServer(post._id, data, image)
       } else {
         response = await createPost(data, image)
       }

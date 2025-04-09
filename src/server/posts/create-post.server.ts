@@ -1,14 +1,14 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Post } from './postSchema'
-import cloudinary from '@/server/cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Post } from './post-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
 export async function createPost(formData: IPostLocal, image: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     let postData = {
       ...formData,

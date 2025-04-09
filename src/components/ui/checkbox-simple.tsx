@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import { Check } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
@@ -21,8 +20,14 @@ function CheckboxSimple({ name, isValid, isChecked, label, ...props }: Props) {
       htmlFor={name}
     >
       <span className="relative mr-4 grid h-[27px] w-[27px] place-items-center">
-        <Image src="/icons/checkbox.svg" alt="checkbox" fill />
         <Check size={16} className={cn(isChecked ? 'visible' : 'invisible')} />
+        <svg
+          height={27}
+          width={27}
+          className="text-foreground absolute inset-0 origin-center"
+        >
+          <use href="/icons/sprite.svg#o" />
+        </svg>
         <input
           type="checkbox"
           {...props}

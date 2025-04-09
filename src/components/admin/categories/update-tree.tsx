@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dialog'
 import { locales } from '@/data/locales'
 import Image from 'next/image'
-import { convertToBase64 } from '@/utils/convertToBase64'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
 import QuillEditor from '@/components/admin/editor-post/quill-editor'
 import { Button } from '@/components/ui/button'
 

@@ -1,14 +1,14 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Post } from '@/server/posts/postSchema'
-import cloudinary from '../cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Post } from '@/server/posts/post-schema.server'
+import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
 export async function deletePost(id: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const postToDelete = await Post.findByIdAndDelete(id)
     if (!postToDelete) {

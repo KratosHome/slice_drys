@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/utils/cn'
 import { useTranslations } from 'next-intl'
@@ -24,15 +23,19 @@ const NumberCall: FC<NumberCallProps> = ({ className, variant = 'dark' }) => {
       <div
         className={cn(
           'shrink-0 transform duration-300 group-hover:scale-110 group-hover:skew-x-[-5deg]',
-          variant === 'light' ? '[filter:invert(1)]' : '[filter:invert(0)]',
+          variant === 'dark'
+            ? 'text-foreground'
+            : 'dark:text-foreground text-background',
         )}
       >
-        <Image
-          src={'/icons/tel.svg'}
-          alt={`${t('telephone-icon')}`}
-          width={24}
-          height={24}
-        />
+        <svg
+          width="24px"
+          height="24px"
+          role="img"
+          aria-label={t('telephone-icon')}
+        >
+          <use href="/icons/sprite.svg#phone" />
+        </svg>
       </div>
       <Link
         href={`tel:${contacts.phone}`}

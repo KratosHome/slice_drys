@@ -1,12 +1,12 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
-import cloudinary from '../cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import cloudinary from '../cloudinary-config.server'
 
 export async function getProductsSliderMain(locale: ILocale) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const products = await Product.find()
       .populate('categories', 'slug')

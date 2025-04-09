@@ -2,7 +2,7 @@ import { FC } from 'react'
 import Script from 'next/script'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { blogMetaData } from '@/data/blog/blogMetaData'
+import { blogMetaData } from '@/data/blog/blog-meta-data'
 
 type JsonLdProps = Readonly<{
   data: IGetPostsClient

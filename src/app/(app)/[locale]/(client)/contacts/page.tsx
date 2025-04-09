@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import Contacts from '@/components/client/contacts/Contacts'
+import Contacts from '@/components/client/contacts/contacts'
 
 import {
   Breadcrumb,
@@ -10,7 +10,9 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumbs'
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
-import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
+import JoinCommunity from '@/components/client/promo-banner/join-community'
+import ToTheTop from '@/components/ui/to-the-top'
+import { locales } from '@/data/locales'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -54,6 +56,10 @@ export async function generateMetadata({ params }: { params: Params }) {
   }
 }
 
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
+
 export default async function ContactsPage(props: { params: Params }) {
   const { locale } = await props.params
   const t = await getTranslations('Breadcrumbs')
@@ -74,7 +80,8 @@ export default async function ContactsPage(props: { params: Params }) {
           </BreadcrumbList>
         </Breadcrumb>
         <Contacts />
-        <JoinCommunity className="my-[150px] mb-[100px] md:mt-[50px]" />
+        <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
+        <ToTheTop />
       </div>
     </>
   )

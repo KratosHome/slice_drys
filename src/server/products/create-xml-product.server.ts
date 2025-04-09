@@ -1,6 +1,6 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
 import fs from 'fs'
 import path from 'path'
 
@@ -30,7 +30,7 @@ function formatPrice(price: number, currency: string = 'UAH'): string {
 export async function createXmlProduct(locale: string = 'uk') {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
     const products = await Product.find({})
 
     const baseUrl = 'https://slicedrys.com'

@@ -1,7 +1,7 @@
 'use server'
 
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
 
 export async function getProducts(
   page: number = 1,
@@ -14,7 +14,7 @@ export async function getProducts(
 ) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const query: IQueryType = {}
 

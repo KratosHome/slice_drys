@@ -17,7 +17,7 @@ import { PencilLine } from 'lucide-react'
 
 import DeliveryProvider from './delivery-provider'
 import CheckboxSimple from '@/components/ui/checkbox-simple'
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import Textarea from '@/components/ui/textarea-RHF'
 import { Input } from '@/components/ui/input-RHF'
 import { cn } from '@/utils/cn'
@@ -40,9 +40,9 @@ type UserDataKeys = keyof IUserData<
 >
 
 export const legendStyle = 'text-xl font-bold md:text-2xl'
-const radioItemStyle = 'h-5 w-5'
+const radioItemStyle = 'h-5 w-5 cursor-pointer'
 const radioItemFilledStyle =
-  'bg-[#e4e4e4] outline outline-[10px] outline-[#e4e4e4] focus:outline ml-[10px]'
+  'bg-border outline outline-[10px] outline-border focus:outline ml-[10px] focus:outline-[10px]'
 
 const deliveryProviderLabels = {
   novaPoshta: {
@@ -277,10 +277,10 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
         id="step1"
         className={cn(
           'relative flex flex-col',
-          userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+          userData?.formStep === 4 && 'bg-order-background p-6',
           userData?.formStep === 4 &&
             showFieldset.step1 &&
-            'border border-black bg-transparent',
+            'border-foreground border bg-transparent',
         )}
       >
         <legend className="sr-only">{t('contacts_title')}</legend>
@@ -421,7 +421,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           ) : null}
         </AnimatePresence>
         {userData?.formStep === 4 && !showFieldset.step1 ? (
-          <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
+          <div className="text-order-text flex flex-col gap-1">
             <p>{userData?.name + ' ' + userData?.surname}</p>
             <p>{userData?.phoneNumber}</p>
             <p>{userData?.email}</p>
@@ -448,10 +448,10 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           id="step2"
           className={cn(
             'relative flex flex-col',
-            userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+            userData?.formStep === 4 && 'bg-order-background p-6',
             userData?.formStep === 4 &&
               showFieldset.step2 &&
-              'border border-black bg-transparent',
+              'border-foreground border bg-transparent',
           )}
         >
           <legend className="sr-only">{t('delivery_title')}</legend>
@@ -730,17 +730,17 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                 )}
               </div>
               {userData.deliveryInfo?.courierInfo ? (
-                <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
-                  <p className="text-[hsl(var(--order-text))]">
+                <div className="text-order-text flex flex-col gap-1">
+                  <p className="text-order-text">
                     {userData?.deliveryInfo?.courierInfo}
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-1 text-[hsl(var(--order-text))]">
-                  <p className="text-[hsl(var(--order-text))]">
+                <div className="text-order-text flex flex-col gap-1">
+                  <p className="text-order-text">
                     {userData?.deliveryInfo?.city?.label}
                   </p>
-                  <p className="text-[hsl(var(--order-text))]">
+                  <p className="text-order-text">
                     {userData?.deliveryInfo?.branch?.label}
                   </p>
                 </div>
@@ -766,10 +766,10 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           id="step3"
           className={cn(
             'relative flex flex-col',
-            userData?.formStep === 4 && 'bg-[hsl(var(--order-background))] p-6',
+            userData?.formStep === 4 && 'bg-order-background p-6',
             userData?.formStep === 4 &&
               showFieldset.step3 &&
-              'border border-black bg-transparent',
+              'border-foreground border bg-transparent',
           )}
         >
           <legend className="sr-only">{t('payment_title')}</legend>
@@ -820,9 +820,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           </AnimatePresence>
 
           {userData?.formStep === 4 && !showFieldset.step3 ? (
-            <div className="text-[hsl(var(--order-text))]">
-              {userData.paymentInfo}
-            </div>
+            <div className="text-order-text">{userData.paymentInfo}</div>
           ) : null}
           <Button
             area-label={t('area-edit')}
@@ -844,11 +842,10 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             id="step4"
             className={cn(
               'relative flex flex-col',
-              userData?.formStep === 4 &&
-                'bg-[hsl(var(--order-background))] p-6',
+              userData?.formStep === 4 && 'bg-order-background p-6',
               userData?.formStep === 4 &&
                 showFieldset.step4 &&
-                'border border-black bg-transparent',
+                'border-foreground border bg-transparent',
             )}
           >
             <legend className="sr-only">{t('comment_title')}</legend>
@@ -880,7 +877,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
                           comment,
                         })
                       }}
-                      className="m-0.5 mt-8 w-[99%] resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
+                      className="border-foreground/30 m-0.5 mt-8 w-[99%] resize-none border text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]"
                     />
                   </m.div>
                 </LazyMotion>
@@ -888,7 +885,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
             </AnimatePresence>
 
             {userData?.formStep === 4 && !showFieldset.step4 ? (
-              <div className="mt-8 text-[hsl(var(--order-text))]">
+              <div className="text-order-text mt-8">
                 {userData.comment || t('no_comments')}
               </div>
             ) : null}
@@ -929,9 +926,9 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
           className={cn(
             'relative flex flex-col gap-4 text-[clamp(14px,calc(14px+6*(100vw-768px)/672),20px)]',
             userData?.formStep === 5 &&
-              'pointer-events-none bg-[hsl(var(--order-background))] p-6 text-[hsl(var(--order-text))]',
+              'pointer-events-none bg-order-background p-6 text-order-text',
             showFieldset.step5 &&
-              'pointer-events-auto border border-black bg-transparent p-6',
+              'pointer-events-auto border border-foreground bg-transparent p-6',
           )}
         >
           <div>
@@ -1000,7 +997,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(({ defaultCities }, ref) => {
       {(!userData || (userData?.formStep ?? 0) <= 3) && (
         <button
           type="submit"
-          className="max-w-[180px] self-center bg-black px-5 py-2 text-white"
+          className="bg-foreground text-background max-w-[180px] self-center px-5 py-2"
         >
           {t('btn_continue')}
         </button>

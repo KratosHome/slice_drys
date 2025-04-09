@@ -7,6 +7,8 @@ import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
 import { fetchTags } from '@/data/fetch-tags'
+import JoinCommunity from '@/components/client/promo-banner/join-community'
+import ToTheTop from '@/components/ui/to-the-top'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -90,13 +92,15 @@ export async function generateStaticParams() {
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const data = await fetch(
-    `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-    {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.post}`] },
-    },
-  ).then((res) => res.json())
+  const [data] = await Promise.all([
+    await fetch(
+      `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
+      {
+        cache: 'force-cache',
+        next: { tags: [`${fetchTags.post}`] },
+      },
+    ).then((res) => res.json()),
+  ])
 
   if (!data.success) {
     return <NotFoundPage />
@@ -108,15 +112,14 @@ export default async function PostPage({ params }: Props) {
   const date = new Date(data.post[0].updatedAt).toLocaleDateString('uk-UA')
   const author = data.post[0].author
   const converter = new QuillDeltaToHtmlConverter(content.ops)
-  const html = converter.convert()
+  const html = converter.convert().replace(/(<p>(?:<br\/>)+<\/p>)/g, '')
 
   return (
     <>
       <BlogItemJsonLd post={data.post[0]} />
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
-        <div className="mt-10"></div>
         <div className="my-20 px-20">
-          <h1 className="font-poppins flex min-h-28 w-[100%] items-center justify-center bg-black px-10 py-5 text-left text-4xl leading-[48px] font-bold text-white drop-shadow-[16px_-16px_0px_#A90909]">
+          <h1 className="bg-foreground text-background flex min-h-28 w-[100%] items-center justify-center px-10 py-5 text-left text-4xl leading-[48px] font-bold drop-shadow-[16px_-16px_0px_#A90909]">
             {title}
           </h1>
         </div>
@@ -128,14 +131,16 @@ export default async function PostPage({ params }: Props) {
           />
         </div>
         <div className="my-20">
-          <div className="my-4 border-t border-dashed border-black"></div>
+          <div className="border-foreground my-4 border-t border-dashed"></div>
           <div className="flex justify-between">
             <div className="text-gray-500">{date}</div>
             <div className="text-gray-500">{author}</div>
           </div>
         </div>
         <Share title={title} url={url} />
+        <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
       </div>
+      <ToTheTop />
     </>
   )
 }

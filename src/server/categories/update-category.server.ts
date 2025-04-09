@@ -1,7 +1,7 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Category } from '@/server/categories/categories-schema'
-import cloudinary from '@/server/cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
@@ -15,7 +15,7 @@ export async function updateCategory(
   'use server'
 
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const existingCategory = await Category.findById(categoryId)
     if (!existingCategory) {
