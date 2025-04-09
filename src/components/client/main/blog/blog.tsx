@@ -134,7 +134,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                     </p>
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="card__link"
+                      className="card__link text-white"
                     >
                       {post.title}
                     </Link>
