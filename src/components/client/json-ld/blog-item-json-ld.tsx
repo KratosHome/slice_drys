@@ -2,16 +2,15 @@ import { FC } from 'react'
 import Script from 'next/script'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { blogMetaData } from '@/data/blog/blogMetaData'
+import { blogMetaData } from '@/data/blog/blog-meta-data'
 
 type JsonLdProps = Readonly<{
   post: IPost
-  reviews: IReviewLocal[]
 }>
 
 const url = process.env.NEXT_URL
 
-const BlogItemJsonLd: FC<JsonLdProps> = async ({ post, reviews }) => {
+const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
   const locale = (await getLocale()) as ILocale
   const t = await getTranslations('Breadcrumbs')
 
@@ -63,7 +62,8 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post, reviews }) => {
         },
       ],
     },
-    hasPart: reviews.map((review) => ({
+    /*
+        hasPart: reviews.map((review) => ({
       '@type': 'Review',
       '@id': `${canonicalUrl}/#review-${review._id}`,
       reviewBody: review.text,
@@ -82,6 +82,7 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post, reviews }) => {
         url,
       },
     })),
+     */
   }
 
   return (

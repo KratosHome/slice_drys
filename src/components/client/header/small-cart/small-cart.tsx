@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import CartProductCard from './cart-product-card'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
 import { Button } from '@/components/ui/button'

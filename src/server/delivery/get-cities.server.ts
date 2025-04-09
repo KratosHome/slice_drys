@@ -1,13 +1,16 @@
 'use server'
 
-import { connectToDb } from '@/server/connectToDb'
-import { NovaPoshtaCities, NovaPoshtaDefaultCities } from './novaPoshtaSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import {
+  NovaPoshtaCities,
+  NovaPoshtaDefaultCities,
+} from './nova-poshta-schema.server'
 import { getNovaPoshtaApiData } from './get-np-api-data.server'
 
 export async function getDefaultNPCitiesFromDictionary() {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
     const cities = await NovaPoshtaDefaultCities.find({}).lean<
       IDirectoryCity[]
     >()
@@ -25,7 +28,7 @@ export async function getDefaultNPCitiesFromDictionary() {
 
 export async function getNPCitiesFromDictionary(city: string) {
   try {
-    await connectToDb()
+    await connectToDbServer()
     const cities = await NovaPoshtaCities.find({
       city: { $regex: city, $options: 'i' },
     }).lean<IDirectoryCity[]>()

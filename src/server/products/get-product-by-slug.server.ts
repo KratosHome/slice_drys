@@ -1,7 +1,7 @@
 'use server'
-import cloudinary from '../cloudinaryConfig'
-import { connectToDb } from '../connectToDb'
-import { Product } from './productSchema'
+import cloudinary from '../cloudinary-config.server'
+import { connectToDbServer } from '../connect-to-db.server'
+import { Product } from './product-schema.server'
 
 export async function getProductBySlug({
   slug,
@@ -12,7 +12,7 @@ export async function getProductBySlug({
 }) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const product = await Product.findOne(
       { slug: { $regex: `^${slug}$`, $options: 'i' } },

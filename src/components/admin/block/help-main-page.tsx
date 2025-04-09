@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { updateHelpData } from '@/server/block/update-help-main.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
-import { convertToBase64 } from '@/utils/convertToBase64'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
 import { Button } from '@/components/ui/button'
 
 interface FormValues {

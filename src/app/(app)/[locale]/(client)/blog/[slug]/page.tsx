@@ -7,25 +7,14 @@ import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
 import { fetchTags } from '@/data/fetch-tags'
-import { Loader } from 'lucide-react'
-import dynamic from 'next/dynamic'
-import { getTranslations } from 'next-intl/server'
-import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
+import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
-import { getReviews } from '@/server/reviews/getReviews'
 
 const baseUrl = process.env.NEXT_URL
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
 }
-
-const Reviews = dynamic(
-  () => import('@/components/client/main/reviews/reviews'),
-  {
-    loading: () => <Loader />,
-  },
-)
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
@@ -102,9 +91,8 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
-  const t = await getTranslations('blog')
 
-  const [data, reviews] = await Promise.all([
+  const [data] = await Promise.all([
     await fetch(
       `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
       {
@@ -112,7 +100,6 @@ export default async function PostPage({ params }: Props) {
         next: { tags: [`${fetchTags.post}`] },
       },
     ).then((res) => res.json()),
-    getReviews({ locale }),
   ])
 
   if (!data.success) {
@@ -129,10 +116,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <>
-      <BlogItemJsonLd
-        post={data.post[0]}
-        reviews={reviews.success ? reviews.dataLocalized : []}
-      />
+      <BlogItemJsonLd post={data.post[0]} />
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
         <div className="my-20 px-20">
           <h1 className="bg-foreground text-background flex min-h-28 w-[100%] items-center justify-center px-10 py-5 text-left text-4xl leading-[48px] font-bold drop-shadow-[16px_-16px_0px_#A90909]">
@@ -154,13 +138,6 @@ export default async function PostPage({ params }: Props) {
           </div>
         </div>
         <Share title={title} url={url} />
-        {
-          <Reviews
-            reviews={reviews.success ? reviews.dataLocalized : []}
-            pagination
-            title={t('comments')}
-          />
-        }
         <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
       </div>
       <ToTheTop />

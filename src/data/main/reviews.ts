@@ -1,5 +1,6 @@
 export const reviewsData = [
   {
+    _id: 1,
     author: {
       en: 'Olya',
       uk: 'Оля',
@@ -9,10 +10,11 @@ export const reviewsData = [
       uk: 'Якісь нереально смачні ті “сушені чіпси”! Спочатку подумала, що буде жорстко, але навпаки – м’яко і дуже хрустко одночасно. Тепер завжди маю їх в сумочці як перекус. Хочу ще більше різних смаків!',
     },
     rating: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-15T14:20:00Z'),
+    updatedAt: new Date('2023-01-15T14:20:00Z'),
   },
   {
+    _id: 2,
     author: {
       en: 'Mykola',
       uk: 'Микола',
@@ -22,10 +24,11 @@ export const reviewsData = [
       uk: 'Надзвичайно ароматні, хоча ціна кусається. Але за таку якість, воно того варте!',
     },
     rating: 4,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-03-30T08:45:00Z'),
+    updatedAt: new Date('2023-03-31T12:00:00Z'),
   },
   {
+    _id: 3,
     author: {
       en: 'Victoria',
       uk: 'Вікторія',
@@ -35,10 +38,11 @@ export const reviewsData = [
       uk: 'Шукала щось новеньке для фуршету на роботі й натрапила на ці сушені чіпси. Це був хіт вечора – колеги питали, де купити! Тепер усі в офісі “підсіли” на них.',
     },
     rating: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-05-10T16:15:00Z'),
+    updatedAt: new Date('2023-05-10T16:15:00Z'),
   },
   {
+    _id: 4,
     author: {
       en: 'Valeriy',
       uk: 'Валерій',
@@ -48,10 +52,11 @@ export const reviewsData = [
       uk: 'Взяв на рибалку, щоб було чим перекусити. Виявилися ідеальним варіантом, смак – бомба. Наступного разу замовлю більше!',
     },
     rating: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-08-05T11:05:00Z'),
+    updatedAt: new Date('2023-08-05T11:05:00Z'),
   },
   {
+    _id: 5,
     author: {
       en: 'Katya',
       uk: 'Катя',
@@ -61,10 +66,11 @@ export const reviewsData = [
       uk: 'Я думала, що м’ясо буде сухе й без смаку, але ні! Трохи переживала, бо діти зазвичай вередують, а тут просили добавки. Тепер це наш маст-хев на прогулянках.',
     },
     rating: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-09-20T19:30:00Z'),
+    updatedAt: new Date('2023-09-20T19:30:00Z'),
   },
   {
+    _id: 6,
     author: {
       en: 'Ruslan',
       uk: 'Руслан',
@@ -74,7 +80,7 @@ export const reviewsData = [
       uk: 'Тренуюсь регулярно, тому шукав білковий перекус без зайвих калорій. Ці сушені чіпси – просто спасіння! Смакують краще, ніж я очікував.',
     },
     rating: 5,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-10-02T10:00:00Z'),
+    updatedAt: new Date('2023-10-02T10:00:00Z'),
   },
 ]

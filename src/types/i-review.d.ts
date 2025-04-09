@@ -1,5 +1,5 @@
 interface IReview {
-  _id?: string
+  _id: number
   author: Record<ILocale, string>
   text: Record<ILocale, string>
   rating: number
@@ -7,7 +7,7 @@ interface IReview {
   createdAt: Date
 }
 interface IReviewLocal {
-  _id?: string
+  _id: number
   author: string
   text: string
   rating: number

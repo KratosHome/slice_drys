@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const subscriptionSchema = new mongoose.Schema(
+const subscriptionSchemaServer = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -13,4 +13,4 @@ const subscriptionSchema = new mongoose.Schema(
 
 export const Subscription =
   mongoose.models.Subscription ||
-  mongoose.model('Subscription', subscriptionSchema)
+  mongoose.model('Subscription', subscriptionSchemaServer)

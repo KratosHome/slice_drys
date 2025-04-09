@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 import Image from 'next/image'
-import ContactInfo from './ContactInfo'
-import ContactForm from './ContactForm'
+import ContactInfo from './contact-info'
+import ContactForm from './contact-form'
 import UnderlineWave from '@/components/ui/underline-wave'
 
 const Contacts = async () => {

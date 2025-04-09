@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Input } from '@/components/ui/input'
 import SpinnerBtn from '@/components/ui/spinner-btn'
-import { subscribe } from '@/server/subscribe/subscribe'
+import { subscribeServer } from '@/server/subscribe/subscribe.server'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ function BlogFooter() {
     e.preventDefault()
     setIsLoading(true)
     const formData = new FormData(e.currentTarget)
-    const resp = await subscribe(formData.get('email') as string)
+    const resp = await subscribeServer(formData.get('email') as string)
     setIsLoading(false)
     if (resp.success) {
       ;(e.target as HTMLFormElement).reset()

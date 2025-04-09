@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Controller, useForm } from 'react-hook-form'
-import { callMeBack } from '@/server/info/call-me-back'
+import { callMeBackServer } from '@/server/info/call-me-back.server'
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
+import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { Button } from '@/components/ui/button'
 
 interface FormData {
@@ -39,7 +39,7 @@ const CallMe = () => {
   })
 
   const sendCall = async (data: FormData) => {
-    await callMeBack({
+    await callMeBackServer({
       name: data.name,
       phoneNumber: data.phoneNumber,
     })

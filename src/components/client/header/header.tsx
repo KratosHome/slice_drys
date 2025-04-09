@@ -4,10 +4,10 @@ import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import SmallCart from '@/components/client/header/small-cart'
+import SmallCart from '@/components/client/header/small-cart/small-cart'
 import NumberCall from '@/components/client/header/number-call/number-call'
 import CallMe from '@/components/client/header/call-me'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
@@ -15,7 +15,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { pageLinks } from '@/data/main/nav-links'
-import ThemeToggle from '../theme-toggle'
+import ThemeToggle from '../theme-toggle/theme-toggle'
 
 gsap.registerPlugin(ScrollTrigger)
 

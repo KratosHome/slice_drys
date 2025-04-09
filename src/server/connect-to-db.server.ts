@@ -7,7 +7,7 @@ interface Connection {
 
 const connection: Connection = {}
 
-export const connectToDb = async (): Promise<void> => {
+export const connectToDbServer = async (): Promise<void> => {
   'use server'
   try {
     if (connection.isConnected) {

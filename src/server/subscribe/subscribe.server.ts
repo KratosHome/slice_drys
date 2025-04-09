@@ -1,11 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Subscription } from './subscriptionSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Subscription } from './subscription-schema.server'
 
-export async function subscribe(email: string) {
+export async function subscribeServer(email: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const currentSubscription = await Subscription.findOne({ email }).lean()
 

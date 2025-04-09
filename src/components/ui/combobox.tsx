@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import { getNPBranchesByCityRef } from '@/server/delivery/get-branches.server'
 import {
   getDefaultNPCitiesFromDictionary,

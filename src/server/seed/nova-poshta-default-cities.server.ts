@@ -1,15 +1,15 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
+import { connectToDbServer } from '@/server/connect-to-db.server'
 import {
   NovaPoshtaCities,
   NovaPoshtaDefaultCities,
-} from '@/server/delivery/novaPoshtaSchema'
+} from '@/server/delivery/nova-poshta-schema.server'
 import { getNPCityOnline } from '../delivery/get-cities.server'
 
 export const seedNovaPoshtaDefaultCities = async () => {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const count = await NovaPoshtaDefaultCities.countDocuments()
     if (count !== 0) {
@@ -154,7 +154,7 @@ export const seedNovaPoshtaCitiesDictionary = async (
     city: formatCityName(rest),
   }))
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     if (force) {
       await NovaPoshtaCities.deleteMany({})

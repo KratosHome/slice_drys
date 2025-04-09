@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Portal, Transition, TransitionChild } from '@headlessui/react'
 import { useState, Children, Fragment, useEffect } from 'react'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 import { Separator } from '@/components/ui/separator'
 
 import { contacts } from '@/data/contacts'

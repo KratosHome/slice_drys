@@ -15,7 +15,7 @@ type Delivery = DepartmentDelivery | CourierDelivery
 interface DeliveryValidationProps {
   value: Delivery
 }
-const orderSchema = new mongoose.Schema(
+const orderSchemaServer = new mongoose.Schema(
   {
     status: {
       type: String,
@@ -129,4 +129,4 @@ const orderSchema = new mongoose.Schema(
 )
 
 export const Order =
-  mongoose.models.Order || mongoose.model('Order', orderSchema)
+  mongoose.models.Order || mongoose.model('Order', orderSchemaServer)

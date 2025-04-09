@@ -1,12 +1,12 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Category } from '@/server/categories/categories-schema'
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
+import { Product } from '@/server/products/product-schema.server'
 
 export async function getCategories(slug?: string, locale?: ILocale) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     if (slug && (slug === 'promotions' || slug === 'mixes')) {
       const mainCategory = await Category.findOne({ slug }).lean<ICategory>()

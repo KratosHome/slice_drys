@@ -137,7 +137,7 @@ export default function Reviews({
         <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
           {currentReviewsSet.map((review, index) => (
             <ReviewsItem
-              id={`review-${review._id!}`}
+              id={`review-${review._id}`}
               ref={(el) => {
                 if (el) reviewsRef.current[index] = el
               }}

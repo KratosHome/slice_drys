@@ -3,7 +3,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
-import Header from '@/components/client/header'
+import Header from '@/components/client/header/header'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
@@ -12,9 +12,8 @@ import { GoogleTagManager } from '@/components/client/google-tag-manager/google-
 import { fetchTags } from '@/data/fetch-tags'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
-import ClientDynamicMain from '@/components/client/dynamic-imports/min'
-import { seedReviews } from '@/server/seed/seedReviews'
-import ThemeProvider from '@/providers/theme-provider'
+import ClientDynamicMain from '@/components/client/dynamic-imports/main'
+import ThemeProvider from '@/components/providers/theme-provider'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -54,7 +53,6 @@ export default async function LocaleLayout(props: {
       </html>
     )
   }
-  await seedReviews()
   const messages = await getMessages()
 
   const categoriesData = await fetch(`${url}/api/categories`, {

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 
 export default function CartProductCard({
   id,

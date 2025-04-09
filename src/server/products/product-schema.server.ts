@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const productSchema = new mongoose.Schema(
+const productSchemaServer = new mongoose.Schema(
   {
     name: {
       en: {
@@ -191,4 +191,4 @@ const productSchema = new mongoose.Schema(
 )
 
 export const Product =
-  mongoose.models.Product || mongoose.model('Product', productSchema)
+  mongoose.models.Product || mongoose.model('Product', productSchemaServer)

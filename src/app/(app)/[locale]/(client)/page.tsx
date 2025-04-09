@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
 import { Hero } from '@/components/client/main/hero'
-import { detectDevice } from '@/utils/deviceDetection'
+import { detectDevice } from '@/utils/device-detection'
 import { faqData } from '@/data/main/faq'
 import type { Metadata } from 'next'
 import { mainMetaData } from '@/data/meta-data/main'
@@ -41,7 +41,7 @@ const Reviews = dynamic(
 )
 
 const InstaFeed = dynamic(
-  () => import('@/components/client/main/instaFeed/InstaFeed'),
+  () => import('@/components/client/main/instaFeed/Insta-feed'),
   {
     loading: () => <Loader />,
   },

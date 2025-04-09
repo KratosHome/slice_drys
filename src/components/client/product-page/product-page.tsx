@@ -10,10 +10,10 @@ import {
   SelectValue,
 } from '@/components/ui/doodle-select'
 import { ChangeQuantityIcon } from './icons'
-import SliderWithThumbnails from './slider'
+import SliderWithThumbnails from './slider/slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'

@@ -2,7 +2,7 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
-import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
+import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
 import { toast } from '@/hooks/use-toast'

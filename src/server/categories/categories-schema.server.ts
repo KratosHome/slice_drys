@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const categoriesSchema = new mongoose.Schema(
+const categoriesSchemaServer = new mongoose.Schema(
   {
     name: {
       en: { type: String, required: true, minlength: 1, maxlength: 255 },
@@ -41,4 +41,4 @@ const categoriesSchema = new mongoose.Schema(
 )
 
 export const Category =
-  mongoose.models.Category || mongoose.model('Category', categoriesSchema)
+  mongoose.models.Category || mongoose.model('Category', categoriesSchemaServer)

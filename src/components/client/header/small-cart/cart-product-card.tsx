@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/utils/cn'
 import { ResponsiveMotion } from '../../responsiv-motion/responsive-motion'
 import { ChangeQuantityIcon } from '../../product-page/icons'

@@ -1,14 +1,14 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
-import cloudinary from '../cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
 export async function deleteProduct(id?: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const deletedProduct = await Product.findByIdAndDelete(id)
     if (!deletedProduct) {

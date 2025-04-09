@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { callMeBack } from '@/server/info/call-me-back'
-import ForwardedMaskedInput from '@/components/ui/ForwardedMaskedInput'
+import { callMeBackServer } from '@/server/info/call-me-back.server'
+import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { toast } from '@/hooks/use-toast'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -38,7 +38,7 @@ const ContactForm = ({
   })
 
   const sendCall = async (data: ContactFormData) => {
-    await callMeBack({
+    await callMeBackServer({
       name: '',
       phoneNumber: data.phoneNumber,
     })

@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import Contacts from '@/components/client/contacts/Contacts'
+import Contacts from '@/components/client/contacts/contacts'
 
 import {
   Breadcrumb,
@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumbs'
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
-import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
+import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
 import { locales } from '@/data/locales'
 

@@ -1,11 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
 
 export async function increaseProductVisit(slug: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     await Product.findOneAndUpdate(
       { slug },

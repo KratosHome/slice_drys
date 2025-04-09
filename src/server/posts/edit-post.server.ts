@@ -1,18 +1,18 @@
 'use server'
 import { revalidateTag } from 'next/cache'
-import { connectToDb } from '@/server/connectToDb'
-import { Post } from '@/server/posts/postSchema'
-import cloudinary from '@/server/cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Post } from '@/server/posts/post-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function editPost(
+export async function editPostServer(
   id: string,
   formData: IPostLocal,
   image?: string,
 ) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const existingPost = await Post.findById(id)
     if (!existingPost) return { success: false, message: 'Post not found' }

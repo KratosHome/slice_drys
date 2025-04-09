@@ -25,7 +25,7 @@ import { getPaginationRange } from '@/utils/get-pagination-range'
 import BlogJsonLd from '@/components/client/json-ld/blog-json-ld'
 import { cn } from '@/utils/cn'
 
-import { blogMetaData } from '@/data/blog/blogMetaData'
+import { blogMetaData } from '@/data/blog/blog-meta-data'
 import { locales } from '@/data/locales'
 import NotFoundPage from '@/components/not-found'
 import { fetchTags } from '@/data/fetch-tags'

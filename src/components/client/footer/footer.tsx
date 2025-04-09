@@ -3,7 +3,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 import NumberCall from '../header/number-call/number-call'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'

@@ -7,7 +7,7 @@ interface FormData {
   phoneNumber: string
 }
 
-export async function callMeBack(formData: FormData) {
+export async function callMeBackServer(formData: FormData) {
   'use server'
   try {
     const formattedDate = formatDate(new Date())

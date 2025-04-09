@@ -3,14 +3,14 @@
 import { useEffect } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import InstaCard from './instaCard'
+import InstaCard from './insta-card'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { Arrow } from '@/components/ui/arrow'
 
 import { contacts } from '@/data/contacts'
 import '@splidejs/react-splide/css'
 import '../../styles/slider.css'
-import './InstaFeed.css'
+import './Insta-feed.css'
 
 type Props = Readonly<{ data: InstaFeed[]; title: string }>
 

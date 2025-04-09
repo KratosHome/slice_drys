@@ -17,7 +17,7 @@ import { PencilLine } from 'lucide-react'
 
 import DeliveryProvider from './delivery-provider'
 import CheckboxSimple from '@/components/ui/checkbox-simple'
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/cart-store'
 import Textarea from '@/components/ui/textarea-RHF'
 import { Input } from '@/components/ui/input-RHF'
 import { cn } from '@/utils/cn'

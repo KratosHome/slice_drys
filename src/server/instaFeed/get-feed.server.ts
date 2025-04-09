@@ -1,6 +1,6 @@
 'use server'
 
-export async function getFeed(limit: number) {
+export async function getFeedServer(limit: number) {
   'use server'
   const accessToken = process.env.INSTAGRAM_TOKEN
   const userId = process.env.INSTAGRAM_ID

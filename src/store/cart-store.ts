@@ -1,7 +1,7 @@
 'use client'
 
-import { createOrder } from '@/server/orders/create-order'
-import { generateId } from '@/utils/generateId'
+import { createOrderServer } from '@/server/orders/create-order.server'
+import { generateId } from '@/utils/generate-id'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import { create } from 'zustand'
 
@@ -229,7 +229,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
               comment: cart.userData?.comment || '',
             }
 
-            const response: IOrderResponse = await createOrder(orderData)
+            const response: IOrderResponse = await createOrderServer(orderData)
 
             if (response.success) {
               clearCart(true)

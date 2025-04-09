@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server'
-import Order from '@/components/client/order'
+import Order from '@/components/client/order/order'
 import Delivery from '@/components/client/promo-banner/delivery'
 import {
   Breadcrumb,
@@ -13,7 +13,7 @@ import ToTheTop from '@/components/ui/to-the-top'
 import {
   seedNovaPoshtaCitiesDictionary,
   seedNovaPoshtaDefaultCities,
-} from '@/server/seed/novaPoshtaDefaultCities'
+} from '@/server/seed/nova-poshta-default-cities.server'
 import { getDefaultNPCitiesFromDictionary } from '@/server/delivery/get-cities.server'
 import { locales } from '@/data/locales'
 

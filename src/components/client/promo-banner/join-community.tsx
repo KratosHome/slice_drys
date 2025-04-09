@@ -3,10 +3,10 @@ import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import { detectDevice } from '@/utils/deviceDetection'
+import { detectDevice } from '@/utils/device-detection'
 
 import { cn } from '@/utils/cn'
-import Socials from '@/components/ui/Socials'
+import Socials from '@/components/ui/socials'
 
 type Props = Readonly<{
   className?: string

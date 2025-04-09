@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const reviewsSchema = new mongoose.Schema(
+const reviewsSchemaServer = new mongoose.Schema(
   {
     author: {
       en: {
@@ -37,4 +37,4 @@ const reviewsSchema = new mongoose.Schema(
 )
 
 export const Reviews =
-  mongoose.models.Reviews || mongoose.model('Reviews', reviewsSchema)
+  mongoose.models.Reviews || mongoose.model('Reviews', reviewsSchemaServer)

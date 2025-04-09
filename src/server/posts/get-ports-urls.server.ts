@@ -1,11 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Post } from '@/server/posts/postSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Post } from '@/server/posts/post-schema.server'
 
 export async function getPostsUrls() {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const posts = await Post.find({}).select('slug').lean()
 
