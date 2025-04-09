@@ -12,6 +12,7 @@ import {
 import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
 import JoinCommunity from '@/components/client/promo-banner/JoinCommunity'
 import ToTheTop from '@/components/ui/to-the-top'
+import { locales } from '@/data/locales'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -53,6 +54,10 @@ export async function generateMetadata({ params }: { params: Params }) {
         : 'Contact us for inquiries, orders, or cooperation.',
     },
   }
+}
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function ContactsPage(props: { params: Params }) {

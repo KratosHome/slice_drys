@@ -2,8 +2,6 @@ import InstaFeed from '@/components/client/main/instaFeed/InstaFeed'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import Help from '@/components/client/main/help/help'
-// import Partners from '@/components/client/main/partners'
-// import { partnersData } from '@/data/main/partners'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,6 +15,7 @@ import WholesaleForm from '@/components/client/wholesale/wholesale-form'
 import { helpData } from '@/data/wholesale-about'
 import { whyWe } from '@/data/wholesale-why-wr'
 import WholesaleJsonLd from '@/components/client/json-ld/wholesale-json-ld'
+import { locales } from '@/data/locales'
 
 const baseUrl = process.env.NEXT_URL
 
@@ -58,6 +57,10 @@ export async function generateMetadata({ params }: { params: Params }) {
         : 'Our wholesale page for dried products',
     },
   }
+}
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function Wholesale(props: { params: Params }) {
@@ -102,7 +105,6 @@ export default async function Wholesale(props: { params: Params }) {
             </div>
           ))}
         </div>
-        {/* <Partners data={partnersData[locale]} /> */}
       </div>
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">

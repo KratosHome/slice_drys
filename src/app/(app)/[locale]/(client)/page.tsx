@@ -13,7 +13,7 @@ import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import { Loader } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { getReviews } from '@/server/reviews/getReviews'
+import { reviewsData } from '@/data/main/reviews'
 
 const ProductSlider = dynamic(
   () => import('@/components/client/product-slider/product-slider'),
@@ -71,35 +71,33 @@ export default async function Home(props: {
   const userAgent: string = (await headers()).get('user-agent') || ''
   const device: IDevice = detectDevice(userAgent)
 
-  const [productsData, categoriesData, blogData, reviewsData] =
-    await Promise.all([
-      fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.products}`] },
-      }).then((res) => res.json()),
+  const [productsData, categoriesData, blogData] = await Promise.all([
+    fetch(`${url}/api/products/get-products-slider-main?locale=${locale}`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.products}`] },
+    }).then((res) => res.json()),
 
-      await fetch(`${url}/api/categories`, {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.menu}`] },
-      }).then((res) => res.json()),
+    await fetch(`${url}/api/categories`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.menu}`] },
+    }).then((res) => res.json()),
 
-      fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.posts}`] },
-      }).then((res) => res.json()),
+    fetch(`${url}/api/posts?locale=${locale}&page=1&limit=5`, {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.posts}`] },
+    }).then((res) => res.json()),
+  ])
 
-      getReviews({ locale, page: 1, limit: 6 }),
-    ])
   return (
     <>
       <MainJsonLd
         products={productsData.products}
         faq={faqData[locale]}
-        reviews={
-          reviewsData.success && reviewsData.dataLocalized.length
-            ? reviewsData.dataLocalized
-            : []
-        }
+        reviews={reviewsData.map((r) => ({
+          ...r,
+          author: r.author[locale],
+          text: r.text[locale],
+        }))}
       />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
@@ -109,7 +107,14 @@ export default async function Home(props: {
       />
       <Faq data={faqData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews reviews={reviewsData.success ? reviewsData.dataLocalized : []} />
+      <Reviews
+        reviews={reviewsData.map((r) => ({
+          ...r,
+          author: r.author[locale],
+          text: r.text[locale],
+        }))}
+      />
+
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>

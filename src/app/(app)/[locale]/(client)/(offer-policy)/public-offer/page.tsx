@@ -1,4 +1,5 @@
 import PublicOfferJsonLd from '@/components/client/json-ld/public-offer-json-ld'
+import { locales } from '@/data/locales'
 
 type Params = Promise<{ locale: ILocale }>
 
@@ -35,6 +36,10 @@ export async function generateMetadata({ params }: { params: Params }) {
       },
     },
   }
+}
+
+export async function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function PublicOffer({ params }: { params: Params }) {
