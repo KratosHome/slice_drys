@@ -88,7 +88,7 @@ export default async function Home(props: {
         next: { tags: [`${fetchTags.posts}`] },
       }).then((res) => res.json()),
 
-      await getReviews({ locale, page: 1, limit: 6 }),
+      getReviews({ locale, page: 1, limit: 6 }),
     ])
   return (
     <>

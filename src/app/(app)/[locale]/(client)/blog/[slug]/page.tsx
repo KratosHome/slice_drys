@@ -112,7 +112,7 @@ export default async function PostPage({ params }: Props) {
         next: { tags: [`${fetchTags.post}`] },
       },
     ).then((res) => res.json()),
-    await getReviews({ locale }),
+    getReviews({ locale }),
   ])
 
   if (!data.success) {

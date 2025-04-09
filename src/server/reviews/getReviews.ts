@@ -1,8 +1,5 @@
 'use server'
 
-import { connectToDb } from '@/server/connectToDb'
-import { Reviews } from './reviewsSchema'
-
 type GetReviewsOptions = {
   locale: ILocale
   page?: number
@@ -23,16 +20,26 @@ type ReviewsWithPaginationData =
       message: string
     }
 
+const url = process.env.NEXT_URL
+
 export async function getReviews({
   locale,
   page,
   limit,
 }: GetReviewsOptions): Promise<ReviewsWithPaginationData> {
-  'use server'
   try {
-    await connectToDb()
-
-    const data = await Reviews.find({}).lean<IReview[]>()
+    const response = await fetch(`${url}/api/reviews/all`, {
+      cache: 'force-cache',
+      next: { tags: ['reviews'] },
+    })
+    if (response.status !== 200) {
+      console.error(`Помилка при отриманні відгуків: `, response)
+      return {
+        success: false,
+        message: 'Помилка при отриманні відгуків',
+      }
+    }
+    const data = await response.json()
     if (limit && page) {
       return {
         dataLocalized: formatReviews(data, locale),
