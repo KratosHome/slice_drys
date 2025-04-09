@@ -82,8 +82,10 @@ export default function Order({ defaultCities }: Props) {
           title: tToast('success'),
           description: resp.message[locale],
         })
-        replace(`/${locale}/`)
+
         await sendOrderNotification(messageData)
+
+        replace(`/${locale}/`)
       } else {
         toast({
           variant: 'destructive',

@@ -27,16 +27,18 @@ export async function sendOrderNotification(orderData: IOrderNotificationData) {
   } = orderData
   try {
     const formattedDate = formatDate(new Date())
+
     const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
-      polling: false,
+      polling: true,
     })
+
     const chatId = `${process.env.TELEGRAM_BOT_CHAT_ID}`
 
     await bot.sendMessage(
       chatId,
       `
 Вітаю в нас нове замовлення:
-ЧАС ЗАМОВЛЕННЯ: ${formattedDate},
+ЧАС ЗАМОВЛЕННЯ: ${formattedDate}, 
 СУМА: ${totalPrice},
 СПОСІБ ОПЛАТИ: ${paymentMethod},
 ІМ'Я: ${name},
