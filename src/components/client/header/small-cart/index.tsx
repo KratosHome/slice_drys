@@ -59,9 +59,9 @@ export default function SmallCart() {
           </ResponsiveMotion>
         </PopoverTrigger>
 
-        <PopoverContent className="mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg bg-white p-4 sm:w-[600px]">
-          <div className="absolute top-0 right-0 z-20 w-full bg-white px-5 pt-5">
-            <div className="flex w-full items-center justify-between border-b bg-black p-[12px] text-white md:px-[48px] md:py-[32px]">
+        <PopoverContent className="bg-background outline-foreground mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]">
+          <div className="bg-background absolute top-0 right-0 z-20 w-full rounded-t-lg px-5 pt-5">
+            <div className="bg-foreground text-background flex w-full items-center justify-between border-b p-[12px] md:px-[48px] md:py-[32px]">
               <div className="font-rubik p-0 text-[32px] leading-[0.9] uppercase md:text-[64px]">
                 {t('basket')}
               </div>
@@ -91,7 +91,7 @@ export default function SmallCart() {
             </div>
           ) : (
             <>
-              <div className="absolute top-[75px] left-0 w-full bg-white px-6 text-right text-[16px] md:top-[140px]">
+              <div className="bg-background absolute top-[75px] left-0 w-full px-6 text-right text-[16px] md:top-[140px]">
                 <span className="mr-[24px] font-semibold text-[#7D7D7D]">
                   {t('added')}
                 </span>
@@ -112,7 +112,7 @@ export default function SmallCart() {
                 ))}
               </div>
 
-              <div className="absolute bottom-0 left-0 w-full bg-white px-5 pb-4">
+              <div className="bg-background absolute bottom-0 left-0 w-full rounded-b-lg px-5 pb-4">
                 <div className="flex items-center justify-between pt-2">
                   <p className="text-lg font-bold">{t('total')}:</p>
 
@@ -129,29 +129,34 @@ export default function SmallCart() {
                   </div>
                 )}
 
-                <div className="mt-[32px] flex h-[60px] gap-[16px]">
+                <div className="mt-[32px] flex h-[60px] items-stretch gap-[16px]">
                   <ResponsiveMotion
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex w-full cursor-pointer items-center justify-center border-[1px] border-black text-center"
-                    onClick={() => setOpenCart(false)}
+                    className="border-foreground bg-background flex w-full items-center justify-center border-[1px]"
                   >
-                    {t('continue-shopping')}
+                    <Button
+                      variant={'none'}
+                      onClick={() => setOpenCart(false)}
+                      className="text-base md:text-xl"
+                    >
+                      {t('continue-shopping')}
+                    </Button>
                   </ResponsiveMotion>
-                  <Button
-                    variant={'none'}
-                    className="mt-3 w-full"
-                    disabled={totalPrice < minOrderAmount}
-                    onClick={openCat}
+                  <ResponsiveMotion
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-foreground text-background flex w-full items-center justify-center"
                   >
-                    <ResponsiveMotion
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex h-[60px] w-full cursor-pointer items-center justify-center bg-black text-center text-white"
+                    <Button
+                      variant={'none'}
+                      disabled={totalPrice < minOrderAmount}
+                      onClick={openCat}
+                      className="text-base md:text-xl"
                     >
                       {t('order')}
-                    </ResponsiveMotion>
-                  </Button>
+                    </Button>
+                  </ResponsiveMotion>
                 </div>
               </div>
             </>

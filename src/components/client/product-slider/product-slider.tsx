@@ -108,7 +108,7 @@ export default function ProductSlider({
         >
           {title}
         </h2>
-        <p className="font-poppins relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
+        <p className="relative w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] sm:ml-auto">
           {message}
           <UnderlineWave />
         </p>

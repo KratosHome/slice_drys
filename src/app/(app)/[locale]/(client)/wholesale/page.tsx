@@ -83,7 +83,7 @@ export default async function Wholesale(props: { params: Params }) {
           {t('wholesale_dried_fruits_in_bulk')}
         </h1>
         <div className="flex justify-center">
-          <div className="font-poppins bg-foreground text-background min-h-28 w-[100%] max-w-[790px] items-center justify-center px-10 py-5 text-left text-[20px] leading-[28px] drop-shadow-[16px_-16px_0px_#A90909]">
+          <div className="bg-foreground text-background min-h-28 w-[100%] max-w-[790px] items-center justify-center px-10 py-5 text-left text-[20px] leading-[28px] drop-shadow-[16px_-16px_0px_#A90909]">
             {t('do_you_have_business')}
           </div>
         </div>

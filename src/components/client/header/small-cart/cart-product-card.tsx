@@ -4,6 +4,8 @@ import { useTranslations } from 'next-intl'
 
 import { useCartStore } from '@/store/cartStore'
 import { cn } from '@/utils/cn'
+import { ResponsiveMotion } from '../../responsiv-motion/responsive-motion'
+import { ChangeQuantityIcon } from '../../product-page/icons'
 
 type Props = { itemData: ICartItem; className?: string }
 
@@ -16,7 +18,7 @@ function CartProductCard({ itemData: item, className }: Props) {
     <div
       key={item.id + item.weight}
       className={cn(
-        'flex items-center justify-between gap-4 p-2 transition-transform duration-200 will-change-transform select-none hover:scale-[1.02] hover:shadow-md',
+        'hover:bg-foreground/5 flex items-center justify-between gap-4 p-2 transition-transform duration-200 will-change-transform select-none hover:scale-[1.02]',
         className,
       )}
     >
@@ -36,12 +38,15 @@ function CartProductCard({ itemData: item, className }: Props) {
             onClick={() => removeItemFromCart(item.id, item.weight)}
             className="cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-90"
           >
-            <Image
-              src="/icons/delete.svg"
-              width={24}
-              height={24}
-              alt={t('delete')}
-            />
+            <svg
+              width="24"
+              height="24"
+              role="img"
+              aria-label={t('delete')}
+              className="text-foreground"
+            >
+              <use href="/icons/sprite.svg#delete" />
+            </svg>
           </div>
         </div>
 
@@ -50,13 +55,15 @@ function CartProductCard({ itemData: item, className }: Props) {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="text-[20px] text-[#0F0F0F]">
+          <div className="text-foreground text-[20px]">
             {item.price} {t('uah')}.
           </div>
 
-          <div className="flex w-[115px] items-center justify-between bg-black px-[12px] text-white">
-            <div
-              className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+          <div className="bg-foreground text-background flex h-[50px] min-w-[115px] items-center justify-between px-2.5 font-bold">
+            <ResponsiveMotion
+              className="cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
               onClick={() =>
                 updateItemQuantity(
                   item.id,
@@ -66,13 +73,18 @@ function CartProductCard({ itemData: item, className }: Props) {
                 )
               }
             >
-              -
-            </div>
-
-            <span className="text-[24px]">{item.quantity}</span>
-
-            <div
-              className="font-rubik cursor-pointer text-[40px] transition-transform duration-200 hover:scale-110 active:scale-90"
+              <ChangeQuantityIcon
+                content="-"
+                aria-label={t('remove')}
+                disabled={item.quantity === 1}
+                aria-disabled={item.quantity === 1}
+              />
+            </ResponsiveMotion>
+            <div className="min-w-4 text-center text-2xl">{item.quantity}</div>
+            <ResponsiveMotion
+              className="cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
               onClick={() =>
                 updateItemQuantity(
                   item.id,
@@ -82,8 +94,8 @@ function CartProductCard({ itemData: item, className }: Props) {
                 )
               }
             >
-              +
-            </div>
+              <ChangeQuantityIcon content="+" aria-label={t('add')} />
+            </ResponsiveMotion>
           </div>
         </div>
       </div>

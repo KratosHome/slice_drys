@@ -9,6 +9,8 @@ import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { useForm } from 'react-hook-form'
 import {
+  ClientDialogContent,
+  ClientDialogHeader,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -226,18 +228,19 @@ export default function Reviews({
             {t('add_new_review')}
           </UnderlinedLink>
         </DialogTrigger>
-        <DialogContent className="overflow-hidden border-none bg-transparent p-0 sm:max-w-[425px]">
-          <DialogHeader className="bg-foreground text-background flex h-[86px] w-full items-center justify-center">
+        <ClientDialogContent className="overflow-hidden border-none bg-transparent p-0 sm:max-w-[500px]">
+          <ClientDialogHeader className="bg-foreground text-background p-6">
             <DialogTitle className="font-rubik text-center text-[32px]">
               {t('add_new_review')}
             </DialogTitle>
-          </DialogHeader>
+          </ClientDialogHeader>
           <form
             onSubmit={handleSubmit(sendCall)}
             className="bg-background grid gap-4 p-6"
           >
             <div className="flex flex-col items-start">
               <Input
+                autoFocus={true}
                 id="name"
                 placeholder={t('name')}
                 {...register('name', { required: `${t('enter_name')}` })}
@@ -271,7 +274,7 @@ export default function Reviews({
               </Button>
             </div>
           </form>
-        </DialogContent>
+        </ClientDialogContent>
       </Dialog>
     </section>
   )

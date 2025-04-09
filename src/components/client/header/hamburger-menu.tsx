@@ -84,7 +84,7 @@ export default function HamburgerMenu({
                 isScrolled ? '' : 'top-[33px]',
               )}
             >
-              <div className="font-poppins flex flex-col">
+              <div className="flex flex-col">
                 <div className="grid grid-cols-7 items-center justify-items-end px-5">
                   <button
                     onClick={closeMenu}

@@ -172,7 +172,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                             <CheckboxIndicator />
                           </CheckboxPrimitive.Indicator>
                         </CheckboxPrimitive.Root>
-                        <span className="font-poppins text-xl text-[20px] font-normal uppercase">
+                        <span className="text-xl text-[20px] font-normal uppercase">
                           {category.name[locale]}
                         </span>
                       </m.label>
@@ -297,7 +297,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                   <CheckboxIndicator />
                                 </CheckboxPrimitive.Indicator>
                               </CheckboxPrimitive.Root>
-                              <span className="font-poppins text-xl text-[20px] font-normal uppercase">
+                              <span className="text-xl text-[20px] font-normal uppercase">
                                 {category.name[locale]}
                               </span>
                             </label>

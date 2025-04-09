@@ -71,6 +71,8 @@
     "added": "Added",
     "itemCount": "{count, plural, one {# item} other {# items}}",
     "delete": "Delete",
+    "add": "Increase quantity by 1 piece",
+    "remove": "Decrease quantity by 1 piece",
     "g": "g.",
     "uah": "UAH",
     "total": "Total",

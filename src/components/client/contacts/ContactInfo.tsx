@@ -12,7 +12,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
       <div className="block-title font-rubik mb-8 text-center text-4xl font-normal md:text-5xl">
         {block_title}
       </div>
-      <div className="info-items font-poppins text-base font-medium">
+      <div className="info-items text-base font-medium">
         <div className="info-item mail mb-8 flex items-center gap-x-3">
           <svg
             width="32px"
@@ -22,9 +22,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#mail" />
           </svg>
-          <Link href={`mailto:${contacts.mail}`} className="font-poppins">
-            {contacts.mail}
-          </Link>
+          <Link href={`mailto:${contacts.mail}`}>{contacts.mail}</Link>
         </div>
         <div className="info-item phone mb-8 flex items-center gap-x-3">
           <svg
@@ -35,9 +33,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#phone" />
           </svg>
-          <Link href={`tel:${contacts.phone}`} className="font-poppins">
-            {contacts.phone}
-          </Link>
+          <Link href={`tel:${contacts.phone}`}>{contacts.phone}</Link>
         </div>
         <div className="info-item location mb-8 flex items-center gap-x-3">
           <svg
@@ -48,7 +44,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#home" />
           </svg>
-          <span className="font-poppins">{contacts.address[locale]}</span>
+          <span>{contacts.address[locale]}</span>
         </div>
         <div className="info-item time flex items-center gap-x-3">
           <svg
@@ -59,7 +55,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#time" />
           </svg>
-          <span className="font-poppins">{contacts.time}</span>
+          <span>{contacts.time}</span>
         </div>
       </div>
     </div>

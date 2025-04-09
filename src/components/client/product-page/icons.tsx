@@ -165,7 +165,7 @@ export const ChangeQuantityIcon = ({
   content: string
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
-    className="font-rubik active:text-red-cust flex cursor-pointer items-center justify-center text-xl font-normal transition-all duration-200 will-change-transform active:scale-105 sm:text-2xl md:text-4xl"
+    className="font-rubik active:text-red-cust flex cursor-pointer items-center justify-center text-4xl font-normal transition-all duration-200 will-change-transform active:scale-105"
     {...props}
   >
     {content}

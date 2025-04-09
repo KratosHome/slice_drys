@@ -14,7 +14,7 @@ const Delivery = async ({ className }: Props) => {
   return (
     <div
       className={cn(
-        'font-poppins bg-foreground text-background relative mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),100px)] pt-[clamp(30px,calc(30px+40*(100vw-375px)/1065),70px)] pb-8 md:flex-row',
+        'bg-foreground text-background relative mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),100px)] pt-[clamp(30px,calc(30px+40*(100vw-375px)/1065),70px)] pb-8 md:flex-row',
         className,
       )}
     >

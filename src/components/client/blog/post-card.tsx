@@ -61,7 +61,7 @@ export default function PostCard({
           </AspectRatio>
           <p
             className={cn(
-              'font-poppins mt-3 text-lg font-normal text-gray-400 md:mt-5',
+              'mt-3 text-lg font-normal text-gray-400 md:mt-5',
               variant === 'big' && 'px-4',
             )}
           >
@@ -69,7 +69,7 @@ export default function PostCard({
           </p>
           <p
             className={cn(
-              'font-poppins mt-1 line-clamp-2 font-semibold text-wrap text-ellipsis',
+              'mt-1 line-clamp-2 font-semibold text-wrap text-ellipsis',
               variant === 'big'
                 ? 'text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)]'
                 : 'text-[clamp(14px,calc(14px+6*(100vw-768px)/672),20px)]',

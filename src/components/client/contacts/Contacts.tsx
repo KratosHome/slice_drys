@@ -15,7 +15,7 @@ const Contacts = async () => {
           <h1 className="font-rubik mb-[27px] w-full text-[clamp(48px,calc(64px+64*(100vw-768px)/672),96px)] font-normal md:w-fit">
             {t('title')}
           </h1>
-          <p className="description font-poppins relative mb-[17px] ml-auto w-fit fill-stone-950 pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
+          <p className="description relative mb-[17px] ml-auto w-fit fill-stone-950 pb-3 text-right text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),18px)] font-medium">
             {t('description')}
             <UnderlineWave />
           </p>
@@ -32,7 +32,7 @@ const Contacts = async () => {
             />
           </div>
         </div>
-        <div className="font-poppins ml-auto w-full text-base shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mt-[99px] md:mr-8 md:text-xl lg:max-w-none">
+        <div className="ml-auto w-full text-base shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mt-[99px] md:mr-8 md:text-xl lg:max-w-none">
           <ContactInfo block_title={t('information_title')} />
         </div>
       </div>

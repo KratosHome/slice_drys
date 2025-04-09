@@ -127,7 +127,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
-        className="font-poppins mt-[40px] flex h-[60px] items-center px-[60px] text-2xl font-medium"
+        className="mt-[40px] flex h-[60px] items-center px-[60px] text-2xl font-medium"
       >
         {button}
       </Button>

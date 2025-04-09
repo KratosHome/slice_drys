@@ -20,7 +20,7 @@ const JoinCommunity = async ({ className }: Props) => {
   return (
     <section
       className={cn(
-        'font-poppins bg-foreground text-background mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] md:relative md:flex-row-reverse md:pb-[88px]',
+        'bg-foreground text-background mx-auto flex max-w-[1440px] flex-col overflow-x-clip px-[clamp(20px,calc(20px+80*(100vw-375px)/1065),30px)] pt-[30px] md:relative md:flex-row-reverse md:pb-[88px]',
         className,
       )}
     >

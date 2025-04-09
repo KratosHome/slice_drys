@@ -96,18 +96,18 @@ export default function Order({ defaultCities }: Props) {
   }
 
   return (
-    <div className="font-poppins mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
+    <div className="mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
       <OrderForm ref={formRef} defaultCities={defaultCities} />
 
       <div
-        className="all; flex w-full flex-col border-[0.5px] border-transparent lg:px-6 lg:py-8"
+        className="flex w-full flex-col border-[0.5px] border-transparent lg:px-6 lg:py-8"
         style={{
           borderImageSource:
             'linear-gradient(0deg, #0F0F0F, #0F0F0F), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))',
           borderImageSlice: '1',
         }}
       >
-        <div className="font-rubik bg-black py-3 text-center text-[30px] text-white lg:text-[32px]">
+        <div className="font-rubik bg-foreground text-background py-3 text-center text-[30px] lg:text-[32px]">
           {tOrder('view_order')}
         </div>
         <OrderList />
@@ -115,14 +115,14 @@ export default function Order({ defaultCities }: Props) {
           ref={submitBtnRef}
           type="submit"
           variant={'none'}
-          className="mx-auto w-full text-base text-nowrap lg:w-min lg:text-xl"
+          className="mt-5 h-[auto] w-full self-center text-base text-nowrap lg:w-min lg:text-xl"
           disabled={totalPrice < minOrderAmount || userData?.formStep !== 4}
           onClick={handleSubmit}
         >
           <ResponsiveMotion
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex h-[60px] min-w-[250px] cursor-pointer items-center justify-center bg-black px-[10px] text-center text-white"
+            className="bg-foreground text-background flex h-[60px] w-full min-w-[250px] items-center justify-center px-[10px] text-center"
           >
             {t('order')}
           </ResponsiveMotion>
