@@ -72,7 +72,7 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app; style-src 'self' 'unsafe-inline'; img-src * blob: data:; connect-src *; font-src 'self'; frame-src 'self'",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app www.googletagmanager.com www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src * blob: data:; connect-src * www.google-analytics.com; font-src 'self'; frame-src 'self' www.googletagmanager.com",
           },
         ],
       },

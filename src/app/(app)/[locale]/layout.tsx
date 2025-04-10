@@ -8,7 +8,7 @@ import Header from '@/components/client/header/header'
 import '../globals.css'
 import { routing } from '@/i18n/routing'
 import NotFoundPage from '@/components/not-found'
-import { GoogleTagManager } from '@/components/client/google-tag-manager/google-tag-manager'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { fetchTags } from '@/data/fetch-tags'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
@@ -68,7 +68,6 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       lang={locale}
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
-      <GoogleTagManager />
       <body className="flex min-h-svh flex-col">
         <ThemeProvider
           attribute="class"
@@ -84,6 +83,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-B0WJ3M87VD" />
     </html>
   )
 }
