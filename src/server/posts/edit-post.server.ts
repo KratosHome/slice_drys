@@ -9,12 +9,13 @@ export async function editPostServer(
   id: string,
   formData: IPostLocal,
   image?: string,
-) {
+): Promise<IResponse> {
   'use server'
   try {
     await connectToDbServer()
 
     const existingPost = await Post.findById(id)
+
     if (!existingPost) return { success: false, message: 'Post not found' }
 
     let imageUrl = existingPost.img
@@ -40,6 +41,7 @@ export async function editPostServer(
     }
 
     await Post.findByIdAndUpdate(id, updatedData, { new: true })
+
     revalidateTag(fetchTags.posts)
     revalidateTag(fetchTags.post)
 

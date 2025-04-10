@@ -5,12 +5,12 @@ import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function deleteProduct(id?: string) {
-  'use server'
+export async function deleteProduct(id?: string): Promise<IResponse> {
   try {
     await connectToDbServer()
 
     const deletedProduct = await Product.findByIdAndDelete(id)
+
     if (!deletedProduct) {
       return { success: false, message: "Product wasn't found" }
     }

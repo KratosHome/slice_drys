@@ -5,12 +5,13 @@ import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function deletePost(id: string) {
+export async function deletePost(id: string): Promise<IResponse> {
   'use server'
   try {
     await connectToDbServer()
 
     const postToDelete = await Post.findByIdAndDelete(id)
+
     if (!postToDelete) {
       return { success: false, message: "Post wasn't found" }
     }
@@ -28,6 +29,7 @@ export async function deletePost(id: string) {
 
     revalidateTag(fetchTags.posts)
     revalidateTag(fetchTags.post)
+
     return { success: true, message: 'Post was deleted' }
   } catch (error) {
     return { success: false, message: "Can't delete post" + error }

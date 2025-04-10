@@ -1,20 +1,6 @@
 'use client'
 
-import * as React from 'react'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
@@ -32,8 +18,21 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Image from 'next/image'
-import { FC } from 'react'
 import EditorProduct from '@/components/admin/editor-product/editor-product'
+
+import { useState } from 'react'
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 
 interface IProductList {
@@ -42,11 +41,11 @@ interface IProductList {
   categories: ICategory[]
 }
 
-export const ProductList: FC<IProductList> = ({
+export const ProductList = ({
   data,
   recommendations,
   categories,
-}) => {
+}: IProductList) => {
   const columns: ColumnDef<IProduct>[] = [
     {
       id: 'select',
@@ -174,26 +173,23 @@ export const ProductList: FC<IProductList> = ({
         const id = product._id
         const fineProduct = data.productAll?.find((item) => item._id === id)
         return (
-          <>
-            <EditorProduct
-              buttonTitle="редагувати"
-              product={fineProduct}
-              recommendations={recommendations}
-              categories={categories}
-            />
-          </>
+          <EditorProduct
+            buttonTitle="редагувати"
+            product={fineProduct}
+            recommendations={recommendations}
+            categories={categories}
+          />
         )
       },
     },
   ]
 
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [sorting, setSorting] = useState<SortingState>([])
+
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
     data: data.product,
@@ -225,12 +221,14 @@ export const ProductList: FC<IProductList> = ({
           }
           className="max-w-sm"
         />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Колонки <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -252,6 +250,7 @@ export const ProductList: FC<IProductList> = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -272,6 +271,7 @@ export const ProductList: FC<IProductList> = ({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -302,11 +302,13 @@ export const ProductList: FC<IProductList> = ({
           </TableBody>
         </Table>
       </div>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
+
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -316,6 +318,7 @@ export const ProductList: FC<IProductList> = ({
           >
             Previous
           </Button>
+
           <Button
             variant="outline"
             size="sm"

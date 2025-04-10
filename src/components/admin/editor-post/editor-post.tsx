@@ -1,6 +1,5 @@
 'use client'
-import React, { FC, useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -14,9 +13,10 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { convertToBase64 } from '@/utils/convert-to-base-64'
 import Image from 'next/image'
+import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
 
-import QuillEditor from './quill-editor'
-import 'quill/dist/quill.snow.css'
+import { useState, useEffect, type ChangeEvent } from 'react'
+import { useForm } from 'react-hook-form'
 import { createPost } from '@/server/posts/create-post.server'
 import { editPostServer } from '@/server/posts/edit-post.server'
 import { deletePost } from '@/server/posts/delete-post.server'
@@ -34,21 +34,24 @@ interface ICratePost {
   post?: IPostLocal
 }
 
-const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
+const EditorPost = ({ buttonTitle, post }: ICratePost) => {
   const router = useRouter()
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
+
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
 
   const { toast } = useToast()
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
 
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const [contentError, setContentError] = useState<string | null>(null)
+
   const [slug, setSlug] = useState<string>(post?.slug || '')
-  const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
-    'en',
-  )
-  const [isOpen, setIsOpen] = useState(false)
+
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
   const [postContent, setPostContent] = useState<ILocalizedString>({
     en: post?.content?.en ?? '',
     uk: post?.content?.uk ?? '',
@@ -56,6 +59,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
     postContent.en,
+  )
+  const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
+    'en',
   )
 
   const {
@@ -104,10 +110,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
   const onSubmit = async (data: IPostLocal) => {
     setIsLoading(true)
-    if (data.content) {
-      data.content[quillEditorLanguage] = quillEditorContent
-    }
-    const image = imageFile ? await convertToBase64(imageFile) : ''
+
+    if (data.content) data.content[quillEditorLanguage] = quillEditorContent
+
+    const image: string = imageFile ? await convertToBase64(imageFile) : ''
 
     if (!data.content.en || !data.content.uk) {
       setContentError('Контент на обох мовах є обов’язковим')
@@ -115,15 +121,20 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return
     } else {
       setContentError(null)
-      let response
+
+      let response: IResponse
+
       if (post?._id) {
         response = await editPostServer(post._id, data, image)
       } else {
         response = await createPost(data, image)
       }
+
       setIsLoading(false)
+
       if (response.success) {
         setIsOpen(false)
+
         toast({
           duration: 3000,
           title: 'Success',
@@ -136,10 +147,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         })
       }
     }
+
     router.refresh()
   }
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.value === 'en' && event.target.checked) {
       setQuillEditorLanguage(event.target.value)
       setPostContent({ ...postContent, uk: quillEditorContent })
@@ -151,11 +163,10 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
     }
   }
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setImageFile(file)
-    }
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const file: File | undefined = event.target.files?.[0]
+
+    if (file) setImageFile(file)
   }
 
   const handleDelete = async () => {
@@ -163,11 +174,9 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
       return toast({ title: 'Post is not defined' })
     }
 
-    const result = await deletePost(post._id)
+    const result: IResponse = await deletePost(post._id)
 
-    if (result.success) {
-      setIsConfirmDeleteOpen(false)
-    }
+    if (result.success) setIsConfirmDeleteOpen(false)
 
     toast({
       title: result.message,
@@ -185,6 +194,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Видалення</AlertDialogTitle>
         </AlertDialogHeader>
+
         <AlertDialogDescription>
           Дійсно хочете видалити цей товар?
         </AlertDialogDescription>
@@ -210,20 +220,24 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
   return (
     <div>
       <ConfirmDeletePopup />
+
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogTrigger asChild>
           <Button>{buttonTitle}</Button>
         </AlertDialogTrigger>
+
         <AlertDialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader>
               <AlertDialogTitle>{buttonTitle} пост</AlertDialogTitle>
             </AlertDialogHeader>
+
             <AlertDialogDescription>
               <div className="max-h-[80svh] space-y-4 overflow-auto p-2">
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="picture">Додати зображення</Label>
+
                     <Input
                       id="picture"
                       type="file"
@@ -235,6 +249,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   {imagePreviewUrl && (
                     <div>
                       <Label>Прев’ю </Label>
+
                       <Image
                         src={imagePreviewUrl}
                         width={50}
@@ -245,9 +260,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     </div>
                   )}
                 </div>
+
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="title-uk">Заголовок (UK)</Label>
+
                     <Input
                       id="title-uk"
                       placeholder="..."
@@ -268,6 +285,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.title?.uk && (
                       <span className="text-red-700">
                         {errors.title.uk.message}
@@ -277,6 +295,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
                   <div>
                     <Label htmlFor="title-en">Заголовок (EN)</Label>
+
                     <Input
                       id="title-en"
                       maxLength={255}
@@ -299,6 +318,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         },
                       })}
                     />
+
                     {errors.title?.en && (
                       <span className="text-red-700">
                         {errors.title.en.message}
@@ -306,24 +326,31 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
+
                 <RadioGroup defaultValue="en" onChange={handleRadioChange}>
                   <div className="start flex gap-4">
                     <div className="flex gap-1">
                       <Label>Контент</Label>
                     </div>
+
                     <div className="flex gap-1">
                       <Label>en</Label>
+
                       <RadioGroupItem value="en"> </RadioGroupItem>
                     </div>
+
                     <div className="flex gap-1">
                       <Label>uk</Label>
+
                       <RadioGroupItem value="uk"></RadioGroupItem>
                     </div>
+
                     {contentError && (
                       <span className="text-red-700">{contentError}</span>
                     )}
                   </div>
                 </RadioGroup>
+
                 <div className="h-96">
                   <QuillEditor
                     className="min-h-96"
@@ -331,9 +358,12 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     setContent={setQuillEditorContent}
                   />
                 </div>
-                <div className="h-10"></div>
+
+                <div className="h-10" />
+
                 <div>
                   <Label htmlFor="slug">Slug</Label>
+
                   <Input
                     value={slug}
                     id="slug"
@@ -345,13 +375,16 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                       },
                     })}
                   />
+
                   {errors.slug && (
                     <span className="text-red-700">{errors.slug.message}</span>
                   )}
                 </div>
+
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="author-uk">Автор (UK)</Label>
+
                     <Input
                       id="author-uk"
                       {...register('author.uk', {
@@ -371,14 +404,17 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.author?.uk && (
                       <span className="text-red-700">
                         {errors.author.uk.message}
                       </span>
                     )}
                   </div>
+
                   <div>
                     <Label htmlFor="author-en">Автор (EN)</Label>
+
                     <Input
                       id="author-en"
                       {...register('author.en', {
@@ -398,6 +434,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.author?.en && (
                       <span className="text-red-700">
                         {errors.author.en.message}
@@ -405,9 +442,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
+
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="keywords-uk">Ключові слова (UK)</Label>
+
                     <Input
                       id="keywords-uk"
                       {...register('keywords.uk', {
@@ -427,6 +466,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.keywords?.uk && (
                       <span className="text-red-700">
                         {errors.keywords.uk.message}
@@ -436,6 +476,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
 
                   <div>
                     <Label htmlFor="keywords-en">Ключові слова (EN)</Label>
+
                     <Input
                       id="keywords-en"
                       {...register('keywords.en', {
@@ -455,6 +496,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.keywords?.en && (
                       <span className="text-red-700">
                         {errors.keywords.en.message}
@@ -462,9 +504,11 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                     )}
                   </div>
                 </div>
+
                 <div className="flex justify-between">
                   <div>
                     <Label htmlFor="meta-description-uk">Мета опис (UK)</Label>
+
                     <Input
                       id="meta-description-uk"
                       {...register('metaDescription.uk', {
@@ -484,14 +528,17 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.metaDescription?.uk && (
                       <span className="text-red-700">
                         {errors.metaDescription.uk.message}
                       </span>
                     )}
                   </div>
+
                   <div>
                     <Label htmlFor="meta-description-en">Мета опис (EN)</Label>
+
                     <Input
                       id="meta-description-en"
                       {...register('metaDescription.en', {
@@ -511,6 +558,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                         }
                       }}
                     />
+
                     {errors.metaDescription?.en && (
                       <span className="text-red-700">
                         {errors.metaDescription.en.message}
@@ -520,6 +568,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                 </div>
               </div>
             </AlertDialogDescription>
+
             <AlertDialogFooter>
               <div className="flex w-full justify-between">
                 {post ? (
@@ -541,6 +590,7 @@ const EditorPost: FC<ICratePost> = ({ buttonTitle, post }) => {
                   >
                     Скасувати
                   </Button>
+
                   <Button type="submit">
                     {isLoading ? <Spinner /> : buttonTitle}
                   </Button>

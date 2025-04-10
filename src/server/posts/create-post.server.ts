@@ -5,20 +5,26 @@ import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 
-export async function createPost(formData: IPostLocal, image: string) {
-  'use server'
+export async function createPost(
+  formData: IPostLocal,
+  image: string,
+): Promise<IResponse> {
   try {
     await connectToDbServer()
 
     let postData = {
       ...formData,
     }
-    let imageUrl = ''
+
+    let imageUrl: string = ''
+
     if (image) {
       const upload = await cloudinary.uploader.upload(image, {
         folder: 'post-slice',
       })
+
       imageUrl = upload.secure_url
+
       postData = {
         ...formData,
         img: imageUrl,
@@ -30,6 +36,7 @@ export async function createPost(formData: IPostLocal, image: string) {
 
     revalidateTag(fetchTags.posts)
     revalidateTag(fetchTags.post)
+
     return { success: true, message: 'Post created' }
   } catch (error) {
     return {

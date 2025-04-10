@@ -1,12 +1,8 @@
 'use client'
-import React, { FC, useEffect, useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import { SubmitHandler } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { deleteCategory } from '@/server/categories/delete-category.server'
-import { toast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
-import { updateCategory } from '@/server/categories/update-category.server'
 import {
   Dialog,
   DialogContent,
@@ -14,17 +10,24 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { locales } from '@/data/locales'
 import Image from 'next/image'
-import { convertToBase64 } from '@/utils/convert-to-base-64'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
-import { Button } from '@/components/ui/button'
 
-interface UpdateTreeProps {
+import { type ChangeEvent, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { deleteCategory } from '@/server/categories/delete-category.server'
+import { updateCategory } from '@/server/categories/update-category.server'
+import { toast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { locales } from '@/data/locales'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
+import QuillEditor from '@/components/admin/quill-editor/quill-editor'
+
+interface IUpdateTreeProps {
   selectedCategory: ICategory
 }
 
-interface FormData {
+interface IFormData {
   name: {
     uk: string
     en: string
@@ -48,9 +51,10 @@ interface FormData {
   slug: string
 }
 
-const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
+const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
   const router = useRouter()
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false)
+
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
 
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
@@ -76,7 +80,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<IFormData>()
 
   useEffect(() => {
     setDescriptionUk(selectedCategory.description?.uk ?? '')
@@ -109,8 +113,8 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     })
   }, [selectedCategory, reset])
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const image = imageFile ? await convertToBase64(imageFile) : ''
+  const onSubmit: SubmitHandler<IFormData> = async (data) => {
+    const image: string = imageFile ? await convertToBase64(imageFile) : ''
 
     data.description.uk = descriptionUk
     data.description.en = descriptionEn
@@ -121,18 +125,19 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
     router.refresh()
   }
 
-  const deleteCat = async () => {
+  const deleteCat = async (): Promise<void> => {
     setIsConfirmDeleteOpen(false)
-    const result = await deleteCategory(selectedCategory._id)
+
+    const result: IResponse = await deleteCategory(selectedCategory._id)
+
     toast({ title: result.message })
     router.refresh()
   }
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setImageFile(file)
-    }
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const file: File | undefined = event.target.files?.[0]
+
+    if (file) setImageFile(file)
   }
 
   return (
@@ -141,6 +146,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
         {imagePreviewUrl && (
           <div>
             <Label>Попередній перегляд зображення</Label>
+
             <Image
               src={imagePreviewUrl}
               width={100}
@@ -150,12 +156,16 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
             />
           </div>
         )}
+
         <Label htmlFor="picture">Додати зображення</Label>
+
         <Input id="picture" type="file" onChange={handleImageChange} />
       </div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-3">
           <Label className="block font-bold">Посилання:</Label>
+
           <Input
             type="text"
             className="w-full border p-2"
@@ -163,18 +173,22 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
               required: 'Ключові слова обовʼязкові',
             })}
           />
+
           {errors.slug && (
             <p className="text-sm text-red-500">{errors.slug?.message}</p>
           )}
         </div>
+
         <div className="flex justify-between gap-4">
           {locales.map((lang) => (
             <div key={lang} className="mb-4 w-full border-b pb-4">
               <h3 className="text-lg font-bold uppercase">
                 {lang === 'uk' ? 'Українська' : 'English'}
               </h3>
+
               <div className="mt-3">
                 <Label className="block text-xl font-bold">Назва:</Label>
+
                 <Input
                   type="text"
                   className="w-full border p-2"
@@ -182,6 +196,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
                     required: 'Назва обовʼязкова',
                   })}
                 />
+
                 {errors.name?.[lang] && (
                   <p className="text-sm text-red-500">
                     {errors.name[lang]?.message}
@@ -191,6 +206,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
 
               <div className="mt-3">
                 <Label className="block font-bold">Мета Заголовок:</Label>
+
                 <Input
                   type="text"
                   className="w-full border p-2"
@@ -198,6 +214,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
                     required: 'Мета заголовок обовʼязковий',
                   })}
                 />
+
                 {errors.metaTitle?.[lang] && (
                   <p className="text-sm text-red-500">
                     {errors.metaTitle[lang]?.message}
@@ -207,6 +224,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
 
               <div className="mt-3">
                 <Label className="block">Опис:</Label>
+
                 {lang === 'uk' ? (
                   <QuillEditor
                     className="min-h-96"
@@ -224,6 +242,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
 
               <div className="mt-3">
                 <Label className="block font-bold">Ключові слова:</Label>
+
                 <Input
                   type="text"
                   className="w-full border p-2"
@@ -231,6 +250,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
                     required: 'Ключові слова обовʼязкові',
                   })}
                 />
+
                 {errors.metaKeywords?.[lang] && (
                   <p className="text-sm text-red-500">
                     {errors.metaKeywords[lang]?.message}
@@ -240,12 +260,14 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
 
               <div className="mt-3">
                 <Label className="block font-bold">Мета Опис:</Label>
+
                 <textarea
                   className="w-full border p-2"
                   {...register(`metaDescription.${lang}`, {
                     required: 'Мета опис обовʼязковий',
                   })}
                 />
+
                 {errors.metaDescription?.[lang] && (
                   <p className="text-sm text-red-500">
                     {errors.metaDescription[lang]?.message}
@@ -255,8 +277,10 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
             </div>
           ))}
         </div>
+
         <div className="flex justify-between">
           <Button type="submit">Зберегти</Button>
+
           <Button
             variant="destructive"
             onClick={() => setIsConfirmDeleteOpen(true)}
@@ -265,6 +289,7 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
           </Button>
         </div>
       </form>
+
       <Dialog open={isConfirmDeleteOpen} onOpenChange={setIsConfirmDeleteOpen}>
         <DialogContent>
           <DialogHeader>
@@ -272,10 +297,12 @@ const UpdateTree: FC<UpdateTreeProps> = ({ selectedCategory }) => {
               Ви впевнені, що хочете видалити цю категорію?
             </DialogTitle>
           </DialogHeader>
+
           <DialogFooter>
             <Button onClick={() => setIsConfirmDeleteOpen(false)}>
               Скасувати
             </Button>
+
             <Button variant="destructive" onClick={deleteCat}>
               Видалити
             </Button>

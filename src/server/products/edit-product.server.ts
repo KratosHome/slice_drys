@@ -9,14 +9,16 @@ export async function editProduct(
   id: string,
   formData: IProductLocal,
   image?: string,
-) {
+): Promise<IResponse> {
   'use server'
   try {
     await connectToDbServer()
 
     const existingProduct = await Product.findById(id)
-    if (!existingProduct)
+
+    if (!existingProduct) {
       return { success: false, message: 'Product not found' }
+    }
 
     let imageUrl = existingProduct.img
 
@@ -35,7 +37,7 @@ export async function editProduct(
       imageUrl = upload.secure_url
     }
 
-    const updatedData = {
+    const updatedData: IProductLocal = {
       ...formData,
       img: imageUrl,
     }

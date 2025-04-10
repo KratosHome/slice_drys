@@ -18,6 +18,7 @@ export async function updateCategory(
     await connectToDbServer()
 
     const existingCategory = await Category.findById(categoryId)
+
     if (!existingCategory) {
       return { success: false, message: 'Категорію не знайдено' }
     }

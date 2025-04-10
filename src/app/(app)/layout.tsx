@@ -1,9 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-type Props = {
+interface IRootLayoutProps {
   children: ReactNode
 }
 
-export default function RootLayout({ children }: Props) {
+export default function RootLayout({ children }: IRootLayoutProps) {
   return <>{children}</>
 }

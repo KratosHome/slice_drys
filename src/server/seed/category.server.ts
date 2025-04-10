@@ -2,12 +2,13 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
 
-export const seedCategories = async () => {
+export const seedCategories = async (): Promise<IResponse> => {
   'use server'
   try {
     await connectToDbServer()
 
     const count = await Category.countDocuments()
+
     if (count !== 0) {
       return {
         success: false,

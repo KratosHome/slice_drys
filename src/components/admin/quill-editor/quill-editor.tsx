@@ -1,40 +1,41 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+
 import Quill from 'quill'
+
+import { useEffect, useRef, useState } from 'react'
+
 import 'quill/dist/quill.snow.css'
 
 const QUILL_CONTAINER_ID = 'js-editor-container'
 
-interface QuillEditorProps {
+interface IQuillEditorProps {
   content: string
   setContent: (content: string) => void
   className?: string
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({
-  content,
-  setContent,
-  className,
-}) => {
-  const [toPreventDoubleQuill, setToPreventDoubleQuill] = useState(true)
+const QuillEditor = ({ content, setContent, className }: IQuillEditorProps) => {
+  const [toPreventDoubleQuill, setToPreventDoubleQuill] =
+    useState<boolean>(true)
+
   const quillRef = useRef<Quill | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  if (!content) {
-    content = '{"ops":[{"insert":"\\n"}]}'
-  }
+
+  if (!content) content = '{"ops":[{"insert":"\\n"}]}'
 
   useEffect(() => {
     setToPreventDoubleQuill(!toPreventDoubleQuill)
+
     if (containerRef.current && !quillRef.current && toPreventDoubleQuill) {
       quillRef.current = new Quill(containerRef.current, {
         theme: 'snow',
         placeholder: 'Add message',
         modules: {
           toolbar: [
-            [{ header: [1, 2, 3, false] }], // Розміри заголовків
-            ['bold', 'italic', 'underline', 'strike'], // Стилі тексту
-            [{ list: 'ordered' }, { list: 'bullet' }], // Списки
-            ['link', 'image'], // Вставка лінків та зображень
+            [{ header: [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
             [{ align: [] }],
           ],
         },
@@ -76,7 +77,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       className={className || ''}
       id={QUILL_CONTAINER_ID}
       ref={containerRef}
-    ></div>
+    />
   )
 }
 

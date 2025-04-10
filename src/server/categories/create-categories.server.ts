@@ -1,8 +1,8 @@
 'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
-import { Category } from '@/server/categories/categories-schema.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
 
 type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 

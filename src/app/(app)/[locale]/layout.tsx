@@ -33,12 +33,14 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   weight: ['400'],
 })
 
-const url = process.env.NEXT_URL
-
-export default async function LocaleLayout(props: {
+interface ILocaleLayoutProps {
   children: ReactNode
   params: Promise<{ locale: LanguageType }>
-}) {
+}
+
+export default async function LocaleLayout(props: ILocaleLayoutProps) {
+  const SITE_URL: string | undefined = process.env.NEXT_URL
+
   const params = await props.params
 
   const { locale } = params
@@ -55,7 +57,7 @@ export default async function LocaleLayout(props: {
   }
   const messages = await getMessages()
 
-  const categoriesData = await fetch(`${url}/api/categories`, {
+  const categoriesData = await fetch(`${SITE_URL}/api/categories`, {
     cache: 'force-cache',
     next: { tags: [`${fetchTags.menu}`] },
   }).then((res) => res.json())
