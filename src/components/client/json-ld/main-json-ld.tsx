@@ -8,11 +8,6 @@ interface mainJsonLdProps {
 const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
   const baseUrl = process.env.NEXT_URL
 
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
-      : 0
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
