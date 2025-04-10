@@ -3,6 +3,7 @@ import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function deleteProduct(id?: string): Promise<IResponse> {
   try {

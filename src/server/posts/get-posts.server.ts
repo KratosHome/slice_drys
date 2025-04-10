@@ -2,7 +2,6 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Post } from '@/server/posts/post-schema.server'
 
-
 interface IGetPostsOptions {
   locale: ILocale
   page: number

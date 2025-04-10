@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { AppSidebar } from '@/components/admin/app-sidebar'
+import { AppSidebar } from '@/components/admin/app-sidebar/app-sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
 interface IAdminLayoutProps {

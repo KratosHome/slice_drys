@@ -3,6 +3,7 @@ import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Post } from '@/server/posts/post-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function deletePost(id: string): Promise<IResponse> {
   'use server'

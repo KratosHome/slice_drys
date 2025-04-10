@@ -21,7 +21,7 @@ import {
 } from '@tanstack/react-table'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import EditorPost from '@/components/admin/editor-post'
+import EditorPost from '@/components/admin/editor-post/editor-post'
 
 interface IPostList {
   data: IGetPostsAdmin

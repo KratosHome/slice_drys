@@ -1,4 +1,4 @@
-import EditorPost from '@/components/admin/editor-post'
+import EditorPost from '@/components/admin/editor-post/editor-post'
 import { PostList } from '@/components/admin/post-list/post-list'
 
 import { getAllPosts } from '@/server/posts/get-posts.server'

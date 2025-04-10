@@ -3,6 +3,7 @@ import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 type UpdateCategoryDTO = Partial<Omit<ICategory, '_id' | 'children'>>
 

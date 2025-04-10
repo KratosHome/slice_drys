@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
 import { Label } from '@/components/ui/label'
-import QuillEditor from '@/components/admin/quill-editor'
+import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
 
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'

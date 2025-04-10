@@ -70,7 +70,7 @@ export default function HamburgerMenu({
         <Portal>
           <TransitionChild>
             <div
-              className="bg-foreground fixed inset-0 z-500 hidden transition duration-300 data-closed:opacity-0 sm:block"
+              className="bg-foreground/30 fixed inset-0 z-500 hidden transition duration-300 data-closed:opacity-0 sm:block"
               onClick={() => setIsOpen(false)}
             />
           </TransitionChild>

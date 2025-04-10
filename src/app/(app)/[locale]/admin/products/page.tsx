@@ -1,5 +1,5 @@
-import EditorProduct from '@/components/admin/editor-product'
-import { ProductList } from '@/components/admin/product-list'
+import EditorProduct from '@/components/admin/editor-product/editor-product'
+import { ProductList } from '@/components/admin/product-list/product-list'
 
 import { findProductInfoItems } from '@/server/products/find-product-info-items.server'
 import { getProducts } from '@/server/products/get-products.server'

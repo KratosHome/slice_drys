@@ -11,9 +11,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import Image from 'next/image'
-import { convertToBase64 } from '@/utils/convert-to-base-64'
-import QuillEditor from '@/components/admin/editor-post/quill-editor'
-import QuillEditor from '@/components/admin/quill-editor'
 
 import { type ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -21,9 +18,10 @@ import { deleteCategory } from '@/server/categories/delete-category.server'
 import { updateCategory } from '@/server/categories/update-category.server'
 import { toast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
-import { convertToBase64 } from '@/utils/convertToBase64'
 import { Button } from '@/components/ui/button'
 import { locales } from '@/data/locales'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
+import QuillEditor from '@/components/admin/quill-editor/quill-editor'
 
 interface IUpdateTreeProps {
   selectedCategory: ICategory

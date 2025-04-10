@@ -1,12 +1,13 @@
-import { FC } from 'react'
+'use client'
+import { FC, useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 
-import NumberCall from '../header/number-call/number-call'
 import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
+import NumberCall from '@/components/client/number-call/number-call'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
@@ -18,6 +19,13 @@ interface FooterP {
 const Footer: FC<FooterP> = ({ productLinks }) => {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
+
+  const [year, setYear] = useState<number | null>(null)
+
+  useEffect(() => {
+    setYear(new Date().getFullYear())
+  }, [])
+
   return (
     <footer className="bg-foreground text-background dark:bg-background dark:text-foreground">
       <nav className="border-background dark:border-foreground relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px] dark:border-t dark:border-dashed">

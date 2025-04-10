@@ -1,11 +1,9 @@
 'use server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
-import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
 
-import { connectToDb } from '@/server/connectToDb'
-import cloudinary from '@/server/cloudinaryConfig'
+import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 
 export async function createProduct(
