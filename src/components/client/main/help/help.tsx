@@ -7,10 +7,10 @@ import { Arrow } from '@/components/ui/arrow'
 import { Button } from '@/components/ui/button'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import '@splidejs/react-splide/css'
 
-import '../../styles/slider.css'
 import './help.css'
+import '../../styles/slider.css'
+import '@splidejs/react-splide/css'
 
 interface HelpProps {
   data: IHelpLocal
@@ -82,6 +82,7 @@ const Help: FC<HelpProps> = ({ data }) => {
               perPage: 1,
               pagination: true,
               arrows: true,
+              gap: 10,
               autoplay: true,
               interval: 3000,
               breakpoints: {
@@ -116,7 +117,9 @@ const Help: FC<HelpProps> = ({ data }) => {
           </Splide>
         </div>
         <div className="help__content max-h-[790px]">
-          <h2 className="help__title font-rubik">{data.title}</h2>
+          <h2 id="help" className="help__title font-rubik">
+            {data.title}
+          </h2>
           <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"
@@ -133,7 +136,7 @@ const Help: FC<HelpProps> = ({ data }) => {
             >
               <path
                 d="M41.7071 8.20711C42.0976 7.81658 42.0976 7.18342 41.7071 6.79289L35.3431 0.428932C34.9526 0.0384079 34.3195 0.0384079 33.9289 0.428932C33.5384 0.819456 33.5384 1.45262 33.9289 1.84315L39.5858 7.5L33.9289 13.1569C33.5384 13.5474 33.5384 14.1805 33.9289 14.5711C34.3195 14.9616 34.9526 14.9616 35.3431 14.5711L41.7071 8.20711ZM0 8.5H41V6.5H0V8.5Z"
-                fill="#FBFBFB"
+                fill="currentColor"
               />
             </svg>
           </Button>

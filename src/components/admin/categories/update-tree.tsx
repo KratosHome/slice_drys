@@ -11,6 +11,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import Image from 'next/image'
+import { convertToBase64 } from '@/utils/convert-to-base-64'
+import QuillEditor from '@/components/admin/editor-post/quill-editor'
 import QuillEditor from '@/components/admin/quill-editor'
 
 import { type ChangeEvent, useEffect, useState } from 'react'

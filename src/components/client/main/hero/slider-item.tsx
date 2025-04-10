@@ -47,7 +47,11 @@ const SliderItem = ({
           )}
           fontFamily="Arial"
           letterSpacing="5"
-          fill={isHovered ? hoverHexColor : 'black'}
+          fill={
+            isHovered
+              ? hoverHexColor
+              : 'light-dark(hsl(var(--muted-foreground)),hsl(var(--foreground)))'
+          }
         >
           <textPath href="#curve" startOffset="50%" textAnchor="middle">
             {title}
@@ -60,7 +64,7 @@ const SliderItem = ({
   const Bullet = () => (
     <div
       className={cn(
-        'absolute mt-5 size-1 bg-black sm:size-2',
+        'absolute mt-5 size-1 bg-black sm:size-2 dark:bg-white',
         isHovered && 'size-2 sm:size-5',
       )}
       style={isHovered ? { background: hoverHexColor } : {}}

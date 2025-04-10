@@ -1,11 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Category } from '@/server/categories/categories-schema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
 
 export async function changePosition(categoriesOrder: ICategory[]) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const bulkOps = categoriesOrder.map(({ _id, order }) => ({
       updateOne: {

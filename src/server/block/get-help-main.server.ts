@@ -1,11 +1,11 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import Block from '@/server/block/blocks-schema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import Block from '@/server/block/blocks-schema.server'
 
 export async function getHelpMain(locale: ILocale, isLocal: boolean) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const block = await Block.findOne().select('help').lean<{ help: IHelp }>()
 

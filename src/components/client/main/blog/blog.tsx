@@ -10,7 +10,6 @@ import { Arrow } from '@/components/ui/arrow'
 import { formatDate } from '@/utils/format-date'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
-import { useIsMobile } from '@/hooks/use-mobile'
 import '../../styles/slider.css'
 import '@splidejs/react-splide/css'
 import './blog.css'
@@ -22,7 +21,6 @@ interface BlogSectionProps {
 const BlogSection: FC<BlogSectionProps> = ({ data }) => {
   const t = useTranslations('main.more-about-us')
   const locale = useLocale()
-  const isMobile = useIsMobile()
 
   useEffect(() => {
     const target = document.querySelector('.blog-slider')
@@ -75,11 +73,14 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
   return (
     <section
       aria-labelledby="more about us"
-      className="section about-us bg-black text-white"
+      className="section about-us bg-foreground text-background"
     >
       <div className="about__wrapper">
         <div className="mb-6 contents items-center justify-between md:flex md:gap-[40px]">
-          <h2 className="title-section text-center !normal-case md:text-start">
+          <h2
+            id="more about us"
+            className="title-section text-center !normal-case md:text-start"
+          >
             {t('title')}
           </h2>
           <UnderlinedLink
@@ -96,13 +97,16 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
             options={{
               arrowPath: Arrow(),
               type: 'loop',
-              perPage: isMobile ? 1 : 3,
+              perPage: 3,
               perMove: 1,
               pagination: true,
               arrows: true,
               autoplay: true,
               interval: 3000,
               focus: 'center',
+              breakpoints: {
+                768: { perPage: 1 },
+              },
               classes: {
                 arrows: 'splide__arrows custom__arrows',
                 arrow: 'splide__arrow custom__arrow',
@@ -130,7 +134,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                     </p>
                     <Link
                       href={`/${locale}/blog/${post.slug}`}
-                      className="card__link"
+                      className="card__link text-white"
                     >
                       {post.title}
                     </Link>

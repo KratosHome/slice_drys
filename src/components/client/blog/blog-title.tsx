@@ -7,7 +7,7 @@ const BlogTitle = async () => {
       <h1 className="font-rubik w-full text-[clamp(64px,calc(64px+64*(100vw-768px)/672),128px)] md:w-fit">
         {t('title')}
       </h1>
-      <div className="font-poppins ml-auto w-full bg-black p-4 text-base text-white shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mr-8 md:text-xl lg:max-w-none">
+      <div className="bg-foreground text-background ml-auto w-full p-4 text-base shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mr-8 md:text-xl lg:max-w-none">
         {t('description-top')}
       </div>
     </div>

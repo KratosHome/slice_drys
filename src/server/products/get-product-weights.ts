@@ -1,12 +1,12 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
-import { Category } from '@/server/categories/categories-schema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import { Category } from '@/server/categories/categories-schema.server'
 
 export async function getProductWeights(categorySlug: string) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const categoryDoc = await Category.findOne({ slug: categorySlug })
 

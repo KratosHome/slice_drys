@@ -21,11 +21,6 @@ const config: Config = {
           },
         },
       }),
-      fontFamily: {
-        poppins: ['var(--font-poppins)', 'sans-serif'],
-        rubik: ['var(--font-rubik-doodle-shadow)', 'sans-serif'],
-        dmsans: ['var(--font-dm-sans)', 'sans-serif'],
-      },
       screens: {
         lap: {
           min: '991px',
@@ -143,14 +138,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('@tailwindcss/typography'),
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('tailwindcss-animate'),
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require('tailwind-hamburgers'),
-  ],
 }
 
 export default config

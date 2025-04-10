@@ -3,7 +3,7 @@ import { FC } from 'react'
 interface mainJsonLdProps {
   products: IProduct[]
   faq: IFaq[]
-  reviews: IReview[]
+  reviews: IReviewLocal[]
 }
 const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
   const baseUrl = process.env.NEXT_URL
@@ -101,7 +101,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
           name: review.author,
         },
         itemReviewed: {
-          '@type': 'WebSite',
+          '@type': 'Organization',
           name: "Slice & Dry's",
           url: baseUrl,
         },

@@ -3,7 +3,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
-import Header from '@/components/client/header'
+import Header from '@/components/client/header/header'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
@@ -12,7 +12,8 @@ import { GoogleTagManager } from '@/components/client/google-tag-manager/google-
 import { fetchTags } from '@/data/fetch-tags'
 import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
-import ClientDynamicMain from '@/components/client/dynamic-imports/min'
+import ClientDynamicMain from '@/components/client/dynamic-imports/main'
+import ThemeProvider from '@/components/providers/theme-provider'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -54,7 +55,6 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       </html>
     )
   }
-
   const messages = await getMessages()
 
   const categoriesData = await fetch(`${SITE_URL}/api/categories`, {
@@ -64,17 +64,25 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
 
   return (
     <html
+      suppressHydrationWarning
       lang={locale}
-      className={`${montserrat.variable} ${rubikDoodleShadow.variable}`}
+      className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
       <GoogleTagManager />
       <body className="flex min-h-svh flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <ClientDynamicMain />
-          <Header productLinks={categoriesData.data} />
-          <main className="flex-1">{children}</main>
-          <Footer productLinks={categoriesData.data} />
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider messages={messages}>
+            <ClientDynamicMain />
+            <Header productLinks={categoriesData.data} />
+            <main className="flex-1">{children}</main>
+            <Footer productLinks={categoriesData.data} />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

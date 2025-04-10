@@ -1,16 +1,16 @@
 'use server'
-
-import { Category } from '@/server/categories/categories-schema'
-import { fetchTags } from '@/data/fetch-tags'
-
 import { connectToDb } from '@/server/connectToDb'
+import { Category } from '@/server/categories/categories-schema'
 import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 
 export async function createCategory(categoryData: CreateCategoryDTO) {
+  'use server'
+
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const newCategory = await Category.create(categoryData)
 

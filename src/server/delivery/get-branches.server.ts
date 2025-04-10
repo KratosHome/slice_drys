@@ -1,7 +1,7 @@
 'use server'
 
-import { connectToDb } from '@/server/connectToDb'
-import { NovaPoshtaBranches } from './novaPoshtaSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { NovaPoshtaBranches } from './nova-poshta-schema.server'
 import { getNovaPoshtaApiData } from './get-np-api-data.server'
 
 export async function getNPBranchesByCityRef(
@@ -23,7 +23,7 @@ export async function getNPBranchesByCityRef(
       })),
     }
     try {
-      connectToDb()
+      connectToDbServer()
       const res = (await NovaPoshtaBranches.create(newBranches)).toObject()
       return res.branches
     } catch (error) {
@@ -70,7 +70,7 @@ export async function getNPBranchesByCityRefFromDirectory(
   cityRef: string,
 ): Promise<IDirectoryBranch[] | null> {
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const data = await NovaPoshtaBranches.findOne({
       cityRef,

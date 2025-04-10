@@ -1,10 +1,8 @@
 'use server'
-
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
-
-import { connectToDb } from '@/server/connectToDb'
-import cloudinary from '@/server/cloudinaryConfig'
 import { revalidateTag } from 'next/cache'
 
 export async function editProduct(
@@ -12,8 +10,9 @@ export async function editProduct(
   formData: IProductLocal,
   image?: string,
 ): Promise<IResponse> {
+  'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const existingProduct = await Product.findById(id)
 

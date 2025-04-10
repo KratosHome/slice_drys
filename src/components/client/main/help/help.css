@@ -1,21 +1,9 @@
 .help {
-    background-color: black;
+    background-color: hsl(var(--foreground));
     padding-top: 32px;
     padding-bottom: 32px;
-    color: white;
+    color: hsl(var(--background));
     padding: clamp(32px, calc(32px + 28 * (100vw - 768px) / 672), 60px) clamp(0px, calc(0px + 100 * (100vw - 768px) / 672), 100px);
-}
-
-.help .splide__arrow {
-    background-color: transparent;
-}
-
-.help .splide__pagination__page {
-    background-color: transparent;
-}
-
-.help .splide__arrow svg {
-    fill: white;
 }
 
 .help .splide {
@@ -65,7 +53,6 @@
 
 .help .splide__arrow.custom__arrow {
     top: auto;
-    color: white !important;
 }
 
 @media (min-width: 768px) {
@@ -86,6 +73,14 @@
 
 .help .splide__pagination__page.custom__pagination-page.is-active {
     background: url('/icons/slider-bullet-active-light.svg') no-repeat center / cover;
+}
+
+.dark .help .splide__pagination__page.custom__pagination-page {
+    background: url('/icons/slider-bullet.svg') no-repeat center / cover;
+}
+
+.dark .help .splide__pagination__page.custom__pagination-page.is-active {
+    background: url('/icons/slider-bullet-active.svg') no-repeat center / cover;
 }
 
 .help .help__wrapper {
@@ -116,7 +111,7 @@
     padding-right: 20px;
     text-align: center;
     font-size: clamp(16px, calc(16px + 4 * (100vw - 768px) / 672), 20px);
-    color: white;
+    
 }
 
 @media (min-width: 768px) {
@@ -164,12 +159,9 @@
     }
 }
 
-
-
 .help .splide-wrapper {
     width: 100%;
     align-self: stretch;
-    color: white;
 }
 
 @media (min-width: 768px) {

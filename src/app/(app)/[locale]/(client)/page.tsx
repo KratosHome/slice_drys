@@ -2,18 +2,18 @@ import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 
 import { Hero } from '@/components/client/main/hero'
-import { detectDevice } from '@/utils/deviceDetection'
+import { detectDevice } from '@/utils/device-detection'
 import { faqData } from '@/data/main/faq'
 import type { Metadata } from 'next'
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
-import { reviewsData } from '@/data/main/reviews'
 import { fetchTags } from '@/data/fetch-tags'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import { Loader } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import { reviewsData } from '@/data/main/reviews'
 
 const ProductSlider = dynamic(
   () => import('@/components/client/product-slider/product-slider'),
@@ -41,7 +41,7 @@ const Reviews = dynamic(
 )
 
 const InstaFeed = dynamic(
-  () => import('@/components/client/main/instaFeed/InstaFeed'),
+  () => import('@/components/client/main/instaFeed/Insta-feed'),
   {
     loading: () => <Loader />,
   },
@@ -77,7 +77,7 @@ export default async function Home(props: {
       next: { tags: [`${fetchTags.products}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/categories`, {
+    fetch(`${url}/api/categories`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
@@ -93,7 +93,11 @@ export default async function Home(props: {
       <MainJsonLd
         products={productsData.products}
         faq={faqData[locale]}
-        reviews={reviewsData[locale]}
+        reviews={reviewsData.map((r) => ({
+          ...r,
+          author: r.author[locale],
+          text: r.text[locale],
+        }))}
       />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
@@ -103,7 +107,14 @@ export default async function Home(props: {
       />
       <Faq data={faqData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews reviews={reviewsData[locale]} />
+      <Reviews
+        reviews={reviewsData.map((r) => ({
+          ...r,
+          author: r.author[locale],
+          text: r.text[locale],
+        }))}
+      />
+
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>

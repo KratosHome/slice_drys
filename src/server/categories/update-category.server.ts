@@ -1,10 +1,7 @@
 'use server'
-
-import { Category } from '@/server/categories/categories-schema'
-import { fetchTags } from '@/data/fetch-tags'
-
-import { connectToDb } from '@/server/connectToDb'
-import cloudinary from '@/server/cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Category } from '@/server/categories/categories-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 
 type UpdateCategoryDTO = Partial<Omit<ICategory, '_id' | 'children'>>
@@ -14,8 +11,10 @@ export async function updateCategory(
   categoryData: UpdateCategoryDTO,
   image?: string,
 ) {
+  'use server'
+
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const existingCategory = await Category.findById(categoryId)
 

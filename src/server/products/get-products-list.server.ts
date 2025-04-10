@@ -1,8 +1,8 @@
 'use server'
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
-import { Category } from '@/server/categories/categories-schema'
-import cloudinary from '../cloudinaryConfig'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
+import { Category } from '@/server/categories/categories-schema.server'
+import cloudinary from '../cloudinary-config.server'
 
 interface IGetProductsParams {
   page: number
@@ -25,7 +25,7 @@ export async function getProductsList({
 }: IGetProductsParams) {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const categoryDoc = await Category.findOne({ slug: menu })
     if (!categoryDoc) {

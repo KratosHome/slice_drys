@@ -70,10 +70,10 @@ export default async function NotFoundPage() {
   ]
 
   return (
-    <div className="relative mx-auto flex min-h-[calc(100vh-190px)] max-w-[1280px] flex-col items-center justify-center bg-white px-5">
+    <div className="bg-background relative mx-auto flex min-h-[calc(100vh-190px)] max-w-[1280px] flex-col items-center justify-center px-5">
       <div className="text-center">
         <div className="relative inline-block">
-          <h1 className="font-rubik relative flex items-center text-[100px] text-black drop-shadow-lg sm:text-[138px] md:text-[250px]">
+          <h1 className="font-rubik text-foreground relative flex items-center text-[100px] drop-shadow-lg sm:text-[138px] md:text-[250px]">
             <span className="relative">4</span>
             <span className="relative mx-4">
               <div className="absolute z-[-1] size-32 rounded-full bg-linear-to-r from-yellow-200 to-orange-300 opacity-[0.5] blur-3xl md:size-64" />
@@ -88,7 +88,7 @@ export default async function NotFoundPage() {
             <span className="relative">4</span>
           </h1>
         </div>
-        <p className="text-[20px] text-gray-700">
+        <p className="text-foreground text-[20px]">
           {t('notFoundMessage')}{' '}
           <Link
             href={'/'}

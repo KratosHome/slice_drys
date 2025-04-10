@@ -1,12 +1,12 @@
 'use server'
 
-import { connectToDb } from '@/server/connectToDb'
-import { Product } from '@/server/products/productSchema'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
 
 export async function getProductsUrls() {
   'use server'
   try {
-    await connectToDb()
+    await connectToDbServer()
 
     const products = await Product.find({})
       .select('slug categories')

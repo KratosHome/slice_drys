@@ -6,10 +6,11 @@ import Image from 'next/image'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Input } from '@/components/ui/input'
 import SpinnerBtn from '@/components/ui/spinner-btn'
-import { subscribe } from '@/server/subscribe/subscribe'
+import { subscribeServer } from '@/server/subscribe/subscribe.server'
 import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
+import UnderlineWave from '@/components/ui/underline-wave'
 
 function BlogFooter() {
   const locale = useLocale() as ILocale
@@ -22,7 +23,7 @@ function BlogFooter() {
     e.preventDefault()
     setIsLoading(true)
     const formData = new FormData(e.currentTarget)
-    const resp = await subscribe(formData.get('email') as string)
+    const resp = await subscribeServer(formData.get('email') as string)
     setIsLoading(false)
     if (resp.success) {
       ;(e.target as HTMLFormElement).reset()
@@ -41,11 +42,12 @@ function BlogFooter() {
   }
   return (
     <section className="container mt-[83px] md:mt-[120px]">
-      <p className="font-rubik w-[77%] bg-black p-3 text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] text-white shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
+      <p className="font-rubik bg-foreground text-background w-[77%] p-3 text-[clamp(20px,calc(20px+28*(100vw-375px)/1065),48px)] shadow-[-10px_10px_0px_#A90909] md:px-8 md:py-6 md:shadow-[-16px_17px_0px_#A90909]">
         {t('description-bottom')}
       </p>
-      <div className="underline-wave relative mt-[50px] ml-auto w-fit max-w-[73%] pb-3 text-base md:max-w-none md:pb-5 md:text-xl">
+      <div className="relative mt-[50px] ml-auto w-fit max-w-[73%] pb-3 text-base md:max-w-none md:pb-5 md:text-xl">
         {t('email-caption')}
+        <UnderlineWave />
       </div>
       <div className="mb-[100px] grid items-center md:grid-cols-2">
         <div className="row-span-3 hidden md:block">
@@ -64,7 +66,7 @@ function BlogFooter() {
           className="mt-8 flex flex-col items-center justify-center"
         >
           <div>
-            <span className="animate-follow font-rubik block rotate-90 text-[108px] leading-none">
+            <span className="animate-follow font-rubik block text-[108px] leading-none">
               {'>'}
             </span>
           </div>

@@ -19,7 +19,10 @@
     "footer": {
       "CTA-socials": "join our social networks",
       "public-offer": "public offer",
-      "privacy-policy": "privacy policy"
+      "privacy-policy": "privacy policy",
+      "logo-visa": "logo visa",
+      "logo-mastercard": "logo mastercard",
+      "logo-slice-drys": "logo slice drys"
     },
     "call-me": {
       "call-back": "Call back",
@@ -68,6 +71,8 @@
     "added": "Added",
     "itemCount": "{count, plural, one {# item} other {# items}}",
     "delete": "Delete",
+    "add": "Increase quantity by 1 piece",
+    "remove": "Decrease quantity by 1 piece",
     "g": "g.",
     "uah": "UAH",
     "total": "Total",
@@ -85,13 +90,14 @@
     "email-caption": "Leave your email and we will send you only the tastiest news!",
     "handbag": "shopping handbag picture",
     "email-placeholder": "Fill in your email",
-    "submit-btn": "Submit"
+    "submit-btn": "Submit",
+    "comments": "Comments"
   },
   "Breadcrumbs": {
     "Home": "Home",
     "Blog": "Blog",
     "Page": "Page",
-    "Order":"Order processing",
+    "Order": "Order processing",
     "Contacts": "Contacts"
   },
   "share": {
@@ -136,6 +142,8 @@
     "choose_weight": "Choose weight",
     "weight": "Weight",
     "g": "g",
+    "add": "Increase quantity by 1 piece",
+    "remove": "Decrease quantity by 1 piece",
     "about_product": "About product",
     "nutritional_value": "Nutritional value",
     "proteins": "Proteins",
@@ -216,7 +224,7 @@
     "cash": "Cash on delivery (fee: 20 UAH + 2% of the amount)",
     "comment_title": "Order comment",
     "comment_placeholder": "If necessary, leave a comment for the order",
-    "no_comments":"No comments",
+    "no_comments": "No comments",
     "no_call": "Do not call me to confirm the order",
     "view_order": "View order",
     "btn_continue": "Continue",
@@ -253,7 +261,7 @@
     "how_did_you_find_about_us": "How did you find out about us?",
     "send": "Send"
   },
-  "contacts" : {
+  "contacts": {
     "title": "Contacts",
     "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
     "form_description": "Do you want us to call?",
@@ -267,6 +275,13 @@
     "mail_icon": "Mail Icon",
     "phone_icon": "Phone Icon",
     "home_icon": "Home Icon",
+    "time_icon": "Time Icon",
     "enter_full_phone_number": "Enter full phone number"
+  },
+  "pagination": {
+    "previous": "Go to previous",
+    "next": "Go to next",
+    "active-page": "Active page {page}",
+    "go-to-page": "Go to page {page}"
   }
 }
