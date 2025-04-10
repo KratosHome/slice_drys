@@ -8,6 +8,11 @@ interface mainJsonLdProps {
 const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
   const baseUrl = process.env.NEXT_URL
 
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+      : 0
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -18,6 +23,12 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
         name: "Slice & Dry's",
         publisher: {
           '@id': `${baseUrl}/#organization`,
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: averageRating.toFixed(1),
+          ratingCount: reviews.length,
+          bestRating: '5',
         },
       },
       {
@@ -101,7 +112,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
           name: review.author,
         },
         itemReviewed: {
-          '@type': 'WebSite',
+          '@type': 'Organization',
           name: "Slice & Dry's",
           url: baseUrl,
         },
