@@ -92,15 +92,13 @@ export async function generateStaticParams() {
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const [data] = await Promise.all([
-    await fetch(
-      `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-      {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.post}`] },
-      },
-    ).then((res) => res.json()),
-  ])
+  const data = await fetch(
+    `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.post}`] },
+    },
+  ).then((res) => res.json())
 
   if (!data.success) {
     return <NotFoundPage />

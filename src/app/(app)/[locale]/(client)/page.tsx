@@ -77,7 +77,7 @@ export default async function Home(props: {
       next: { tags: [`${fetchTags.products}`] },
     }).then((res) => res.json()),
 
-    await fetch(`${url}/api/categories`, {
+    fetch(`${url}/api/categories`, {
       cache: 'force-cache',
       next: { tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
