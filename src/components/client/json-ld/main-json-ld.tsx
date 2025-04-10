@@ -24,12 +24,6 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
         publisher: {
           '@id': `${baseUrl}/#organization`,
         },
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: averageRating.toFixed(1),
-          ratingCount: reviews.length,
-          bestRating: '5',
-        },
       },
       {
         '@type': 'Organization',
