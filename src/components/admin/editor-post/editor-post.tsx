@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { convertToBase64 } from '@/utils/convert-to-base-64'
 import Image from 'next/image'
-import QuillEditor from '@/components/admin/quill-editor'
+import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
 
 import { useState, useEffect, type ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'

@@ -24,7 +24,7 @@ import { useRouter } from 'next/navigation'
 import { deleteProduct } from '@/server/products/delete-product.server'
 import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
 import { Button } from '@/components/ui/button'
-import QuillEditor from '@/components/admin/quill-editor'
+import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
 import { convertToBase64 } from '@/utils/convert-to-base-64'
 
 interface ICrateProduct {

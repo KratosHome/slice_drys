@@ -18,7 +18,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Image from 'next/image'
-import EditorProduct from '@/components/admin/editor-product'
+import EditorProduct from '@/components/admin/editor-product/editor-product'
 
 import { useState } from 'react'
 import {
