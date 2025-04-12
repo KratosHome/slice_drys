@@ -11,6 +11,15 @@ interface IAdminLayoutProps {
   params: Promise<{ locale: LanguageType }>
 }
 
+export const metadata = {
+  title: 'Адмін Панель',
+  description: 'Адмін панель сайту. Сторінка недоступна для пошукових систем.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
+
 export default async function AdminLayout(props: IAdminLayoutProps) {
   const { children } = props
   const session = await getServerSession()
