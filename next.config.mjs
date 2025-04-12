@@ -43,6 +43,7 @@ const nextConfig = {
     TELEGRAM_BOT_CHAT_ID: process.env.TELEGRAM_BOT_CHAT_ID,
     NEXT_ADMIN_PASS: process.env.NEXT_ADMIN_PASS,
     NEXT_ADMIN_LOGIN: process.env.NEXT_ADMIN_LOGIN,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
   async headers() {
     return [
