@@ -71,7 +71,7 @@ export default function Order({ defaultCities }: Props) {
             `${i + 1}. ${item.name} (вага ${item.weight}) x ${item.quantity} од`,
         )
         .join('\n'),
-      callback: userData?.noCall ? '---------' : 'ПОТРІБЕН',
+      callback: userData?.noCall ? 'НE ПОТРІБЕН' : 'ПОТРІБЕН',
     }
 
     const cb = async (resp: IOrderResponse) => {
