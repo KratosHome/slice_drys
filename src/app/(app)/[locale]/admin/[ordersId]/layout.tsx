@@ -1,8 +1,23 @@
 'use client'
-import * as React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { tabsOrder } from '@/data/tabs-order'
+import { useEffect } from 'react'
+
+const url = process.env.NEXT_URL
+
+interface StatusCountResponse {
+  success: boolean
+  data: {
+    new?: number
+    awaitingPayment?: number
+    awaitingShipment?: number
+    shipped?: number
+    awaitingReturn?: number
+    [key: string]: number | undefined
+  }
+}
 
 export default function LocaleLayout({
   children,
@@ -12,11 +27,17 @@ export default function LocaleLayout({
 }) {
   const pathname = usePathname()
 
-  const getNewOrders = [{ id: '1', status: 'new' }]
-  const getAwaitingPaymentOrders = [{ id: '2', status: 'awaiting-payment' }]
-  const getAwaitingShipmentOrders = [{ id: '3', status: 'awaiting-shipment' }]
-  const getShippedOrders = [{ id: '4', status: 'shipped' }]
-  const getAwaitingReturnOrders = [{ id: '5', status: 'awaiting-return' }]
+  const [status, setStatus] = useState<StatusCountResponse | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${url}/api/orders/get-status-count`)
+      const json = await res.json()
+      setStatus(json)
+    }
+
+    fetchData()
+  }, [])
 
   const statusStyles: Record<string, string> = {
     new: 'bg-red-500 text-white',
@@ -27,11 +48,11 @@ export default function LocaleLayout({
   }
 
   const orderCountByStatus: Record<string, number> = {
-    new: getNewOrders.length,
-    'awaiting-payment': getAwaitingPaymentOrders.length,
-    'awaiting-shipment': getAwaitingShipmentOrders.length,
-    shipped: getShippedOrders.length,
-    'awaiting-return': getAwaitingReturnOrders.length,
+    new: status?.data?.new || 0,
+    'awaiting-payment': status?.data?.awaitingPayment || 0,
+    'awaiting-shipment': status?.data?.awaitingShipment || 0,
+    shipped: status?.data?.shipped || 0,
+    'awaiting-return': status?.data?.awaitingReturn || 0,
   }
 
   return (
@@ -56,7 +77,7 @@ export default function LocaleLayout({
               )}
 
               <Link
-                href={`${tab.value}`}
+                href={`/uk/admin/${tab.value}`}
                 className={`flex flex-col items-center gap-2 rounded-md border-[1px] border-black/30 px-2 py-1 ${
                   isActive ? 'border-black' : 'bg-transparent text-black'
                 }`}
