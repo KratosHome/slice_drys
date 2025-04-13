@@ -120,25 +120,22 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
             {data.map((post) => (
               <SplideSlide key={post._id}>
                 <div className="about__card">
-                  <AspectRatio ratio={355 / 285} className="h-full">
-                    <Image
-                      src={post.img}
-                      alt={post.title}
-                      fill
-                      className="rounded-[12px_12px_0_0] object-cover"
-                    />
-                  </AspectRatio>
-                  <div className="p-4">
-                    <p className="mt-2 text-sm text-gray-400">
-                      {formatDate(post.createdAt)}
-                    </p>
-                    <Link
-                      href={`/${locale}/blog/${post.slug}`}
-                      className="card__link text-white"
-                    >
-                      {post.title}
-                    </Link>
-                  </div>
+                  <Link href={`/${locale}/blog/${post.slug}`}>
+                    <AspectRatio ratio={355 / 285} className="h-full">
+                      <Image
+                        src={post.img}
+                        alt={post.title}
+                        fill
+                        className="rounded-[12px_12px_0_0] object-cover"
+                      />
+                    </AspectRatio>
+                    <div className="p-4">
+                      <p className="mt-2 text-sm text-gray-400">
+                        {formatDate(post.createdAt)}
+                      </p>
+                      <h3 className="card__link text-white">{post.title}</h3>
+                    </div>
+                  </Link>
                 </div>
               </SplideSlide>
             ))}
