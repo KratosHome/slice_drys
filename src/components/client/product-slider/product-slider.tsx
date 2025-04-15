@@ -71,7 +71,6 @@ export default function ProductSlider({
 
   const splideOptions = {
     arrowPath: Arrow(),
-    type: 'loop',
     autoplay: true,
     interval: 3000,
     perPage: Math.min(products.length, 3),
