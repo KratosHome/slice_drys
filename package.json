@@ -42,6 +42,7 @@
     "@splidejs/react-splide": "^0.7.12",
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-table": "^8.20.5",
+    "@vercel/analytics": "^1.5.0",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.6.0",

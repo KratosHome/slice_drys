@@ -14,6 +14,7 @@ import dynamic from 'next/dynamic'
 import { Loader } from 'lucide-react'
 import ClientDynamicMain from '@/components/client/dynamic-imports/main'
 import ThemeProvider from '@/components/providers/theme-provider'
+import { Analytics } from '@vercel/analytics/react'
 
 const Footer = dynamic(() => import('@/components/client/footer/footer'), {
   loading: () => <Loader />,
@@ -84,6 +85,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
         </ThemeProvider>
       </body>
       <GoogleAnalytics gaId="G-B0WJ3M87VD" />
+      <Analytics />
     </html>
   )
 }
