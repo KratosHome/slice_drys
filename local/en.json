@@ -234,7 +234,8 @@
     "validation_email_format": "Incorrect email format",
     "area-edit": "Edit",
     "error": "Oops! Something went wrong. Please try again or give us a call.",
-    "success": "Order has been placed successfully!"
+    "success": "Order has been placed successfully!",
+    "order": "Order"
   },
   "wholesale": {
     "home": "Home",

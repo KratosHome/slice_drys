@@ -1015,13 +1015,12 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
           </Button>
         </fieldset>
       )} */}
-
-        {(!userData || (userData?.formStep ?? 0) <= 3) && (
+        {(!userData || (userData.formStep ?? 0) <= 3) && (
           <button
             type="submit"
-            className="bg-foreground text-background max-w-[180px] self-center px-5 py-2"
+            className="bg-foreground text-background max-w-[180px] cursor-pointer self-center px-5 py-2"
           >
-            {t('btn_continue')}
+            {(userData?.formStep ?? 0) < 3 ? t('btn_continue') : t('order')}
           </button>
         )}
       </form>

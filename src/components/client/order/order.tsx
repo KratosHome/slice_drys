@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { sendOrderNotification } from '@/server/info/order-notification.server'
 import OrderForm from '@/components/client/order/order-form'
@@ -11,6 +11,7 @@ import { useCartStore } from '@/store/cart-store'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import Loading from '@/components/ui/loading'
 
 type Props = {
   defaultCities: {
@@ -26,6 +27,8 @@ export default function Order({ defaultCities }: Props) {
   const { toast } = useToast()
 
   const { replace } = useRouter()
+
+  const [loading, setLoading] = useState(false)
 
   const formRef = useRef<{
     reset: () => void
@@ -55,6 +58,7 @@ export default function Order({ defaultCities }: Props) {
 
   const handleSubmit = async () => {
     if (!formRef.current) return
+    setLoading(true)
     const messageData = {
       totalPrice: totalPrice.toString() + ' ₴',
       paymentMethod:
@@ -76,7 +80,6 @@ export default function Order({ defaultCities }: Props) {
 
     const cb = async (resp: IOrderResponse) => {
       if (resp.success) {
-        formRef.current?.reset()
         toast({
           duration: 5000,
           title: tToast('success'),
@@ -85,8 +88,11 @@ export default function Order({ defaultCities }: Props) {
 
         await sendOrderNotification(messageData)
 
+        setLoading(false)
+        formRef.current?.reset()
         replace(`/${locale}/`)
       } else {
+        setLoading(false)
         toast({
           variant: 'destructive',
           title: tToast('error'),
@@ -99,6 +105,7 @@ export default function Order({ defaultCities }: Props) {
 
   return (
     <div className="mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
+      {loading ? <Loading /> : null}
       <OrderForm
         ref={formRef}
         defaultCities={defaultCities}
@@ -122,7 +129,7 @@ export default function Order({ defaultCities }: Props) {
           type="submit"
           variant={'none'}
           className="mt-5 h-[auto] w-full self-center text-base text-nowrap lg:w-min lg:text-xl"
-          disabled={totalPrice < minOrderAmount || userData?.formStep !== 4}
+          disabled={totalPrice < minOrderAmount || userData?.formStep !== 3}
           onClick={handleSubmit}
         >
           <ResponsiveMotion
