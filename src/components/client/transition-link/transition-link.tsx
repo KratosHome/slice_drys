@@ -17,6 +17,7 @@ function sleep(ms: number): Promise<void> {
 export const TransitionLink: React.FC<TransitionLinkProps> = ({
   children,
   href,
+  onClick,
   ...props
 }) => {
   const router = useRouter()
@@ -30,6 +31,9 @@ export const TransitionLink: React.FC<TransitionLinkProps> = ({
     body?.classList.add('page-transition')
 
     await sleep(500)
+    if (onClick) {
+      onClick(e)
+    }
     router.push(href)
     await sleep(500)
 
