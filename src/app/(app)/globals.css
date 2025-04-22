@@ -6,6 +6,13 @@
 @plugin 'tailwindcss-animate';
 @plugin '@tailwindcss/typography';
 
+body {
+  transition-property: opacity, transform, filter, background;
+  transition-timing-function: ease-in-out;
+  transition-duration: 400ms;
+}
+
+
 @theme {
   --breakpoint-xs: 24rem;
   --color-order-text: hsl(var(--order-text));
@@ -29,7 +36,7 @@
   :root {
     /* scrollbar-gutter: stable; */
     scroll-behavior: smooth;
-
+    --animate-bg: #eee1f3;
     --background: 0 0% 98%;
     --foreground: 0 0% 6%;
     --card: 0 0% 100%;
@@ -75,6 +82,7 @@
   .dark {
     --background: 0 0% 6%;
     --foreground: 0 0% 98%;
+    --animate-bg: #1a0303;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
@@ -119,6 +127,13 @@
   body {
     @apply bg-background text-foreground m-0;
   }
+}
+
+.page-transition {
+  opacity: 0;
+  background: var(--animate-bg);
+  transform: translateY(40px);
+  filter: blur(12px);
 }
 
 @utility font-rubik {

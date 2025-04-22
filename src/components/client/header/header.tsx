@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import Info from './header-info'
 import HamburgerMenu from './hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change/locale-change'
@@ -15,6 +14,7 @@ import { pageLinks } from '@/data/main/nav-links'
 import ThemeToggle from '../theme-toggle/theme-toggle'
 import NumberCall from '@/components/client/number-call/number-call'
 import Socials from '@/components/ui/socials'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -146,13 +146,13 @@ const Header = ({ productLinks }: IHeaderProps) => {
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
               {productLinks.slice(0, 4)?.map((link) => (
-                <Link
+                <TransitionLink
                   key={link.slug}
                   href={`/${locale}/${link.slug}`}
                   className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
                   {link.name[locale]}
-                </Link>
+                </TransitionLink>
               ))}
             </nav>
             <HamburgerMenu
@@ -164,7 +164,7 @@ const Header = ({ productLinks }: IHeaderProps) => {
             </div>
           </div>
 
-          <Link
+          <TransitionLink
             ref={logoRef}
             href={`/${locale}`}
             className="text-foreground h-full self-start"
@@ -178,19 +178,19 @@ const Header = ({ productLinks }: IHeaderProps) => {
             >
               <use href="/icons/sprite.svg#logo" />
             </svg>
-          </Link>
+          </TransitionLink>
 
           <div className="justify-self-end">
             <div className="flex justify-end lg:justify-between lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)]">
               <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
                 {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
-                  <Link
+                  <TransitionLink
                     key={link.id}
                     href={`/${locale}/${link.href}`}
                     className="p-3 text-[20px] transition-all duration-300 ease-in-out will-change-transform hover:scale-105 hover:text-red-500"
                   >
                     {link.name}
-                  </Link>
+                  </TransitionLink>
                 ))}
               </nav>
 

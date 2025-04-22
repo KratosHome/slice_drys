@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 export default async function NotFoundPage() {
   const t = await getTranslations('not_found_page')
@@ -90,12 +90,12 @@ export default async function NotFoundPage() {
         </div>
         <p className="text-foreground text-[20px]">
           {t('notFoundMessage')}{' '}
-          <Link
+          <TransitionLink
             href={'/'}
             className="text-red-400 duration-300 hover:text-red-600"
           >
             {t('goHome')}
-          </Link>
+          </TransitionLink>
         </p>
       </div>
 

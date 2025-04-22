@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { Portal, Transition, TransitionChild } from '@headlessui/react'
@@ -10,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { contacts } from '@/data/contacts'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 interface IHamburgerMenuProps {
   productLinks: ICategory[]
@@ -93,7 +93,7 @@ export default function HamburgerMenu({
                     &times;
                   </button>
 
-                  <Link
+                  <TransitionLink
                     href="/"
                     onClick={closeMenu}
                     className="text-foreground col-span-3 col-start-3 self-center justify-self-center"
@@ -101,7 +101,7 @@ export default function HamburgerMenu({
                     <svg width="39px" height="46px">
                       <use href="/icons/sprite.svg#logo" />
                     </svg>
-                  </Link>
+                  </TransitionLink>
                   <div />
                   <LocaleChange />
                 </div>
@@ -109,7 +109,7 @@ export default function HamburgerMenu({
                 <div className="mt-5 px-8 text-base">
                   <div className="py-2 font-semibold">{t('catalog')}</div>
                   {productLinks.slice(0, 4)?.map((link) => (
-                    <Link
+                    <TransitionLink
                       key={link.slug}
                       href={`/${locale}/${link.slug}`}
                       onClick={closeMenu}
@@ -120,7 +120,7 @@ export default function HamburgerMenu({
                       )}
                     >
                       {link.name[locale]}
-                    </Link>
+                    </TransitionLink>
                   ))}
 
                   <Separator
@@ -128,7 +128,7 @@ export default function HamburgerMenu({
                     className="bg-foreground my-[26px]"
                   />
                   {hamburgerLinksOther?.map((link) => (
-                    <Link
+                    <TransitionLink
                       key={link.id}
                       href={`/${locale}/${link.href}`}
                       onClick={closeMenu}
@@ -139,7 +139,7 @@ export default function HamburgerMenu({
                       )}
                     >
                       {link.name}
-                    </Link>
+                    </TransitionLink>
                   ))}
                 </div>
 
@@ -156,13 +156,13 @@ export default function HamburgerMenu({
                   <svg width="24px" height="24px">
                     <use href="/icons/sprite.svg#phone" />
                   </svg>
-                  <Link
+                  <TransitionLink
                     href={`tel:${contacts.phone}`}
                     onClick={closeMenu}
                     className="font-medium active:text-red-700"
                   >
                     {contacts.phone}
-                  </Link>
+                  </TransitionLink>
                 </div>
               </div>
             </div>

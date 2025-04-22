@@ -1,7 +1,6 @@
 'use client'
 
 import { FC, useEffect } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
@@ -13,6 +12,7 @@ import { UnderlinedLink } from '@/components/ui/underlined-link'
 import '../../styles/slider.css'
 import '@splidejs/react-splide/css'
 import './blog.css'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 interface BlogSectionProps {
   data: IPost[]
@@ -120,7 +120,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
             {data.map((post) => (
               <SplideSlide key={post._id}>
                 <div className="about__card">
-                  <Link href={`/${locale}/blog/${post.slug}`}>
+                  <TransitionLink href={`/${locale}/blog/${post.slug}`}>
                     <AspectRatio ratio={355 / 285} className="h-full">
                       <Image
                         src={post.img}
@@ -135,7 +135,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
                       </p>
                       <h3 className="card__link text-white">{post.title}</h3>
                     </div>
-                  </Link>
+                  </TransitionLink>
                 </div>
               </SplideSlide>
             ))}

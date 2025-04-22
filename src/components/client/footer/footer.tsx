@@ -1,13 +1,13 @@
 'use client'
 import { FC, useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import Link from 'next/link'
 
 import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
 import NumberCall from '@/components/client/number-call/number-call'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
@@ -32,22 +32,27 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
           {pageLinks[locale].slice(0, 2)?.map((link: ILink) => (
             <li key={link.id} className={cn(linkStyle, 'pl-0')}>
-              <Link href={`/${locale}/${link.href}`}>{link.name}</Link>
+              <TransitionLink href={`/${locale}/${link.href}`}>
+                {link.name}
+              </TransitionLink>
             </li>
           ))}
         </ul>
         <ul className="flex flex-col gap-[19px] justify-self-start md:hidden">
           {productLinks.map((link) => (
             <li key={link.slug} className={linkStyle}>
-              <Link key={link.slug} href={`/${locale}/${link.slug}`}>
+              <TransitionLink key={link.slug} href={`/${locale}/${link.slug}`}>
                 {link.name[locale]}
-              </Link>
+              </TransitionLink>
             </li>
           ))}
         </ul>
 
         <div className="self-stretch justify-self-center">
-          <Link href={`/${locale}`} className="block h-full text-white">
+          <TransitionLink
+            href={`/${locale}`}
+            className="block h-full text-white"
+          >
             <svg
               className="h-[100px] w-auto! px-5 transition-transform duration-300 ease-in-out md:px-0"
               role="img"
@@ -55,7 +60,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             >
               <use href="/icons/sprite.svg#logo" />
             </svg>
-          </Link>
+          </TransitionLink>
         </div>
 
         <ul className="flex flex-col gap-[19px] justify-self-end text-end md:hidden">
@@ -67,7 +72,9 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
                 'active:-translate-x-3 md:hover:-translate-x-3',
               )}
             >
-              <Link href={`/${locale}/${link.href}`}>{link.name}</Link>
+              <TransitionLink href={`/${locale}/${link.href}`}>
+                {link.name}
+              </TransitionLink>
             </li>
           ))}
         </ul>
@@ -80,7 +87,9 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
                 'pr-0 active:-translate-x-3 md:hover:-translate-x-3',
               )}
             >
-              <Link href={`/${locale}/${link.href}`}>{link.name}</Link>
+              <TransitionLink href={`/${locale}/${link.href}`}>
+                {link.name}
+              </TransitionLink>
             </li>
           ))}
         </ul>
@@ -100,7 +109,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
         </div>
         <ul className="col-start-1 col-end-4 mt-[57px] mb-[35px] flex flex-col gap-[14px] text-end md:col-span-2 md:col-start-2 md:mt-[10px] md:gap-[10px]">
           <li>
-            <Link
+            <TransitionLink
               href={`/${locale}/public-offer`}
               className={cn(
                 linkStyle,
@@ -108,10 +117,10 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
               )}
             >
               {t('public-offer')}
-            </Link>
+            </TransitionLink>
           </li>
           <li>
-            <Link
+            <TransitionLink
               href={`/${locale}/privacy-policy`}
               className={cn(
                 linkStyle,
@@ -119,7 +128,7 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
               )}
             >
               {t('privacy-policy')}
-            </Link>
+            </TransitionLink>
           </li>
         </ul>
         <div className="col-start-1 col-end-4 h-[clamp(28px,calc(28px+5*(100vw-375px)/1065),33px)]">

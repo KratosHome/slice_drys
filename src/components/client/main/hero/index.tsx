@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
 import { gsap } from 'gsap'
@@ -12,6 +11,7 @@ import Arcs from './arcs'
 import { cn } from '@/utils/cn'
 
 import { sliders } from '@/data/hero-links'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 export const Hero = ({
   device,
@@ -132,7 +132,7 @@ export const Hero = ({
                 index === 4 && 'rotate-[50deg] lg:rotate-[60deg]',
               )}
             >
-              <Link
+              <TransitionLink
                 href={`${locale}/${item.slug}`}
                 className={cn(
                   'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
@@ -145,7 +145,7 @@ export const Hero = ({
                   hoverHexColor={hoverHexColor}
                   isHovered={hoveredIndex === index}
                 />
-              </Link>
+              </TransitionLink>
             </div>
           ))}
 

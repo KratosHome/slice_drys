@@ -1,11 +1,11 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import { cn } from '@/utils/cn'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 interface PostCardProps {
   post?: IPost
@@ -25,7 +25,7 @@ export default function PostCard({
   }
 
   return (
-    <Link
+    <TransitionLink
       href={`/${local}/blog/${post?.slug}`}
       className={cn(
         "md:after:border-foreground relative max-w-[500px] md:max-w-none md:after:absolute md:after:top-0 md:after:h-full md:after:w-0 md:after:border-r md:after:border-dashed md:after:content-[''] md:last:after:content-none",
@@ -79,6 +79,6 @@ export default function PostCard({
           </p>
         </div>
       </ResponsiveMotion>
-    </Link>
+    </TransitionLink>
   )
 }

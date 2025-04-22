@@ -1,9 +1,9 @@
 'use client'
 import { FC } from 'react'
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
 import { cn } from '@/utils/cn'
 import { useLocale } from 'next-intl'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 interface LocaleChangeP {
   className?: string
@@ -20,7 +20,7 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
 
   return (
     <div className={cn('flex items-center text-sm', className)}>
-      <Link
+      <TransitionLink
         href={getLocalizedPath('uk')}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
@@ -28,11 +28,11 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
         )}
       >
         UK
-      </Link>
+      </TransitionLink>
 
       <span className="-mt-[2px] text-xl font-semibold">&#8201;/&#8201;</span>
 
-      <Link
+      <TransitionLink
         href={getLocalizedPath('en')}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
@@ -40,7 +40,7 @@ const LocaleChange: FC<LocaleChangeP> = ({ className }) => {
         )}
       >
         EN
-      </Link>
+      </TransitionLink>
     </div>
   )
 }

@@ -1,8 +1,6 @@
 'use client'
 
 import { appSidebarData } from '@/data/app-sidebar'
-
-import Link from 'next/link'
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +12,7 @@ import {
 } from '@/components/ui/sidebar'
 
 import { useLocale } from 'next-intl'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 export function AppSidebar() {
   const locale: string = useLocale()
@@ -27,11 +26,11 @@ export function AppSidebar() {
               {appSidebarData.map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild>
-                    <Link href={`/${locale}/${item.link}`}>
+                    <TransitionLink href={`/${locale}/${item.link}`}>
                       <item.icon />
 
                       <span>{item.name}</span>
-                    </Link>
+                    </TransitionLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

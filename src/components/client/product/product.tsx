@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import Link from 'next/link'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
@@ -17,6 +16,7 @@ import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { Button } from '@/components/ui/button'
+import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 interface ProductProps {
   product: IProduct
@@ -66,7 +66,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   }
 
   return (
-    <Link
+    <TransitionLink
       href={`/${locale}/meat/${product.slug.toLowerCase()}?weight=${selectedVariable.weight}`}
       className="block px-2 py-8 sm:px-3 md:px-4"
     >
@@ -193,7 +193,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           </div>
         </CardBody>
       </CardContainer>
-    </Link>
+    </TransitionLink>
   )
 }
 
