@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 export default async function NotFoundPage() {
-  const t = await getTranslations('not_found_page')
+  const t = await getTranslations('not-found-page')
 
   const fruits = [
     {
@@ -79,7 +79,7 @@ export default async function NotFoundPage() {
               <div className="absolute z-[-1] size-32 rounded-full bg-linear-to-r from-yellow-200 to-orange-300 opacity-[0.5] blur-3xl md:size-64" />
               <Image
                 src="/slider/fruit.webp"
-                alt={t('fruitAlt')}
+                alt={t('fruit-alt')}
                 className="w-32 md:w-64"
                 width={232}
                 height={232}
@@ -89,16 +89,15 @@ export default async function NotFoundPage() {
           </h1>
         </div>
         <p className="text-foreground text-[20px]">
-          {t('notFoundMessage')}{' '}
+          {t('not-found-message')}{' '}
           <TransitionLink
-            href={'/'}
+            href="/"
             className="text-red-400 duration-300 hover:text-red-600"
           >
-            {t('goHome')}
+            {t('go-home')}
           </TransitionLink>
         </p>
       </div>
-
       <div className="pointer-events-none absolute inset-0">
         {fruits.map((fruit, index) => (
           <Image

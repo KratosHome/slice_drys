@@ -171,10 +171,10 @@
     "also_buy": "Також купують",
     "dried-jerky": "Сушені джерки"
   },
-  "not_found_page": {
-    "fruitAlt": "Декоративні фрукти",
-    "notFoundMessage": "Оце трагедія! Біжимо готувати для вас",
-    "goHome": "“кусь”!",
+  "not-found-page": {
+    "fruit-alt": "Декоративні фрукти",
+    "not-found-message": "Оце трагедія! Біжимо готувати для вас",
+    "go-home": "“кусь”!",
     "fruit": {
       "orange": "Апельсин",
       "mango": "Манго",

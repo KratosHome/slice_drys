@@ -12,7 +12,7 @@ import { UnderlinedLink } from '@/components/ui/underlined-link'
 import '../../styles/slider.css'
 import '@splidejs/react-splide/css'
 import './blog.css'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 interface BlogSectionProps {
   data: IPost[]

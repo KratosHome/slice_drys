@@ -14,7 +14,7 @@ import { pageLinks } from '@/data/main/nav-links'
 import ThemeToggle from '../theme-toggle/theme-toggle'
 import NumberCall from '@/components/client/number-call/number-call'
 import Socials from '@/components/ui/socials'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 gsap.registerPlugin(ScrollTrigger)
 

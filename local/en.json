@@ -171,10 +171,10 @@
     "also_buy": "Also buy",
     "dried-jerky": "Dried jerky"
   },
-  "not_found_page": {
-    "fruitAlt": "Fruit decoration",
-    "notFoundMessage": "What a tragedy! Let's rush to prepare something for you",
-    "goHome": "“nom-nom”!",
+  "not-found-page": {
+    "fruit-alt": "Fruit decoration",
+    "not-found-message": "What a tragedy! Let's rush to prepare something for you",
+    "go-home": "“nom-nom”!",
     "fruit": {
       "orange": "Orange",
       "mango": "Mango",

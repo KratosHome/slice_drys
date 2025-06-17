@@ -7,7 +7,7 @@ import Socials from '@/components/ui/socials'
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
 import NumberCall from '@/components/client/number-call/number-call'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'

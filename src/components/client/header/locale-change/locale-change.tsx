@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/utils/cn'
 import { useLocale } from 'next-intl'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 interface LocaleChangeP {
   className?: string

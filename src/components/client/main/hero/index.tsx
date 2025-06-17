@@ -11,7 +11,7 @@ import Arcs from './arcs'
 import { cn } from '@/utils/cn'
 
 import { sliders } from '@/data/hero-links'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 export const Hero = ({
   device,

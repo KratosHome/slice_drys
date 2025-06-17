@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { contacts } from '@/data/contacts'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 interface IHamburgerMenuProps {
   productLinks: ICategory[]

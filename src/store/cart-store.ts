@@ -42,6 +42,7 @@ interface ICartActions {
   setOpenCart: (openCart: boolean) => void
   submitOrder: (cb: (resp: IOrderResponse) => void) => void
 }
+
 const initialUserData = {
   deliveryInfo: {
     deliveryMethod: 'branch' as IDeliveryMethods,
@@ -231,9 +232,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
             const response: IOrderResponse = await createOrderServer(orderData)
 
-            if (response.success) {
-              clearCart(true)
-            }
+            if (response.success) clearCart(true)
+
             cb(response)
           },
         }

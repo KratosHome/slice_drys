@@ -5,7 +5,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import { cn } from '@/utils/cn'
 import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 interface PostCardProps {
   post?: IPost

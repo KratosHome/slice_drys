@@ -1,6 +1,6 @@
 import { contacts } from '@/data/contacts'
 import { useLocale, useTranslations } from 'next-intl'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 const ContactInfo = ({ block_title }: { block_title: string }) => {
   const locale = useLocale() as ILocale

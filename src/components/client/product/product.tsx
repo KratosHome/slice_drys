@@ -16,7 +16,7 @@ import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { Button } from '@/components/ui/button'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 interface ProductProps {
   product: IProduct

@@ -25,7 +25,7 @@ const actionTypes = {
 
 let count: number = 0
 
-function genId() {
+function genId(): string {
   count = (count + 1) % Number.MAX_SAFE_INTEGER
 
   return count.toString()
@@ -55,7 +55,7 @@ interface IToastsState {
   toasts: ToasterToast[]
 }
 
-const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
+const toastTimeouts = new Map<string, NodeJS.Timeout>()
 
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) return
@@ -131,7 +131,7 @@ const listeners: Array<(state: IToastsState) => void> = []
 
 let memoryState: IToastsState = { toasts: [] }
 
-function dispatch(action: Action) {
+function dispatch(action: Action): void {
   memoryState = reducer(memoryState, action)
 
   listeners.forEach((listener) => listener(memoryState))
@@ -163,7 +163,7 @@ function toast({ ...props }: Toast) {
   })
 
   return {
-    id: id,
+    id,
     dismiss,
     update,
   }
