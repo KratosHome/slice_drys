@@ -1,5 +1,7 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react'
-import MaskedInput, { MaskedInputProps } from 'react-text-mask'
+'use client'
+
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import MaskedInput, { type MaskedInputProps } from 'react-text-mask'
 
 const ForwardedMaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
   (props, ref) => {

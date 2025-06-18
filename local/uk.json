@@ -101,10 +101,10 @@
     "Contacts": "Контакти"
   },
   "share": {
-    "Share": "Поділитись",
-    "facebook icon": "іконка Facebook",
-    "instagram icon": "іконка Instagram",
-    "telegram icon": "іконка Telegram"
+    "share-label": "Поділитись",
+    "facebook-icon": "іконка Facebook",
+    "instagram-icon": "іконка Instagram",
+    "telegram-icon": "іконка Telegram"
   },
   "product-list": {
     "home": "Головна",
@@ -185,6 +185,11 @@
       "kiwi": "Ківі"
     }
   },
+  "toast": {
+    "success": "Вітання!",
+    "error": "Помилка!",
+    "info": "Інформація"
+  },
   "promo-banner": {
     "free_delivery": "Безкоштовна доставка!",
     "when_ordering_from": "При замовленні від <bold>{amount} грн</bold>",
@@ -198,10 +203,39 @@
     "text": "КУСЬ !",
     "icon_instagram": "іконка Instagram"
   },
-  "toast": {
-    "success": "Вітання!",
-    "error": "Помилка!",
-    "info": "Інформація"
+  "order": {
+    "page_title": "Оформлення замовлення",
+    "contacts_title": "Контактні дані",
+    "surname_placeholder": "Прізвище",
+    "name_placeholder": "Ім'я",
+    "phone_placeholder": "Телефон",
+    "phone_field_description": "У форматі +38 (093) 123 45 67",
+    "delivery_title": "Доставка",
+    "delivery_method_to_branch": "У відділення",
+    "delivery_method_to_postomat": "У поштомат",
+    "delivery_method_courier": "Кур'єром",
+    "city_placeholder": "Вкажи населений пункт",
+    "city-search-placeholder": "Спробуй змінити запит",
+    "branch_placeholder": "Вибери {type, select, branch {відділення} postomat {поштомат} other {}}",
+    "branch-search-placeholder": "Відсутні {type, select, branch {відділення} postomat {поштомати} other {}} або спробуй змінити запит",
+    "courier_placeholder": "Вкажіть адресу доставки (місто, вулиця, будинок)",
+    "payment_title": "Спосіб оплати",
+    "card": "Оплата через платіжну систему",
+    "cash": "Накладений платіж (комісія 20 грн. + 2% від суми)",
+    "comment_title": "Коментар до замовлення",
+    "comment_placeholder": "За потреби напишіть коментар до замовлення",
+    "no_comments": "Немає коментарів",
+    "no_call": "Не телефонувати мені для підтвердження замовлення",
+    "view_order": "Перегляд замовлення",
+    "btn_continue": "Продовжити",
+    "btn_order": "Оформити замовлення",
+    "validation_required": "Це поле є обов’язковим",
+    "validation_length": "Не вірна довжина номера",
+    "validation_email_format": "Некоректний формат електронної пошти",
+    "area-edit": "Редагувати",
+    "success": "Замовлення успішно оформлено",
+    "error": "Помилка при оформленні замовлення. Спробуйте ще раз або зателефонуйте нам",
+    "order": "Оформити замовлення"
   },
   "wholesale": {
     "home": "Головна",
@@ -227,40 +261,6 @@
     "link_company_name": "Посилання або назва компанії",
     "how_did_you_find_about_us": "Як ти дізнався про нас?",
     "send": "Відправити"
-  },
-  "order": {
-    "page_title": "Оформлення замовлення",
-    "contacts_title": "Контактні дані",
-    "surname_placeholder": "Прізвище",
-    "name_placeholder": "Ім'я",
-    "phone_placeholder": "Телефон",
-    "phone_field_description": "У форматі +38 (093) 123 45 67",
-    "delivery_title": "Доставка",
-    "delivery_method_to_branch": "У відділення",
-    "delivery_method_to_postomat": "У поштомат",
-    "delivery_method_courier": "Кур'єром",
-    "city_placeholder": "Вкажи населений пункт",
-    "city_search_placeholder": "Спробуй змінити запит",
-    "branch_placeholder": "Вибери {type, select, branch {відділення} postomat {поштомат} other {}}",
-    "branch_search_placeholder": "Відсутні {type, select, branch {відділення} postomat {поштомати} other {}} або спробуй змінити запит",
-    "courier_placeholder": "Вкажіть адресу доставки (місто, вулиця, будинок)",
-    "payment_title": "Спосіб оплати",
-    "card": "Оплата через платіжну систему",
-    "cash": "Накладений платіж (комісія 20 грн. + 2% від суми)",
-    "comment_title": "Коментар до замовлення",
-    "comment_placeholder": "За потреби напишіть коментар до замовлення",
-    "no_comments": "Немає коментарів",
-    "no_call": "Не телефонувати мені для підтвердження замовлення",
-    "view_order": "Перегляд замовлення",
-    "btn_continue": "Продовжити",
-    "btn_order": "Оформити замовлення",
-    "validation_required": "Це поле є обов’язковим",
-    "validation_length": "Не вірна довжина номера",
-    "validation_email_format": "Некоректний формат електронної пошти",
-    "area-edit": "Редагувати",
-    "success": "Замовлення успішно оформлено",
-    "error": "Помилка при оформленні замовлення. Спробуйте ще раз або зателефонуйте нам",
-    "order": "Оформити замовлення"
   },
   "contacts": {
     "title": "Контакти",

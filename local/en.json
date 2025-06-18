@@ -101,10 +101,10 @@
     "Contacts": "Contacts"
   },
   "share": {
-    "Share": "Share",
-    "facebook icon": "facebook icon",
-    "instagram icon": "instagram icon",
-    "telegram icon": "telegram icon"
+    "share-label": "Share",
+    "facebook-icon": "facebook icon",
+    "instagram-icon": "instagram icon",
+    "telegram-icon": "telegram icon"
   },
   "product-list": {
     "home": "Home",
@@ -215,9 +215,9 @@
     "delivery_method_to_postomat": "To the postomat",
     "delivery_method_courier": "By courier",
     "city_placeholder": "Enter a locality",
-    "city_search_placeholder": "Try changing your query",
+    "city-search-placeholder": "Try changing your query",
     "branch_placeholder": "Select {type, select, branch {branch} postomat {postomat} other {}}",
-    "branch_search_placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
+    "branch-search-placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
     "courier_placeholder": "Enter delivery address (city, street, house number)",
     "payment_title": "Payment method",
     "card": "Payment via payment system",

@@ -1,19 +1,26 @@
-import React from 'react'
+import type { ComponentPropsWithoutRef } from 'react'
+
 import { Check } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
 
-type Props = Readonly<
+type CheckboxSimpleProps = Readonly<
   {
     label: string
     name: string
     isValid: boolean
     className?: string
     isChecked?: boolean
-  } & React.ComponentPropsWithoutRef<'input'>
+  } & ComponentPropsWithoutRef<'input'>
 >
 
-function CheckboxSimple({ name, isValid, isChecked, label, ...props }: Props) {
+export default function CheckboxSimple({
+  name,
+  isValid,
+  isChecked,
+  label,
+  ...props
+}: CheckboxSimpleProps) {
   return (
     <label
       className="relative flex cursor-pointer items-center space-x-3 select-none"
@@ -39,5 +46,3 @@ function CheckboxSimple({ name, isValid, isChecked, label, ...props }: Props) {
     </label>
   )
 }
-
-export default CheckboxSimple

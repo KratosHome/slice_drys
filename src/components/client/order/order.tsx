@@ -10,7 +10,7 @@ import OrderList from '@/components/client/order/order-list'
 import { useCartStore } from '@/store/cart-store'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import Loading from '@/components/ui/loading'
 
 type Props = {

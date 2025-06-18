@@ -11,7 +11,7 @@ import {
 
 import { useCartStore } from '@/store/cart-store'
 import CartProductCard from './cart-product-card'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import { Button } from '@/components/ui/button'
 
 export default function SmallCart() {

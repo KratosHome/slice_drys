@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 type Props = { post: InstaFeed }
 

@@ -1,6 +1,11 @@
 'use client'
 
-import React, {
+import {
+  type Dispatch,
+  type SetStateAction,
+  type ReactNode,
+  type MouseEvent,
+  type ElementType,
   createContext,
   useState,
   useContext,
@@ -10,7 +15,7 @@ import React, {
 import { cn } from '@/utils/cn'
 
 const MouseEnterContext = createContext<
-  [boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
+  [boolean, Dispatch<SetStateAction<boolean>>] | undefined
 >(undefined)
 
 export const CardContainer = ({
@@ -18,32 +23,38 @@ export const CardContainer = ({
   className,
   containerClassName,
 }: {
-  children?: React.ReactNode
+  children?: ReactNode
   className?: string
   containerClassName?: string
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isMouseEntered, setIsMouseEntered] = useState(false)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const [isMouseEntered, setIsMouseEntered] = useState<boolean>(false)
+
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>): void => {
     if (!containerRef.current) return
+
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect()
-    const x = (e.clientX - left - width / 2) / 25
-    const y = (e.clientY - top - height / 2) / 25
+
+    const x: number = (event.clientX - left - width / 2) / 25
+    const y: number = (event.clientY - top - height / 2) / 25
+
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`
   }
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (): void => {
     setIsMouseEntered(true)
     if (!containerRef.current) return
   }
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (): void => {
     if (!containerRef.current) return
+
     setIsMouseEntered(false)
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`
   }
+
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
@@ -76,7 +87,7 @@ export const CardBody = ({
   children,
   className,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
 }) => {
   return (
@@ -91,6 +102,15 @@ export const CardBody = ({
   )
 }
 
+export const useMouseEnter = () => {
+  const context = useContext(MouseEnterContext)
+
+  if (context === undefined) {
+    throw new Error('useMouseEnter must be used within a MouseEnterProvider')
+  }
+  return context
+}
+
 export const CardItem = ({
   as: Tag = 'div',
   children,
@@ -103,8 +123,8 @@ export const CardItem = ({
   rotateZ = 0,
   ...rest
 }: {
-  as?: React.ElementType
-  children: React.ReactNode
+  as?: ElementType
+  children: ReactNode
   className?: string
   translateX?: number | string
   translateY?: number | string
@@ -114,6 +134,7 @@ export const CardItem = ({
   rotateZ?: number | string
 }) => {
   const ref = useRef<HTMLDivElement>(null)
+
   const [isMouseEntered] = useMouseEnter()
 
   useEffect(() => {
@@ -122,8 +143,9 @@ export const CardItem = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMouseEntered])
 
-  const handleAnimations = () => {
+  const handleAnimations = (): void => {
     if (!ref.current) return
+
     if (isMouseEntered) {
       ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`
     } else {
@@ -140,11 +162,4 @@ export const CardItem = ({
       {children}
     </Tag>
   )
-}
-export const useMouseEnter = () => {
-  const context = useContext(MouseEnterContext)
-  if (context === undefined) {
-    throw new Error('useMouseEnter must be used within a MouseEnterProvider')
-  }
-  return context
 }

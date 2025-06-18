@@ -1,22 +1,25 @@
 'use client'
 
-import React from 'react'
-
 import { contacts } from '@/data/contacts'
+
 import { Button } from '@/components/ui/button'
+
 import { useTranslations } from 'next-intl'
 import { cn } from '@/utils/cn'
 
-function Socials({
-  variant = 'dark',
-  size = 33,
-  className,
-}: {
+interface ISocialProps {
   variant?: 'light' | 'dark'
   size?: number
   className?: string
-}) {
+}
+
+export default function Socials({
+  variant = 'dark',
+  size = 33,
+  className,
+}: ISocialProps) {
   const t = useTranslations('main.header')
+
   return (
     <>
       <Button
@@ -35,7 +38,7 @@ function Socials({
           role="img"
           aria-label={t('facebook-icon')}
         >
-          <use href="/icons/sprite.svg#facebook"></use>
+          <use href="/icons/sprite.svg#facebook" />
         </svg>
       </Button>
       <Button
@@ -54,11 +57,9 @@ function Socials({
           role="img"
           aria-label={t('instagram-icon')}
         >
-          <use href="/icons/sprite.svg#instagram"></use>
+          <use href="/icons/sprite.svg#instagram" />
         </svg>
       </Button>
     </>
   )
 }
-
-export default Socials

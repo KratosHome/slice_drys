@@ -1,16 +1,19 @@
-import React from 'react'
-import { useController, UseControllerProps } from 'react-hook-form'
-import { Textarea as BaseTextarea } from '@/components/ui/textarea'
+'use client'
 
+import { type ChangeEvent, type TextareaHTMLAttributes } from 'react'
+
+import { Textarea as BaseTextarea } from '@/components/ui/textarea'
 import { ErrorMessage } from '@hookform/error-message'
+
+import { useController, UseControllerProps } from 'react-hook-form'
 import { cn } from '@/utils/cn'
 
 type TextAreaProps = {
   helpText?: string
 } & UseControllerProps &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>
+  TextareaHTMLAttributes<HTMLTextAreaElement>
 
-function Textarea(props: TextAreaProps) {
+export default function Textarea(props: TextAreaProps) {
   const {
     name,
     rules,
@@ -22,6 +25,7 @@ function Textarea(props: TextAreaProps) {
     helpText,
     ...textAreaProps
   } = props
+
   const {
     field,
     formState: { errors },
@@ -33,6 +37,7 @@ function Textarea(props: TextAreaProps) {
     defaultValue,
     disabled,
   })
+
   return (
     <div>
       <BaseTextarea
@@ -45,10 +50,8 @@ function Textarea(props: TextAreaProps) {
         rows={5}
         {...textAreaProps}
         {...field}
-        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
-          if (props.onChange) {
-            props.onChange(event)
-          }
+        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+          if (props.onChange) props.onChange(event)
         }}
       />
       <ErrorMessage
@@ -64,11 +67,9 @@ function Textarea(props: TextAreaProps) {
         }
       />
 
-      {!!helpText && (
+      {!!helpText ? (
         <p className="text-muted-foreground mt-1 text-base">{helpText}</p>
-      )}
+      ) : null}
     </div>
   )
 }
-
-export default Textarea

@@ -14,7 +14,7 @@ import {
   PaperIcon,
 } from '@/components/client/product-page/icons'
 import { useTranslations } from 'next-intl'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 interface AccordionsProps {
   nutrition: INutritionalValue

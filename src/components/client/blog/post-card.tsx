@@ -4,7 +4,7 @@ import { useLocale } from 'next-intl'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import { cn } from '@/utils/cn'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import { TransitionLink } from '@/components/client/transition-link'
 
 interface PostCardProps {

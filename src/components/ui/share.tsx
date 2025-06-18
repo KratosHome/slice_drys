@@ -1,31 +1,31 @@
 'use client'
-import { useTranslations } from 'next-intl'
-import Link from 'next/link'
-import { FC } from 'react'
 
-interface shareProps {
+import type { MouseEvent } from 'react'
+
+import Link from 'next/link'
+
+import { useTranslations } from 'next-intl'
+
+interface IShareProps {
   title: string
   url: string
 }
 
-const Share: FC<shareProps> = ({ url, title }) => {
+export default function Share({ url, title }: IShareProps) {
   const t = useTranslations('share')
-  const encodedUrl = encodeURIComponent(url)
+  const encodedUrl: string = encodeURIComponent(url)
 
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
-  const telegramShareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(title)}`
+  const facebookShareUrl: string = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
+  const telegramShareUrl: string = `https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(title)}`
 
-  const handleInstagramShare = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
+  const handleInstagramShare = (event: MouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault()
+
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(url)
-        .then(() => {
-          window.open('https://www.instagram.com', '_blank')
-        })
-        .catch((err) => {
-          console.error('Не вдалося скопіювати посилання:', err)
-        })
+        .then(() => window.open('https://www.instagram.com', '_blank'))
+        .catch((err) => console.error('Не вдалося скопіювати посилання:', err))
     } else {
       console.warn('Clipboard API не підтримується')
       window.open('https://www.instagram.com', '_blank')
@@ -38,7 +38,7 @@ const Share: FC<shareProps> = ({ url, title }) => {
         className="text-[26px]"
         style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
       >
-        {t('Share')}
+        {t('share-label')}
       </div>
       <div className="flex gap-3">
         {/* Додано Tailwind класи для плавного зуму та тіні при наведенні */}
@@ -51,9 +51,9 @@ const Share: FC<shareProps> = ({ url, title }) => {
             width={32}
             height={32}
             role="img"
-            aria-label={t('facebook icon')}
+            aria-label={t('facebook-icon')}
           >
-            <use href="/icons/sprite.svg#facebook"></use>
+            <use href="/icons/sprite.svg#facebook" />
           </svg>
         </Link>
         <Link
@@ -65,9 +65,9 @@ const Share: FC<shareProps> = ({ url, title }) => {
             width={32}
             height={32}
             role="img"
-            aria-label={t('instagram icon')}
+            aria-label={t('instagram-icon')}
           >
-            <use href="/icons/sprite.svg#instagram"></use>
+            <use href="/icons/sprite.svg#instagram" />
           </svg>
         </Link>
         <Link
@@ -79,14 +79,12 @@ const Share: FC<shareProps> = ({ url, title }) => {
             width={32}
             height={32}
             role="img"
-            aria-label={t('telegram icon')}
+            aria-label={t('telegram-icon')}
           >
-            <use href="/icons/sprite.svg#telegram"></use>
+            <use href="/icons/sprite.svg#telegram" />
           </svg>
         </Link>
       </div>
     </div>
   )
 }
-
-export default Share

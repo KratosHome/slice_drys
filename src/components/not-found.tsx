@@ -1,6 +1,7 @@
 import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
 import { TransitionLink } from '@/components/client/transition-link'
+
+import { getTranslations } from 'next-intl/server'
 
 export default async function NotFoundPage() {
   const t = await getTranslations('not-found-page')

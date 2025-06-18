@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import UnderlineWave from '@/components/ui/underline-wave'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {

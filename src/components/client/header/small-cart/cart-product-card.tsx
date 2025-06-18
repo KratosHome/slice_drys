@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/utils/cn'
-import { ResponsiveMotion } from '../../responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '../../responsive-motion'
 import { ChangeQuantityIcon } from '../../product-page/icons'
 
 type Props = { itemData: ICartItem; className?: string }

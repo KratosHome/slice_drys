@@ -6,7 +6,6 @@ export default function CheckboxIndicator() {
       height="78"
       viewBox="0 0 79 78"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
     >
       <g opacity="0.5" filter="url(#filter0_f_2841_4601)">
         <circle cx="39.8359" cy="39" r="15" fill="#A90909" />

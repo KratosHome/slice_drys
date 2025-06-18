@@ -1,6 +1,7 @@
 'use client'
+
 export default function ToTheTop() {
-  const scrollToTop = () => {
+  const scrollToTop = (): void => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
