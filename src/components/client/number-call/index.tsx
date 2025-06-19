@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+
 import { contacts } from '@/data/contacts'
 
 import Link from 'next/link'
@@ -12,7 +12,10 @@ interface INumberCallProps {
   variant?: 'light' | 'dark'
 }
 
-const NumberCall = ({ className, variant = 'dark' }: INumberCallProps) => {
+export default function NumberCall({
+  className,
+  variant = 'dark',
+}: INumberCallProps) {
   const t = useTranslations('main.header')
 
   return (
@@ -39,7 +42,6 @@ const NumberCall = ({ className, variant = 'dark' }: INumberCallProps) => {
           <use href="/icons/sprite.svg#phone" />
         </svg>
       </div>
-
       <Link
         href={`tel:${contacts.phone}`}
         className="block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500"
@@ -49,5 +51,3 @@ const NumberCall = ({ className, variant = 'dark' }: INumberCallProps) => {
     </div>
   )
 }
-
-export default NumberCall

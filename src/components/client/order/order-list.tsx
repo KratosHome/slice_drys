@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import CartProductCard from '../header/small-cart/cart-product-card'
+import CartProductCard from '@/components/client/cart-product-card'
 import { useCartStore } from '@/store/cart-store'
 
 export default function CartList() {

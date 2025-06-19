@@ -6,7 +6,7 @@ import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
 import { cn } from '@/utils/cn'
-import NumberCall from '@/components/client/number-call/number-call'
+import NumberCall from '@/components/client/number-call'
 import { TransitionLink } from '@/components/client/transition-link'
 
 const linkStyle =

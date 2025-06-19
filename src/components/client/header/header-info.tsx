@@ -1,15 +1,16 @@
 'use client'
+
 import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(useGSAP)
 
-type Props = {
+interface IHeaderInfoProps {
   title: string
 }
 
-export default function Info({ title }: Props) {
+export default function HeaderInfo({ title }: IHeaderInfoProps) {
   const infoRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {

@@ -58,10 +58,10 @@
     "instafeed": {
       "title": "Travel with us"
     },
-    "burger-menu": {
+    "hamburger-menu": {
       "catalog": "Catalog",
       "logo": "logo",
-      "open_main_menu": "Open main menu"
+      "open-main-menu": "Open main menu"
     }
   },
   "cart": {

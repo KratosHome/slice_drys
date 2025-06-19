@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/doodle-select'
-import { ChangeQuantityIcon } from './icons'
+import ChangeQuantityIcon from '@/components/icons/change-quantity-icon'
 import SliderWithThumbnails from './slider/slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'

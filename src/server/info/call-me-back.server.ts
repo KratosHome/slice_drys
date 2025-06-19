@@ -1,31 +1,36 @@
 'use server'
+
 import TelegramBot from 'node-telegram-bot-api'
 import { formatDate } from '@/utils/format-date'
 
-interface FormData {
+interface IFormData {
   name: string
   phoneNumber: string
 }
 
-export async function callMeBackServer(formData: FormData) {
-  'use server'
+export async function callMeBackServer(
+  formData: IFormData,
+): Promise<IResponse> {
   try {
-    const formattedDate = formatDate(new Date())
+    const formattedDate: string = formatDate(new Date())
+
     const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
       polling: true,
     })
-    const chatId = `${process.env.TELEGRAM_BOT_CHAT_ID}`
+
+    const chatId: string = `${process.env.TELEGRAM_BOT_CHAT_ID}`
 
     await bot.sendMessage(
       chatId,
       `
-      Користувач хочу що б йому зателефонували:
+      Користувач хоче щоб йому зателефонували:
       Час відправки: ${formattedDate},
-      Імя: ${formData.name}, 
+      Ім'я: ${formData.name}, 
       Номер: ${formData.phoneNumber},
     `,
     )
-    return { success: true }
+
+    return { success: true, message: 'Повідомлення відправлено' }
   } catch (err) {
     return { success: false, message: `${err}` }
   }

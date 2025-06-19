@@ -4,7 +4,7 @@ import type { ChangeEvent, InputHTMLAttributes } from 'react'
 
 import { ErrorMessage } from '@hookform/error-message'
 
-import { useController, UseControllerProps } from 'react-hook-form'
+import { useController, type UseControllerProps } from 'react-hook-form'
 import { cn } from '@/utils/cn'
 
 type InputProps = {

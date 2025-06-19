@@ -58,10 +58,10 @@
     "instafeed": {
       "title": "Подорожуйте з нами"
     },
-    "burger-menu": {
+    "hamburger-menu": {
       "catalog": "Каталог",
       "logo": "логотип",
-      "open_main_menu": "Відкрийте головне меню"
+      "open-main-menu": "Відкрийте головне меню"
     }
   },
   "cart": {

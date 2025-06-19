@@ -3,7 +3,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
-import Header from '@/components/client/header/header'
+import Header from '@/components/client/header'
 
 import '../globals.css'
 import { routing } from '@/i18n/routing'
