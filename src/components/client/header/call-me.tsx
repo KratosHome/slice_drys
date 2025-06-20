@@ -75,7 +75,11 @@ export default function CallMe() {
   return (
     <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="button">
+        <Button
+          type="button"
+          variant="button"
+          className="max-w-24 sm:max-w-fit"
+        >
           {t('call-back')}
         </Button>
       </DialogTrigger>
