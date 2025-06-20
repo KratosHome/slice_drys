@@ -48,13 +48,10 @@ export default function Footer({ productLinks }: IFooterProps) {
             </li>
           ))}
         </ul>
-        <div className="self-stretch justify-self-center">
-          <TransitionLink
-            href={`/${locale}`}
-            className="block h-full text-white"
-          >
+        <div className="max-w-24 self-stretch justify-self-center">
+          <TransitionLink href={`/${locale}`}>
             <svg
-              className="h-[100px] w-auto! px-5 transition-transform duration-300 ease-in-out md:px-0"
+              className="h-[100px] w-[6rem] px-5 md:px-0"
               role="img"
               aria-label={t('logo-slice-drys')}
             >
