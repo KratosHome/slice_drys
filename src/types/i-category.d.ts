@@ -11,3 +11,5 @@ interface ICategory {
   parentCategory?: string
   order: number
 }
+
+type CategorySlug = Pick<ICategory, '_id' | 'slug'>

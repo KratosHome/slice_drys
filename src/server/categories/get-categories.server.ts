@@ -1,10 +1,11 @@
 'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
+
 import { Category } from '@/server/categories/categories-schema.server'
 import { Product } from '@/server/products/product-schema.server'
 
+import { connectToDbServer } from '@/server/connect-to-db.server'
+
 export async function getCategories(slug?: string, locale?: ILocale) {
-  'use server'
   try {
     await connectToDbServer()
 

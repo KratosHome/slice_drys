@@ -46,3 +46,8 @@ interface IGetLocalizedPost {
   success: boolean
   message: string
 }
+
+interface IPostSlug {
+  _id: string
+  slug: string
+}

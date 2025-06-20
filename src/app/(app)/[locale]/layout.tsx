@@ -1,24 +1,22 @@
 import type { ReactNode } from 'react'
-import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
+
+import { fetchTags } from '@/data/fetch-tags'
 
 import Header from '@/components/client/header'
-
-import '../globals.css'
-import { routing } from '@/i18n/routing'
+import Footer from '@/components/client/footer'
 import NotFoundPage from '@/components/not-found'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { fetchTags } from '@/data/fetch-tags'
-import dynamic from 'next/dynamic'
-import { Loader } from 'lucide-react'
-import ClientDynamicMain from '@/components/client/dynamic-imports/main'
+import ScrollToTop from '@/components/client/scroll-to-top'
+import Toaster from '@/components/ui/toaster'
 import ThemeProvider from '@/components/providers/theme-provider'
 import { Analytics } from '@vercel/analytics/react'
 
-const Footer = dynamic(() => import('@/components/client/footer/footer'), {
-  loading: () => <Loader />,
-})
+import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
+
+import '../globals.css'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -41,6 +39,8 @@ interface ILocaleLayoutProps {
 
 export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const SITE_URL: string | undefined = process.env.NEXT_URL
+  const GOOGLE_ANALYTICS_ID: string =
+    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''
 
   const params = await props.params
 
@@ -56,12 +56,16 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       </html>
     )
   }
+
   const messages = await getMessages()
 
-  const categoriesData = await fetch(`${SITE_URL}/api/categories`, {
-    cache: 'force-cache',
-    next: { tags: [`${fetchTags.menu}`] },
-  }).then((res) => res.json())
+  const categoriesData: IResult<ICategory> = await fetch(
+    `${SITE_URL}/api/categories`,
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.menu}`] },
+    },
+  ).then((res) => res.json())
 
   return (
     <html
@@ -77,14 +81,15 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <ClientDynamicMain />
+            <ScrollToTop />
+            <Toaster />
             <Header productLinks={categoriesData.data} />
             <main className="flex-1">{children}</main>
             <Footer productLinks={categoriesData.data} />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-B0WJ3M87VD" />
+      <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
       <Analytics />
     </html>
   )

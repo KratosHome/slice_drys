@@ -1,22 +1,23 @@
 'use client'
-import { FC, useEffect, useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
-
-import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
-import { cn } from '@/utils/cn'
+
+import Socials from '@/components/ui/socials'
 import NumberCall from '@/components/client/number-call'
 import { TransitionLink } from '@/components/client/transition-link'
+
+import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import { cn } from '@/utils/cn'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
 
-interface FooterP {
+interface IFooterProps {
   productLinks: ICategory[]
 }
 
-const Footer: FC<FooterP> = ({ productLinks }) => {
+export default function Footer({ productLinks }: IFooterProps) {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
 
@@ -47,7 +48,6 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
-
         <div className="self-stretch justify-self-center">
           <TransitionLink
             href={`/${locale}`}
@@ -62,7 +62,6 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </svg>
           </TransitionLink>
         </div>
-
         <ul className="flex flex-col gap-[19px] justify-self-end text-end md:hidden">
           {pageLinks[locale].slice(1, 2)?.map((link: ILink) => (
             <li
@@ -93,7 +92,6 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
-
         <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mt-[10px] md:mb-[35px] md:justify-start">
           <svg width={49} height={50} role="img" aria-label={t('logo-visa')}>
             <use href="/icons/sprite.svg#visa" />
@@ -140,16 +138,13 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           <span>{t('CTA-socials')}</span>
           <span className="inline-block rotate-90">&gt;</span>
         </div>
-
         <NumberCall
           className="order-2 col-start-1 col-end-2 mt-[24px] justify-self-start text-nowrap md:order-none md:mt-[18px]"
           variant="light"
         />
-
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
           <Socials className="text-background dark:text-foreground" size={33} />
         </div>
-
         <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-end text-nowrap uppercase md:order-none md:mt-[18px]">
           &copy; {year ?? '—'} SLICE&DRY’S
         </div>
@@ -157,5 +152,3 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
     </footer>
   )
 }
-
-export default Footer
