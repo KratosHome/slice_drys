@@ -1,6 +1,8 @@
 'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
+
 import { Post } from '@/server/posts/post-schema.server'
+
+import { connectToDbServer } from '@/server/connect-to-db.server'
 
 interface IGetPostsOptions {
   locale: ILocale
@@ -36,7 +38,6 @@ const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
 })
 
 export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
-  'use server'
   try {
     await connectToDbServer()
 
@@ -70,12 +71,13 @@ export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
   }
 }
 
-type GetAllPostsOptions = {
+interface IGetAllPostsOptions {
   locale: ILocale
 }
 
-export async function getAllPosts({ locale }: GetAllPostsOptions) {
-  'use server'
+export async function getAllPosts({
+  locale,
+}: IGetAllPostsOptions): Promise<IGetPostsAdmin> {
   try {
     await connectToDbServer()
 
@@ -104,14 +106,13 @@ export async function getAllPosts({ locale }: GetAllPostsOptions) {
   }
 }
 
-type GetPostOptions = {
+interface IGetPostOptions {
   locale: ILocale
   slug: string
   isVisited?: boolean
 }
 
-export async function getPost({ locale, slug, isVisited }: GetPostOptions) {
-  'use server'
+export async function getPost({ locale, slug, isVisited }: IGetPostOptions) {
   try {
     await connectToDbServer()
 

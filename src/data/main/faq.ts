@@ -1,4 +1,4 @@
-const faqDataUk = [
+const faqDataUk: IFaq[] = [
   {
     title: 'Чи можна сушениками наїстися?',
     description:
@@ -31,7 +31,7 @@ const faqDataUk = [
   },
 ]
 
-const faqDataEn = [
+const faqDataEn: IFaq[] = [
   {
     title: 'Can you satisfy your hunger with dried snacks?',
     description:

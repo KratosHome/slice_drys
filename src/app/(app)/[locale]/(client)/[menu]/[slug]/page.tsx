@@ -14,13 +14,7 @@ import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
-
-const ProductSlider = dynamic(
-  () => import('@/components/client/product-slider/product-slider'),
-  {
-    loading: () => <Loader />,
-  },
-)
+import ProductSlider from '@/components/client/product-slider'
 
 const Delivery = dynamic(
   () => import('@/components/client/promo-banner/delivery'),

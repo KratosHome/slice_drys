@@ -1,31 +1,33 @@
-import { FC } from 'react'
-
-interface mainJsonLdProps {
+interface IMainJsonLdProps {
   products: IProduct[]
   faq: IFaq[]
   reviews: IReviewLocal[]
 }
-const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
-  const baseUrl = process.env.NEXT_URL
+export default function MainJsonLd({
+  products,
+  faq,
+  reviews,
+}: IMainJsonLdProps) {
+  const SITE_URL: string | undefined = process.env.NEXT_URL
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebSite',
-        '@id': `${baseUrl}/#website`,
+        '@id': `${SITE_URL}/#website`,
         url: 'https://slicedrys.com',
         name: "Slice & Dry's",
         publisher: {
-          '@id': `${baseUrl}/#organization`,
+          '@id': `${SITE_URL}/#organization`,
         },
       },
       {
         '@type': 'Organization',
-        '@id': `${baseUrl}/#organization`,
+        '@id': `${SITE_URL}/#organization`,
         name: "Slice & Dry's",
-        url: `${baseUrl}`,
-        logo: `${baseUrl}/icons/logo.svg`,
+        url: `${SITE_URL}`,
+        logo: `${SITE_URL}/icons/logo.svg`,
         contactPoint: [
           {
             '@type': 'ContactPoint',
@@ -37,17 +39,17 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
       },
       {
         '@type': 'WebPage',
-        '@id': `${baseUrl}/#webpage`,
-        url: `${baseUrl}`,
+        '@id': `${SITE_URL}/#webpage`,
+        url: `${SITE_URL}`,
         name: "Головна сторінка Slice & Dry's",
         inLanguage: 'uk',
         isPartOf: {
-          '@id': `${baseUrl}/#website`,
+          '@id': `${SITE_URL}/#website`,
         },
       },
       ...products.map((product) => ({
         '@type': 'Product',
-        '@id': `${baseUrl}/${product.category}/${product.slug}`,
+        '@id': `${SITE_URL}/${product.category}/${product.slug}`,
         name: product.name,
         image: product.img,
         description: product.description,
@@ -58,7 +60,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
         sku: product._id,
         offers: product.variables.map((variable) => ({
           '@type': 'Offer',
-          url: `${baseUrl}/${product.category}/${product.slug}`,
+          url: `${SITE_URL}/${product.category}/${product.slug}`,
           priceCurrency: 'UAH',
           price: variable.price,
           itemCondition: 'https://schema.org/NewCondition',
@@ -67,7 +69,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
       })),
       {
         '@type': 'FAQPage',
-        '@id': `${baseUrl}/#faq`,
+        '@id': `${SITE_URL}/#faq`,
         mainEntity: faq.map((item) => ({
           '@type': 'Question',
           name: item.title,
@@ -79,17 +81,17 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
       },
       {
         '@type': 'ItemList',
-        '@id': `${baseUrl}/#top-products`,
+        '@id': `${SITE_URL}/#top-products`,
         name: 'Топові сушеники',
         itemListElement: products.map((product, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          url: `${baseUrl}/${product.category}/${product.slug}`,
+          url: `${SITE_URL}/${product.category}/${product.slug}`,
         })),
       },
       ...reviews.map((review, index) => ({
         '@type': 'Review',
-        '@id': `${baseUrl}/#review${index + 1}`,
+        '@id': `${SITE_URL}/#review${index + 1}`,
         reviewBody: review.text,
         reviewRating: {
           '@type': 'Rating',
@@ -103,7 +105,7 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
         itemReviewed: {
           '@type': 'Organization',
           name: "Slice & Dry's",
-          url: baseUrl,
+          url: SITE_URL,
         },
       })),
     ],
@@ -116,5 +118,3 @@ const MainJsonLd: FC<mainJsonLdProps> = ({ products, faq, reviews }) => {
     />
   )
 }
-
-export default MainJsonLd

@@ -1,4 +1,4 @@
-export const reviewsData = [
+export const reviewsData: IReview[] = [
   {
     _id: 1,
     author: {

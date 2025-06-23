@@ -1,4 +1,4 @@
-import InstaFeed from '@/components/client/main/instaFeed/Insta-feed'
+import InstaFeed from '@/components/client/main/instaFeed'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'
 import Help from '@/components/client/main/help/help'
