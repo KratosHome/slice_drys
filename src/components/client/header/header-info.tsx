@@ -31,6 +31,7 @@ export default function HeaderInfo({ title }: IHeaderInfoProps) {
     <div
       ref={infoRef}
       className="bg-foreground absolute top-0 h-8 w-full opacity-0"
+      aria-labelledby="header-info"
     >
       <p className="text-background text-center text-base leading-[180%] font-medium">
         {title}

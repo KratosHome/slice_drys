@@ -16,7 +16,10 @@ export default function LocaleChange({ className }: ILocaleChangeProps) {
   const path: string = usePathname()
 
   return (
-    <div className={cn('flex items-center text-sm', className)}>
+    <div
+      className={cn('flex items-center text-sm', className)}
+      aria-labelledby="locale-change"
+    >
       <TransitionLink
         href={getLocalizedPath('uk', path)}
         className={cn(

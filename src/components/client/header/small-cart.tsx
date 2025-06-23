@@ -41,7 +41,10 @@ export default function SmallCart() {
   }
 
   return (
-    <div className="relative flex flex-col justify-center">
+    <div
+      className="relative flex flex-col justify-center"
+      aria-labelledby="small-cart"
+    >
       <Popover open={openCart} onOpenChange={setOpenCart}>
         <PopoverTrigger>
           <ResponsiveMotion

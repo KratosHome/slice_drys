@@ -66,6 +66,7 @@ export default function HamburgerMenu({
         variant="none"
         className="relative bg-transparent active:scale-110 lg:hidden"
         aria-label={t('open-main-menu')}
+        aria-labelledby="hamburger-menu"
       >
         <div className={containerClasses}>
           <div className="tham-box">

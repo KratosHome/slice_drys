@@ -31,6 +31,7 @@ export default function Socials({
           variant === 'light' ? 'text-background' : 'text-foreground',
           className,
         )}
+        aria-labelledby="socials"
       >
         <svg
           width={size}

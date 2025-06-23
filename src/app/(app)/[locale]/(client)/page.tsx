@@ -7,7 +7,7 @@ import { fetchTags } from '@/data/fetch-tags'
 import { instaData } from '@/data/main/insta-data'
 import { reviewsData } from '@/data/main/reviews'
 
-import { Hero } from '@/components/client/main/hero'
+import Hero from '@/components/client/main/hero'
 import Faq from '@/components/client/main/faq'
 import BlogSection from '@/components/client/main/blog'
 import Reviews from '@/components/client/main/reviews'

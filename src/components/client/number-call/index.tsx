@@ -24,6 +24,7 @@ export default function NumberCall({
         'group flex cursor-pointer items-end gap-x-3 font-medium',
         className,
       )}
+      aria-labelledby="number-call"
     >
       <div
         className={cn(

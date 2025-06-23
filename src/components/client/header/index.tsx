@@ -143,6 +143,7 @@ export default function Header({ productLinks }: IHeaderProps) {
       <header
         ref={headerRef}
         className="bg-background sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
+        aria-labelledby="header"
       >
         <div
           ref={menuRef}

@@ -28,7 +28,10 @@ export default function Footer({ productLinks }: IFooterProps) {
   }, [])
 
   return (
-    <footer className="bg-foreground text-background dark:bg-background dark:text-foreground">
+    <footer
+      className="bg-foreground text-background dark:bg-background dark:text-foreground"
+      aria-labelledby="footer"
+    >
       <nav className="border-background dark:border-foreground relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px] dark:border-t dark:border-dashed">
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
           {pageLinks[locale].slice(0, 2)?.map((link: ILink) => (

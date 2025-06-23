@@ -73,7 +73,11 @@ export default function CallMe() {
   }
 
   return (
-    <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
+    <Dialog
+      open={isCallOpen}
+      onOpenChange={setIsCallOpen}
+      aria-labelledby="call-me"
+    >
       <DialogTrigger asChild>
         <Button
           type="button"

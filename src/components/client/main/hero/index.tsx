@@ -1,25 +1,26 @@
 'use client'
 
+import { sliders } from '@/data/hero-links'
+
 import Image from 'next/image'
+import SliderItem from './slider-item'
+import Arcs from './arcs'
+import { TransitionLink } from '@/components/client/transition-link'
+
 import { useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
-
-import SliderItem from './slider-item'
-import Arcs from './arcs'
 import { cn } from '@/utils/cn'
 
-import { sliders } from '@/data/hero-links'
-import { TransitionLink } from '@/components/client/transition-link'
+gsap.registerPlugin(useGSAP)
 
-export const Hero = ({
-  device,
-  productLinks,
-}: {
+interface IHeroProps {
   device: IDevice
   productLinks: ICategory[]
-}) => {
+}
+
+export default function Hero({ device, productLinks }: IHeroProps) {
   const { isMobile, isTablet, isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
@@ -28,11 +29,11 @@ export const Hero = ({
 
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
-  const titleRef = useRef(null)
-  const imgRef = useRef(null)
+  const titleRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
   const subImagesRefs = useRef<HTMLImageElement[]>([])
 
-  const handleMainImageAnimation = (status: boolean) => {
+  const handleMainImageAnimation = (status: boolean): void => {
     const tl = gsap.timeline()
 
     if (status) {
@@ -79,14 +80,15 @@ export const Hero = ({
       if (slidersLocale[hoveredIndex].subImages) {
         const mm = gsap.matchMedia()
 
-        subImagesRefs.current.forEach((el, i) => {
+        subImagesRefs.current.forEach((el, index) => {
           mm.add('(min-width: 1024px)', () => {
             gsap.to(el, {
               opacity: 1,
               duration: 1.5,
-              x: slidersLocale[hoveredIndex].subImages?.[i]?.position.desktop.x,
-              y: slidersLocale[hoveredIndex]?.subImages?.[i]?.position.desktop
-                .y,
+              x: slidersLocale[hoveredIndex].subImages?.[index]?.position
+                .desktop.x,
+              y: slidersLocale[hoveredIndex]?.subImages?.[index]?.position
+                .desktop.y,
               ease: 'power2.out',
             })
           })
@@ -97,7 +99,7 @@ export const Hero = ({
   )
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden" aria-labelledby="hero">
       <div className="container mx-auto mb-[255px] max-w-[1280px] overflow-x-clip px-5 sm:pt-9 xl:overflow-x-visible">
         <div className="px-[20px]">
           <div
@@ -110,21 +112,18 @@ export const Hero = ({
             <h1 className="text-background bg-foreground mt-11 px-2.5 lg:px-9">
               {slidersLocale[hoveredIndex].title}
             </h1>
-
             <div
               className="absolute top-0 -z-10 h-full w-full origin-left translate-x-1 translate-y-1 rotate-[0.58deg] lg:translate-x-2 lg:translate-y-2"
               style={{ background: hoverHexColor }}
             />
           </div>
         </div>
-
         <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
           {productLinks.map((item, index) => (
             <div
               key={item.slug}
               className={cn(
                 'absolute bottom-0 z-1 h-[200%] translate-y-1/2',
-
                 index === 0 && '-rotate-[50deg] lg:-rotate-[60deg]',
                 index === 1 && '-rotate-[25deg] lg:-rotate-[30deg]',
                 index === 2 && 'rotate-[0deg]',
@@ -151,36 +150,33 @@ export const Hero = ({
 
           <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
             <Arcs color={hoverHexColor} />
-
             <div className="absolute right-1/2 -bottom-2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
               <Image
                 ref={imgRef}
                 src={slidersLocale[hoveredIndex].image}
                 alt="slider image"
                 fill
-                priority={true}
+                priority
                 loading="eager"
                 quality={70}
                 className="object-contain"
                 fetchPriority="high"
                 sizes="(max-width: 550px) 100vw, 50vw"
-                onMouseEnter={() => {
-                  handleMainImageAnimation(true)
-                }}
+                onMouseEnter={() => handleMainImageAnimation(true)}
                 onMouseLeave={() => handleMainImageAnimation(false)}
               />
             </div>
 
-            {slidersLocale[hoveredIndex].subImages && (
+            {slidersLocale[hoveredIndex].subImages ? (
               <div className="hero__animation absolute right-1/2 -bottom-2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
                 <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
                   {slidersLocale[hoveredIndex].subImages.map((item, index) => {
-                    const top = isMobile
+                    const top: number = isMobile
                       ? isTablet
                         ? item.position?.tablet?.y
                         : item.position?.mobile?.y
                       : item.position?.desktop?.y
-                    const left = isMobile
+                    const left: number = isMobile
                       ? isTablet
                         ? item.position?.tablet?.x
                         : item.position?.mobile?.x
@@ -191,7 +187,7 @@ export const Hero = ({
                         key={index}
                         src={item.path}
                         alt="animation"
-                        priority={true}
+                        priority
                         quality={70}
                         loading="eager"
                         className={cn(
@@ -216,7 +212,7 @@ export const Hero = ({
                   })}
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </nav>
       </div>
