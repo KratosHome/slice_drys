@@ -32,8 +32,13 @@ export default function Arcs({ color }: IArcsProps) {
       <Image
         src="/icons/slider-line-down.svg"
         className={cn('-z-20 mt-[16px] px-[32px] md:mt-[33px] md:px-[62px]')}
+        alt="Slider line down"
         fill
-        alt="slider"
+        priority
+        loading="eager"
+        quality={60}
+        sizes="(max-width: 550px) 100vw, 50vw"
+        role="img"
       />
     </>
   )

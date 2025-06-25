@@ -5,7 +5,10 @@ import { Product } from '@/server/products/product-schema.server'
 
 import { connectToDbServer } from '@/server/connect-to-db.server'
 
-export async function getCategories(slug?: string, locale?: ILocale) {
+export async function getCategories(
+  slug?: string,
+  locale?: ILocale,
+): Promise<IResult<ICategory> & { name?: string }> {
   try {
     await connectToDbServer()
 
@@ -22,7 +25,7 @@ export async function getCategories(slug?: string, locale?: ILocale) {
 
       const products = await Product.find({
         categories: mainCategory._id,
-      }).lean()
+      }).lean<IProduct[]>()
 
       const categoryIdsSet = new Set<string>()
 
@@ -42,9 +45,9 @@ export async function getCategories(slug?: string, locale?: ILocale) {
             path: 'children',
           },
         })
-        .lean()
+        .lean<ICategory[]>()
 
-      const filteredCategories = categories.filter(
+      const filteredCategories: ICategory[] = categories.filter(
         (category) =>
           category.slug !== 'promotions' && category.slug !== 'mixes',
       )
@@ -91,9 +94,9 @@ export async function getCategories(slug?: string, locale?: ILocale) {
           path: 'children',
         },
       })
-      .lean()
+      .lean<ICategory[]>()
 
-    const plainCategories = JSON.parse(JSON.stringify(categories))
+    const plainCategories: ICategory[] = JSON.parse(JSON.stringify(categories))
 
     return {
       data: plainCategories,

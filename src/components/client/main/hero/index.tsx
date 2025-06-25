@@ -5,6 +5,7 @@ import { sliders } from '@/data/hero-links'
 import Image from 'next/image'
 import SliderItem from './slider-item'
 import Arcs from './arcs'
+import SubImages from './sub-images'
 import { TransitionLink } from '@/components/client/transition-link'
 
 import { useRef, useState } from 'react'
@@ -21,7 +22,7 @@ interface IHeroProps {
 }
 
 export default function Hero({ device, productLinks }: IHeroProps) {
-  const { isMobile, isTablet, isDesktop } = device
+  const { isDesktop } = device
   const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 
   const locale = useLocale() as ILocale
@@ -138,6 +139,7 @@ export default function Hero({ device, productLinks }: IHeroProps) {
                   'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
                 )}
                 onMouseEnter={() => setHoveredIndex(index)}
+                aria-label={item.name[locale]}
               >
                 <SliderItem
                   title={item.name[locale]}
@@ -154,64 +156,25 @@ export default function Hero({ device, productLinks }: IHeroProps) {
               <Image
                 ref={imgRef}
                 src={slidersLocale[hoveredIndex].image}
-                alt="slider image"
+                alt="Slider image"
                 fill
                 priority
                 loading="eager"
-                quality={70}
-                className="object-contain"
-                fetchPriority="high"
+                quality={60}
                 sizes="(max-width: 550px) 100vw, 50vw"
+                role="img"
+                className="object-contain"
                 onMouseEnter={() => handleMainImageAnimation(true)}
                 onMouseLeave={() => handleMainImageAnimation(false)}
               />
             </div>
 
-            {slidersLocale[hoveredIndex].subImages ? (
-              <div className="hero__animation absolute right-1/2 -bottom-2 z-20 flex h-4/5 w-2/3 translate-x-1/2 items-center justify-center">
-                <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">
-                  {slidersLocale[hoveredIndex].subImages.map((item, index) => {
-                    const top: number = isMobile
-                      ? isTablet
-                        ? item.position?.tablet?.y
-                        : item.position?.mobile?.y
-                      : item.position?.desktop?.y
-                    const left: number = isMobile
-                      ? isTablet
-                        ? item.position?.tablet?.x
-                        : item.position?.mobile?.x
-                      : item.position?.desktop?.x
-
-                    return (
-                      <Image
-                        key={index}
-                        src={item.path}
-                        alt="animation"
-                        priority
-                        quality={70}
-                        loading="eager"
-                        className={cn(
-                          `absolute top-1/2 left-1/2 z-20 h-auto w-auto -translate-x-1/2 -translate-y-1/2 transform opacity-0`,
-                          isMobile ? `opacity-1` : '',
-                          isDesktop ? `w-[${item.width}px]` : '',
-                        )}
-                        style={{
-                          top: isDesktop ? `0` : `${top}px`,
-                          left: isDesktop ? `0` : `${left}px`,
-                          transform: `rotate(${item.rotate || 0}deg)`,
-                          display:
-                            isMobile && item.isMobileDiz ? 'none' : 'block',
-                        }}
-                        width={isDesktop ? item.width : item.width / 2}
-                        height={isDesktop ? item.height : item.height / 2}
-                        ref={(el) => {
-                          if (el) subImagesRefs.current[index] = el
-                        }}
-                      />
-                    )
-                  })}
-                </div>
-              </div>
+            {slidersLocale[hoveredIndex].subImages && isDesktop ? (
+              <SubImages
+                subImages={slidersLocale[hoveredIndex].subImages}
+                subImagesRefs={subImagesRefs}
+                device={device}
+              />
             ) : null}
           </div>
         </nav>

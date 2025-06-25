@@ -13,3 +13,5 @@ interface ICategory {
 }
 
 type CategorySlug = Pick<ICategory, '_id' | 'slug'>
+
+type CategorySeed = Omit<ICategory, '_id' | 'children'>

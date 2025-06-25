@@ -1,13 +1,14 @@
 'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
+
 import { Category } from '@/server/categories/categories-schema.server'
 
+import { connectToDbServer } from '@/server/connect-to-db.server'
+
 export const seedCategories = async (): Promise<IResponse> => {
-  'use server'
   try {
     await connectToDbServer()
 
-    const count = await Category.countDocuments()
+    const count: number = await Category.countDocuments()
 
     if (count !== 0) {
       return {
@@ -16,7 +17,7 @@ export const seedCategories = async (): Promise<IResponse> => {
       }
     }
 
-    const categoriesData = [
+    const categoriesData: CategorySeed[] = [
       {
         name: { en: 'Meat', uk: 'М’ясо' },
         slug: 'meat',
@@ -27,6 +28,7 @@ export const seedCategories = async (): Promise<IResponse> => {
           en: 'meat, beef, pork',
           uk: 'м’ясо, яловичина, свинина',
         },
+        order: 0,
       },
       {
         name: { en: 'Vegetables', uk: 'Овочі' },
@@ -41,6 +43,7 @@ export const seedCategories = async (): Promise<IResponse> => {
           en: 'vegetables, pumpkin, carrot',
           uk: 'овочі, гарбуз, морква',
         },
+        order: 1,
       },
       {
         name: { en: 'Fruits', uk: 'Фрукти' },
@@ -55,6 +58,7 @@ export const seedCategories = async (): Promise<IResponse> => {
           en: 'fruits, apple, pineapple',
           uk: 'фрукти, яблуко, ананас',
         },
+        order: 2,
       },
       {
         name: { en: 'Mixes', uk: 'Мікси' },
@@ -69,6 +73,7 @@ export const seedCategories = async (): Promise<IResponse> => {
           uk: 'Різні види харчових міксів',
         },
         metaKeywords: { en: 'mixes, food', uk: 'мікси, їжа' },
+        order: 3,
       },
       {
         name: { en: 'Promotions', uk: 'Акції' },
@@ -83,6 +88,7 @@ export const seedCategories = async (): Promise<IResponse> => {
           uk: 'Найкращі доступні акції',
         },
         metaKeywords: { en: 'promotions, discounts', uk: 'акції, знижки' },
+        order: 4,
       },
     ]
 
