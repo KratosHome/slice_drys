@@ -1,9 +1,1 @@
-<svg width="1106" height="553" viewBox="0 0 1106 553" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1105 553C1105 406.601 1046.84 266.197 943.323 162.677C839.803 59.157 699.4 1.00001 553 1C406.601 0.999989 266.197 59.157 162.677 162.677C59.157 266.197 1.00002 406.6 1 553" stroke="url(#paint0_linear_158_1319)"/>
-<defs>
-<linearGradient id="paint0_linear_158_1319" x1="1078.5" y1="527" x2="116" y2="229.5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#9B9B9B" stop-opacity="0.1"/>
-<stop offset="0.961123" stop-color="#A90909"/>
-</linearGradient>
-</defs>
-</svg>
+<svg width="1106" height="553" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1105 553A552 552 0 0 0 553 1 552.001 552.001 0 0 0 1 553" stroke="url(#a)"/><defs><linearGradient id="a" x1="1078.5" y1="527" x2="116" y2="229.5" gradientUnits="userSpaceOnUse"><stop stop-color="#9B9B9B" stop-opacity=".1"/><stop offset=".961" stop-color="#A90909"/></linearGradient></defs></svg>
