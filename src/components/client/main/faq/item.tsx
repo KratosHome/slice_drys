@@ -1,17 +1,17 @@
 'use client'
-import { forwardRef, useState } from 'react'
 
+import { forwardRef, useState } from 'react'
 import { cn } from '@/utils/cn'
 
-interface FAQProps {
+interface IFaqItemProps {
   question: string
   answer: string
 }
-export const Item = forwardRef<HTMLDivElement, FAQProps>(function Item(
+export const Item = forwardRef<HTMLDivElement, IFaqItemProps>(function Item(
   { question, answer },
   ref,
 ) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
     <div
