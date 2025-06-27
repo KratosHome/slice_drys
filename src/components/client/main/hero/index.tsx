@@ -110,7 +110,10 @@ export default function Hero({ device, productLinks }: IHeroProps) {
             )}
             ref={titleRef}
           >
-            <h1 className="text-background bg-foreground mt-11 px-2.5 lg:px-9">
+            <h1
+              id="hero"
+              className="text-background bg-foreground mt-11 px-2.5 lg:px-9"
+            >
               {slidersLocale[hoveredIndex].title}
             </h1>
             <div
