@@ -5,10 +5,10 @@ import { fetchTags } from '@/data/fetch-tags'
 import Header from '@/components/client/header'
 import Footer from '@/components/client/footer'
 import NotFoundPage from '@/components/not-found'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import ScrollToTop from '@/components/client/scroll-to-top'
 import Toaster from '@/components/ui/toaster'
 import ThemeProvider from '@/components/providers/theme-provider'
+import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react'
 
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
@@ -40,8 +40,6 @@ interface ILocaleLayoutProps {
 
 export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const SITE_URL: string | undefined = process.env.NEXT_URL
-  const GOOGLE_ANALYTICS_ID: string =
-    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''
 
   const params = await props.params
 
@@ -76,6 +74,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       lang={locale}
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className="flex min-h-svh flex-col">
         <ThemeProvider
           attribute="class"
@@ -92,7 +93,6 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
       <Analytics />
     </html>
   )
