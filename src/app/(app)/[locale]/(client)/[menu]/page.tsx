@@ -1,5 +1,5 @@
 import React from 'react'
-import Product from '@/components/client/product/product'
+import Product from '@/components/client/product'
 import ProductFilters from '@/components/client/product-filters/product-filters'
 import {
   Breadcrumb,

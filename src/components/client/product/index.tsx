@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+
 import {
   Select,
   SelectContent,
@@ -10,23 +10,25 @@ import {
 } from '@/components/ui/select'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
 import Image from 'next/image'
-import { useLocale, useTranslations } from 'next-intl'
-import { useCartStore } from '@/store/cart-store'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { Button } from '@/components/ui/button'
 import { TransitionLink } from '@/components/client/transition-link'
 
-interface ProductProps {
+import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import { useCartStore } from '@/store/cart-store'
+
+interface IProductProps {
   product: IProduct
 }
 
-const Product: React.FC<ProductProps> = ({ product }) => {
+export default function Product({ product }: IProductProps) {
   const locale = useLocale() as ILocale
   const t = useTranslations('product')
 
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState<boolean>(false)
 
   const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
     (state) => state,
@@ -36,13 +38,16 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     product.variant ?? product.variables[0],
   )
 
-  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+  const isInCart: boolean = hasItemInCart(
+    product._id as string,
+    selectedVariable.weight,
+  )
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (): void => {
     if (product._id && product.img)
       addItemToCart({
         id: product._id,
@@ -56,13 +61,11 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     setOpenCart(true)
   }
 
-  const handleVariableChange = (value: number | string) => {
-    const selected = product.variables.find(
+  const handleVariableChange = (value: number | string): void => {
+    const selected: IVariableProduct | undefined = product.variables.find(
       (variable) => variable._id === value,
     )
-    if (selected) {
-      setSelectedVariable(selected)
-    }
+    if (selected) setSelectedVariable(selected)
   }
 
   return (
@@ -73,13 +76,13 @@ const Product: React.FC<ProductProps> = ({ product }) => {
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
           <div className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
-            {product.statusLabel?.includes('top') && <TopLabel />}
-            {product.statusLabel?.includes('new') && <NewLabel />}
-            {product.statusLabel?.includes('sale') && (
+            {product.statusLabel?.includes('top') ? <TopLabel /> : null}
+            {product.statusLabel?.includes('new') ? <NewLabel /> : null}
+            {product.statusLabel?.includes('sale') ? (
               <CardItem translateZ={30}>
                 <SaleLabel />
               </CardItem>
-            )}
+            ) : null}
           </div>
           <CardItem
             translateZ={70}
@@ -88,11 +91,10 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             <Image
               src={product.img!}
               alt={product.name}
-              sizes="(max-width: 640px) 140px, (min-width: 768px) 229px"
-              fill={true}
-              fetchPriority="high"
               className="relative aspect-square h-full w-full"
-              priority={true}
+              sizes="(max-width: 640px) 140px, (min-width: 768px) 229px"
+              fill
+              priority
               loading="eager"
               quality={50}
               style={{
@@ -100,15 +102,17 @@ const Product: React.FC<ProductProps> = ({ product }) => {
               }}
             />
           </CardItem>
-          {selectedVariable.count > 0 && <div className="h-6 sm:hidden"></div>}
-          {selectedVariable.count === 0 && (
+          {selectedVariable.count > 0 ? (
+            <div className="h-6 sm:hidden" />
+          ) : null}
+          {selectedVariable.count === 0 ? (
             <CardItem
               translateZ={30}
               className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-0 sm:text-xs lg:text-sm"
             >
-              {t('expect_soon')}
+              {t('expect-soon')}
             </CardItem>
-          )}
+          ) : null}
           <div className="flex w-full items-start justify-between gap-2">
             <CardItem
               translateZ={50}
@@ -118,9 +122,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             </CardItem>
             <CardItem translateZ={60}>
               <div
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
+                onClick={(event) => {
+                  event.stopPropagation()
+                  event.preventDefault()
                 }}
               >
                 <Select
@@ -152,28 +156,26 @@ const Product: React.FC<ProductProps> = ({ product }) => {
             <CardItem translateZ={30}>
               {selectedVariable.newPrice ? (
                 <>
-                  {selectedVariable.price && (
+                  {selectedVariable.price ? (
                     <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
                       {selectedVariable.price} {selectedVariable.currency}
                     </p>
-                  )}
+                  ) : null}
                   <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
                     {selectedVariable.newPrice} {selectedVariable.currency}
                   </p>
                 </>
-              ) : (
-                selectedVariable.price && (
-                  <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                    {selectedVariable.price} {selectedVariable.currency}
-                  </p>
-                )
-              )}
+              ) : selectedVariable.price ? (
+                <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
+                  {selectedVariable.price} {selectedVariable.currency}
+                </p>
+              ) : null}
             </CardItem>
             <CardItem translateZ={80}>
               <div
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
+                onClick={(event) => {
+                  event.stopPropagation()
+                  event.preventDefault()
                 }}
               >
                 <Button
@@ -184,9 +186,9 @@ const Product: React.FC<ProductProps> = ({ product }) => {
                 >
                   {mounted
                     ? isInCart
-                      ? t('in_cart')
-                      : t('add_to_cart')
-                    : t('add_to_cart')}
+                      ? t('in-cart')
+                      : t('add-to-cart')
+                    : t('add-to-cart')}
                 </Button>
               </div>
             </CardItem>
@@ -196,5 +198,3 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     </TransitionLink>
   )
 }
-
-export default Product

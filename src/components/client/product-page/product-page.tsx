@@ -102,7 +102,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
-              {t('expect_soon')}
+              {t('expect-soon')}
             </div>
           )}
         </h1>
@@ -197,7 +197,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               </ResponsiveMotion>
             </div>
             <Button
-              aria-label={isInCart ? t('in_cart') : t('add_to_cart')}
+              aria-label={isInCart ? t('in-cart') : t('add-to-cart')}
               className="h-[50px] min-w-[190px] rounded-none"
               type="button"
               variant="danger"
@@ -206,9 +206,9 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             >
               {mounted
                 ? isInCart
-                  ? t('in_cart')
-                  : t('add_to_cart')
-                : t('add_to_cart')}
+                  ? t('in-cart')
+                  : t('add-to-cart')
+                : t('add-to-cart')}
             </Button>
           </div>
         </div>

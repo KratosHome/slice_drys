@@ -1,16 +1,17 @@
 'use client'
-import { useEffect } from 'react'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
 
+import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { Arrow } from '@/components/ui/arrow'
-import Product from '@/components/client/product/product'
+import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
+
+import { useEffect } from 'react'
 
 import '@splidejs/react-splide/css'
 import '../styles/slider.css'
 import './product-slider.css'
 
-interface ProductSlider {
+interface IProductSlider {
   products: IProduct[]
   title: string
   message: string
@@ -20,12 +21,15 @@ export default function ProductSlider({
   products,
   title,
   message,
-}: ProductSlider) {
+}: IProductSlider) {
   useEffect(() => {
     const target = document.querySelector('.products-slider')
+
     if (!target) return
-    const handleResize = () => {
+
+    const handleResize = (): void => {
       let k: number
+
       switch (true) {
         case window.innerWidth >= 1280:
           k = 35
@@ -42,7 +46,9 @@ export default function ProductSlider({
         default:
           k = 30
       }
-      const x = products.length * k
+
+      const x: number = products.length * k
+
       const prev = document.querySelector(
         '.products-slider .splide__arrow--prev.custom__arrow-prev',
       ) as HTMLElement
@@ -58,14 +64,10 @@ export default function ProductSlider({
 
     const resizeObserver = new ResizeObserver(handleResize)
 
-    if (target) {
-      resizeObserver.observe(target)
-    }
+    if (target) resizeObserver.observe(target)
 
     return () => {
-      if (target) {
-        resizeObserver.unobserve(target)
-      }
+      if (target) resizeObserver.unobserve(target)
     }
   }, [products])
 
