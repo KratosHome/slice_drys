@@ -41,12 +41,12 @@
     "reviews": {
       "title": "відгуки",
       "say-those": "кажуть ті, хто вже скуштував сушеники ",
-      "thanks_for_the_feedback": "Дякуємо за відгук!",
-      "add_new_review": "Додати новий відгук",
+      "thanks-for-the-feedback": "Дякуємо за відгук!",
+      "add-new-review": "Додати новий відгук",
       "name": "Ім'я",
-      "enter_name": "Введіть ваше ім'я",
+      "enter-name": "Введіть ваше ім'я",
       "feedback": "Відгук",
-      "enter_text": "Введіть текст",
+      "enter-text": "Введіть текст",
       "back": "Назад",
       "send": "Відправити"
     },

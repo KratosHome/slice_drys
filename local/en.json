@@ -41,12 +41,12 @@
     "reviews": {
       "title": "Reviews",
       "say-those": "say those who have already tasted sushennyk",
-      "thanks_for_the_feedback": "Thanks for the feedback!",
-      "add_new_review": "Add new review",
+      "thanks-for-the-feedback": "Thanks for the feedback!",
+      "add-new-review": "Add new review",
       "name": "name",
-      "enter_name": "Enter your name",
+      "enter-name": "Enter your name",
       "feedback": "Feedback",
-      "enter_text": "Enter text",
+      "enter-text": "Enter text",
       "back": "Back",
       "send": "Send"
     },
