@@ -16,7 +16,7 @@ export default function MainJsonLd({
       {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
-        url: 'https://slicedrys.com',
+        url: `${SITE_URL}`,
         name: "Slice & Dry's",
         publisher: {
           '@id': `${SITE_URL}/#organization`,
