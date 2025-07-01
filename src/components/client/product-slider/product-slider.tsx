@@ -8,7 +8,7 @@ import UnderlineWave from '@/components/ui/underline-wave'
 import { useEffect } from 'react'
 
 import '@splidejs/react-splide/css'
-import '../styles/slider.css'
+import '@/components/client/styles/slider.css'
 import './product-slider.css'
 
 interface IProductSlider {

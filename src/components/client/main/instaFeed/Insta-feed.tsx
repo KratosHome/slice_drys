@@ -1,25 +1,32 @@
 'use client'
 
-import { useEffect } from 'react'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
+import { contacts } from '@/data/contacts'
 
+import { Splide, SplideSlide } from '@splidejs/react-splide'
 import InstaCard from './insta-card'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { Arrow } from '@/components/ui/arrow'
 
-import { contacts } from '@/data/contacts'
+import { useEffect } from 'react'
+
 import '@splidejs/react-splide/css'
-import '../../styles/slider.css'
+import '@/components/client/styles/slider.css'
 import './Insta-feed.css'
 
-type Props = Readonly<{ data: InstaFeed[]; title: string }>
+interface IInstaFeedProps {
+  data: InstaFeed[]
+  title: string
+}
 
-export default function InstaFeed({ data, title }: Props) {
+export default function InstaFeed({ data, title }: IInstaFeedProps) {
   useEffect(() => {
     const target = document.querySelector('.insta-slider')
+
     if (!target) return
-    const handleResize = () => {
+
+    const handleResize = (): void => {
       let k: number
+
       switch (true) {
         case window.innerWidth >= 1280:
           k = 35
@@ -36,7 +43,8 @@ export default function InstaFeed({ data, title }: Props) {
         default:
           k = 30
       }
-      const x = data.length * k
+      const x: number = data.length * k
+
       const prev = document.querySelector(
         '.insta-slider .splide__arrow--prev.custom__arrow-prev',
       ) as HTMLElement
@@ -52,22 +60,47 @@ export default function InstaFeed({ data, title }: Props) {
 
     const resizeObserver = new ResizeObserver(handleResize)
 
-    if (target) {
-      resizeObserver.observe(target)
-    }
+    if (target) resizeObserver.observe(target)
 
     return () => {
-      if (target) {
-        resizeObserver.unobserve(target)
-      }
+      if (target) resizeObserver.unobserve(target)
     }
   }, [data])
 
+  const splideOptions = {
+    arrowPath: Arrow(),
+    type: 'loop',
+    autoplay: true,
+    interval: 3000,
+    perPage: 3,
+    perMove: 1,
+    focus: 'center',
+    arrows: true,
+    pagination: true,
+    breakpoints: {
+      768: { perPage: 1 },
+    },
+    classes: {
+      arrows: 'splide__arrows custom__arrows',
+      arrow: 'splide__arrow custom__arrow mx-16 md:mx-12',
+      prev: 'splide__arrow--prev custom__arrow-prev',
+      next: 'splide__arrow--next custom__arrow-next',
+      pagination: 'splide__pagination custom__pagination',
+      page: 'splide__pagination__page custom__pagination-page',
+    },
+  }
+
   return (
-    <section className="section instafeed px-6 py-12">
+    <section
+      className="section instafeed px-6 py-12"
+      aria-labelledby="insta feed"
+    >
       <div className="mx-auto max-w-[1200px]">
         <div className="flex items-center justify-center gap-[clamp(0px,calc(0px+160*(100vw-768px)/672),160px)] md:justify-end">
-          <h2 className="title-rubik text-center text-[42px] text-balance md:text-start lg:text-[64px]">
+          <h2
+            id="insta feed"
+            className="title-rubik text-center text-[42px] text-balance md:text-start lg:text-[64px]"
+          >
             {title}
           </h2>
           <UnderlinedLink
@@ -79,28 +112,7 @@ export default function InstaFeed({ data, title }: Props) {
         </div>
         <Splide
           aria-labelledby="Insta Feed"
-          options={{
-            arrowPath: Arrow(),
-            type: 'loop',
-            autoplay: true,
-            interval: 3000,
-            perPage: 3,
-            perMove: 1,
-            focus: 'center',
-            arrows: true,
-            pagination: true,
-            breakpoints: {
-              768: { perPage: 1 },
-            },
-            classes: {
-              arrows: 'splide__arrows custom__arrows',
-              arrow: 'splide__arrow custom__arrow mx-16 md:mx-12',
-              prev: 'splide__arrow--prev custom__arrow-prev',
-              next: 'splide__arrow--next custom__arrow-next',
-              pagination: 'splide__pagination custom__pagination',
-              page: 'splide__pagination__page custom__pagination-page',
-            },
-          }}
+          options={splideOptions}
           className="insta-slider mt-[clamp(32px,calc(32px+68*(100vw-375px)/1065),100px)]"
         >
           {data.slice(0, 5).map((post, index) => (

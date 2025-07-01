@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { formatDate } from '@/utils/format-date'
 
-import '../../styles/slider.css'
+import '@/components/client/styles/slider.css'
 import '@splidejs/react-splide/css'
 import './blog.css'
 
@@ -72,6 +72,29 @@ export default function BlogSection({ data }: IBlogSectionProps) {
     }
   }, [data])
 
+  const splideOptions = {
+    arrowPath: Arrow(),
+    type: 'loop',
+    perPage: 3,
+    perMove: 1,
+    pagination: true,
+    arrows: true,
+    autoplay: true,
+    interval: 3000,
+    focus: 'center',
+    breakpoints: {
+      768: { perPage: 1 },
+    },
+    classes: {
+      arrows: 'splide__arrows custom__arrows',
+      arrow: 'splide__arrow custom__arrow',
+      prev: 'splide__arrow--prev custom__arrow-prev',
+      next: 'splide__arrow--next custom__arrow-next',
+      pagination: 'splide__pagination custom__pagination',
+      page: 'splide__pagination__page custom__pagination-page',
+    },
+  }
+
   return (
     <section
       aria-labelledby="more about us"
@@ -96,28 +119,7 @@ export default function BlogSection({ data }: IBlogSectionProps) {
           <Splide
             aria-labelledby="blog section"
             className="blog-slider"
-            options={{
-              arrowPath: Arrow(),
-              type: 'loop',
-              perPage: 3,
-              perMove: 1,
-              pagination: true,
-              arrows: true,
-              autoplay: true,
-              interval: 3000,
-              focus: 'center',
-              breakpoints: {
-                768: { perPage: 1 },
-              },
-              classes: {
-                arrows: 'splide__arrows custom__arrows',
-                arrow: 'splide__arrow custom__arrow',
-                prev: 'splide__arrow--prev custom__arrow-prev',
-                next: 'splide__arrow--next custom__arrow-next',
-                pagination: 'splide__pagination custom__pagination',
-                page: 'splide__pagination__page custom__pagination-page',
-              },
-            }}
+            options={splideOptions}
           >
             {data.map((post) => (
               <SplideSlide key={post._id}>
