@@ -37,7 +37,7 @@ export default function Hero({ device, productLinks }: IHeroProps) {
   useEffect(() => {
     const timeoutID = setTimeout(() => {
       setHoveredIndex(0)
-    }, 1)
+    }, 100)
 
     return () => clearTimeout(timeoutID)
   }, [])
