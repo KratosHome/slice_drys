@@ -46,7 +46,7 @@ const JoinCommunity = async ({ className }: Props) => {
             width={18}
             height={18}
             role="img"
-            aria-label={t('icon_instagram')}
+            aria-label={t('icon-instagram')}
             className="sm:h-[20px] sm:w-[20px]"
           >
             <use href="/icons/sprite.svg#instagram-square"></use>

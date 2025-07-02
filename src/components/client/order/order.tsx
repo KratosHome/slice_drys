@@ -121,7 +121,7 @@ export default function Order({ defaultCities }: Props) {
         }}
       >
         <div className="font-rubik bg-foreground text-background py-3 text-center text-[30px] lg:text-[32px]">
-          {tOrder('view_order')}
+          {tOrder('view-order')}
         </div>
         <OrderList />
         <Button

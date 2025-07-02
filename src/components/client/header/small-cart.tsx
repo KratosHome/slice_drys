@@ -98,7 +98,7 @@ export default function SmallCart() {
                   {t('added')}
                 </span>
                 <span>
-                  {t('itemCount', {
+                  {t('item-count', {
                     count: totalProducts,
                   })}
                 </span>

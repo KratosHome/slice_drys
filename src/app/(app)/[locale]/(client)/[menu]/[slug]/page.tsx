@@ -148,8 +148,8 @@ export default async function ProductPage({ params }: Props) {
         />
         <ProductSlider
           products={productSliderData.data}
-          title={t('also_buy')}
-          message={t('something_that_will_come_handy_along_with_your_choice')}
+          title={t('also-buy')}
+          message={t('something-that-will-come-handy-along-with-your-choice')}
         />
         <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />

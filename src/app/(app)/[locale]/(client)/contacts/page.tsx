@@ -62,7 +62,7 @@ export async function generateStaticParams() {
 
 export default async function ContactsPage(props: { params: Params }) {
   const { locale } = await props.params
-  const t = await getTranslations('Breadcrumbs')
+  const t = await getTranslations('breadcrumbs')
 
   return (
     <>
@@ -71,11 +71,11 @@ export default async function ContactsPage(props: { params: Params }) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t('Contacts')}</BreadcrumbPage>
+              <BreadcrumbPage>{t('contacts')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

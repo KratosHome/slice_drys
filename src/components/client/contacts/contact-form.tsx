@@ -44,7 +44,7 @@ const ContactForm = ({
     })
 
     toast({
-      title: t('thank_you_we_will_contact_you_shortly'),
+      title: t('thank-you-we-will-contact-you_shortly'),
     })
 
     reset()
@@ -72,7 +72,7 @@ const ContactForm = ({
             validate: (value: string) =>
               value && value.length === 18
                 ? true
-                : t('enter_full_phone_number'),
+                : t('enter-full-phone-number'),
           }}
           render={({ field: { onChange, onBlur, value, ref } }) => {
             const prefix = '+38 (0'
