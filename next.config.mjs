@@ -32,19 +32,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    NEXT_URL: process.env.NEXT_URL,
-    NEXT_STATUS: process.env.NEXT_STATUS,
-    NEXT_MONGO_DB: process.env.NEXT_MONGO_DB,
-    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
-    TELEGRAM_BOT_CHAT_ID: process.env.TELEGRAM_BOT_CHAT_ID,
-    NEXT_ADMIN_PASS: process.env.NEXT_ADMIN_PASS,
-    NEXT_ADMIN_LOGIN: process.env.NEXT_ADMIN_LOGIN,
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  },
   async headers() {
     return [
       {

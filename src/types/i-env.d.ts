@@ -22,7 +22,6 @@ namespace NodeJS {
 
     NEXT_PUBLIC_GOOGLE_ANALYTICS_ID?: string
 
-    NEXT_ADMIN_LOGIN?: string
-    NEXT_ADMIN_PASS?: string
+    NEXTAUTH_SECRET?: string
   }
 }
