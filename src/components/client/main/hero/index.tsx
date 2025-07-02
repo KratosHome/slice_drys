@@ -8,7 +8,7 @@ import Arcs from './arcs'
 import SubImages from './sub-images'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -23,7 +23,7 @@ interface IHeroProps {
 
 export default function Hero({ device, productLinks }: IHeroProps) {
   const { isDesktop } = device
-  const [hoveredIndex, setHoveredIndex] = useState<number>(0)
+  const [hoveredIndex, setHoveredIndex] = useState<number>(1)
 
   const locale = useLocale() as ILocale
   const slidersLocale = sliders[locale]
@@ -34,16 +34,13 @@ export default function Hero({ device, productLinks }: IHeroProps) {
   const imgRef = useRef<HTMLImageElement>(null)
   const subImagesRefs = useRef<HTMLImageElement[]>([])
 
-  const handleMainImageAnimation = (status: boolean): void => {
-    const tl = gsap.timeline()
+  useEffect(() => {
+    const timeoutID = setTimeout(() => {
+      setHoveredIndex(0)
+    }, 1)
 
-    if (status) {
-      tl.to(imgRef.current, {
-        rotate: 35,
-        duration: 1,
-      })
-    }
-  }
+    return () => clearTimeout(timeoutID)
+  }, [])
 
   useGSAP(
     () => {
@@ -167,8 +164,6 @@ export default function Hero({ device, productLinks }: IHeroProps) {
                 sizes="(max-width: 550px) 100vw, 50vw"
                 role="img"
                 className="object-contain"
-                onMouseEnter={() => handleMainImageAnimation(true)}
-                onMouseLeave={() => handleMainImageAnimation(false)}
               />
             </div>
 
