@@ -24,7 +24,7 @@ export default function LocaleChange({ className }: ILocaleChangeProps) {
         href={getLocalizedPath('uk', path)}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
-          locale === 'uk' && 'text-red-700',
+          locale === 'uk' && 'text-red-500',
         )}
       >
         UK
@@ -34,7 +34,7 @@ export default function LocaleChange({ className }: ILocaleChangeProps) {
         href={getLocalizedPath('en', path)}
         className={cn(
           'inline-block text-[16px] font-normal duration-300 hover:scale-110',
-          locale === 'en' && 'text-red-700',
+          locale === 'en' && 'text-red-500',
         )}
       >
         EN
