@@ -122,7 +122,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                 htmlFor="weight"
                 className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
               >
-                {t('choose_weight')}
+                {t('choose-weight')}
               </label>
               <SelectValue placeholder={t('weight')} />
             </SelectTrigger>

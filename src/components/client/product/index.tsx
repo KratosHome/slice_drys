@@ -131,7 +131,10 @@ export default function Product({ product }: IProductProps) {
                   onValueChange={handleVariableChange}
                   value={String(selectedVariable._id)}
                 >
-                  <SelectTrigger className="w-fit border-none shadow-none outline-hidden">
+                  <SelectTrigger
+                    className="w-fit border-none shadow-none outline-hidden"
+                    aria-label={t('choose-weight')}
+                  >
                     <SelectValue
                       placeholder={selectedVariable.weight.toString()}
                     />

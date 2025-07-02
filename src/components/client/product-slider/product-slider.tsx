@@ -27,6 +27,16 @@ export default function ProductSlider({
 
     if (!target) return
 
+    const slideItems = target.querySelectorAll('li.splide__slide')
+
+    slideItems.forEach((li) => {
+      const role: string | null = li.getAttribute('role')
+
+      if (role && ['presentation', 'tabpanel', 'none'].includes(role)) {
+        li.removeAttribute('role')
+      }
+    })
+
     const handleResize = (): void => {
       let k: number
 
