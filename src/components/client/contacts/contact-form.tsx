@@ -3,7 +3,7 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { callMeBackServer } from '@/server/info/call-me-back.server'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
-import { toast } from '@/hooks/use-toast'
+import { toast } from '@/hooks/useToast'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 

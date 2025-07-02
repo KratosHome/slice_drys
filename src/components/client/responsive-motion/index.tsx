@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 
 import { LazyMotion, domAnimation, m, type MotionProps } from 'framer-motion'
 import { cn } from '@/utils/cn'
-import { useIsMobile } from '@/hooks/use-mobile'
+import { useIsMobile } from '@/hooks/useMobile'
 
 interface IResponsiveMotionProps extends MotionProps {
   children: ReactNode

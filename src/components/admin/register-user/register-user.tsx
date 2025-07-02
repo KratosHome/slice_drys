@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { toast } from '@/hooks/use-toast'
+import { toast } from '@/hooks/useToast'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 

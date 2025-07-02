@@ -28,7 +28,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { useIsMobile } from '@/hooks/use-mobile'
+import { useIsMobile } from '@/hooks/useMobile'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE: number = 60 * 60 * 24 * 7

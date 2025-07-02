@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
-import { toast } from '@/hooks/use-toast'
+import { toast } from '@/hooks/useToast'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 

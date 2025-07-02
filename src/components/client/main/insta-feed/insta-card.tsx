@@ -31,6 +31,7 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
         href={post.permalink}
         target="_blank"
         rel="noreferrer noopener"
+        aria-label="To the instagram post"
         className="z-10 before:absolute before:inset-0 before:cursor-pointer"
       />
       <div className="relative">

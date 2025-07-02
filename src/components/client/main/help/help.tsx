@@ -5,7 +5,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 
 import { Arrow } from '@/components/ui/arrow'
 import { Button } from '@/components/ui/button'
-import { useIsMobile } from '@/hooks/use-mobile'
+import { useIsMobile } from '@/hooks/useMobile'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import './help.css'

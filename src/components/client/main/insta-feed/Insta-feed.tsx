@@ -7,7 +7,7 @@ import InstaCard from './insta-card'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { Arrow } from '@/components/ui/arrow'
 
-import { useEffect } from 'react'
+import { useSplideConfig } from '@/hooks/useSplideConfig'
 
 import '@splidejs/react-splide/css'
 import '@/components/client/styles/slider.css'
@@ -19,53 +19,7 @@ interface IInstaFeedProps {
 }
 
 export default function InstaFeed({ data, title }: IInstaFeedProps) {
-  useEffect(() => {
-    const target = document.querySelector('.insta-slider')
-
-    if (!target) return
-
-    const handleResize = (): void => {
-      let k: number
-
-      switch (true) {
-        case window.innerWidth >= 1280:
-          k = 35
-          break
-        case window.innerWidth >= 1024:
-          k = 30
-          break
-        case window.innerWidth >= 768:
-          k = 28
-          break
-        case window.innerWidth < 768:
-          k = 23
-          break
-        default:
-          k = 30
-      }
-      const x: number = data.length * k
-
-      const prev = document.querySelector(
-        '.insta-slider .splide__arrow--prev.custom__arrow-prev',
-      ) as HTMLElement
-      const next = document.querySelector(
-        '.insta-slider .splide__arrow--next.custom__arrow-next',
-      ) as HTMLElement
-
-      if (prev && next) {
-        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
-        next.style.setProperty('--tw-arrow-translate', `${x}px`)
-      }
-    }
-
-    const resizeObserver = new ResizeObserver(handleResize)
-
-    if (target) resizeObserver.observe(target)
-
-    return () => {
-      if (target) resizeObserver.unobserve(target)
-    }
-  }, [data])
+  useSplideConfig('.insta-slider', data)
 
   const splideOptions = {
     arrowPath: Arrow(),
