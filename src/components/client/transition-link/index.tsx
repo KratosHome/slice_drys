@@ -31,13 +31,13 @@ export const TransitionLink = ({
     const body = document.querySelector('body')
     body?.classList.add('page-transition')
 
-    await sleep(500)
+    await sleep(300)
 
     if (onClick) onClick(event)
 
     router.push(href)
 
-    await sleep(500)
+    await sleep(300)
 
     body?.classList.remove('page-transition')
   }

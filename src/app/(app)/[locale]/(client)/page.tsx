@@ -8,9 +8,7 @@ import { instaData } from '@/data/main/insta-data'
 import { reviewsData } from '@/data/main/reviews'
 
 import Hero from '@/components/client/main/hero'
-import Faq from '@/components/client/main/faq'
 import BlogSection from '@/components/client/main/blog'
-import Reviews from '@/components/client/main/reviews'
 import InstaFeed from '@/components/client/main/insta-feed'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import ToTheTop from '@/components/ui/to-the-top'
@@ -84,15 +82,7 @@ export default async function HomePage(props: {
         title={t('products-slider.title')}
         message={t('products-slider.message')}
       />
-      <Faq data={faqData[locale]} />
       <BlogSection data={blogData.postsLocalized} />
-      <Reviews
-        reviews={reviewsData.map((review) => ({
-          ...review,
-          author: review.author[locale],
-          text: review.text[locale],
-        }))}
-      />
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>

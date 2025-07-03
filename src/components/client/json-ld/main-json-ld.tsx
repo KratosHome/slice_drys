@@ -68,18 +68,6 @@ export default function MainJsonLd({
         })),
       })),
       {
-        '@type': 'FAQPage',
-        '@id': `${SITE_URL}/#faq`,
-        mainEntity: faq.map((item) => ({
-          '@type': 'Question',
-          name: item.title,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.description,
-          },
-        })),
-      },
-      {
         '@type': 'ItemList',
         '@id': `${SITE_URL}/#top-products`,
         name: 'Топові сушеники',

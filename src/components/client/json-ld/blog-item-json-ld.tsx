@@ -62,27 +62,6 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
         },
       ],
     },
-    /*
-        hasPart: reviews.map((review) => ({
-      '@type': 'Review',
-      '@id': `${canonicalUrl}/#review-${review._id}`,
-      reviewBody: review.text,
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: review.rating.toString(),
-        bestRating: '5',
-      },
-      author: {
-        '@type': 'Person',
-        name: review.author,
-      },
-      itemReviewed: {
-        '@type': 'WebSite',
-        name: "Slice & Dry's",
-        url,
-      },
-    })),
-     */
   }
 
   return (
