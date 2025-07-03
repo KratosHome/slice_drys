@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
 
-import { faqData } from '@/data/main/faq'
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
 import { fetchTags } from '@/data/fetch-tags'
 import { instaData } from '@/data/main/insta-data'
-import { reviewsData } from '@/data/main/reviews'
 
 import Hero from '@/components/client/main/hero'
 import BlogSection from '@/components/client/main/blog'
@@ -67,15 +65,7 @@ export default async function HomePage(props: {
 
   return (
     <>
-      <MainJsonLd
-        products={productsData.products}
-        faq={faqData[locale]}
-        reviews={reviewsData.map((review) => ({
-          ...review,
-          author: review.author[locale],
-          text: review.text[locale],
-        }))}
-      />
+      <MainJsonLd products={productsData.products} />
       <Hero device={device} productLinks={categoriesData.data} />
       <ProductSlider
         products={productsData.products}

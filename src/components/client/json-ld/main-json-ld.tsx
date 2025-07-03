@@ -1,13 +1,7 @@
 interface IMainJsonLdProps {
   products: IProduct[]
-  faq: IFaq[]
-  reviews: IReviewLocal[]
 }
-export default function MainJsonLd({
-  products,
-  faq,
-  reviews,
-}: IMainJsonLdProps) {
+export default function MainJsonLd({ products }: IMainJsonLdProps) {
   const SITE_URL: string | undefined = process.env.NEXT_URL
 
   const jsonLd = {
@@ -77,25 +71,6 @@ export default function MainJsonLd({
           url: `${SITE_URL}/${product.category}/${product.slug}`,
         })),
       },
-      ...reviews.map((review, index) => ({
-        '@type': 'Review',
-        '@id': `${SITE_URL}/#review${index + 1}`,
-        reviewBody: review.text,
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: review.rating.toString(),
-          bestRating: '5',
-        },
-        author: {
-          '@type': 'Person',
-          name: review.author,
-        },
-        itemReviewed: {
-          '@type': 'Organization',
-          name: "Slice & Dry's",
-          url: SITE_URL,
-        },
-      })),
     ],
   }
 
