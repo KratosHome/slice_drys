@@ -1,5 +1,5 @@
 import React from 'react'
-import Product from '@/components/client/product/product'
+import Product from '@/components/client/product'
 import ProductFilters from '@/components/client/product-filters/product-filters'
 import {
   Breadcrumb,
@@ -170,7 +170,7 @@ export default async function MenuPage(props: {
   const pageInfo = page ? ` - ${t('page')} ${page}` : ''
   const weightInfo =
     minWeight && maxWeight
-      ? ` (${minWeight}-${maxWeight} ${t('weightUnit')})`
+      ? ` (${minWeight}-${maxWeight} ${t('weight-unit')})`
       : ''
 
   const content = JSON.parse(currentCategories.data.description[locale])

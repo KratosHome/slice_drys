@@ -14,7 +14,7 @@ import {
   PaperIcon,
 } from '@/components/client/product-page/icons'
 import { useTranslations } from 'next-intl'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 interface AccordionsProps {
   nutrition: INutritionalValue
@@ -40,7 +40,7 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            <h2>{t('about_product')}</h2>
+            <h2>{t('about-product')}</h2>
           </AccordionTrigger>
         </ResponsiveMotion>
         <AccordionContent className="border border-t-0">
@@ -60,7 +60,7 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            <h2>{t('nutritional_value')}</h2>
+            <h2>{t('nutritional-value')}</h2>
           </AccordionTrigger>
         </ResponsiveMotion>
         <AccordionContent className="border border-t-0 px-4">
@@ -84,7 +84,7 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
               </span>
             </div>
             <div className="flex w-full max-w-[290px] justify-between">
-              <h3 className="font-bold">{t('energy_value')}</h3>
+              <h3 className="font-bold">{t('energy-value')}</h3>
               <span>
                 {nutrition.energyValue} {t('g')}
               </span>
@@ -99,24 +99,24 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            {t('shelf_life')}
+            {t('shelf-life')}
           </AccordionTrigger>
         </ResponsiveMotion>
         <AccordionContent className="gap-6 border border-t-0 p-6">
           <section className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
-              {t('storage_conditions')}
+              {t('storage-conditions')}
             </dt>
             <dd className="sm:min-w-40">
-              {t('at_temperatures_from_relative_humidity')}
+              {t('at-temperatures-from-relative-humidity')}
             </dd>
           </section>
           <section className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
-              {t('expiration_date')}
+              {t('expiration-date')}
             </dt>
             <dd className="sm:min-w-40">
-              {t('months_from_the_date_manufacture_indicated_packaging')}
+              {t('months-from-the-date-manufacture-indicated-packaging')}
             </dd>
           </section>
         </AccordionContent>
@@ -132,44 +132,44 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
         <AccordionContent className="gap-6 border border-t-0 p-6">
           <div className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
-              {t('delivery_ukraine')}
+              {t('delivery-ukraine')}
             </dt>
             <dd className="sm:min-w-40">
               {t(
-                'we_offer_fast_and_reliable_delivery_of_our_products_throughout_ukraine_using_nova_poshta_after_placing_an_order_we_ship_it_within',
+                'we-offer-fast-and-reliable-delivery-of-our-products-throughout-ukraine-using-nova-poshta-after-placing-an-order-we-ship-it-within',
               )}
-              <b> {t('1_2_business_days')}</b>.{' '}
-              {t('delivery_time_depends_on_your_location_and_usually_takes')}{' '}
-              <b>{t('1_3_days')}.</b>
+              <b> {t('1-2-business-days')}</b>.{' '}
+              {t('delivery-time-depends-on-your-location-and-usually-takes')}{' '}
+              <b>{t('1-3-days')}.</b>
             </dd>
           </div>
           <div className="flex flex-wrap gap-5 sm:flex-nowrap">
             <dt className="min-w-48 font-bold sm:min-w-60">
-              {t('payment_methods')}
+              {t('payment-methods')}
             </dt>
             <dd className="sm:min-w-40">
               <p>
-                {t('we_offer')}
-                <b> {t('several_convenient_payment_options')}:</b>
+                {t('we-offer')}
+                <b> {t('several-convenient-payment-options')}:</b>
               </p>
               <ul className="grid gap-3 pt-3">
                 <li className="flex items-center gap-4">
                   <CardIcon />{' '}
                   {t(
-                    'online_payment_by_card_visa_mastercard_through_secure_payment_system',
+                    'online-payment-by-card-visa-mastercard-through-secure-payment-system',
                   )}
                 </li>
 
                 <li className="flex items-center gap-4">
                   <ChequeIcon />{' '}
                   {t(
-                    'cash_on_delivery_payment_upon_receipt_nova_poshta_branch',
+                    'cash-on-delivery-payment-upon-receipt-nova-poshta-branch',
                   )}
                 </li>
 
                 <li className="flex items-center gap-4">
                   <PaperIcon />{' '}
-                  {t('cashless_payment_for_corporate_clients_and_large_orders')}
+                  {t('cashless-payment-for-corporate-clients-and-large-orders')}
                 </li>
               </ul>
             </dd>

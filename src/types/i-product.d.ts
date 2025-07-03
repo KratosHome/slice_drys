@@ -81,3 +81,9 @@ interface IGetProducts {
   success: boolean
   message: string
 }
+
+interface IProductSlug {
+  _id: string
+  slug: string
+  categories: CategorySlug[]
+}

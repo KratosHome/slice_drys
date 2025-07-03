@@ -1,10 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useTranslations } from 'next-intl'
-import { useController, UseControllerProps } from 'react-hook-form'
+'use client'
+
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@hookform/error-message'
-import { useDebounce } from 'use-debounce'
 import { CommandLoading } from 'cmdk'
 import {
   Command,
@@ -19,7 +17,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
 
+import { type InputHTMLAttributes, useEffect, useMemo, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { type UseControllerProps, useController } from 'react-hook-form'
+import { useDebounce } from 'use-debounce'
 import { useCartStore } from '@/store/cart-store'
 import { getNPBranchesByCityRef } from '@/server/delivery/get-branches.server'
 import {
@@ -27,12 +30,11 @@ import {
   getNPCitiesFromDictionary,
 } from '@/server/delivery/get-cities.server'
 import { cn } from '@/utils/cn'
-import { Button } from '@/components/ui/button'
 
-interface ComboboxProps
+interface IComboboxProps
   extends UseControllerProps,
     Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
+      InputHTMLAttributes<HTMLInputElement>,
       'onSelect' | 'defaultValue' | 'name'
     > {
   onSelect: ({ value, label }: IComboboxData) => Promise<void> | void
@@ -75,19 +77,27 @@ export function transformToCombo<
   }
 }
 
-const handleCitySearch = async (city?: string) => {
+const handleCitySearch = async (city?: string): Promise<IComboboxData[]> => {
   let allCities
+
   if (city) {
     allCities = await getNPCitiesFromDictionary(city)
   } else {
     allCities = await getDefaultNPCitiesFromDictionary()
   }
-  return allCities ? allCities.map((c) => transformToCombo(c)) : []
+
+  return allCities
+    ? allCities.map((cityData) => transformToCombo(cityData))
+    : []
 }
 
-const handleBranchSearch = async (cityRef?: string) => {
+const handleBranchSearch = async (
+  cityRef?: string,
+): Promise<IDirectoryBranch[]> => {
   if (!cityRef) return []
+
   const branches = await getNPBranchesByCityRef(cityRef)
+
   return branches ?? []
 }
 
@@ -110,7 +120,7 @@ export function Combobox({
   control,
   onSelect,
   placeholder,
-}: ComboboxProps) {
+}: IComboboxProps) {
   const {
     field,
     formState: { errors },
@@ -122,13 +132,16 @@ export function Combobox({
 
   const t = useTranslations('order')
 
-  const [open, setOpen] = useState(false)
-  const [search, setSearch] = useState('')
-  const [debouncedSearchValue] = useDebounce(search, 500)
+  const [open, setOpen] = useState<boolean>(false)
+
+  const [search, setSearch] = useState<string>('')
+  const [debouncedSearchValue] = useDebounce<string>(search, 500)
+
   const [elements, setElements] = useState<
     IComboboxData[] | IDirectoryBranch[]
   >([])
-  const [loading, setLoading] = useState(false)
+
+  const [loading, setLoading] = useState<boolean>(false)
 
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
@@ -146,9 +159,8 @@ export function Combobox({
   }, [name, deliveryInfo])
 
   useEffect(() => {
-    if (name === 'deliveryInfo.branch') {
-      setElements([])
-    }
+    if (name === 'deliveryInfo.branch') setElements([])
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deliveryInfo?.city?.value])
 
@@ -156,6 +168,7 @@ export function Combobox({
     if (name === 'deliveryInfo.city') {
       ;(async () => {
         setLoading(true)
+
         try {
           const data = (await handleUpdateDataList(
             debouncedSearchValue,
@@ -184,8 +197,10 @@ export function Combobox({
         setElements(defaultValues)
         return
       }
+
       ;(async () => {
         setLoading(true)
+
         try {
           const data = await handleUpdateDataList(undefined)
           setElements(data)
@@ -203,7 +218,7 @@ export function Combobox({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, handleUpdateDataList, debouncedSearchValue, elements.length])
 
-  const selectedValue =
+  const selectedValue: IComboboxData =
     name === 'deliveryInfo.city'
       ? deliveryInfo?.city || { value: '', label: '' }
       : deliveryInfo?.branch || { value: '', label: '' }
@@ -236,6 +251,7 @@ export function Combobox({
             <span className="truncate">
               {selectedValue.label || placeholder}
             </span>
+
             {open ? (
               <ChevronUp className="opacity-50" />
             ) : (
@@ -261,8 +277,8 @@ export function Combobox({
                 <>
                   <CommandEmpty>
                     {name === 'deliveryInfo.city'
-                      ? t('city_search_placeholder')
-                      : t('branch_search_placeholder', {
+                      ? t('city-search-placeholder')
+                      : t('branch-search-placeholder', {
                           type: deliveryInfo?.deliveryMethod || '',
                         })}
                   </CommandEmpty>

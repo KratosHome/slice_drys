@@ -12,7 +12,7 @@ const url = process.env.NEXT_URL
 
 const BlogJsonLd: FC<JsonLdProps> = async ({ data }) => {
   const locale = (await getLocale()) as ILocale
-  const t = await getTranslations('Breadcrumbs')
+  const t = await getTranslations('breadcrumbs')
 
   const canonicalUrl = `${url}/${locale}/blog`
 
@@ -52,13 +52,13 @@ const BlogJsonLd: FC<JsonLdProps> = async ({ data }) => {
         {
           '@type': 'ListItem',
           position: 1,
-          name: t('Home'),
+          name: t('home'),
           item: url,
         },
         {
           '@type': 'ListItem',
           position: 2,
-          name: t('Blog'),
+          name: t('blog'),
           item: canonicalUrl,
         },
         ...(data.currentPage > 1
@@ -66,7 +66,7 @@ const BlogJsonLd: FC<JsonLdProps> = async ({ data }) => {
               {
                 '@type': 'ListItem',
                 position: 3,
-                name: `${t('Page')} ${data.currentPage}`,
+                name: `${t('page')} ${data.currentPage}`,
               },
             ]
           : []),

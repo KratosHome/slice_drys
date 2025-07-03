@@ -23,7 +23,7 @@ import { deletePost } from '@/server/posts/delete-post.server'
 
 import Spinner from '@/components/ui/spinner'
 
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/useToast'
 import { toSlug } from '@/utils/to-slug'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'

@@ -1,10 +1,13 @@
 'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
+
 import { Product } from '@/server/products/product-schema.server'
+
+import { connectToDbServer } from '@/server/connect-to-db.server'
 import cloudinary from '../cloudinary-config.server'
 
-export async function getProductsSliderMain(locale: ILocale) {
-  'use server'
+export async function getProductsSliderMain(
+  locale: ILocale,
+): Promise<IGetProducts> {
   try {
     await connectToDbServer()
 
@@ -16,12 +19,10 @@ export async function getProductsSliderMain(locale: ILocale) {
 
     const formattedProducts: IProduct[] = products.map(
       (product: IProductLocal) => {
-        const populatedCategories = product.categories as unknown as {
-          _id: string
-          slug: string
-        }[]
+        const populatedCategories =
+          product.categories as unknown as CategorySlug[]
 
-        const transformedImage = cloudinary.url(`${product.images}`, {
+        const transformedImage: string = cloudinary.url(`${product.images}`, {
           transformation: [
             { width: 500, crop: 'scale' },
             { quality: 35 },

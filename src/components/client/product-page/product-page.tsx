@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/doodle-select'
-import { ChangeQuantityIcon } from './icons'
+import ChangeQuantityIcon from '@/components/icons/change-quantity-icon'
 import SliderWithThumbnails from './slider/slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import UnderlineWave from '@/components/ui/underline-wave'
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
@@ -102,7 +102,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
           {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
-              {t('expect_soon')}
+              {t('expect-soon')}
             </div>
           )}
         </h1>
@@ -122,7 +122,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                 htmlFor="weight"
                 className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
               >
-                {t('choose_weight')}
+                {t('choose-weight')}
               </label>
               <SelectValue placeholder={t('weight')} />
             </SelectTrigger>
@@ -197,7 +197,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               </ResponsiveMotion>
             </div>
             <Button
-              aria-label={isInCart ? t('in_cart') : t('add_to_cart')}
+              aria-label={isInCart ? t('in-cart') : t('add-to-cart')}
               className="h-[50px] min-w-[190px] rounded-none"
               type="button"
               variant="danger"
@@ -206,9 +206,9 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             >
               {mounted
                 ? isInCart
-                  ? t('in_cart')
-                  : t('add_to_cart')
-                : t('add_to_cart')}
+                  ? t('in-cart')
+                  : t('add-to-cart')
+                : t('add-to-cart')}
             </Button>
           </div>
         </div>

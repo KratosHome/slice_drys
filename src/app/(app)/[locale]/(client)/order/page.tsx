@@ -91,7 +91,7 @@ export async function generateMetadata({ params }: { params: Params }) {
 }
 
 export default async function OrderPage() {
-  const t = await getTranslations('Breadcrumbs')
+  const t = await getTranslations('breadcrumbs')
   const defaultCities = await getDefaultNPCitiesFromDictionary()
   return (
     <>
@@ -99,16 +99,16 @@ export default async function OrderPage() {
         <Breadcrumb className="mt-[30px] md:mt-[70px]">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t('Order')}</BreadcrumbPage>
+              <BreadcrumbPage>{t('order')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <h1 className="title-section title-rubik mt-10 normal-case! md:mt-[66px]">
-          {t('Order')}
+          {t('order')}
         </h1>
         <Order
           defaultCities={{

@@ -1,10 +1,22 @@
 'use client'
-import clsx from 'clsx'
-import { useEffect, useRef, useState } from 'react'
+
+import { type ReactNode, useEffect, useRef, useState } from 'react'
+import clsx from 'clsx/lite'
 
 /**
  * It displays a marquee of elements and loops through them.
  */
+
+interface IMarqueeProps {
+  className?: string
+  innerClassName?: string
+  children?: ReactNode
+  withBackground?: boolean
+  animationDurationInSeconds?: number
+  animationDirection?: 'left' | 'right'
+  variant?: 'primary' | 'secondary'
+}
+
 export const Marquee = ({
   className,
   children,
@@ -13,34 +25,27 @@ export const Marquee = ({
   animationDurationInSeconds,
   animationDirection,
   variant = 'primary',
-}: {
-  className?: string
-  innerClassName?: string
-  children?: React.ReactNode
-  withBackground?: boolean
-  animationDurationInSeconds?: number
-  animationDirection?: 'left' | 'right'
-  variant?: 'primary' | 'secondary'
-}) => {
+}: IMarqueeProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [repeat, setRepeat] = useState(3) // Initial value, can be adjusted
-  const [_animationDuration, _setAnimationDuration] = useState('15s') // Initial value
+
+  const [repeat, setRepeat] = useState<number>(3) // Initial value, can be adjusted
+  const [_animationDuration, _setAnimationDuration] = useState<string>('15s') // Initial value
 
   useEffect(() => {
-    const updateRepeatCount = () => {
+    const updateRepeatCount = (): void => {
       if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth
+        const containerWidth: number = containerRef.current.offsetWidth
         const firstChild = containerRef.current.firstChild as HTMLElement | null
         const grandChild = firstChild?.firstChild as HTMLElement | null
-        const childWidth = grandChild?.offsetWidth || 1
-        const visibleItems = Math.ceil(containerWidth / childWidth)
+        const childWidth: number = grandChild?.offsetWidth || 1
+        const visibleItems: number = Math.ceil(containerWidth / childWidth)
         setRepeat(visibleItems + 1) // Adding extra to ensure smooth loop
 
         if (animationDurationInSeconds) {
           _setAnimationDuration(`${animationDurationInSeconds}s`)
         } else {
           // Update animation duration based on container width
-          const duration = (containerWidth / 100) * 15
+          const duration: number = (containerWidth / 100) * 15
           _setAnimationDuration(`${duration}s`)
         }
       }

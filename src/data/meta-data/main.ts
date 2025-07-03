@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+const SITE_URL: string | undefined = process.env.NEXT_URL
+
 export const mainMetaDataUk: Metadata = {
   title:
     "Сушені снеки (м'ясо, фрукти, овочі) — Slice&Dry's | Найсмачніші закуски",
@@ -20,11 +22,11 @@ export const mainMetaDataUk: Metadata = {
     title: "Сушені снеки (м'ясо, овочі, фрукти) — Slice&Dry's",
     description:
       "Насолоджуйтеся сушеними снеками з м'яса, овочів і фруктів найвищої якості. Ідеальні для подорожей, спорту та перекусів. Натурально і без консервантів.",
-    url: 'https://slicedrys.com/uk',
+    url: `${SITE_URL}/uk`,
     siteName: "Slice&Dry's",
     images: [
       {
-        url: 'https://slicedrys.com/main.webp',
+        url: `${SITE_URL}/main.webp`,
         width: 1200,
         height: 630,
         alt: "Сушені снеки з м'яса, овочів та фруктів",
@@ -38,14 +40,14 @@ export const mainMetaDataUk: Metadata = {
     title: "Сушені снеки (м'ясо, овочі, фрукти) — Slice&Dry's",
     description:
       "Спробуйте найсмачніші сушені снеки з м'яса, овочів і фруктів. Без консервантів, натурально та ідеально для активного способу життя.",
-    images: ['https://slicedrys.com/main.webp'],
+    images: [`${SITE_URL}/main.webp`],
     site: '@slicendrys',
   },
   alternates: {
-    canonical: 'https://slicedrys.com/uk',
+    canonical: `${SITE_URL}/uk`,
     languages: {
-      en: 'https://slicedrys.com/en',
-      uk: 'https://slicedrys.com/uk',
+      en: `${SITE_URL}/en`,
+      uk: `${SITE_URL}/uk`,
     },
   },
   robots: {
@@ -74,11 +76,11 @@ export const mainMetaDataEn: Metadata = {
     title: "Dried Snacks (Meat, Vegetables, Fruits) — Slice&Dry's",
     description:
       'Enjoy high-quality dried snacks made from meat, vegetables, and fruits. Perfect for travel, sports, and snacking. Natural and preservative-free.',
-    url: 'https://slicedrys.com/en',
+    url: `${SITE_URL}/en`,
     siteName: "Slice&Dry's",
     images: [
       {
-        url: 'https://slicedrys.com/main.webp',
+        url: `${SITE_URL}/main.webp`,
         width: 1200,
         height: 630,
         alt: 'Dried snacks made from meat, vegetables, and fruits',
@@ -92,14 +94,14 @@ export const mainMetaDataEn: Metadata = {
     title: "Dried Snacks (Meat, Vegetables, Fruits) — Slice&Dry's",
     description:
       'Try the tastiest dried snacks made from meat, vegetables, and fruits. Preservative-free, natural, and perfect for an active lifestyle.',
-    images: ['https://slicedrys.com/main.webp'],
+    images: [`${SITE_URL}/main.webp`],
     site: '@slicendrys',
   },
   alternates: {
-    canonical: 'https://slicedrys.com/en',
+    canonical: `${SITE_URL}/en`,
     languages: {
-      en: 'https://slicedrys.com/en',
-      uk: 'https://slicedrys.com/uk',
+      en: `${SITE_URL}/en`,
+      uk: `${SITE_URL}/uk`,
     },
   },
   robots: {

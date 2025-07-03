@@ -103,7 +103,7 @@ const getPageUrl = (
 
 export default async function Blog({ params, searchParams }: PageProps) {
   const { locale } = await params
-  const t = await getTranslations('Breadcrumbs')
+  const t = await getTranslations('breadcrumbs')
   const blogSearchParams = await searchParams
 
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
@@ -127,17 +127,17 @@ export default async function Blog({ params, searchParams }: PageProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('Home')}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink href={`/${locale}/blog`}>
-                {t('Blog')}
+                {t('blog')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t('Page') + ' ' + pageItem}</BreadcrumbPage>
+              <BreadcrumbPage>{t('page') + ' ' + pageItem}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

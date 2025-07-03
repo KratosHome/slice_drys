@@ -294,8 +294,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
               'border-foreground border bg-transparent',
           )}
         >
-          <legend className="sr-only">{t('contacts_title')}</legend>
-          <h3 className={cn(legendStyle, 'mb-8')}>{t('contacts_title')}</h3>
+          <legend className="sr-only">{t('contacts-title')}</legend>
+          <h3 className={cn(legendStyle, 'mb-8')}>{t('contacts-title')}</h3>
           <AnimatePresence initial={false}>
             {(userData?.formStep ?? 1) < 4 || showFieldset.step1 ? (
               <LazyMotion features={domAnimation}>
@@ -308,14 +308,14 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   className="p-0.5"
                 >
                   <Input
-                    placeholder={t('surname_placeholder')}
+                    placeholder={t('surname-placeholder')}
                     name="surname"
                     id="surname"
                     control={control}
                     rules={{
                       required: {
                         value: true,
-                        message: t('validation_required'),
+                        message: t('validation-required'),
                       },
                     }}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -331,14 +331,14 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   />
 
                   <Input
-                    placeholder={t('name_placeholder')}
+                    placeholder={t('name-placeholder')}
                     name="name"
                     id="name"
                     control={control}
                     rules={{
                       required: {
                         value: true,
-                        message: t('validation_required'),
+                        message: t('validation-required'),
                       },
                     }}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -354,19 +354,19 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   />
 
                   <Input
-                    placeholder={t('phone_placeholder')}
+                    placeholder={t('phone-placeholder')}
                     name="phoneNumber"
                     id="phoneNumber"
                     control={control}
-                    helpText={t('phone_field_description')}
+                    helpText={t('phone-field-description')}
                     rules={{
                       required: {
                         value: true,
-                        message: t('validation_required'),
+                        message: t('validation-required'),
                       },
                       minLength: {
                         value: 19,
-                        message: t('validation_length'),
+                        message: t('validation-length'),
                       },
                     }}
                     onClick={(event) => {
@@ -409,12 +409,12 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     rules={{
                       required: {
                         value: true,
-                        message: t('validation_required'),
+                        message: t('validation-required'),
                       },
                       pattern: {
                         value:
                           /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                        message: t('validation_email_format'),
+                        message: t('validation-email-format'),
                       },
                     }}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -471,8 +471,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                 'border-foreground border bg-transparent',
             )}
           >
-            <legend className="sr-only">{t('delivery_title')}</legend>
-            <h3 className={cn(legendStyle, 'mb-8')}>{t('delivery_title')}</h3>
+            <legend className="sr-only">{t('delivery-title')}</legend>
+            <h3 className={cn(legendStyle, 'mb-8')}>{t('delivery-title')}</h3>
             <AnimatePresence initial={false}>
               {(userData?.formStep ?? 1) < 4 || showFieldset.step2 ? (
                 <LazyMotion features={domAnimation}>
@@ -535,7 +535,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                                   className={cn(radioItemStyle)}
                                   iconSize="large"
                                 />
-                                {t('delivery_method_to_branch')}
+                                {t('delivery-method-to-branch')}
                               </Label>
 
                               <Label
@@ -548,7 +548,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                                   className={cn(radioItemStyle)}
                                   iconSize="large"
                                 />
-                                {t('delivery_method_to_postomat')}
+                                {t('delivery-method-to-postomat')}
                               </Label>
 
                               <Label
@@ -561,7 +561,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                                   className={cn(radioItemStyle)}
                                   iconSize="large"
                                 />
-                                {t('delivery_method_courier')}
+                                {t('delivery-method-courier')}
                               </Label>
                             </RadioGroup>
                             {['branch', 'postomat'].some(
@@ -635,7 +635,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                                 rules={{
                                   required: {
                                     value: true,
-                                    message: t('validation_required'),
+                                    message: t('validation-required'),
                                   },
                                 }}
                                 render={({ field }) => (
@@ -656,7 +656,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                                           },
                                         })
                                       }}
-                                      placeholder={t('courier_placeholder')}
+                                      placeholder={t('courier-placeholder')}
                                       className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
                                     />
                                     <ErrorMessage
@@ -794,8 +794,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                 'border-foreground border bg-transparent',
             )}
           >
-            <legend className="sr-only">{t('payment_title')}</legend>
-            <h3 className={cn(legendStyle, 'mb-8')}>{t('payment_title')}</h3>
+            <legend className="sr-only">{t('payment-title')}</legend>
+            <h3 className={cn(legendStyle, 'mb-8')}>{t('payment-title')}</h3>
             <AnimatePresence initial={false}>
               {(userData?.formStep ?? 1) < 4 || showFieldset.step3 ? (
                 <LazyMotion features={domAnimation}>
@@ -870,8 +870,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   'border-foreground border bg-transparent',
               )}
             >
-              <legend className="sr-only">{t('comment_title')}</legend>
-              <h3 className={cn(legendStyle)}>{t('comment_title')}</h3>
+              <legend className="sr-only">{t('comment-title')}</legend>
+              <h3 className={cn(legendStyle)}>{t('comment-title')}</h3>
               <AnimatePresence initial={false}>
                 {(userData?.formStep ?? 1) < 4 || showFieldset.step4 ? (
                   <LazyMotion features={domAnimation}>
@@ -884,7 +884,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     >
                       <Textarea
                         name="comment"
-                        placeholder={t('comment_placeholder')}
+                        placeholder={t('comment-placeholder')}
                         rows={5}
                         control={control}
                         id="comment"
@@ -908,7 +908,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
 
               {userData?.formStep === 4 && !showFieldset.step4 ? (
                 <div className="text-order-text mt-8">
-                  {userData.comment || t('no_comments')}
+                  {userData.comment || t('no-comments')}
                 </div>
               ) : null}
               <Button
@@ -924,7 +924,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
               </Button>
             </fieldset>
             <CheckboxSimple
-              label={t('no_call')}
+              label={t('no-call')}
               {...register('noCall')}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const noCall = event.target.checked
@@ -988,7 +988,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
             />
           </div>
           <CheckboxSimple
-            label={t('no_call')}
+            label={t('no-call')}
             {...register('noCall')}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const noCall = event.target.checked
@@ -1020,7 +1020,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
             type="submit"
             className="bg-foreground text-background max-w-[180px] cursor-pointer self-center px-5 py-2"
           >
-            {(userData?.formStep ?? 0) < 3 ? t('btn_continue') : t('order')}
+            {(userData?.formStep ?? 0) < 3 ? t('btn-continue') : t('order')}
           </button>
         )}
       </form>

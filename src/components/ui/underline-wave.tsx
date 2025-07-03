@@ -1,13 +1,11 @@
-import React from 'react'
+interface IUnderlineWaveProps {
+  className?: string
+}
 
-type Props = { className?: string }
-
-function UnderlineWave({ className }: Props) {
+export default function UnderlineWave({ className }: IUnderlineWaveProps) {
   return (
     <svg className={`underline-wave ${className}`}>
       <use href="/icons/sprite.svg#underline" />
     </svg>
   )
 }
-
-export default UnderlineWave

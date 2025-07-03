@@ -1,26 +1,4 @@
-interface IHeroAnimationImage {
-  path: string
-  width: number
-  height: number
-  rotate?: number
-  isMobileDiz?: boolean
-  position: {
-    desktop: {
-      x: number
-      y: number
-    }
-    tablet: {
-      x: number
-      y: number
-    }
-    mobile: {
-      x: number
-      y: number
-    }
-  }
-}
-
-const mixSubImages: IHeroAnimationImage[] = [
+const mixSubImages: IHeroAnimationSubImage[] = [
   {
     path: '/slider/fruit/orange.webp',
     width: 43,
@@ -270,7 +248,7 @@ const mixSubImages: IHeroAnimationImage[] = [
   },
 ]
 
-const fruitSubImages: IHeroAnimationImage[] = [
+const fruitSubImages: IHeroAnimationSubImage[] = [
   {
     path: '/slider/fruit/pear.webp',
     width: 88,
@@ -520,7 +498,7 @@ const fruitSubImages: IHeroAnimationImage[] = [
   },
 ]
 
-const meatSubImages: IHeroAnimationImage[] = [
+const meatSubImages: IHeroAnimationSubImage[] = [
   {
     path: '/slider/meat/meet.webp',
     rotate: 90,
@@ -784,7 +762,7 @@ const meatSubImages: IHeroAnimationImage[] = [
   },
 ]
 
-const veggieSubImages: IHeroAnimationImage[] = [
+const veggieSubImages: IHeroAnimationSubImage[] = [
   {
     path: '/slider/veggie/beet.webp',
     width: 44,
@@ -1072,7 +1050,7 @@ const veggieSubImages: IHeroAnimationImage[] = [
   },
 ]
 
-const actionSubImages: IHeroAnimationImage[] = [
+const actionSubImages: IHeroAnimationSubImage[] = [
   {
     path: '/slider/action/left-bottom.webp',
     width: 38,

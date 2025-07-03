@@ -8,9 +8,9 @@ import { sendOrderNotification } from '@/server/info/order-notification.server'
 import OrderForm from '@/components/client/order/order-form'
 import OrderList from '@/components/client/order/order-list'
 import { useCartStore } from '@/store/cart-store'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
-import { ResponsiveMotion } from '@/components/client/responsiv-motion/responsive-motion'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import Loading from '@/components/ui/loading'
 
 type Props = {
@@ -121,7 +121,7 @@ export default function Order({ defaultCities }: Props) {
         }}
       >
         <div className="font-rubik bg-foreground text-background py-3 text-center text-[30px] lg:text-[32px]">
-          {tOrder('view_order')}
+          {tOrder('view-order')}
         </div>
         <OrderList />
         <Button

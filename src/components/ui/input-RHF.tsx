@@ -1,13 +1,16 @@
-import * as React from 'react'
-import { useController, UseControllerProps } from 'react-hook-form'
+'use client'
+
+import type { ChangeEvent, InputHTMLAttributes } from 'react'
 
 import { ErrorMessage } from '@hookform/error-message'
+
+import { useController, type UseControllerProps } from 'react-hook-form'
 import { cn } from '@/utils/cn'
 
 type InputProps = {
   helpText?: string
 } & UseControllerProps &
-  React.InputHTMLAttributes<HTMLInputElement>
+  InputHTMLAttributes<HTMLInputElement>
 
 function Input(props: InputProps) {
   const {
@@ -21,6 +24,7 @@ function Input(props: InputProps) {
     helpText,
     ...inputProps
   } = props
+
   const {
     field,
     formState: { errors },
@@ -32,15 +36,14 @@ function Input(props: InputProps) {
     defaultValue,
     disabled,
   })
+
   return (
     <div>
       <input
         {...inputProps}
         {...field}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          if (props.onChange) {
-            props.onChange(event)
-          }
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          if (props.onChange) props.onChange(event)
         }}
         placeholder={props.placeholder}
         type={props.type || 'text'}
@@ -63,9 +66,9 @@ function Input(props: InputProps) {
         }
       />
 
-      {!!helpText && (
+      {!!helpText ? (
         <p className="text-muted-foreground mt-1 text-base">{helpText}</p>
-      )}
+      ) : null}
     </div>
   )
 }

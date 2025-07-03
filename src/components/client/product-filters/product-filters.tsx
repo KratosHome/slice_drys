@@ -179,7 +179,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </LazyMotion>
                   ))
                 ) : (
-                  <div>{t('no_categories_available')}</div>
+                  <div>{t('no-categories-available')}</div>
                 )}
               </AccordionContent>
             </AccordionItem>
@@ -254,7 +254,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="button"
                       onClick={resetFilters}
                     >
-                      {t('reset_all')}
+                      {t('reset-all')}
                     </Button>
                     <Button
                       className="rounded-none text-base"
@@ -303,7 +303,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                             </label>
                           ))
                         ) : (
-                          <div>{t('no_categories_available')}</div>
+                          <div>{t('no-categories-available')}</div>
                         )}
                       </AccordionContent>
                     </AccordionItem>

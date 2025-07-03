@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar'
 
 import { useLocale } from 'next-intl'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
+import { TransitionLink } from '@/components/client/transition-link'
 
 export function AppSidebar() {
   const locale: string = useLocale()

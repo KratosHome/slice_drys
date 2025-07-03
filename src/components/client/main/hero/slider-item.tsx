@@ -1,17 +1,22 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/utils/cn'
 
-const SliderItem = ({
-  title,
-  hoverHexColor,
-  isHovered,
-}: {
+interface ISliderItemProps {
   title: string
   hoverHexColor: string
   isHovered: boolean
-}) => {
+}
+
+export default function SliderItem({
+  title,
+  hoverHexColor,
+  isHovered,
+}: ISliderItemProps) {
+  const [textWidth, setTextWidth] = useState<number>(190)
+
   const textRef = useRef<SVGTextElement>(null)
-  const [textWidth, setTextWidth] = useState(190)
 
   useEffect(() => {
     if (textRef.current) {
@@ -38,7 +43,6 @@ const SliderItem = ({
           d={`M 35,150 A ${textWidth + 120},120 0 0,1 ${120 + textWidth},150`}
           id="curve"
         />
-
         <text
           className={cn(
             isHovered
@@ -89,5 +93,3 @@ const SliderItem = ({
     </>
   )
 }
-
-export default SliderItem

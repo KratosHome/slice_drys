@@ -1,4 +1,6 @@
-import { forwardRef, type InputHTMLAttributes } from 'react'
+'use client'
+
+import { type InputHTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/utils/cn'
 
 const Input = forwardRef<

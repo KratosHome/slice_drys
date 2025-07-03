@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { useTranslations } from 'next-intl'
-import { Controller, useForm } from 'react-hook-form'
-import { callMeBackServer } from '@/server/info/call-me-back.server'
+'use client'
+
 import {
   Dialog,
   DialogContent,
@@ -15,15 +13,42 @@ import { Input } from '@/components/ui/input'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { Button } from '@/components/ui/button'
 
-interface FormData {
+import { type ChangeEvent, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { Controller, useForm } from 'react-hook-form'
+import { callMeBackServer } from '@/server/info/call-me-back.server'
+
+interface IFormData {
   name: string
   phoneNumber: string
 }
 
-const CallMe = () => {
+export default function CallMe() {
+  const MASKED_INPUT_PREFIX = '+38 (0'
+  const MASKED_INPUT_MASK = [
+    '+',
+    /\d/,
+    /\d/,
+    ' ',
+    '(',
+    /\d/,
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+  ]
+
   const t = useTranslations('main.call-me')
 
-  const [isCallOpen, setIsCallOpen] = useState(false)
+  const [isCallOpen, setIsCallOpen] = useState<boolean>(false)
 
   const {
     register,
@@ -31,14 +56,14 @@ const CallMe = () => {
     control,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
+  } = useForm<IFormData>({
     defaultValues: {
       name: '',
-      phoneNumber: '+38 (0',
+      phoneNumber: MASKED_INPUT_PREFIX,
     },
   })
 
-  const sendCall = async (data: FormData) => {
+  const sendCall = async (data: IFormData): Promise<void> => {
     await callMeBackServer({
       name: data.name,
       phoneNumber: data.phoneNumber,
@@ -48,9 +73,17 @@ const CallMe = () => {
   }
 
   return (
-    <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
+    <Dialog
+      open={isCallOpen}
+      onOpenChange={setIsCallOpen}
+      aria-labelledby="call-me"
+    >
       <DialogTrigger asChild>
-        <Button type="button" variant="button">
+        <Button
+          type="button"
+          variant="button"
+          className="max-w-24 sm:max-w-fit"
+        >
           {t('call-back')}
         </Button>
       </DialogTrigger>
@@ -71,9 +104,10 @@ const CallMe = () => {
               placeholder={t('enter-your-name')}
               {...register('name', { required: `${t('enter-name')}` })}
             />
-            {errors.name && (
+
+            {errors.name ? (
               <p className="text-sm text-red-500">{errors.name.message}</p>
-            )}
+            ) : null}
           </div>
           <div className="flex flex-col items-start">
             <Label htmlFor="phoneNumber" className="text-right">
@@ -90,40 +124,21 @@ const CallMe = () => {
                     : `${t('enter-full-phone-number')}`,
               }}
               render={({ field: { onChange, onBlur, value, ref } }) => {
-                const prefix = '+38 (0'
-                const handleChange = (
-                  e: React.ChangeEvent<HTMLInputElement>,
-                ) => {
-                  let newVal = e.target.value
-                  if (!newVal.startsWith(prefix)) {
-                    newVal = prefix
+                const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+                  let newVal = event.target.value
+
+                  if (!newVal.startsWith(MASKED_INPUT_PREFIX)) {
+                    newVal = MASKED_INPUT_PREFIX
                   }
+
                   onChange(newVal)
                 }
+
                 return (
                   <ForwardedMaskedInput
                     id="phoneNumber"
-                    mask={[
-                      '+',
-                      /\d/,
-                      /\d/,
-                      ' ',
-                      '(',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      ')',
-                      ' ',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      '-',
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                    ]}
-                    placeholder={prefix}
+                    mask={MASKED_INPUT_MASK}
+                    placeholder={MASKED_INPUT_PREFIX}
                     guide={false}
                     onBlur={onBlur}
                     onChange={handleChange}
@@ -134,11 +149,12 @@ const CallMe = () => {
                 )
               }}
             />
-            {errors.phoneNumber && (
+
+            {errors.phoneNumber ? (
               <p className="text-sm text-red-500">
                 {errors.phoneNumber.message}
               </p>
-            )}
+            ) : null}
           </div>
           <Button type="submit" variant="button">
             {t('call-back')}
@@ -148,5 +164,3 @@ const CallMe = () => {
     </Dialog>
   )
 }
-
-export default CallMe

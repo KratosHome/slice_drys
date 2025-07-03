@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
-import { toast } from '@/hooks/use-toast'
+import { toast } from '@/hooks/useToast'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
@@ -43,7 +43,7 @@ const WholesaleForm = () => {
 
     if (result.success) {
       toast({
-        title: t('thank_you_we_will_contact_you'),
+        title: t('thank-you-we-will-contact-you'),
       })
       reset()
     } else {
@@ -59,49 +59,49 @@ const WholesaleForm = () => {
         <div className="absolute z-[-1] mt-6 h-32 w-32 rounded-full bg-linear-to-r from-red-200 to-red-300 opacity-50 blur-3xl md:mt-24 md:h-64 md:w-64" />
         <Image
           src={'/images/cart.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={400}
           height={400}
           className="mt-5 rotate-[15deg] object-contain md:mt-[20px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={100}
           height={100}
           className="-mt-10 ml-4 rotate-[-25deg] object-contain md:-mt-[180px] md:ml-[320px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={150}
           height={150}
           className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={100}
           height={100}
           className="mt-5 ml-4 rotate-[-25deg] object-contain md:mt-[20px] md:ml-[320px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={150}
           height={150}
           className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={100}
           height={100}
           className="mt-5 ml-4 rotate-[-25deg] object-contain md:mt-[20px] md:ml-[320px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}
-          alt={t('icon_cart')}
+          alt={t('icon-cart')}
           width={150}
           height={150}
           className="mt-5 ml-8 rotate-[25deg] object-contain md:mt-[20px] md:ml-[380px]"
@@ -109,7 +109,7 @@ const WholesaleForm = () => {
       </div>
       <div className="overflow-hidden">
         <div className="font-rubik text-center text-[32px] lg:text-[54px]">
-          {t('fill_out_form')}:
+          {t('fill-out-form')}:
         </div>
         <div className="relative flex justify-center gap-[46px]">
           <span className="animate-follow font-rubik block text-[108px] leading-none">
@@ -123,7 +123,7 @@ const WholesaleForm = () => {
           </span>
         </div>
         <div className="font-rubik bg-foreground text-background mt-14 py-5 text-center text-[32px] lg:text-[40px]">
-          {t('start_cooperation')}
+          {t('start-cooperation')}
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -134,9 +134,9 @@ const WholesaleForm = () => {
               className="h-[60px] rounded-none"
               placeholder={t('name')}
               {...register('name', {
-                required: t('this_field_is_required'),
-                minLength: { value: 2, message: t('minimum_characters') },
-                maxLength: { value: 50, message: t('maximum_characters') },
+                required: t('this-field-is-required'),
+                minLength: { value: 2, message: t('minimum-characters') },
+                maxLength: { value: 50, message: t('maximum-characters') },
               })}
             />
             {errors.name && (
@@ -210,10 +210,10 @@ const WholesaleForm = () => {
               className="h-[60px] rounded-none"
               placeholder="Email"
               {...register('email', {
-                required: t('this_field_is_required'),
+                required: t('this-field-is-required'),
                 pattern: {
                   value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                  message: t('invalid_email_format'),
+                  message: t('invalid-email-format'),
                 },
               })}
             />
@@ -224,11 +224,11 @@ const WholesaleForm = () => {
           <div>
             <Input
               className="h-[60px] rounded-none"
-              placeholder={t('where_you_going_sell')}
+              placeholder={t('where-you-going-sell')}
               {...register('whereSell', {
-                required: t('this_field_is_required'),
-                minLength: { value: 2, message: t('minimum_characters') },
-                maxLength: { value: 100, message: t('maximum_100_characters') },
+                required: t('this-field-is-required'),
+                minLength: { value: 2, message: t('minimum-characters') },
+                maxLength: { value: 100, message: t('maximum-100-characters') },
               })}
             />
             {errors.whereSell && (
@@ -237,16 +237,16 @@ const WholesaleForm = () => {
           </div>
           <Input
             className="h-[60px] rounded-none"
-            placeholder={t('link_company_name')}
+            placeholder={t('link-company-name')}
             {...register('link', {
-              required: t('this_field_is_required'),
-              minLength: { value: 2, message: t('minimum_characters') },
-              maxLength: { value: 100, message: t('maximum_100_characters') },
+              required: t('this-field-is-required'),
+              minLength: { value: 2, message: t('minimum-characters') },
+              maxLength: { value: 100, message: t('maximum-100-characters') },
             })}
           />
           <Input
             className="h-[60px] rounded-none"
-            placeholder={t('how_did_you_find_about_us')}
+            placeholder={t('how-did-you-find-about-us')}
             {...register('howYouFindUs')}
           />
           <div className="flex justify-center">

@@ -1,17 +1,17 @@
 'use server'
 
-import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
 
-export async function getProductsUrls() {
-  'use server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+
+export async function getProductsUrls(): Promise<IResult<IProductSlug>> {
   try {
     await connectToDbServer()
 
     const products = await Product.find({})
       .select('slug categories')
       .populate('categories', 'slug')
-      .lean()
+      .lean<IProductSlug[]>()
 
     const productsWithLowercaseSlug = products.map((product) => ({
       ...product,

@@ -1,9 +1,14 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
-import Image from 'next/image'
-import gsap from 'gsap'
 
-const images = [
+import Image from 'next/image'
+
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(useGSAP)
+
+const images: string[] = [
   '/wholesale/wholesale1.webp',
   '/wholesale/wholesale2.webp',
   '/wholesale/wholesale3.webp',
@@ -11,14 +16,15 @@ const images = [
   '/wholesale/wholesale5.webp',
 ]
 
-const LoadingPage = () => {
-  const containerRef = useRef(null)
+export default function LoadingPage() {
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useGSAP(() => {
     const tl = gsap.timeline({ repeat: -1, ease: 'linear' })
 
     images.forEach((_, index) => {
-      const angle = (360 / images.length) * index
+      const angle: number = (360 / images.length) * index
+
       tl.to(
         `.image-${index}`,
         {
@@ -34,7 +40,7 @@ const LoadingPage = () => {
         rotation: angle,
       })
     })
-  }, [])
+  })
 
   return (
     <div
@@ -67,5 +73,3 @@ const LoadingPage = () => {
     </div>
   )
 }
-
-export default LoadingPage

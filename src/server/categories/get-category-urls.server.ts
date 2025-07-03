@@ -1,12 +1,16 @@
-import { connectToDbServer } from '@/server/connect-to-db.server'
+'use server'
+
 import { Category } from '@/server/categories/categories-schema.server'
 
-export async function getCategoryUrls() {
-  'use server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+
+export async function getCategoryUrls(): Promise<IResult<CategorySlug>> {
   try {
     await connectToDbServer()
 
-    const categories = await Category.find({}).select('slug').lean()
+    const categories = await Category.find({})
+      .select('slug')
+      .lean<CategorySlug[]>()
 
     const categoriesWithLowercaseSlug = categories.map((category) => ({
       ...category,

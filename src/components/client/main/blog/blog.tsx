@@ -1,32 +1,36 @@
 'use client'
 
-import { FC, useEffect } from 'react'
 import Image from 'next/image'
-import { useLocale, useTranslations } from 'next-intl'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
-
 import { Arrow } from '@/components/ui/arrow'
-import { formatDate } from '@/utils/format-date'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
-import '../../styles/slider.css'
+import { TransitionLink } from '@/components/client/transition-link'
+
+import { useEffect } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import { formatDate } from '@/utils/format-date'
+
+import '@/components/client/styles/slider.css'
 import '@splidejs/react-splide/css'
 import './blog.css'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
-interface BlogSectionProps {
+interface IBlogSectionProps {
   data: IPost[]
 }
 
-const BlogSection: FC<BlogSectionProps> = ({ data }) => {
+export default function BlogSection({ data }: IBlogSectionProps) {
   const t = useTranslations('main.more-about-us')
-  const locale = useLocale()
+  const locale = useLocale() as ILocale
 
   useEffect(() => {
     const target = document.querySelector('.blog-slider')
+
     if (!target) return
-    const handleResize = () => {
+
+    const handleResize = (): void => {
       let k: number
+
       switch (true) {
         case window.innerWidth >= 1280:
           k = 35
@@ -43,7 +47,9 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
         default:
           k = 30
       }
-      const x = data.length * k
+
+      const x: number = data.length * k
+
       const prev = document.querySelector(
         '.blog-slider .splide__arrow--prev.custom__arrow-prev',
       ) as HTMLElement
@@ -59,16 +65,35 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
 
     const resizeObserver = new ResizeObserver(handleResize)
 
-    if (target) {
-      resizeObserver.observe(target)
-    }
+    if (target) resizeObserver.observe(target)
 
     return () => {
-      if (target) {
-        resizeObserver.unobserve(target)
-      }
+      if (target) resizeObserver.unobserve(target)
     }
   }, [data])
+
+  const splideOptions = {
+    arrowPath: Arrow(),
+    type: 'loop',
+    perPage: 3,
+    perMove: 1,
+    pagination: true,
+    arrows: true,
+    autoplay: true,
+    interval: 3000,
+    focus: 'center',
+    breakpoints: {
+      768: { perPage: 1 },
+    },
+    classes: {
+      arrows: 'splide__arrows custom__arrows',
+      arrow: 'splide__arrow custom__arrow',
+      prev: 'splide__arrow--prev custom__arrow-prev',
+      next: 'splide__arrow--next custom__arrow-next',
+      pagination: 'splide__pagination custom__pagination',
+      page: 'splide__pagination__page custom__pagination-page',
+    },
+  }
 
   return (
     <section
@@ -94,28 +119,7 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
           <Splide
             aria-labelledby="blog section"
             className="blog-slider"
-            options={{
-              arrowPath: Arrow(),
-              type: 'loop',
-              perPage: 3,
-              perMove: 1,
-              pagination: true,
-              arrows: true,
-              autoplay: true,
-              interval: 3000,
-              focus: 'center',
-              breakpoints: {
-                768: { perPage: 1 },
-              },
-              classes: {
-                arrows: 'splide__arrows custom__arrows',
-                arrow: 'splide__arrow custom__arrow',
-                prev: 'splide__arrow--prev custom__arrow-prev',
-                next: 'splide__arrow--next custom__arrow-next',
-                pagination: 'splide__pagination custom__pagination',
-                page: 'splide__pagination__page custom__pagination-page',
-              },
-            }}
+            options={splideOptions}
           >
             {data.map((post) => (
               <SplideSlide key={post._id}>
@@ -145,5 +149,3 @@ const BlogSection: FC<BlogSectionProps> = ({ data }) => {
     </section>
   )
 }
-
-export default BlogSection

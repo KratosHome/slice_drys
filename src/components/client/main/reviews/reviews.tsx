@@ -1,13 +1,7 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/all'
-import { useGSAP } from '@gsap/react'
 
-import { ReviewsItem } from '@/components/client/main/reviews/reviews-item'
+import { ReviewsItem } from './reviews-item'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
-import { useForm } from 'react-hook-form'
 import {
   ClientDialogContent,
   ClientDialogHeader,
@@ -18,8 +12,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/hooks/use-toast'
-import { sendReviews } from '@/server/info/send-reviews.server'
 import UnderlineWave from '@/components/ui/underline-wave'
 import {
   Pagination,
@@ -30,50 +22,63 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+
+import { useEffect, useRef, useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { useForm } from 'react-hook-form'
+import { toast } from '@/hooks/useToast'
+import { sendReviews } from '@/server/info/send-reviews.server'
 import { cn } from '@/utils/cn'
 import { getPaginationRange } from '@/utils/get-pagination-range'
 
-const variants = ['grey', 'black', 'white']
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
-interface FormData {
+interface IFormData {
   name: string
   text: string
 }
 
-interface ReviewsProps {
+interface IReviewsProps {
   reviews: IReviewLocal[]
   title?: string
   pagination?: boolean
 }
 
-const reviewsPerSet = 6
-
 export default function Reviews({
   reviews,
   title,
   pagination = false,
-}: ReviewsProps) {
+}: IReviewsProps) {
+  const VARIANTS = useMemo(() => ['grey', 'black', 'white'] as const, [])
+
+  const REVIEWS_PER_SET = 6
+
   const t = useTranslations('main.reviews')
   const reviewsRef = useRef<HTMLLIElement[]>([])
-  const [displayedReviewsSet, setDisplayedReviewsSet] = useState(1)
-  const [isReviewsOpen, setIsReviewsOpen] = useState(false)
+  const [displayedReviewsSet, setDisplayedReviewsSet] = useState<number>(1)
+  const [isReviewsOpen, setIsReviewsOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutID = setTimeout(() => {
       ScrollTrigger.refresh(true)
     }, 1)
+
+    return () => clearTimeout(timeoutID)
   }, [])
 
   useGSAP(() => {
-    reviewsRef.current.forEach((r, i) => {
-      gsap.from(r, {
-        x: i % 2 ? 200 : -200,
+    reviewsRef.current.forEach((review, index) => {
+      gsap.from(review, {
+        x: index % 2 ? 200 : -200,
         autoAlpha: 0,
         duration: 1,
         delay: 0.2,
         ease: 'power1.out',
         scrollTrigger: {
-          trigger: r,
+          trigger: review,
           start: 'top bottom',
           end: '200px top',
           toggleActions: 'play reset play reset',
@@ -88,35 +93,35 @@ export default function Reviews({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
+  } = useForm<IFormData>({
     defaultValues: {
       name: '',
       text: '',
     },
   })
 
-  const sendCall = async (data: FormData) => {
+  const sendCall = async (data: IFormData): Promise<void> => {
     await sendReviews({
       name: data.name,
       text: data.text,
     })
 
     toast({
-      title: t('thanks_for_the_feedback'),
+      title: t('thanks-for-the-feedback'),
     })
 
     reset()
     setIsReviewsOpen(false)
   }
 
-  const currentReviewsSet = reviews.slice(
-    (displayedReviewsSet - 1) * reviewsPerSet,
-    displayedReviewsSet * reviewsPerSet,
+  const currentReviewsSet: IReviewLocal[] = reviews.slice(
+    (displayedReviewsSet - 1) * REVIEWS_PER_SET,
+    displayedReviewsSet * REVIEWS_PER_SET,
   )
 
-  const totalPages = Math.ceil(reviews.length / reviewsPerSet)
+  const totalPages: number = Math.ceil(reviews.length / REVIEWS_PER_SET)
 
-  const currentPage = displayedReviewsSet
+  const currentPage: number = displayedReviewsSet
 
   if (reviews.length === 0) return null
 
@@ -125,7 +130,7 @@ export default function Reviews({
       aria-labelledby="reviews"
       className="section 1440:overflow-visible relative w-full max-w-[1280px] overflow-x-clip before:absolute before:top-[50px] before:-left-14 before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:top-[-10px] after:-right-20 after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat md:before:bg-[url('/images/jerky.webp')] md:after:top-[40%] md:after:-right-4 lg:before:left-0"
     >
-      <span className="absolute inset-0 z-[-1] before:absolute before:bottom-[210px] before:-left-24 before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]"></span>
+      <span className="absolute inset-0 z-[-1] before:absolute before:bottom-[210px] before:-left-24 before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]" />
       <div className="mx-auto w-full max-w-[910px] px-[20px] pb-[50px] lg:px-0">
         <h2 id="reviews" className="title-section text-center">
           {title ? title : t('title')}
@@ -144,12 +149,12 @@ export default function Reviews({
               key={review._id}
               author={review.author}
               text={review.text}
-              variant={variants[index % variants.length]}
+              variant={VARIANTS[index % VARIANTS.length]}
             />
           ))}
         </ul>
 
-        {totalPages > 1 && pagination && (
+        {totalPages > 1 && pagination ? (
           <Pagination className="mt-[60px] md:mt-[120px]">
             <PaginationContent>
               <PaginationItem
@@ -160,7 +165,7 @@ export default function Reviews({
                   disabled={currentPage === 1}
                   href={`#review-${
                     currentPage - 2 > 0
-                      ? reviews[(currentPage - 2) * reviewsPerSet]._id
+                      ? reviews[(currentPage - 2) * REVIEWS_PER_SET]._id
                       : reviews[0]._id
                   }`}
                   onClick={() =>
@@ -182,7 +187,7 @@ export default function Reviews({
                   return (
                     <PaginationItem key={item}>
                       <PaginationLink
-                        href={`#review-${reviews[(item - 1) * reviewsPerSet]._id}`}
+                        href={`#review-${reviews[(item - 1) * REVIEWS_PER_SET]._id}`}
                         disabled={currentPage === item}
                         isActive={currentPage === item}
                         className="text-xl sm:text-2xl md:text-4xl"
@@ -203,8 +208,8 @@ export default function Reviews({
                   disabled={currentPage === totalPages}
                   href={`#review-${
                     currentPage !== totalPages
-                      ? reviews[currentPage * reviewsPerSet]._id
-                      : reviews[(currentPage - 1) * reviewsPerSet]._id
+                      ? reviews[currentPage * REVIEWS_PER_SET]._id
+                      : reviews[(currentPage - 1) * REVIEWS_PER_SET]._id
                   }`}
                   onClick={() =>
                     setDisplayedReviewsSet(
@@ -215,7 +220,7 @@ export default function Reviews({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        )}
+        ) : null}
       </div>
       <Dialog open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
         <DialogTrigger asChild>
@@ -223,13 +228,13 @@ export default function Reviews({
             as="button"
             className="order-1 max-w-max cursor-pointer md:order-0"
           >
-            {t('add_new_review')}
+            {t('add-new-review')}
           </UnderlinedLink>
         </DialogTrigger>
         <ClientDialogContent className="overflow-hidden border-none bg-transparent p-0 sm:max-w-[500px]">
           <ClientDialogHeader className="bg-foreground text-background p-6">
             <DialogTitle className="font-rubik text-center text-[32px]">
-              {t('add_new_review')}
+              {t('add-new-review')}
             </DialogTitle>
           </ClientDialogHeader>
           <form
@@ -238,25 +243,27 @@ export default function Reviews({
           >
             <div className="flex flex-col items-start">
               <Input
-                autoFocus={true}
+                autoFocus
                 id="name"
                 placeholder={t('name')}
-                {...register('name', { required: `${t('enter_name')}` })}
+                {...register('name', { required: `${t('enter-name')}` })}
               />
-              {errors.name && (
+
+              {errors.name ? (
                 <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
+              ) : null}
             </div>
             <div className="flex flex-col items-start">
               <Textarea
                 id="text"
                 placeholder={t('feedback')}
                 className="h-[200px] resize-none"
-                {...register('text', { required: `${t('enter_text')}` })}
+                {...register('text', { required: `${t('enter-text')}` })}
               />
-              {errors.text && (
+
+              {errors.text ? (
                 <p className="text-sm text-red-500">{errors.text.message}</p>
-              )}
+              ) : null}
             </div>
 
             <div className="flex justify-between gap-3">

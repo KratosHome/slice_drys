@@ -12,7 +12,7 @@ const url = process.env.NEXT_URL
 
 const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
   const locale = (await getLocale()) as ILocale
-  const t = await getTranslations('Breadcrumbs')
+  const t = await getTranslations('breadcrumbs')
 
   const canonicalUrl = `${url}/${locale}/blog/${post.slug}`
 
@@ -45,13 +45,13 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
         {
           '@type': 'ListItem',
           position: 1,
-          name: t('Home'),
+          name: t('home'),
           item: url,
         },
         {
           '@type': 'ListItem',
           position: 2,
-          name: t('Blog'),
+          name: t('blog'),
           item: `${url}/${locale}/blog`,
         },
         {
@@ -62,27 +62,6 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
         },
       ],
     },
-    /*
-        hasPart: reviews.map((review) => ({
-      '@type': 'Review',
-      '@id': `${canonicalUrl}/#review-${review._id}`,
-      reviewBody: review.text,
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: review.rating.toString(),
-        bestRating: '5',
-      },
-      author: {
-        '@type': 'Person',
-        name: review.author,
-      },
-      itemReviewed: {
-        '@type': 'WebSite',
-        name: "Slice & Dry's",
-        url,
-      },
-    })),
-     */
   }
 
   return (

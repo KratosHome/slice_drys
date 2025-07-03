@@ -1,15 +1,16 @@
 'use client'
+
 import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(useGSAP)
 
-type Props = {
+interface IHeaderInfoProps {
   title: string
 }
 
-export default function Info({ title }: Props) {
+export default function HeaderInfo({ title }: IHeaderInfoProps) {
   const infoRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -30,6 +31,7 @@ export default function Info({ title }: Props) {
     <div
       ref={infoRef}
       className="bg-foreground absolute top-0 h-8 w-full opacity-0"
+      aria-labelledby="header-info"
     >
       <p className="text-background text-center text-base leading-[180%] font-medium">
         {title}

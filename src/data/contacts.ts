@@ -8,4 +8,4 @@ export const contacts = {
   },
   mail: 'slicedrysend@gmail.com',
   time: '10:00 - 19:00',
-}
+} as const

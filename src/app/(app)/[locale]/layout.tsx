@@ -1,24 +1,23 @@
 import type { ReactNode } from 'react'
-import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 
-import Header from '@/components/client/header/header'
-
-import '../globals.css'
-import { routing } from '@/i18n/routing'
-import NotFoundPage from '@/components/not-found'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { fetchTags } from '@/data/fetch-tags'
-import dynamic from 'next/dynamic'
-import { Loader } from 'lucide-react'
-import ClientDynamicMain from '@/components/client/dynamic-imports/main'
+
+import Header from '@/components/client/header'
+import Footer from '@/components/client/footer'
+import NotFoundPage from '@/components/not-found'
+import ScrollToTop from '@/components/client/scroll-to-top'
+import Toaster from '@/components/ui/toaster'
 import ThemeProvider from '@/components/providers/theme-provider'
+import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react'
 
-const Footer = dynamic(() => import('@/components/client/footer/footer'), {
-  loading: () => <Loader />,
-})
+import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import { seedCategories } from '@/server/seed/category.server'
+import { routing } from '@/i18n/routing'
+
+import '../globals.css'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -56,12 +55,18 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       </html>
     )
   }
+
   const messages = await getMessages()
 
-  const categoriesData = await fetch(`${SITE_URL}/api/categories`, {
-    cache: 'force-cache',
-    next: { tags: [`${fetchTags.menu}`] },
-  }).then((res) => res.json())
+  await seedCategories()
+
+  const categoriesData: IResult<ICategory> = await fetch(
+    `${SITE_URL}/api/categories`,
+    {
+      cache: 'force-cache',
+      next: { tags: [`${fetchTags.menu}`] },
+    },
+  ).then((res) => res.json())
 
   return (
     <html
@@ -69,6 +74,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       lang={locale}
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className="flex min-h-svh flex-col">
         <ThemeProvider
           attribute="class"
@@ -77,14 +85,14 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <ClientDynamicMain />
+            <ScrollToTop />
+            <Toaster />
             <Header productLinks={categoriesData.data} />
             <main className="flex-1">{children}</main>
             <Footer productLinks={categoriesData.data} />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-B0WJ3M87VD" />
       <Analytics />
     </html>
   )

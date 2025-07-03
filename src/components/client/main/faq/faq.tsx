@@ -1,25 +1,30 @@
 'use client'
-import { FC, useEffect, useRef } from 'react'
+
+import { Item } from './item'
+import UnderlineWave from '@/components/ui/underline-wave'
+
+import { useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/all'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import { Item } from '@/components/client/main/faq/item'
-import UnderlineWave from '@/components/ui/underline-wave'
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
-interface faqProps {
+interface IFaqProps {
   data: IFaq[]
 }
 
-const Faq: FC<faqProps> = ({ data }) => {
+export default function Faq({ data }: IFaqProps) {
   const t = useTranslations('main.faq')
   const faqRef = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutID = setTimeout(() => {
       ScrollTrigger.refresh(true)
     }, 1)
+
+    return () => clearTimeout(timeoutID)
   }, [])
 
   useGSAP(() => {
@@ -76,11 +81,11 @@ const Faq: FC<faqProps> = ({ data }) => {
           <UnderlineWave />
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data?.map((item: IFaq, i) => (
+          {data?.map((item: IFaq, index) => (
             <Item
               ref={(el) => {
                 if (el) {
-                  if (el) faqRef.current[i] = el
+                  if (el) faqRef.current[index] = el
                 }
               }}
               key={item.title}
@@ -93,4 +98,3 @@ const Faq: FC<faqProps> = ({ data }) => {
     </section>
   )
 }
-export default Faq

@@ -1,16 +1,17 @@
 'use client'
-import { useEffect } from 'react'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
 
+import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { Arrow } from '@/components/ui/arrow'
-import Product from '@/components/client/product/product'
+import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
 
+import { useSplideConfig } from '@/hooks/useSplideConfig'
+
 import '@splidejs/react-splide/css'
-import '../styles/slider.css'
+import '@/components/client/styles/slider.css'
 import './product-slider.css'
 
-interface ProductSlider {
+interface IProductSlider {
   products: IProduct[]
   title: string
   message: string
@@ -20,54 +21,8 @@ export default function ProductSlider({
   products,
   title,
   message,
-}: ProductSlider) {
-  useEffect(() => {
-    const target = document.querySelector('.products-slider')
-    if (!target) return
-    const handleResize = () => {
-      let k: number
-      switch (true) {
-        case window.innerWidth >= 1280:
-          k = 35
-          break
-        case window.innerWidth >= 1024:
-          k = 32
-          break
-        case window.innerWidth >= 768:
-          k = 28
-          break
-        case window.innerWidth < 768:
-          k = 23
-          break
-        default:
-          k = 30
-      }
-      const x = products.length * k
-      const prev = document.querySelector(
-        '.products-slider .splide__arrow--prev.custom__arrow-prev',
-      ) as HTMLElement
-      const next = document.querySelector(
-        '.products-slider .splide__arrow--next.custom__arrow-next',
-      ) as HTMLElement
-
-      if (prev && next) {
-        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
-        next.style.setProperty('--tw-arrow-translate', `${x}px`)
-      }
-    }
-
-    const resizeObserver = new ResizeObserver(handleResize)
-
-    if (target) {
-      resizeObserver.observe(target)
-    }
-
-    return () => {
-      if (target) {
-        resizeObserver.unobserve(target)
-      }
-    }
-  }, [products])
+}: IProductSlider) {
+  useSplideConfig('.products-slider', products)
 
   const splideOptions = {
     arrowPath: Arrow(),

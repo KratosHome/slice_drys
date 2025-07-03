@@ -1,12 +1,14 @@
 'use client'
-import * as React from 'react'
-import Link, { LinkProps } from 'next/link'
-import { MoreHorizontal } from 'lucide-react'
-import { cn } from '@/utils/cn'
-import { ButtonProps, buttonVariants } from '@/components/ui/button'
-import { motion } from 'framer-motion'
 
-const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
+import Link, { type LinkProps } from 'next/link'
+import { MoreHorizontal } from 'lucide-react'
+import { type IButtonProps, buttonVariants } from '@/components/ui/button'
+
+import { type ComponentProps, forwardRef } from 'react'
+import { cn } from '@/utils/cn'
+import { m, LazyMotion, domAnimation } from 'framer-motion'
+
+const Pagination = ({ className, ...props }: ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
@@ -14,40 +16,42 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
     {...props}
   />
 )
+
 Pagination.displayName = 'Pagination'
 
-const PaginationContent = React.forwardRef<
-  HTMLUListElement,
-  React.ComponentProps<'ul'>
->(({ className, ...props }, ref) => (
-  <ul
-    ref={ref}
-    className={cn(
-      'flex flex-row flex-wrap items-center gap-2 text-base sm:gap-3 sm:text-lg',
-      className,
-    )}
-    {...props}
-  />
-))
+const PaginationContent = forwardRef<HTMLUListElement, ComponentProps<'ul'>>(
+  ({ className, ...props }, ref) => (
+    <ul
+      ref={ref}
+      className={cn(
+        'flex flex-row flex-wrap items-center gap-2 text-base sm:gap-3 sm:text-lg',
+        className,
+      )}
+      {...props}
+    />
+  ),
+)
+
 PaginationContent.displayName = 'PaginationContent'
 
-const PaginationItem = React.forwardRef<
-  HTMLLIElement,
-  React.ComponentProps<'li'>
->(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn('cursor-pointer', className)} {...props} />
-))
+const PaginationItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
+  ({ className, ...props }, ref) => (
+    <li ref={ref} className={cn('cursor-pointer', className)} {...props} />
+  ),
+)
+
 PaginationItem.displayName = 'PaginationItem'
 
 type PaginationLinkProps = {
   isActive?: boolean
   disabled?: boolean
   label?: string
-} & Pick<ButtonProps, 'size'> &
-  React.ComponentProps<'a'> &
+} & Pick<IButtonProps, 'size'> &
+  ComponentProps<'a'> &
   LinkProps
 
-const MotionLink = motion.create(Link)
+const MotionLink = m.create(Link)
+
 const PaginationLink = ({
   className,
   isActive,
@@ -71,33 +75,37 @@ const PaginationLink = ({
   }
 
   return (
-    <MotionLink
-      variants={variants}
-      initial="initial"
-      whileHover="hover"
-      whileTap="tap"
-      className={cn(
-        buttonVariants({ variant: isActive ? 'none' : 'none' }),
-        'font-rubik relative flex items-center justify-center',
-        className,
-      )}
-      href={href}
-      onClick={onClick}
-      aria-label={label}
-    >
-      {props.children}
-      {isActive && (
-        <svg
-          role="img"
-          aria-label={'active page'}
-          className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
-        >
-          <use href="/icons/sprite.svg#o" />
-        </svg>
-      )}
-    </MotionLink>
+    <LazyMotion features={domAnimation}>
+      <MotionLink
+        variants={variants}
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
+        className={cn(
+          buttonVariants({ variant: isActive ? 'none' : 'none' }),
+          'font-rubik relative flex items-center justify-center',
+          className,
+        )}
+        href={href}
+        onClick={onClick}
+        aria-label={label}
+      >
+        {props.children}
+
+        {isActive ? (
+          <svg
+            role="img"
+            aria-label={'active page'}
+            className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
+          >
+            <use href="/icons/sprite.svg#o" />
+          </svg>
+        ) : null}
+      </MotionLink>
+    </LazyMotion>
   )
 }
+
 PaginationLink.displayName = 'PaginationLink'
 
 const PaginationPrevious = ({
@@ -105,7 +113,7 @@ const PaginationPrevious = ({
   disabled,
   label,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     label={label}
     size="default"
@@ -119,6 +127,7 @@ const PaginationPrevious = ({
     {'<'}
   </PaginationLink>
 )
+
 PaginationPrevious.displayName = 'PaginationPrevious'
 
 const PaginationNext = ({
@@ -126,7 +135,7 @@ const PaginationNext = ({
   disabled,
   label,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label={label}
     aria-disabled={disabled}
@@ -141,12 +150,13 @@ const PaginationNext = ({
     {'>'}
   </PaginationLink>
 )
+
 PaginationNext.displayName = 'PaginationNext'
 
 const PaginationEllipsis = ({
   className,
   ...props
-}: React.ComponentProps<'span'>) => (
+}: ComponentProps<'span'>) => (
   <span
     aria-hidden
     className={cn('flex h-9 w-9 items-center justify-center', className)}
@@ -155,6 +165,7 @@ const PaginationEllipsis = ({
     <MoreHorizontal className="h-4 w-4" />
   </span>
 )
+
 PaginationEllipsis.displayName = 'PaginationEllipsis'
 
 export {

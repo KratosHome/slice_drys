@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-import CartProductCard from '../header/small-cart/cart-product-card'
+import CartProductCard from '@/components/client/cart-product-card'
 import { useCartStore } from '@/store/cart-store'
 
 export default function CartList() {
@@ -24,7 +24,7 @@ export default function CartList() {
             </span>
 
             <span>
-              {t('itemCount', {
+              {t('item-count', {
                 count: totalProducts,
               })}
             </span>
@@ -34,7 +34,7 @@ export default function CartList() {
               className="before:bg-foreground relative inline-block cursor-pointer select-none before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-left before:scale-x-0 before:opacity-100 before:transition-transform before:duration-300 before:ease-in-out hover:before:scale-x-100"
               onClick={() => clearCart()}
             >
-              {t('clear_cart')}
+              {t('clear-cart')}
             </span>
           </div>
 

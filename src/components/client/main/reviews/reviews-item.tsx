@@ -1,8 +1,9 @@
-import { forwardRef } from 'react'
+'use client'
 
+import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
 
-interface ReviewsProps {
+interface IReviewsItemProps {
   text: string
   author: string
   variant: string
@@ -12,7 +13,7 @@ interface ReviewsProps {
 const quotesStyle =
   'after:leading-none after:block before:block before:leading-none relative before:absolute before:font-rubik before:left-0 before:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] before:content-["“"] after:absolute after:left-full after:bottom-0 after:font-rubik after:text-[clamp(40px,calc(40px+56*(100vw-375px)/1065),96px)] after:content-["”"] after:text-foreground before:text-foreground dark:before:text-foreground dark:after:text-foreground'
 
-export const ReviewsItem = forwardRef<HTMLLIElement, ReviewsProps>(
+export const ReviewsItem = forwardRef<HTMLLIElement, IReviewsItemProps>(
   function ReviewsItem({ text, author, variant, id }, ref) {
     return (
       <li
@@ -33,7 +34,6 @@ export const ReviewsItem = forwardRef<HTMLLIElement, ReviewsProps>(
         >
           <div>
             <p className="mb-[10px] font-bold">{author}</p>
-
             <p>{text}</p>
           </div>
           <span

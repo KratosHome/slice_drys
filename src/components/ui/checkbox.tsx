@@ -1,3 +1,5 @@
+'use client'
+
 import { CheckIcon } from '@radix-ui/react-icons'
 import { Root, Indicator } from '@radix-ui/react-checkbox'
 

@@ -14,13 +14,7 @@ import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
-
-const ProductSlider = dynamic(
-  () => import('@/components/client/product-slider/product-slider'),
-  {
-    loading: () => <Loader />,
-  },
-)
+import ProductSlider from '@/components/client/product-slider'
 
 const Delivery = dynamic(
   () => import('@/components/client/promo-banner/delivery'),
@@ -154,8 +148,8 @@ export default async function ProductPage({ params }: Props) {
         />
         <ProductSlider
           products={productSliderData.data}
-          title={t('also_buy')}
-          message={t('something_that_will_come_handy_along_with_your_choice')}
+          title={t('also-buy')}
+          message={t('something-that-will-come-handy-along-with-your-choice')}
         />
         <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />

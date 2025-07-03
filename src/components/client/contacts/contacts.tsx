@@ -26,21 +26,21 @@ const Contacts = async () => {
             <Image
               src="/images/Вag-Logo.webp"
               fill
-              alt={t('hand_bag')}
+              alt={t('hand-bag')}
               sizes="(max-width: 300px) 100vw, 50vw"
               className="bottom-0 max-h-[143px] max-w-[160px] md:max-h-[400px] md:max-w-[390px]"
             />
           </div>
         </div>
         <div className="ml-auto w-full text-base shadow-[16px_-16px_0px_#A90909] sm:max-w-[75%] md:mt-[99px] md:mr-8 md:text-xl lg:max-w-none">
-          <ContactInfo block_title={t('information_title')} />
+          <ContactInfo block_title={t('information-title')} />
         </div>
       </div>
       <ContactForm
         button={t('button')}
-        phone_field_description={t('phone_field_description')}
+        phone_field_description={t('phone-field-description')}
         placeholder={t('placeholder')}
-        form_description={t('form_description')}
+        form_description={t('form-description')}
       />
     </section>
   )

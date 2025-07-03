@@ -38,7 +38,7 @@ export default function DeliveryProvider({
         rules={{
           required: {
             value: true,
-            message: t('validation_required'),
+            message: t('validation-required'),
           },
         }}
         defaultValues={defaultValues?.map((city) =>
@@ -46,7 +46,7 @@ export default function DeliveryProvider({
         )}
         control={control}
         onSelect={handleCitySelect}
-        placeholder={t('city_placeholder')}
+        placeholder={t('city-placeholder')}
       />
       {deliveryInfo?.city?.label && (
         <Combobox
@@ -54,12 +54,12 @@ export default function DeliveryProvider({
           rules={{
             required: {
               value: true,
-              message: t('validation_required'),
+              message: t('validation-required'),
             },
           }}
           control={control}
           onSelect={handleBranchSelect}
-          placeholder={t('branch_placeholder', {
+          placeholder={t('branch-placeholder', {
             type: deliveryInfo?.deliveryMethod || '',
           })}
         />

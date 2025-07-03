@@ -1,22 +1,23 @@
 'use client'
-import { FC, useEffect, useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
-
-import Socials from '@/components/ui/socials'
 
 import { pageLinks } from '@/data/main/nav-links'
+
+import Socials from '@/components/ui/socials'
+import NumberCall from '@/components/client/number-call'
+import { TransitionLink } from '@/components/client/transition-link'
+
+import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { cn } from '@/utils/cn'
-import NumberCall from '@/components/client/number-call/number-call'
-import { TransitionLink } from '@/components/client/transition-link/transition-link'
 
 const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
 
-interface FooterP {
+interface IFooterProps {
   productLinks: ICategory[]
 }
 
-const Footer: FC<FooterP> = ({ productLinks }) => {
+export default function Footer({ productLinks }: IFooterProps) {
   const locale = useLocale() as ILocale
   const t = useTranslations('main.footer')
 
@@ -27,7 +28,10 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
   }, [])
 
   return (
-    <footer className="bg-foreground text-background dark:bg-background dark:text-foreground">
+    <footer
+      className="bg-foreground text-background dark:bg-background dark:text-foreground"
+      aria-labelledby="footer"
+    >
       <nav className="border-background dark:border-foreground relative mx-auto grid w-full max-w-[1440px] grid-cols-3 px-[clamp(20px,calc(20px+206*(100vw-768px)/672),226px)] pt-[40px] pb-[26px] md:pt-[60px] md:pb-[33px] dark:border-t dark:border-dashed">
         <ul className="hidden flex-col gap-[10px] justify-self-start md:flex">
           {pageLinks[locale].slice(0, 2)?.map((link: ILink) => (
@@ -47,14 +51,10 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
-
-        <div className="self-stretch justify-self-center">
-          <TransitionLink
-            href={`/${locale}`}
-            className="block h-full text-white"
-          >
+        <div className="max-w-24 self-stretch justify-self-center">
+          <TransitionLink href={`/${locale}`}>
             <svg
-              className="h-[100px] w-auto! px-5 transition-transform duration-300 ease-in-out md:px-0"
+              className="h-[100px] w-[6rem] px-5 md:px-0"
               role="img"
               aria-label={t('logo-slice-drys')}
             >
@@ -62,7 +62,6 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </svg>
           </TransitionLink>
         </div>
-
         <ul className="flex flex-col gap-[19px] justify-self-end text-end md:hidden">
           {pageLinks[locale].slice(1, 2)?.map((link: ILink) => (
             <li
@@ -93,7 +92,6 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
             </li>
           ))}
         </ul>
-
         <div className="order-3 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] self-end md:order-none md:col-start-1 md:col-end-2 md:mt-[10px] md:mb-[35px] md:justify-start">
           <svg width={49} height={50} role="img" aria-label={t('logo-visa')}>
             <use href="/icons/sprite.svg#visa" />
@@ -140,16 +138,13 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
           <span>{t('CTA-socials')}</span>
           <span className="inline-block rotate-90">&gt;</span>
         </div>
-
         <NumberCall
           className="order-2 col-start-1 col-end-2 mt-[24px] justify-self-start text-nowrap md:order-none md:mt-[18px]"
           variant="light"
         />
-
         <div className="order-1 col-start-1 col-end-4 mt-[24px] flex justify-center gap-[20px] text-center md:order-none md:col-start-2 md:col-end-3 md:mt-[18px]">
           <Socials className="text-background dark:text-foreground" size={33} />
         </div>
-
         <div className="order-2 col-start-3 col-end-4 mt-[24px] justify-self-end text-end text-nowrap uppercase md:order-none md:mt-[18px]">
           &copy; {year ?? '—'} SLICE&DRY’S
         </div>
@@ -157,5 +152,3 @@ const Footer: FC<FooterP> = ({ productLinks }) => {
     </footer>
   )
 }
-
-export default Footer

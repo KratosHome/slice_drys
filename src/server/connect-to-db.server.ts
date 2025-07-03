@@ -1,14 +1,14 @@
 'use server'
+
 import mongoose from 'mongoose'
 
-interface Connection {
+interface IConnection {
   isConnected?: number
 }
 
-const connection: Connection = {}
+const connection: IConnection = {}
 
 export const connectToDbServer = async (): Promise<void> => {
-  'use server'
   try {
     if (connection.isConnected) {
       console.warn('Using existing connection')
