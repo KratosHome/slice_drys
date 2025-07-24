@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { fetchTags } from '@/data/fetch-tags'
+import { fetchTags, validationTime } from '@/data/fetch-tags'
 
 import Header from '@/components/client/header'
 import Footer from '@/components/client/footer'
@@ -64,7 +64,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
     `${SITE_URL}/api/categories`,
     {
       cache: 'force-cache',
-      next: { tags: [`${fetchTags.menu}`] },
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.menu}`] },
     },
   ).then((res) => res.json())
 

@@ -12,7 +12,7 @@ import { ProductInfo } from '@/components/client/product-page/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
-import { fetchTags } from '@/data/fetch-tags'
+import { fetchTags, validationTime } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
 import ProductSlider from '@/components/client/product-slider'
 
@@ -34,7 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const productData = await fetch(
     `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
+    {
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.product}`] },
+    },
   ).then((res) => res.json())
 
   if (productData.success === false) {
@@ -112,12 +114,22 @@ export default async function ProductPage({ params }: Props) {
   const [productData, productSliderData] = await Promise.all([
     fetch(
       `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-      { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
+      {
+        next: {
+          revalidate: validationTime.day,
+          tags: [`${fetchTags.product}`],
+        },
+      },
     ).then((res) => res.json()),
 
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
-      { cache: 'force-cache', next: { tags: [`${fetchTags.product}`] } },
+      {
+        next: {
+          revalidate: validationTime.day,
+          tags: [`${fetchTags.product}`],
+        },
+      },
     ).then((res) => res.json()),
   ])
 

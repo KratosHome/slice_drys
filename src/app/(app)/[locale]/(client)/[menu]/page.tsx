@@ -29,7 +29,7 @@ import { getPaginationRange } from '@/utils/get-pagination-range'
 import { locales } from '@/data/locales'
 import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import NotFoundPage from '@/components/not-found'
-import { fetchTags } from '@/data/fetch-tags'
+import { fetchTags, validationTime } from '@/data/fetch-tags'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 
@@ -53,7 +53,9 @@ export async function generateMetadata({
 
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
-    { cache: 'force-cache', next: { tags: [`${fetchTags.products}`] } },
+    {
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.products}`] },
+    },
   ).then((res) => res.json())
 
   if (currentCategories.success === false) {
@@ -143,13 +145,17 @@ export default async function MenuPage(props: {
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.products}`] },
+        next: {
+          revalidate: validationTime.day,
+          tags: [`${fetchTags.products}`],
+        },
       }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        cache: 'force-cache',
-        next: { tags: [`${fetchTags.products}`] },
+        next: {
+          revalidate: validationTime.day,
+          tags: [`${fetchTags.products}`],
+        },
       }).then((res) => res.json()),
 
       fetch(

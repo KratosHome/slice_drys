@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
-import { fetchTags } from '@/data/fetch-tags'
+import { fetchTags, validationTime } from '@/data/fetch-tags'
 import { instaData } from '@/data/main/insta-data'
 
 import Hero from '@/components/client/main/hero'
@@ -48,18 +48,21 @@ export default async function HomePage(props: {
       `${SITE_URL}/api/products/get-products-slider-main?locale=${locale}`,
       {
         cache: 'force-cache',
-        next: { tags: [`${fetchTags.products}`] },
+        next: {
+          revalidate: validationTime.day,
+          tags: [`${fetchTags.products}`],
+        },
       },
     ).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/categories`, {
       cache: 'force-cache',
-      next: { tags: [`${fetchTags.menu}`] },
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/posts?locale=${locale}&page=1&limit=5`, {
       cache: 'force-cache',
-      next: { tags: [`${fetchTags.posts}`] },
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
   ])
 

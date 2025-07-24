@@ -6,3 +6,7 @@ export const fetchTags = {
   post: 'post',
   helpMain: 'helpMain',
 } as const
+
+export const validationTime = {
+  day: 86400,
+}

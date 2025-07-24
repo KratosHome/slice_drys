@@ -28,7 +28,7 @@ import { cn } from '@/utils/cn'
 import { blogMetaData } from '@/data/blog/blog-meta-data'
 import { locales } from '@/data/locales'
 import NotFoundPage from '@/components/not-found'
-import { fetchTags } from '@/data/fetch-tags'
+import { fetchTags, validationTime } from '@/data/fetch-tags'
 import ToTheTop from '@/components/ui/to-the-top'
 
 type PageProps = {
@@ -111,8 +111,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const postsData = await fetch(
     `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
     {
-      cache: 'force-cache',
-      next: { tags: [`${fetchTags.posts}`] },
+      next: { revalidate: validationTime.day, tags: [`${fetchTags.posts}`] },
     },
   ).then((res) => res.json())
 
