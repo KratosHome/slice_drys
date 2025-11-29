@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 
 const SliderWithThumbnails = ({ img }: { img: string }) => {
   return (
@@ -16,12 +16,12 @@ const SliderWithThumbnails = ({ img }: { img: string }) => {
           sizes="(min-width: 1024px) 344px, 100vw"
           quality={70}
           style={{
-            objectFit: 'contain',
+            objectFit: "contain",
           }}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SliderWithThumbnails
+export default SliderWithThumbnails;
