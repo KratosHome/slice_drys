@@ -11,7 +11,7 @@ npm i
 # or
 yarn
 ```
-
+// 
 If you have an error during installation use the command:
 
 ```bash
