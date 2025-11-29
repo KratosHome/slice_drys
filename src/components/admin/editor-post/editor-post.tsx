@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   AlertDialog,
@@ -8,61 +8,62 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { convertToBase64 } from '@/utils/convert-to-base-64'
-import Image from 'next/image'
-import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
+} from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { convertToBase64 } from "@/utils/convert-to-base-64";
+import Image from "next/image";
+import QuillEditor from "@/components/admin/quill-editor/d-quill-editor";
 
-import { useState, useEffect, type ChangeEvent } from 'react'
-import { useForm } from 'react-hook-form'
-import { createPost } from '@/server/posts/create-post.server'
-import { editPostServer } from '@/server/posts/edit-post.server'
-import { deletePost } from '@/server/posts/delete-post.server'
+import { useState, useEffect, type ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
+import { createPost } from "@/server/posts/create-post.server";
+import { editPostServer } from "@/server/posts/edit-post.server";
+import { deletePost } from "@/server/posts/delete-post.server";
 
-import Spinner from '@/components/ui/spinner'
+import Spinner from "@/components/ui/spinner";
 
-import { useToast } from '@/hooks/useToast'
-import { toSlug } from '@/utils/to-slug'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useToast } from "@/hooks/useToast";
+import { toSlug } from "@/utils/to-slug";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface ICratePost {
-  buttonTitle: string
-  post?: IPostLocal
+  buttonTitle: string;
+  post?: IPostLocal;
 }
 
 const EditorPost = ({ buttonTitle, post }: ICratePost) => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] =
+    useState<boolean>(false);
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [contentError, setContentError] = useState<string | null>(null)
+  const [contentError, setContentError] = useState<string | null>(null);
 
-  const [slug, setSlug] = useState<string>(post?.slug || '')
+  const [slug, setSlug] = useState<string>(post?.slug || "");
 
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [postContent, setPostContent] = useState<ILocalizedString>({
-    en: post?.content?.en ?? '',
-    uk: post?.content?.uk ?? '',
-  })
+    en: post?.content?.en ?? "",
+    uk: post?.content?.uk ?? "",
+  });
 
   const [quillEditorContent, setQuillEditorContent] = useState<string>(
     postContent.en,
-  )
-  const [quillEditorLanguage, setQuillEditorLanguage] = useState<'en' | 'uk'>(
-    'en',
-  )
+  );
+  const [quillEditorLanguage, setQuillEditorLanguage] = useState<"en" | "uk">(
+    "en",
+  );
 
   const {
     register,
@@ -71,119 +72,119 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
     formState: { errors },
   } = useForm<IPostLocal>({
     defaultValues: {
-      content: { en: '', uk: '' },
-      title: { en: '', uk: '' },
-      img: '',
+      content: { en: "", uk: "" },
+      title: { en: "", uk: "" },
+      img: "",
       slug: post?.slug,
-      author: { en: '', uk: '' },
-      keywords: { en: '', uk: '' },
-      metaDescription: { en: '', uk: '' },
+      author: { en: "", uk: "" },
+      keywords: { en: "", uk: "" },
+      metaDescription: { en: "", uk: "" },
     },
-  })
+  });
 
   useEffect(() => {
-    let url: string | null = null
+    let url: string | null = null;
 
     if (imageFile) {
-      url = URL.createObjectURL(imageFile)
-      setImagePreviewUrl(url)
+      url = URL.createObjectURL(imageFile);
+      setImagePreviewUrl(url);
     } else if (post?.img) {
-      setImagePreviewUrl(post.img)
+      setImagePreviewUrl(post.img);
     } else {
-      setImagePreviewUrl(null)
+      setImagePreviewUrl(null);
     }
-  }, [imageFile, post?.img])
+  }, [imageFile, post?.img]);
 
   useEffect(() => {
-    setValue('content', postContent)
+    setValue("content", postContent);
     if (post) {
-      setValue('slug', slug)
-      setValue('img', post.img)
-      setValue('title', post.title)
-      setValue('author', post.author)
-      setValue('metaDescription', post.metaDescription)
-      setValue('keywords', post.keywords)
+      setValue("slug", slug);
+      setValue("img", post.img);
+      setValue("title", post.title);
+      setValue("author", post.author);
+      setValue("metaDescription", post.metaDescription);
+      setValue("keywords", post.keywords);
     } else if (!post) {
-      setValue('slug', slug)
+      setValue("slug", slug);
     }
-  }, [postContent, setValue, post, slug])
+  }, [postContent, setValue, post, slug]);
 
   const onSubmit = async (data: IPostLocal) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
-    if (data.content) data.content[quillEditorLanguage] = quillEditorContent
+    if (data.content) data.content[quillEditorLanguage] = quillEditorContent;
 
-    const image: string = imageFile ? await convertToBase64(imageFile) : ''
+    const image: string = imageFile ? await convertToBase64(imageFile) : "";
 
     if (!data.content.en || !data.content.uk) {
-      setContentError('Контент на обох мовах є обов’язковим')
+      setContentError("Контент на обох мовах є обов’язковим");
 
-      return
+      return;
     } else {
-      setContentError(null)
+      setContentError(null);
 
-      let response: IResponse
+      let response: IResponse;
 
       if (post?._id) {
-        response = await editPostServer(post._id, data, image)
+        response = await editPostServer(post._id, data, image);
       } else {
-        response = await createPost(data, image)
+        response = await createPost(data, image);
       }
 
-      setIsLoading(false)
+      setIsLoading(false);
 
       if (response.success) {
-        setIsOpen(false)
+        setIsOpen(false);
 
         toast({
           duration: 3000,
-          title: 'Success',
-        })
+          title: "Success",
+        });
       } else {
         toast({
-          variant: 'destructive',
-          title: 'Error',
+          variant: "destructive",
+          title: "Error",
           description: response.message,
-        })
+        });
       }
     }
 
-    router.refresh()
-  }
+    router.refresh();
+  };
 
   const handleRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (event.target.value === 'en' && event.target.checked) {
-      setQuillEditorLanguage(event.target.value)
-      setPostContent({ ...postContent, uk: quillEditorContent })
-      setQuillEditorContent(postContent.en)
-    } else if (event.target.value === 'uk' && event.target.checked) {
-      setQuillEditorLanguage(event.target.value)
-      setPostContent({ ...postContent, en: quillEditorContent })
-      setQuillEditorContent(postContent.uk)
+    if (event.target.value === "en" && event.target.checked) {
+      setQuillEditorLanguage(event.target.value);
+      setPostContent({ ...postContent, uk: quillEditorContent });
+      setQuillEditorContent(postContent.en);
+    } else if (event.target.value === "uk" && event.target.checked) {
+      setQuillEditorLanguage(event.target.value);
+      setPostContent({ ...postContent, en: quillEditorContent });
+      setQuillEditorContent(postContent.uk);
     }
-  }
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const file: File | undefined = event.target.files?.[0]
+    const file: File | undefined = event.target.files?.[0];
 
-    if (file) setImageFile(file)
-  }
+    if (file) setImageFile(file);
+  };
 
   const handleDelete = async () => {
     if (!post || !post._id) {
-      return toast({ title: 'Post is not defined' })
+      return toast({ title: "Post is not defined" });
     }
 
-    const result: IResponse = await deletePost(post._id)
+    const result: IResponse = await deletePost(post._id);
 
-    if (result.success) setIsConfirmDeleteOpen(false)
+    if (result.success) setIsConfirmDeleteOpen(false);
 
     toast({
       title: result.message,
-    })
+    });
 
-    router.refresh()
-  }
+    router.refresh();
+  };
 
   const ConfirmDeletePopup = () => (
     <AlertDialog
@@ -215,7 +216,7 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 
   return (
     <div>
@@ -268,20 +269,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                     <Input
                       id="title-uk"
                       placeholder="..."
-                      {...register('title.uk', {
+                      {...register("title.uk", {
                         minLength: {
                           value: 30,
-                          message: 'Мінімумум 30 символів',
+                          message: "Мінімумум 30 символів",
                         },
                         maxLength: {
                           value: 60,
-                          message: 'Максимум 60 символів',
+                          message: "Максимум 60 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.title) {
-                          post.title.uk = event.target.value
+                          post.title.uk = event.target.value;
                         }
                       }}
                     />
@@ -300,21 +301,21 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                       id="title-en"
                       maxLength={255}
                       placeholder="..."
-                      {...register('title.en', {
+                      {...register("title.en", {
                         minLength: {
                           value: 30,
-                          message: 'Мінімумум 30 символів',
+                          message: "Мінімумум 30 символів",
                         },
                         maxLength: {
                           value: 60,
-                          message: 'Максимум 60 символів',
+                          message: "Максимум 60 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                         onChange: (event) => {
                           if (post && post.title) {
-                            post.title.en = event.target.value
+                            post.title.en = event.target.value;
                           }
-                          setSlug(toSlug(event.target.value))
+                          setSlug(toSlug(event.target.value));
                         },
                       })}
                     />
@@ -368,10 +369,10 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                     value={slug}
                     id="slug"
                     maxLength={255}
-                    {...register('slug', {
-                      required: 'Це поле є обов’язковим',
+                    {...register("slug", {
+                      required: "Це поле є обов’язковим",
                       onChange: (event) => {
-                        setSlug(event.target.value)
+                        setSlug(event.target.value);
                       },
                     })}
                   />
@@ -387,20 +388,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="author-uk"
-                      {...register('author.uk', {
+                      {...register("author.uk", {
                         minLength: {
                           value: 3,
-                          message: 'Мінімум 3 символи',
+                          message: "Мінімум 3 символи",
                         },
                         maxLength: {
                           value: 50,
-                          message: 'Максимум 50 символів',
+                          message: "Максимум 50 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.author) {
-                          post.author.uk = event.target.value
+                          post.author.uk = event.target.value;
                         }
                       }}
                     />
@@ -417,20 +418,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="author-en"
-                      {...register('author.en', {
+                      {...register("author.en", {
                         minLength: {
                           value: 3,
-                          message: 'Мінімум 3 символи',
+                          message: "Мінімум 3 символи",
                         },
                         maxLength: {
                           value: 50,
-                          message: 'Максимум 50 символів',
+                          message: "Максимум 50 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.author) {
-                          post.author.en = event.target.value
+                          post.author.en = event.target.value;
                         }
                       }}
                     />
@@ -449,20 +450,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="keywords-uk"
-                      {...register('keywords.uk', {
+                      {...register("keywords.uk", {
                         minLength: {
                           value: 5,
-                          message: 'Мінімум 5 символів',
+                          message: "Мінімум 5 символів",
                         },
                         maxLength: {
                           value: 255,
-                          message: 'Максимум 255 символів',
+                          message: "Максимум 255 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.keywords) {
-                          post.keywords.uk = event.target.value
+                          post.keywords.uk = event.target.value;
                         }
                       }}
                     />
@@ -479,20 +480,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="keywords-en"
-                      {...register('keywords.en', {
+                      {...register("keywords.en", {
                         minLength: {
                           value: 5,
-                          message: 'Мінімум 5 символів',
+                          message: "Мінімум 5 символів",
                         },
                         maxLength: {
                           value: 255,
-                          message: 'Максимум 255 символів',
+                          message: "Максимум 255 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.keywords) {
-                          post.keywords.en = event.target.value
+                          post.keywords.en = event.target.value;
                         }
                       }}
                     />
@@ -511,20 +512,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="meta-description-uk"
-                      {...register('metaDescription.uk', {
+                      {...register("metaDescription.uk", {
                         minLength: {
                           value: 50,
-                          message: 'Мінімум 50 символів',
+                          message: "Мінімум 50 символів",
                         },
                         maxLength: {
                           value: 160,
-                          message: 'Максимум 160 символів',
+                          message: "Максимум 160 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.metaDescription) {
-                          post.metaDescription.uk = event.target.value
+                          post.metaDescription.uk = event.target.value;
                         }
                       }}
                     />
@@ -541,20 +542,20 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
 
                     <Input
                       id="meta-description-en"
-                      {...register('metaDescription.en', {
+                      {...register("metaDescription.en", {
                         minLength: {
                           value: 50,
-                          message: 'Мінімум 50 символів',
+                          message: "Мінімум 50 символів",
                         },
                         maxLength: {
                           value: 160,
-                          message: 'Максимум 160 символів',
+                          message: "Максимум 160 символів",
                         },
-                        required: 'Це поле є обов’язковим',
+                        required: "Це поле є обов’язковим",
                       })}
                       onChange={(event) => {
                         if (post && post.metaDescription) {
-                          post.metaDescription.en = event.target.value
+                          post.metaDescription.en = event.target.value;
                         }
                       }}
                     />
@@ -601,7 +602,7 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
-}
+  );
+};
 
-export default EditorPost
+export default EditorPost;

@@ -1,46 +1,46 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
+import Image from "next/image";
 
-import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP);
 
 const images: string[] = [
-  '/wholesale/wholesale1.webp',
-  '/wholesale/wholesale2.webp',
-  '/wholesale/wholesale3.webp',
-  '/wholesale/wholesale4.webp',
-  '/wholesale/wholesale5.webp',
-]
+  "/wholesale/wholesale1.webp",
+  "/wholesale/wholesale2.webp",
+  "/wholesale/wholesale3.webp",
+  "/wholesale/wholesale4.webp",
+  "/wholesale/wholesale5.webp",
+];
 
 export default function LoadingPage() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({ repeat: -1, ease: 'linear' })
+    const tl = gsap.timeline({ repeat: -1, ease: "linear" });
 
     images.forEach((_, index) => {
-      const angle: number = (360 / images.length) * index
+      const angle: number = (360 / images.length) * index;
 
       tl.to(
         `.image-${index}`,
         {
-          rotation: '+=360',
+          rotation: "+=360",
           duration: 10,
-          transformOrigin: 'center -120px',
-          ease: 'linear',
+          transformOrigin: "center -120px",
+          ease: "linear",
         },
         0,
-      )
+      );
 
       gsap.set(`.image-${index}`, {
         rotation: angle,
-      })
-    })
-  })
+      });
+    });
+  });
 
   return (
     <div
@@ -59,7 +59,7 @@ export default function LoadingPage() {
         <div
           key={src}
           className={`absolute image-${index}`}
-          style={{ top: '50%', left: '50%' }}
+          style={{ top: "50%", left: "50%" }}
         >
           <Image
             src={src}
@@ -71,5 +71,5 @@ export default function LoadingPage() {
         </div>
       ))}
     </div>
-  )
+  );
 }

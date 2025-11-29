@@ -1,13 +1,13 @@
-'use server'
+"use server";
 
-import { Post } from '@/server/posts/post-schema.server'
+import { Post } from "@/server/posts/post-schema.server";
 
-import { connectToDbServer } from '@/server/connect-to-db.server'
+import { connectToDbServer } from "@/server/connect-to-db.server";
 
 interface IGetPostsOptions {
-  locale: ILocale
-  page: number
-  limit: number
+  locale: ILocale;
+  page: number;
+  limit: number;
 }
 
 const getSelectedFields = (locale: ILocale) => ({
@@ -21,7 +21,7 @@ const getSelectedFields = (locale: ILocale) => ({
   visited: 1,
   updatedAt: 1,
   createdAt: 1,
-})
+});
 
 const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
   _id: post._id?.toString(),
@@ -35,13 +35,13 @@ const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
   visited: post.visited,
   updatedAt: post.updatedAt,
   createdAt: post.createdAt,
-})
+});
 
 export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
   try {
-    await connectToDbServer()
+    await connectToDbServer();
 
-    const skip: number = (page - 1) * limit
+    const skip: number = (page - 1) * limit;
 
     const [posts, totalPostsCount] = await Promise.all([
       Post.find({}, getSelectedFields(locale))
@@ -50,7 +50,7 @@ export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
         .limit(limit)
         .lean<IPostLocal[]>(),
       Post.countDocuments(),
-    ])
+    ]);
 
     return {
       postsLocalized: posts.map((post: IPostLocal) => formatPost(post, locale)),
@@ -58,8 +58,8 @@ export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
       totalPages: Math.ceil(totalPostsCount / limit),
       totalPosts: totalPostsCount,
       success: true,
-      message: 'Posts retrieved',
-    }
+      message: "Posts retrieved",
+    };
   } catch (error) {
     return {
       success: false,
@@ -67,23 +67,23 @@ export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
       postAll: [],
       post: [],
       totalPosts: 0,
-    }
+    };
   }
 }
 
 interface IGetAllPostsOptions {
-  locale: ILocale
+  locale: ILocale;
 }
 
 export async function getAllPosts({
   locale,
 }: IGetAllPostsOptions): Promise<IGetPostsAdmin> {
   try {
-    await connectToDbServer()
+    await connectToDbServer();
 
     const allPosts = await Post.find()
       .sort({ createdAt: -1 })
-      .lean<IPostLocal[]>()
+      .lean<IPostLocal[]>();
 
     return {
       success: true,
@@ -94,27 +94,27 @@ export async function getAllPosts({
         ...post,
         _id: post._id?.toString(),
       })),
-      message: 'Posts retrieved',
-    }
+      message: "Posts retrieved",
+    };
   } catch (error) {
     return {
       success: false,
       message: `Can't retrieve posts ${JSON.stringify(error, null, 2)}`,
       postsAll: [],
       postsLocalized: [],
-    }
+    };
   }
 }
 
 interface IGetPostOptions {
-  locale: ILocale
-  slug: string
-  isVisited?: boolean
+  locale: ILocale;
+  slug: string;
+  isVisited?: boolean;
 }
 
 export async function getPost({ locale, slug, isVisited }: IGetPostOptions) {
   try {
-    await connectToDbServer()
+    await connectToDbServer();
 
     const post: IPostLocal | null = isVisited
       ? ((await Post.findOneAndUpdate(
@@ -127,16 +127,16 @@ export async function getPost({ locale, slug, isVisited }: IGetPostOptions) {
       : ((await Post.findOne(
           { slug },
           getSelectedFields(locale),
-        ).lean()) as IPostLocal | null)
+        ).lean()) as IPostLocal | null);
 
-    if (!post) return { success: false, post: [], message: 'Post not found' }
+    if (!post) return { success: false, post: [], message: "Post not found" };
 
     return {
       success: true,
       post: [formatPost(post, locale)],
       totalPosts: 0,
-      message: 'Post retrieved',
-    }
+      message: "Post retrieved",
+    };
   } catch (error) {
     return {
       success: false,
@@ -144,6 +144,6 @@ export async function getPost({ locale, slug, isVisited }: IGetPostOptions) {
       post: [],
       totalPosts: 0,
       message: `Can't retrieve post ${JSON.stringify(error, null, 2)}`,
-    }
+    };
   }
 }

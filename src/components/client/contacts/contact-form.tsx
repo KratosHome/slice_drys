@@ -1,15 +1,15 @@
-'use client'
-import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { callMeBackServer } from '@/server/info/call-me-back.server'
-import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
-import { toast } from '@/hooks/useToast'
-import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
+"use client";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { callMeBackServer } from "@/server/info/call-me-back.server";
+import ForwardedMaskedInput from "@/components/ui/forwarded-masked-input";
+import { toast } from "@/hooks/useToast";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 interface ContactFormData {
-  name: string
-  phoneNumber: string
+  name: string;
+  phoneNumber: string;
 }
 
 const ContactForm = ({
@@ -18,12 +18,12 @@ const ContactForm = ({
   placeholder,
   form_description,
 }: {
-  button: string
-  phone_field_description: string
-  placeholder: string
-  form_description: string
+  button: string;
+  phone_field_description: string;
+  placeholder: string;
+  form_description: string;
 }) => {
-  const t = useTranslations('contacts')
+  const t = useTranslations("contacts");
 
   const {
     handleSubmit,
@@ -32,23 +32,23 @@ const ContactForm = ({
     reset,
   } = useForm({
     defaultValues: {
-      name: '',
-      phoneNumber: '+38 (0',
+      name: "",
+      phoneNumber: "+38 (0",
     },
-  })
+  });
 
   const sendCall = async (data: ContactFormData) => {
     await callMeBackServer({
-      name: '',
+      name: "",
       phoneNumber: data.phoneNumber,
-    })
+    });
 
     toast({
-      title: t('thank-you-we-will-contact-you_shortly'),
-    })
+      title: t("thank-you-we-will-contact-you_shortly"),
+    });
 
-    reset()
-  }
+    reset();
+  };
 
   return (
     <form
@@ -60,7 +60,7 @@ const ContactForm = ({
       </div>
       <div>
         <span className="animate-follow font-rubik block text-[108px] leading-none font-normal">
-          {'>'}
+          {">"}
         </span>
       </div>
       <div className="mt-[70px] flex w-full max-w-[550px] flex-col items-start">
@@ -72,35 +72,35 @@ const ContactForm = ({
             validate: (value: string) =>
               value && value.length === 18
                 ? true
-                : t('enter-full-phone-number'),
+                : t("enter-full-phone-number"),
           }}
           render={({ field: { onChange, onBlur, value, ref } }) => {
-            const prefix = '+38 (0'
+            const prefix = "+38 (0";
             const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-              let newVal = e.target.value
+              let newVal = e.target.value;
               if (!newVal.startsWith(prefix)) {
-                newVal = prefix
+                newVal = prefix;
               }
-              onChange(newVal)
-            }
+              onChange(newVal);
+            };
             return (
               <ForwardedMaskedInput
                 id="phoneNumber"
                 mask={[
-                  '+',
+                  "+",
                   /\d/,
                   /\d/,
-                  ' ',
-                  '(',
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                  ')',
-                  ' ',
+                  " ",
+                  "(",
                   /\d/,
                   /\d/,
                   /\d/,
-                  '-',
+                  ")",
+                  " ",
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  "-",
                   /\d/,
                   /\d/,
                   /\d/,
@@ -114,7 +114,7 @@ const ContactForm = ({
                 ref={ref}
                 className="h-[60px]! w-full max-w-[550px] rounded-md border p-4 text-base leading-normal font-medium shadow-xs md:px-4 md:py-[18px] md:text-xl"
               />
-            )
+            );
           }}
         />
         <div className="description text-poppins pl-[10px] text-base font-normal">
@@ -132,7 +132,7 @@ const ContactForm = ({
         {button}
       </Button>
     </form>
-  )
-}
+  );
+};
 
-export default ContactForm
+export default ContactForm;

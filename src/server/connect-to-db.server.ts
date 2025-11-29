@@ -1,24 +1,24 @@
-'use server'
+"use server";
 
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 interface IConnection {
-  isConnected?: number
+  isConnected?: number;
 }
 
-const connection: IConnection = {}
+const connection: IConnection = {};
 
 export const connectToDbServer = async (): Promise<void> => {
   try {
     if (connection.isConnected) {
-      console.warn('Using existing connection')
+      console.warn("Using existing connection");
 
-      return
+      return;
     }
 
-    const db = await mongoose.connect(`${process.env.NEXT_MONGO_DB}`)
-    connection.isConnected = db.connections[0].readyState
+    const db = await mongoose.connect(`${process.env.NEXT_MONGO_DB}`);
+    connection.isConnected = db.connections[0].readyState;
   } catch (error) {
-    console.error('Connect to Db error', error)
+    console.error("Connect to Db error", error);
   }
-}
+};

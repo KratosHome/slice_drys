@@ -1,1 +1,1 @@
-type LanguageType = 'en' | 'uk'
+type LanguageType = "en" | "uk";

@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { FC } from 'react'
+import * as React from "react";
+import { FC } from "react";
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 import {
   ColumnDef,
   flexRender,
@@ -18,23 +18,23 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import EditorPost from '@/components/admin/editor-post/editor-post'
+} from "@tanstack/react-table";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import EditorPost from "@/components/admin/editor-post/editor-post";
 
 interface IPostList {
-  data: IGetPostsAdmin
+  data: IGetPostsAdmin;
 }
 
 export const PostList: FC<IPostList> = ({ data }) => {
   const columns: ColumnDef<IPost>[] = [
     {
-      id: 'зображення',
-      header: 'зображення',
-      accessorKey: 'img',
+      id: "зображення",
+      header: "зображення",
+      accessorKey: "img",
       cell: ({ row }) => {
-        const post = row.original
+        const post = row.original;
         return (
           <div className="flex items-center justify-center">
             {post.img && (
@@ -47,52 +47,52 @@ export const PostList: FC<IPostList> = ({ data }) => {
               />
             )}
           </div>
-        )
+        );
       },
     },
     {
-      id: 'автор',
-      header: 'автор',
-      accessorKey: 'author',
+      id: "автор",
+      header: "автор",
+      accessorKey: "author",
       cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.author}</div>
+        const post = row.original;
+        return <div>{post.author}</div>;
       },
     },
     {
-      id: 'заголовок',
-      header: 'заголовок',
-      accessorKey: 'title',
+      id: "заголовок",
+      header: "заголовок",
+      accessorKey: "title",
       cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.title}</div>
+        const post = row.original;
+        return <div>{post.title}</div>;
       },
     },
     {
-      id: 'відвідувань',
-      header: 'відвідувань',
-      accessorKey: 'visited',
+      id: "відвідувань",
+      header: "відвідувань",
+      accessorKey: "visited",
       cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.visited}</div>
+        const post = row.original;
+        return <div>{post.visited}</div>;
       },
     },
     {
-      id: 'actions',
+      id: "actions",
       enableHiding: false,
-      header: '',
+      header: "",
       cell: ({ row }) => {
-        const post = row.original as IPost
-        const id = post._id
-        const findPost = data.postsAll?.find((item) => item._id === id)
+        const post = row.original as IPost;
+        const id = post._id;
+        const findPost = data.postsAll?.find((item) => item._id === id);
         return (
           <>
             <EditorPost buttonTitle="редагувати" post={findPost} />
           </>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const table = useReactTable({
     data: data.postsLocalized,
@@ -102,7 +102,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     initialState: { pagination: { pageSize: 10 } },
-  })
+  });
 
   return (
     <div>
@@ -120,7 +120,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
                           header.getContext(),
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -130,7 +130,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
+                data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -161,7 +161,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
           <span>
             Сторінка
             <strong>
-              {table.getState().pagination.pageIndex + 1} з{' '}
+              {table.getState().pagination.pageIndex + 1} з{" "}
               {table.getPageCount()}
             </strong>
           </span>
@@ -176,5 +176,5 @@ export const PostList: FC<IPostList> = ({ data }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

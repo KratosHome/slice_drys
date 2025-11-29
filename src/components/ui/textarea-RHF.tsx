@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { type ChangeEvent, type TextareaHTMLAttributes } from 'react'
+import { type ChangeEvent, type TextareaHTMLAttributes } from "react";
 
-import { Textarea as BaseTextarea } from '@/components/ui/textarea'
-import { ErrorMessage } from '@hookform/error-message'
+import { Textarea as BaseTextarea } from "@/components/ui/textarea";
+import { ErrorMessage } from "@hookform/error-message";
 
-import { useController, UseControllerProps } from 'react-hook-form'
-import { cn } from '@/utils/cn'
+import { useController, UseControllerProps } from "react-hook-form";
+import { cn } from "@/utils/cn";
 
 type TextAreaProps = {
-  helpText?: string
+  helpText?: string;
 } & UseControllerProps &
-  TextareaHTMLAttributes<HTMLTextAreaElement>
+  TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export default function Textarea(props: TextAreaProps) {
   const {
@@ -24,7 +24,7 @@ export default function Textarea(props: TextAreaProps) {
     className,
     helpText,
     ...textAreaProps
-  } = props
+  } = props;
 
   const {
     field,
@@ -36,13 +36,13 @@ export default function Textarea(props: TextAreaProps) {
     shouldUnregister,
     defaultValue,
     disabled,
-  })
+  });
 
   return (
     <div>
       <BaseTextarea
         className={cn(
-          'mt-8 resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]',
+          "mt-8 resize-none border border-gray-300 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)]",
           className,
         )}
         placeholder={props.placeholder}
@@ -51,7 +51,7 @@ export default function Textarea(props: TextAreaProps) {
         {...textAreaProps}
         {...field}
         onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-          if (props.onChange) props.onChange(event)
+          if (props.onChange) props.onChange(event);
         }}
       />
       <ErrorMessage
@@ -71,5 +71,5 @@ export default function Textarea(props: TextAreaProps) {
         <p className="text-muted-foreground mt-1 text-base">{helpText}</p>
       ) : null}
     </div>
-  )
+  );
 }

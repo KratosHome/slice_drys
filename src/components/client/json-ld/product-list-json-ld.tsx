@@ -1,16 +1,16 @@
-import { FC } from 'react'
+import { FC } from "react";
 
 interface JsonLdProps {
-  currentCategories: ICategory
-  locale: string
-  canonicalUrl: string
+  currentCategories: ICategory;
+  locale: string;
+  canonicalUrl: string;
   productsData: {
-    data: IProduct[]
-    currentPage: number
-    totalItems: number
-    totalPages: number
-  }
-  categoriesParam: string
+    data: IProduct[];
+    currentPage: number;
+    totalItems: number;
+    totalPages: number;
+  };
+  categoriesParam: string;
 }
 
 const ProductListJsonLd: FC<JsonLdProps> = ({
@@ -20,11 +20,11 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
   productsData,
   categoriesParam,
 }) => {
-  const url = process.env.NEXT_URL
+  const url = process.env.NEXT_URL;
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
     name: currentCategories.name[locale as ILocale],
     description: currentCategories?.metaDescription?.[locale as ILocale],
     url: canonicalUrl,
@@ -37,23 +37,23 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
       },
     },
     products: productsData.data.map((product) => ({
-      '@type': 'Product',
-      '@id': `${url}/${product.category}/${product.slug}`,
+      "@type": "Product",
+      "@id": `${url}/${product.category}/${product.slug}`,
       name: product.name,
       image: product.img,
       description: product.description,
       brand: {
-        '@type': 'Brand',
+        "@type": "Brand",
         name: "Slice & Dry's",
       },
       sku: product._id,
       offers: product.variables.map((variable) => ({
-        '@type': 'Offer',
+        "@type": "Offer",
         url: `${url}/${product.category}/${product.slug}`,
-        priceCurrency: 'UAH',
+        priceCurrency: "UAH",
         price: variable.price,
-        itemCondition: 'https://schema.org/NewCondition',
-        availability: 'https://schema.org/InStock',
+        itemCondition: "https://schema.org/NewCondition",
+        availability: "https://schema.org/InStock",
       })),
     })),
     pagination: {
@@ -67,30 +67,30 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
           : canonicalUrl,
     },
     breadcrumb: {
-      '@type': 'BreadcrumbList',
+      "@type": "BreadcrumbList",
       itemListElement: [
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 1,
-          name: 'Головна',
+          name: "Головна",
           item: url,
         },
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 2,
           name: currentCategories.name[locale as ILocale],
           item: canonicalUrl,
         },
       ],
     },
-  }
+  };
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-  )
-}
+  );
+};
 
-export default ProductListJsonLd
+export default ProductListJsonLd;

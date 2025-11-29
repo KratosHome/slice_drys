@@ -1,16 +1,16 @@
-import EditorPost from '@/components/admin/editor-post/editor-post'
-import { PostList } from '@/components/admin/post-list/post-list'
+import EditorPost from "@/components/admin/editor-post/editor-post";
+import { PostList } from "@/components/admin/post-list/post-list";
 
-import { getAllPosts } from '@/server/posts/get-posts.server'
+import { getAllPosts } from "@/server/posts/get-posts.server";
 
 export default async function Blog({
   params,
 }: {
-  params: Promise<{ locale: ILocale }>
+  params: Promise<{ locale: ILocale }>;
 }) {
-  const { locale } = await params
+  const { locale } = await params;
 
-  const posts = await getAllPosts({ locale })
+  const posts = await getAllPosts({ locale });
 
   return (
     <div className="px-5">
@@ -22,5 +22,5 @@ export default async function Blog({
 
       <PostList data={posts} />
     </div>
-  )
+  );
 }

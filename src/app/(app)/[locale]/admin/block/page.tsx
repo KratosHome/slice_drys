@@ -1,13 +1,13 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import HelpMainPage from '@/components/admin/block/help-main-page'
-import { getHelpMain } from '@/server/block/get-help-main.server'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HelpMainPage from "@/components/admin/block/help-main-page";
+import { getHelpMain } from "@/server/block/get-help-main.server";
 
-type Params = Promise<{ locale: ILocale }>
+type Params = Promise<{ locale: ILocale }>;
 
 export default async function MenuPage(props: { params: Params }) {
-  const { locale } = await props.params
+  const { locale } = await props.params;
 
-  const helpData = await getHelpMain(locale, false)
+  const helpData = await getHelpMain(locale, false);
 
   return (
     <div className="px-5">
@@ -34,5 +34,5 @@ export default async function MenuPage(props: { params: Params }) {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

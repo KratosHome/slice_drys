@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { ChevronDownIcon } from '@radix-ui/react-icons'
-import { Checkbox } from '@/components/ui/checkbox'
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -16,11 +16,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import Image from 'next/image'
-import EditorProduct from '@/components/admin/editor-product/editor-product'
+} from "@/components/ui/table";
+import Image from "next/image";
+import EditorProduct from "@/components/admin/editor-product/editor-product";
 
-import { useState } from 'react'
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -32,13 +32,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
+} from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
 
 interface IProductList {
-  data: IGetProduct
-  recommendations: IRecommendations
-  categories: ICategory[]
+  data: IGetProduct;
+  recommendations: IRecommendations;
+  categories: ICategory[];
 }
 
 export const ProductList = ({
@@ -48,12 +48,12 @@ export const ProductList = ({
 }: IProductList) => {
   const columns: ColumnDef<IProduct>[] = [
     {
-      id: 'select',
+      id: "select",
       header: ({ table }) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            (table.getIsSomePageRowsSelected() && "indeterminate")
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
@@ -68,11 +68,11 @@ export const ProductList = ({
       enableHiding: false,
     },
     {
-      id: 'зображення',
-      header: 'зображення',
-      accessorKey: 'img',
+      id: "зображення",
+      header: "зображення",
+      accessorKey: "img",
       cell: ({ row }) => {
-        const product = row.original
+        const product = row.original;
         return (
           <div className="flex items-center justify-center">
             {product.img && (
@@ -85,47 +85,47 @@ export const ProductList = ({
               />
             )}
           </div>
-        )
+        );
       },
     },
     {
-      id: 'назва',
-      header: 'назва',
-      accessorKey: 'name',
+      id: "назва",
+      header: "назва",
+      accessorKey: "name",
       cell: ({ row }) => {
-        const product = row.original
-        return <div>{product.name}</div>
+        const product = row.original;
+        return <div>{product.name}</div>;
       },
     },
     {
-      id: 'лейбла',
-      header: 'лейбла',
-      accessorKey: 'label',
+      id: "лейбла",
+      header: "лейбла",
+      accessorKey: "label",
       cell: ({ row }) => {
-        const product = row.original
+        const product = row.original;
         return (
           <div className="flex flex-col">
             {product.statusLabel.map((label) => (
               <div key={label}>{label}</div>
             ))}
           </div>
-        )
+        );
       },
     },
     {
-      id: 'ціна',
-      header: 'ціна',
-      accessorKey: 'price',
+      id: "ціна",
+      header: "ціна",
+      accessorKey: "price",
       cell: ({ row }) => {
-        const product = row.original as IProduct
-        const variables = product.variables as IVariableProduct[]
+        const product = row.original as IProduct;
+        const variables = product.variables as IVariableProduct[];
         return (
           <div>
             {variables?.map((item: IVariableProduct) => (
               <div key={item._id}>
                 {item.newPrice ? (
                   <div>
-                    <span className="line-through">{item.price} грн</span>{' '}
+                    <span className="line-through">{item.price} грн</span>{" "}
                     <span>{item.newPrice} грн</span>
                   </div>
                 ) : (
@@ -134,16 +134,16 @@ export const ProductList = ({
               </div>
             ))}
           </div>
-        )
+        );
       },
     },
     {
-      id: 'залишки',
-      header: 'залишки',
-      accessorKey: 'count',
+      id: "залишки",
+      header: "залишки",
+      accessorKey: "count",
       cell: ({ row }) => {
-        const product = row.original as IProduct
-        const variables = product.variables as IVariableProduct[]
+        const product = row.original as IProduct;
+        const variables = product.variables as IVariableProduct[];
         return (
           <div>
             {variables?.map((variable) => (
@@ -152,26 +152,26 @@ export const ProductList = ({
               </div>
             ))}
           </div>
-        )
+        );
       },
     },
     {
-      id: 'відвідувачі',
-      header: 'відвідувачі',
-      accessorKey: 'visited',
+      id: "відвідувачі",
+      header: "відвідувачі",
+      accessorKey: "visited",
       cell: ({ row }) => {
-        const product = row.original as IProduct
-        return <div>{`${product.visited} користувачів`}</div>
+        const product = row.original as IProduct;
+        return <div>{`${product.visited} користувачів`}</div>;
       },
     },
     {
-      id: 'actions',
+      id: "actions",
       enableHiding: false,
-      header: '',
+      header: "",
       cell: ({ row }) => {
-        const product = row.original as IProduct
-        const id = product._id
-        const fineProduct = data.productAll?.find((item) => item._id === id)
+        const product = row.original as IProduct;
+        const id = product._id;
+        const fineProduct = data.productAll?.find((item) => item._id === id);
         return (
           <EditorProduct
             buttonTitle="редагувати"
@@ -179,17 +179,17 @@ export const ProductList = ({
             recommendations={recommendations}
             categories={categories}
           />
-        )
+        );
       },
     },
-  ]
+  ];
 
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data: data.product,
@@ -208,16 +208,16 @@ export const ProductList = ({
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter by name..."
-          value={(table.getColumn('назва')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn("назва")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn('назва')?.setFilterValue(event.target.value)
+            table.getColumn("назва")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -245,7 +245,7 @@ export const ProductList = ({
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -266,7 +266,7 @@ export const ProductList = ({
                             header.getContext(),
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -277,7 +277,7 @@ export const ProductList = ({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -305,7 +305,7 @@ export const ProductList = ({
 
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
 
@@ -330,5 +330,5 @@ export const ProductList = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

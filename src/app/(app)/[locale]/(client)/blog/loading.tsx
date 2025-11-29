@@ -1,10 +1,10 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import React from 'react'
+import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
 export default function AnimatedLoader() {
   const fakePosts = Array.from({ length: 6 }, (_, index) => ({
     id: `fake-${index}`,
-  }))
+  }));
 
   return (
     <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
@@ -26,5 +26,5 @@ export default function AnimatedLoader() {
         </div>
       </div>
     </div>
-  )
+  );
 }

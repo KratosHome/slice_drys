@@ -1,144 +1,145 @@
-'use client'
-import React from 'react'
-import { SubmitHandler } from 'react-hook-form'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+"use client";
+import React from "react";
+import { SubmitHandler } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import Image from 'next/image'
+} from "@/components/ui/dialog";
+import Image from "next/image";
 
-import { type ChangeEvent, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { deleteCategory } from '@/server/categories/delete-category.server'
-import { updateCategory } from '@/server/categories/update-category.server'
-import { toast } from '@/hooks/useToast'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { locales } from '@/data/locales'
-import { convertToBase64 } from '@/utils/convert-to-base-64'
-import QuillEditor from '@/components/admin/quill-editor/quill-editor'
+import { type ChangeEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { deleteCategory } from "@/server/categories/delete-category.server";
+import { updateCategory } from "@/server/categories/update-category.server";
+import { toast } from "@/hooks/useToast";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { locales } from "@/data/locales";
+import { convertToBase64 } from "@/utils/convert-to-base-64";
+import QuillEditor from "@/components/admin/quill-editor/quill-editor";
 
 interface IUpdateTreeProps {
-  selectedCategory: ICategory
+  selectedCategory: ICategory;
 }
 
 interface IFormData {
   name: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaTitle: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   description: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaKeywords: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaDescription: {
-    uk: string
-    en: string
-  }
-  slug: string
+    uk: string;
+    en: string;
+  };
+  slug: string;
 }
 
 const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] =
+    useState<boolean>(false);
 
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
-  const [descriptionUk, setDescriptionUk] = useState<string>('')
-  const [descriptionEn, setDescriptionEn] = useState<string>('')
+  const [descriptionUk, setDescriptionUk] = useState<string>("");
+  const [descriptionEn, setDescriptionEn] = useState<string>("");
 
   useEffect(() => {
-    let url: string | null = null
+    let url: string | null = null;
 
     if (imageFile) {
-      url = URL.createObjectURL(imageFile)
-      setImagePreviewUrl(url)
+      url = URL.createObjectURL(imageFile);
+      setImagePreviewUrl(url);
     } else if (selectedCategory?.image) {
-      setImagePreviewUrl(selectedCategory.image)
+      setImagePreviewUrl(selectedCategory.image);
     } else {
-      setImagePreviewUrl(null)
+      setImagePreviewUrl(null);
     }
-  }, [imageFile, selectedCategory?.image])
+  }, [imageFile, selectedCategory?.image]);
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<IFormData>()
+  } = useForm<IFormData>();
 
   useEffect(() => {
-    setDescriptionUk(selectedCategory.description?.uk ?? '')
-    setDescriptionEn(selectedCategory.description?.en ?? '')
-  }, [selectedCategory.description])
+    setDescriptionUk(selectedCategory.description?.uk ?? "");
+    setDescriptionEn(selectedCategory.description?.en ?? "");
+  }, [selectedCategory.description]);
 
   useEffect(() => {
     reset({
       name: {
-        uk: selectedCategory.name?.uk ?? '',
-        en: selectedCategory.name?.en ?? '',
+        uk: selectedCategory.name?.uk ?? "",
+        en: selectedCategory.name?.en ?? "",
       },
       metaTitle: {
-        uk: selectedCategory.metaTitle?.uk ?? '',
-        en: selectedCategory.metaTitle?.en ?? '',
+        uk: selectedCategory.metaTitle?.uk ?? "",
+        en: selectedCategory.metaTitle?.en ?? "",
       },
       metaKeywords: {
-        uk: selectedCategory.metaKeywords?.uk ?? '',
-        en: selectedCategory.metaKeywords?.en ?? '',
+        uk: selectedCategory.metaKeywords?.uk ?? "",
+        en: selectedCategory.metaKeywords?.en ?? "",
       },
       description: {
-        uk: selectedCategory.description?.uk ?? '',
-        en: selectedCategory.description?.en ?? '',
+        uk: selectedCategory.description?.uk ?? "",
+        en: selectedCategory.description?.en ?? "",
       },
       metaDescription: {
-        uk: selectedCategory.metaDescription?.uk ?? '',
-        en: selectedCategory.metaDescription?.en ?? '',
+        uk: selectedCategory.metaDescription?.uk ?? "",
+        en: selectedCategory.metaDescription?.en ?? "",
       },
-      slug: selectedCategory.slug ?? '',
-    })
-  }, [selectedCategory, reset])
+      slug: selectedCategory.slug ?? "",
+    });
+  }, [selectedCategory, reset]);
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    const image: string = imageFile ? await convertToBase64(imageFile) : ''
+    const image: string = imageFile ? await convertToBase64(imageFile) : "";
 
-    data.description.uk = descriptionUk
-    data.description.en = descriptionEn
+    data.description.uk = descriptionUk;
+    data.description.en = descriptionEn;
 
-    const result = await updateCategory(selectedCategory._id, data, image)
+    const result = await updateCategory(selectedCategory._id, data, image);
 
-    toast({ title: result.message })
-    router.refresh()
-  }
+    toast({ title: result.message });
+    router.refresh();
+  };
 
   const deleteCat = async (): Promise<void> => {
-    setIsConfirmDeleteOpen(false)
+    setIsConfirmDeleteOpen(false);
 
-    const result: IResponse = await deleteCategory(selectedCategory._id)
+    const result: IResponse = await deleteCategory(selectedCategory._id);
 
-    toast({ title: result.message })
-    router.refresh()
-  }
+    toast({ title: result.message });
+    router.refresh();
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const file: File | undefined = event.target.files?.[0]
+    const file: File | undefined = event.target.files?.[0];
 
-    if (file) setImageFile(file)
-  }
+    if (file) setImageFile(file);
+  };
 
   return (
     <div>
@@ -170,7 +171,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
             type="text"
             className="w-full border p-2"
             {...register(`slug`, {
-              required: 'Ключові слова обовʼязкові',
+              required: "Ключові слова обовʼязкові",
             })}
           />
 
@@ -183,7 +184,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
           {locales.map((lang) => (
             <div key={lang} className="mb-4 w-full border-b pb-4">
               <h3 className="text-lg font-bold uppercase">
-                {lang === 'uk' ? 'Українська' : 'English'}
+                {lang === "uk" ? "Українська" : "English"}
               </h3>
 
               <div className="mt-3">
@@ -193,7 +194,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
                   type="text"
                   className="w-full border p-2"
                   {...register(`name.${lang}`, {
-                    required: 'Назва обовʼязкова',
+                    required: "Назва обовʼязкова",
                   })}
                 />
 
@@ -211,7 +212,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
                   type="text"
                   className="w-full border p-2"
                   {...register(`metaTitle.${lang}`, {
-                    required: 'Мета заголовок обовʼязковий',
+                    required: "Мета заголовок обовʼязковий",
                   })}
                 />
 
@@ -225,7 +226,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
               <div className="mt-3">
                 <Label className="block">Опис:</Label>
 
-                {lang === 'uk' ? (
+                {lang === "uk" ? (
                   <QuillEditor
                     className="min-h-96"
                     content={descriptionUk}
@@ -247,7 +248,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
                   type="text"
                   className="w-full border p-2"
                   {...register(`metaKeywords.${lang}`, {
-                    required: 'Ключові слова обовʼязкові',
+                    required: "Ключові слова обовʼязкові",
                   })}
                 />
 
@@ -264,7 +265,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
                 <textarea
                   className="w-full border p-2"
                   {...register(`metaDescription.${lang}`, {
-                    required: 'Мета опис обовʼязковий',
+                    required: "Мета опис обовʼязковий",
                   })}
                 />
 
@@ -310,7 +311,7 @@ const UpdateTree = ({ selectedCategory }: IUpdateTreeProps) => {
         </DialogContent>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default UpdateTree
+export default UpdateTree;

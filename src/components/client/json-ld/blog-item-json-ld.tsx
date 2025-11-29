@@ -1,68 +1,68 @@
-import { FC } from 'react'
-import Script from 'next/script'
-import { getLocale, getTranslations } from 'next-intl/server'
+import { FC } from "react";
+import Script from "next/script";
+import { getLocale, getTranslations } from "next-intl/server";
 
-import { blogMetaData } from '@/data/blog/blog-meta-data'
+import { blogMetaData } from "@/data/blog/blog-meta-data";
 
 type JsonLdProps = Readonly<{
-  post: IPost
-}>
+  post: IPost;
+}>;
 
-const url = process.env.NEXT_URL
+const url = process.env.NEXT_URL;
 
 const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
-  const locale = (await getLocale()) as ILocale
-  const t = await getTranslations('breadcrumbs')
+  const locale = (await getLocale()) as ILocale;
+  const t = await getTranslations("breadcrumbs");
 
-  const canonicalUrl = `${url}/${locale}/blog/${post.slug}`
+  const canonicalUrl = `${url}/${locale}/blog/${post.slug}`;
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.content,
     image: post.img,
     datePublished: post.createdAt,
     author: {
-      '@type': 'Person',
+      "@type": "Person",
       name: post.author,
     },
     publisher: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: blogMetaData[locale].title,
       logo: {
-        '@type': 'ImageObject',
+        "@type": "ImageObject",
         url: `${url}/logo.png`,
       },
     },
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': canonicalUrl,
+      "@type": "WebPage",
+      "@id": canonicalUrl,
     },
     breadcrumb: {
-      '@type': 'BreadcrumbList',
+      "@type": "BreadcrumbList",
       itemListElement: [
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 1,
-          name: t('home'),
+          name: t("home"),
           item: url,
         },
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 2,
-          name: t('blog'),
+          name: t("blog"),
           item: `${url}/${locale}/blog`,
         },
         {
-          '@type': 'ListItem',
+          "@type": "ListItem",
           position: 3,
           name: post.title,
           item: canonicalUrl,
         },
       ],
     },
-  }
+  };
 
   return (
     <Script
@@ -70,7 +70,7 @@ const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
-  )
-}
+  );
+};
 
-export default BlogItemJsonLd
+export default BlogItemJsonLd;

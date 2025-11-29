@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 
-const Toaster = dynamic(() => import('@/components/ui/toaster/toaster'), {
+const Toaster = dynamic(() => import("@/components/ui/toaster/toaster"), {
   ssr: false,
-})
+});
 
-export default Toaster
+export default Toaster;

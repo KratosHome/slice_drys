@@ -1,56 +1,56 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
+import Link from "next/link";
 
 import {
   type AnchorHTMLAttributes,
   type ButtonHTMLAttributes,
   type Ref,
   forwardRef,
-} from 'react'
-import { useLocale } from 'next-intl'
-import { cn } from '@/utils/cn'
+} from "react";
+import { useLocale } from "next-intl";
+import { cn } from "@/utils/cn";
 
 interface IUnderlinedLinkButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  as: 'button'
+  as: "button";
 }
 
 interface IUnderlinedLinkAnchorProps
   extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  as?: 'a'
-  href?: string
+  as?: "a";
+  href?: string;
 }
 
 type UnderlinedLinkProps = (
   | IUnderlinedLinkButtonProps
   | IUnderlinedLinkAnchorProps
 ) & {
-  target?: '_blank' | '_self' | '_parent' | '_top'
-  className?: string
-}
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  className?: string;
+};
 
 const UnderlinedLink = forwardRef<
   HTMLAnchorElement | HTMLButtonElement,
   UnderlinedLinkProps
 >((props, ref) => {
   const {
-    as = 'a',
+    as = "a",
     className,
     children,
-    target = '_blank',
+    target = "_blank",
     ...restProps
-  } = props
+  } = props;
 
-  const locale: string = useLocale()
+  const locale: string = useLocale();
 
   const classes: string = cn(
-    'group relative flex items-center justify-start gap-3 bg-transparent px-6 py-2 text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] font-medium transition-all duration-300 ease-in-out lg:hover:bg-transparent',
-    locale === 'uk'
-      ? 'min-w-[260px] lg:min-w-[290px]'
-      : 'min-w-[220px] lg:min-w-[240px]',
+    "group relative flex items-center justify-start gap-3 bg-transparent px-6 py-2 text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] font-medium transition-all duration-300 ease-in-out lg:hover:bg-transparent",
+    locale === "uk"
+      ? "min-w-[260px] lg:min-w-[290px]"
+      : "min-w-[220px] lg:min-w-[240px]",
     className,
-  )
+  );
 
   const content = (
     <>
@@ -76,11 +76,11 @@ const UnderlinedLink = forwardRef<
         </svg>
       </span>
     </>
-  )
+  );
 
-  if (as === 'button') {
+  if (as === "button") {
     const { ...buttonProps } =
-      restProps as ButtonHTMLAttributes<HTMLButtonElement>
+      restProps as ButtonHTMLAttributes<HTMLButtonElement>;
     return (
       <button
         ref={ref as Ref<HTMLButtonElement>}
@@ -89,26 +89,26 @@ const UnderlinedLink = forwardRef<
       >
         {content}
       </button>
-    )
+    );
   } else {
     const { href, ...anchorProps } =
-      restProps as AnchorHTMLAttributes<HTMLAnchorElement>
+      restProps as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
-      <Link href={href || '/public'} passHref legacyBehavior>
+      <Link href={href || "/public"} passHref legacyBehavior>
         <a
           ref={ref as Ref<HTMLAnchorElement>}
           className={classes}
           target={target}
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+          rel={target === "_blank" ? "noopener noreferrer" : undefined}
           {...anchorProps}
         >
           {content}
         </a>
       </Link>
-    )
+    );
   }
-})
+});
 
-UnderlinedLink.displayName = 'UnderlinedLink'
+UnderlinedLink.displayName = "UnderlinedLink";
 
-export { UnderlinedLink }
+export { UnderlinedLink };

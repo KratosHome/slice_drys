@@ -1,44 +1,44 @@
-'use client'
+"use client";
 
-import type { MouseEvent } from 'react'
+import type { MouseEvent } from "react";
 
-import Link from 'next/link'
+import Link from "next/link";
 
-import { useTranslations } from 'next-intl'
+import { useTranslations } from "next-intl";
 
 interface IShareProps {
-  title: string
-  url: string
+  title: string;
+  url: string;
 }
 
 export default function Share({ url, title }: IShareProps) {
-  const t = useTranslations('share')
-  const encodedUrl: string = encodeURIComponent(url)
+  const t = useTranslations("share");
+  const encodedUrl: string = encodeURIComponent(url);
 
-  const facebookShareUrl: string = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`
-  const telegramShareUrl: string = `https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(title)}`
+  const facebookShareUrl: string = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+  const telegramShareUrl: string = `https://t.me/share/url?url=${encodedUrl}&text=${encodeURIComponent(title)}`;
 
   const handleInstagramShare = (event: MouseEvent<HTMLAnchorElement>): void => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(url)
-        .then(() => window.open('https://www.instagram.com', '_blank'))
-        .catch((err) => console.error('Не вдалося скопіювати посилання:', err))
+        .then(() => window.open("https://www.instagram.com", "_blank"))
+        .catch((err) => console.error("Не вдалося скопіювати посилання:", err));
     } else {
-      console.warn('Clipboard API не підтримується')
-      window.open('https://www.instagram.com', '_blank')
+      console.warn("Clipboard API не підтримується");
+      window.open("https://www.instagram.com", "_blank");
     }
-  }
+  };
 
   return (
     <div className="mb-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
       <div
         className="text-[26px]"
-        style={{ fontFamily: 'var(--font-rubik-doodle-shadow)' }}
+        style={{ fontFamily: "var(--font-rubik-doodle-shadow)" }}
       >
-        {t('share-label')}
+        {t("share-label")}
       </div>
       <div className="flex gap-3">
         {/* Додано Tailwind класи для плавного зуму та тіні при наведенні */}
@@ -51,7 +51,7 @@ export default function Share({ url, title }: IShareProps) {
             width={32}
             height={32}
             role="img"
-            aria-label={t('facebook-icon')}
+            aria-label={t("facebook-icon")}
           >
             <use href="/icons/sprite.svg#facebook" />
           </svg>
@@ -65,7 +65,7 @@ export default function Share({ url, title }: IShareProps) {
             width={32}
             height={32}
             role="img"
-            aria-label={t('instagram-icon')}
+            aria-label={t("instagram-icon")}
           >
             <use href="/icons/sprite.svg#instagram" />
           </svg>
@@ -79,12 +79,12 @@ export default function Share({ url, title }: IShareProps) {
             width={32}
             height={32}
             role="img"
-            aria-label={t('telegram-icon')}
+            aria-label={t("telegram-icon")}
           >
             <use href="/icons/sprite.svg#telegram" />
           </svg>
         </Link>
       </div>
     </div>
-  )
+  );
 }

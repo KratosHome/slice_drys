@@ -1,20 +1,20 @@
-'use server'
-import TelegramBot from 'node-telegram-bot-api'
-import { formatDate } from '@/utils/format-date'
+"use server";
+import TelegramBot from "node-telegram-bot-api";
+import { formatDate } from "@/utils/format-date";
 
 interface IOrderNotificationData {
-  totalPrice: string
-  paymentMethod: string
-  name: string
-  phone: string
-  delivery: string
-  comment: string
-  products: string
-  callback: string
+  totalPrice: string;
+  paymentMethod: string;
+  name: string;
+  phone: string;
+  delivery: string;
+  comment: string;
+  products: string;
+  callback: string;
 }
 
 export async function sendOrderNotification(orderData: IOrderNotificationData) {
-  'use server'
+  "use server";
   const {
     totalPrice,
     name,
@@ -24,15 +24,15 @@ export async function sendOrderNotification(orderData: IOrderNotificationData) {
     products,
     paymentMethod,
     callback,
-  } = orderData
+  } = orderData;
   try {
-    const formattedDate = formatDate(new Date())
+    const formattedDate = formatDate(new Date());
 
     const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
       polling: true,
-    })
+    });
 
-    const chatId = `${process.env.TELEGRAM_BOT_CHAT_ID}`
+    const chatId = `${process.env.TELEGRAM_BOT_CHAT_ID}`;
 
     await bot.sendMessage(
       chatId,
@@ -53,9 +53,9 @@ _______________________________
 ДЗВІНОК КЛІЄНТУ: ${callback}
 
     `,
-    )
-    return { success: true }
+    );
+    return { success: true };
   } catch (err) {
-    return { success: false, message: `${err}` }
+    return { success: false, message: `${err}` };
   }
 }

@@ -1,1 +1,1 @@
-type Params = Promise<{ locale: ILocale }>
+type Params = Promise<{ locale: ILocale }>;

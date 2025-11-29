@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
-import { LazyMotion, domAnimation, m, type MotionProps } from 'framer-motion'
-import { cn } from '@/utils/cn'
-import { useIsMobile } from '@/hooks/useMobile'
+import { LazyMotion, domAnimation, m, type MotionProps } from "framer-motion";
+import { cn } from "@/utils/cn";
+import { useIsMobile } from "@/hooks/useMobile";
 
 interface IResponsiveMotionProps extends MotionProps {
-  children: ReactNode
-  className?: string
-  onClick?: () => void
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
 }
 
 export const ResponsiveMotion = ({
@@ -18,14 +18,14 @@ export const ResponsiveMotion = ({
   onClick,
   ...motionProps
 }: IResponsiveMotionProps) => {
-  const isMobile: boolean = useIsMobile()
+  const isMobile: boolean = useIsMobile();
 
   if (isMobile) {
     return (
       <div className={cn(`block ${className}`)} onClick={onClick}>
         {children}
       </div>
-    )
+    );
   }
 
   return (
@@ -38,5 +38,5 @@ export const ResponsiveMotion = ({
         {children}
       </m.div>
     </LazyMotion>
-  )
-}
+  );
+};

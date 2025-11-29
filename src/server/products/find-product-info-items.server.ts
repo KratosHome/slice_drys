@@ -1,37 +1,37 @@
-'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
-import { Product } from '@/server/products/product-schema.server'
+"use server";
+import { connectToDbServer } from "@/server/connect-to-db.server";
+import { Product } from "@/server/products/product-schema.server";
 
 export async function findProductInfoItems() {
-  'use server'
+  "use server";
   try {
-    await connectToDbServer()
+    await connectToDbServer();
 
     const uniqueCompositionsEn: string[] =
-      await Product.distinct('composition.en')
+      await Product.distinct("composition.en");
     const uniqueCompositionsUk: string[] =
-      await Product.distinct('composition.uk')
+      await Product.distinct("composition.uk");
 
-    const uniqueMenusEn: string[] = await Product.distinct('menu.en')
-    const uniqueMenusUk: string[] = await Product.distinct('menu.uk')
+    const uniqueMenusEn: string[] = await Product.distinct("menu.en");
+    const uniqueMenusUk: string[] = await Product.distinct("menu.uk");
 
-    const uniqueCategoriesEn: string[] = await Product.distinct('category.en')
-    const uniqueCategoriesUk: string[] = await Product.distinct('category.uk')
+    const uniqueCategoriesEn: string[] = await Product.distinct("category.en");
+    const uniqueCategoriesUk: string[] = await Product.distinct("category.uk");
 
     const proteins: string[] = await Product.distinct(
-      'nutritionalValue.proteins',
-    )
-    const fats: string[] = await Product.distinct('nutritionalValue.fats')
+      "nutritionalValue.proteins",
+    );
+    const fats: string[] = await Product.distinct("nutritionalValue.fats");
     const carbohydrates: string[] = await Product.distinct(
-      'nutritionalValue.carbohydrates',
-    )
+      "nutritionalValue.carbohydrates",
+    );
     const energyValue: string[] = await Product.distinct(
-      'nutritionalValue.energyValue',
-    )
+      "nutritionalValue.energyValue",
+    );
 
-    const currency: string[] = await Product.distinct('currency')
+    const currency: string[] = await Product.distinct("currency");
 
-    const weight: string[] = await Product.distinct('weight')
+    const weight: string[] = await Product.distinct("weight");
 
     return {
       success: true,
@@ -53,8 +53,8 @@ export async function findProductInfoItems() {
       fats,
       carbohydrates,
       energyValue,
-      message: 'Product created',
-    }
+      message: "Product created",
+    };
   } catch (error) {
     return {
       success: false,
@@ -77,6 +77,6 @@ export async function findProductInfoItems() {
       carbohydrates: [],
       energyValue: [],
       message: `Can't create product ${error}`,
-    }
+    };
   }
 }

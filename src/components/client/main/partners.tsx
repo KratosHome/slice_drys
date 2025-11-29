@@ -1,19 +1,19 @@
-import { FC } from 'react'
-import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
+import { FC } from "react";
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
-import { Marquee } from '@/components/ui/marque'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Marquee } from "@/components/ui/marque";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface PartnersProps {
   data: {
-    name: string
-    logo: string
-  }[]
+    name: string;
+    logo: string;
+  }[];
 }
 
 const Partners: FC<PartnersProps> = async ({ data }) => {
-  const t = await getTranslations('main')
+  const t = await getTranslations("main");
 
   return (
     <section aria-labelledby="partners" className="section px-5">
@@ -22,7 +22,7 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
           id="partners"
           className="font-rubik text-center text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] leading-[1.2] font-normal"
         >
-          {t('our-partners')}
+          {t("our-partners")}
         </h2>
 
         <Marquee className="mt-8 md:mt-[60px]">
@@ -44,7 +44,7 @@ const Partners: FC<PartnersProps> = async ({ data }) => {
         </Marquee>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Partners
+export default Partners;

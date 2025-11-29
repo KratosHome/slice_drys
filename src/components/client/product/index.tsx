@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Select,
@@ -7,45 +7,45 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
-import Image from 'next/image'
-import TopLabel from '@/components/client/labels/top-label'
-import NewLabel from '@/components/client/labels/new-label'
-import SaleLabel from '@/components/client/labels/sale-label'
-import { Button } from '@/components/ui/button'
-import { TransitionLink } from '@/components/client/transition-link'
+} from "@/components/ui/select";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import Image from "next/image";
+import TopLabel from "@/components/client/labels/top-label";
+import NewLabel from "@/components/client/labels/new-label";
+import SaleLabel from "@/components/client/labels/sale-label";
+import { Button } from "@/components/ui/button";
+import { TransitionLink } from "@/components/client/transition-link";
 
-import { useEffect, useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
-import { useCartStore } from '@/store/cart-store'
+import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useCartStore } from "@/store/cart-store";
 
 interface IProductProps {
-  product: IProduct
+  product: IProduct;
 }
 
 export default function Product({ product }: IProductProps) {
-  const locale = useLocale() as ILocale
-  const t = useTranslations('product')
+  const locale = useLocale() as ILocale;
+  const t = useTranslations("product");
 
-  const [mounted, setMounted] = useState<boolean>(false)
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
     (state) => state,
-  )
+  );
 
   const [selectedVariable, setSelectedVariable] = useState(
     product.variant ?? product.variables[0],
-  )
+  );
 
   const isInCart: boolean = hasItemInCart(
     product._id as string,
     selectedVariable.weight,
-  )
+  );
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const handleAddToCart = (): void => {
     if (product._id && product.img)
@@ -57,16 +57,16 @@ export default function Product({ product }: IProductProps) {
         price: selectedVariable.newPrice || selectedVariable.price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
-      })
-    setOpenCart(true)
-  }
+      });
+    setOpenCart(true);
+  };
 
   const handleVariableChange = (value: number | string): void => {
     const selected: IVariableProduct | undefined = product.variables.find(
       (variable) => variable._id === value,
-    )
-    if (selected) setSelectedVariable(selected)
-  }
+    );
+    if (selected) setSelectedVariable(selected);
+  };
 
   return (
     <TransitionLink
@@ -76,9 +76,9 @@ export default function Product({ product }: IProductProps) {
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
           <div className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
-            {product.statusLabel?.includes('top') ? <TopLabel /> : null}
-            {product.statusLabel?.includes('new') ? <NewLabel /> : null}
-            {product.statusLabel?.includes('sale') ? (
+            {product.statusLabel?.includes("top") ? <TopLabel /> : null}
+            {product.statusLabel?.includes("new") ? <NewLabel /> : null}
+            {product.statusLabel?.includes("sale") ? (
               <CardItem translateZ={30}>
                 <SaleLabel />
               </CardItem>
@@ -98,7 +98,7 @@ export default function Product({ product }: IProductProps) {
               loading="eager"
               quality={50}
               style={{
-                objectFit: 'contain',
+                objectFit: "contain",
               }}
             />
           </CardItem>
@@ -110,7 +110,7 @@ export default function Product({ product }: IProductProps) {
               translateZ={30}
               className="relative flex w-fit items-center rounded-sm bg-[#7D7D7D] px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-0 sm:text-xs lg:text-sm"
             >
-              {t('expect-soon')}
+              {t("expect-soon")}
             </CardItem>
           ) : null}
           <div className="flex w-full items-start justify-between gap-2">
@@ -123,8 +123,8 @@ export default function Product({ product }: IProductProps) {
             <CardItem translateZ={60}>
               <div
                 onClick={(event) => {
-                  event.stopPropagation()
-                  event.preventDefault()
+                  event.stopPropagation();
+                  event.preventDefault();
                 }}
               >
                 <Select
@@ -133,7 +133,7 @@ export default function Product({ product }: IProductProps) {
                 >
                   <SelectTrigger
                     className="w-fit border-none shadow-none outline-hidden"
-                    aria-label={t('choose-weight')}
+                    aria-label={t("choose-weight")}
                   >
                     <SelectValue
                       placeholder={selectedVariable.weight.toString()}
@@ -177,8 +177,8 @@ export default function Product({ product }: IProductProps) {
             <CardItem translateZ={80}>
               <div
                 onClick={(event) => {
-                  event.stopPropagation()
-                  event.preventDefault()
+                  event.stopPropagation();
+                  event.preventDefault();
                 }}
               >
                 <Button
@@ -189,9 +189,9 @@ export default function Product({ product }: IProductProps) {
                 >
                   {mounted
                     ? isInCart
-                      ? t('in-cart')
-                      : t('add-to-cart')
-                    : t('add-to-cart')}
+                      ? t("in-cart")
+                      : t("add-to-cart")
+                    : t("add-to-cart")}
                 </Button>
               </div>
             </CardItem>
@@ -199,5 +199,5 @@ export default function Product({ product }: IProductProps) {
         </CardBody>
       </CardContainer>
     </TransitionLink>
-  )
+  );
 }

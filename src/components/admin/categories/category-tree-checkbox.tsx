@@ -1,10 +1,10 @@
-import React from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
+import React from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface ICategoryTreeProps {
-  categories: ICategory[]
-  selectedCategories: string[]
-  onCategoryChange: (categoryId: string, checked: boolean) => void
+  categories: ICategory[];
+  selectedCategories: string[];
+  onCategoryChange: (categoryId: string, checked: boolean) => void;
 }
 
 const CategoryTreeCheckbox = ({
@@ -36,7 +36,7 @@ const CategoryTreeCheckbox = ({
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default CategoryTreeCheckbox
+export default CategoryTreeCheckbox;

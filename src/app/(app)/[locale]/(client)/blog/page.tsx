@@ -1,5 +1,5 @@
-import { getTranslations } from 'next-intl/server'
-import type { Metadata } from 'next'
+import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 
 import {
   Pagination,
@@ -9,7 +9,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
   PaginationPrevious,
-} from '@/components/ui/pagination'
+} from "@/components/ui/pagination";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,48 +17,48 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumbs'
-import PostList from '@/components/client/blog/post-list'
-import BlogTitle from '@/components/client/blog/blog-title'
-import BlogFooter from '@/components/client/blog/blog-footer'
-import { getPaginationRange } from '@/utils/get-pagination-range'
-import BlogJsonLd from '@/components/client/json-ld/blog-json-ld'
-import { cn } from '@/utils/cn'
+} from "@/components/ui/breadcrumbs";
+import PostList from "@/components/client/blog/post-list";
+import BlogTitle from "@/components/client/blog/blog-title";
+import BlogFooter from "@/components/client/blog/blog-footer";
+import { getPaginationRange } from "@/utils/get-pagination-range";
+import BlogJsonLd from "@/components/client/json-ld/blog-json-ld";
+import { cn } from "@/utils/cn";
 
-import { blogMetaData } from '@/data/blog/blog-meta-data'
-import { locales } from '@/data/locales'
-import NotFoundPage from '@/components/not-found'
-import { fetchTags } from '@/data/fetch-tags'
-import ToTheTop from '@/components/ui/to-the-top'
+import { blogMetaData } from "@/data/blog/blog-meta-data";
+import { locales } from "@/data/locales";
+import NotFoundPage from "@/components/not-found";
+import { fetchTags } from "@/data/fetch-tags";
+import ToTheTop from "@/components/ui/to-the-top";
 
 type PageProps = {
-  params: Promise<{ locale: ILocale }>
-  searchParams: Promise<{ page?: string }>
-}
+  params: Promise<{ locale: ILocale }>;
+  searchParams: Promise<{ page?: string }>;
+};
 
-const baseUrl = process.env.NEXT_URL
+const baseUrl = process.env.NEXT_URL;
 
 export async function generateMetadata({
   params,
   searchParams,
 }: PageProps): Promise<Metadata> {
-  const { locale } = await params
-  const { page } = await searchParams
+  const { locale } = await params;
+  const { page } = await searchParams;
 
-  const ogImage = `${baseUrl}/blog-image.webp`
+  const ogImage = `${baseUrl}/blog-image.webp`;
 
-  const canonicalUrl = `${baseUrl}/${locale}/blog`
+  const canonicalUrl = `${baseUrl}/${locale}/blog`;
 
   const url =
     page && +page > 1
       ? `${baseUrl}/${locale}/blog?page=${page}`
-      : `${baseUrl}/${locale}/blog`
+      : `${baseUrl}/${locale}/blog`;
 
   return {
     title: blogMetaData[locale].title,
     description: blogMetaData[locale].description,
     keywords: blogMetaData[locale].keywords,
-    robots: 'index, follow',
+    robots: "index, follow",
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -70,8 +70,8 @@ export async function generateMetadata({
       title: blogMetaData[locale].openGraphTitle,
       description: blogMetaData[locale].openGraphDescription,
       url,
-      type: 'website',
-      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
+      type: "website",
+      locale: locale === "uk" ? "uk_UA" : "en_US",
       images: [
         {
           url: ogImage,
@@ -81,44 +81,44 @@ export async function generateMetadata({
         },
       ],
     },
-  }
+  };
 }
 
 export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }))
+  return locales.map((locale) => ({ locale }));
 }
 
 const getPageUrl = (
   newPage: number,
   searchParamsObj: Record<string, string>,
 ) => {
-  const searchParams = new URLSearchParams(searchParamsObj)
-  if (searchParams.get('page')) {
-    searchParams.set('page', newPage.toString())
+  const searchParams = new URLSearchParams(searchParamsObj);
+  if (searchParams.get("page")) {
+    searchParams.set("page", newPage.toString());
   } else {
-    searchParams.append('page', newPage.toString())
+    searchParams.append("page", newPage.toString());
   }
-  return '?' + searchParams.toString()
-}
+  return "?" + searchParams.toString();
+};
 
 export default async function Blog({ params, searchParams }: PageProps) {
-  const { locale } = await params
-  const t = await getTranslations('breadcrumbs')
-  const blogSearchParams = await searchParams
+  const { locale } = await params;
+  const t = await getTranslations("breadcrumbs");
+  const blogSearchParams = await searchParams;
 
-  const pageItem = parseInt(blogSearchParams.page || '1', 10)
+  const pageItem = parseInt(blogSearchParams.page || "1", 10);
 
   const postsData = await fetch(
     `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
       next: { tags: [`${fetchTags.posts}`] },
     },
-  ).then((res) => res.json())
+  ).then((res) => res.json());
 
-  if (!postsData.success) return <NotFoundPage />
+  if (!postsData.success) return <NotFoundPage />;
 
-  const { postsLocalized, currentPage, totalPages } = postsData
+  const { postsLocalized, currentPage, totalPages } = postsData;
 
   return (
     <>
@@ -127,17 +127,17 @@ export default async function Blog({ params, searchParams }: PageProps) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink href={`/${locale}/blog`}>
-                {t('blog')}
+                {t("blog")}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t('page') + ' ' + pageItem}</BreadcrumbPage>
+              <BreadcrumbPage>{t("page") + " " + pageItem}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -148,7 +148,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
             <Pagination className="mt-[60px] md:mt-[120px]">
               <PaginationContent>
                 <PaginationItem
-                  className={cn(currentPage === 1 && 'cursor-auto')}
+                  className={cn(currentPage === 1 && "cursor-auto")}
                 >
                   <PaginationPrevious
                     className="text-[36px] md:text-[64px]"
@@ -156,18 +156,18 @@ export default async function Blog({ params, searchParams }: PageProps) {
                     href={
                       currentPage > 1
                         ? getPageUrl(currentPage - 1, blogSearchParams)
-                        : '#'
+                        : "#"
                     }
                   />
                 </PaginationItem>
                 {getPaginationRange(currentPage, totalPages).map(
                   (item, index) => {
-                    if (item === 'ellipsis') {
+                    if (item === "ellipsis") {
                       return (
                         <PaginationItem key={`ellipsis-${index}`}>
                           <PaginationEllipsis className="text-xl sm:text-2xl md:text-4xl" />
                         </PaginationItem>
-                      )
+                      );
                     }
                     return (
                       <PaginationItem key={item}>
@@ -179,12 +179,12 @@ export default async function Blog({ params, searchParams }: PageProps) {
                           {item}
                         </PaginationLink>
                       </PaginationItem>
-                    )
+                    );
                   },
                 )}
 
                 <PaginationItem
-                  className={cn(currentPage === totalPages && 'cursor-auto')}
+                  className={cn(currentPage === totalPages && "cursor-auto")}
                 >
                   <PaginationNext
                     className="text-[36px] md:text-[64px]"
@@ -192,7 +192,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
                     href={
                       currentPage < totalPages
                         ? getPageUrl(currentPage + 1, blogSearchParams)
-                        : '#'
+                        : "#"
                     }
                   />
                 </PaginationItem>
@@ -204,5 +204,5 @@ export default async function Blog({ params, searchParams }: PageProps) {
       </div>
       <ToTheTop />
     </>
-  )
+  );
 }

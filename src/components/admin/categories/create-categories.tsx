@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -6,75 +6,75 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import { Label } from '@/components/ui/label'
-import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
+} from "@/components/ui/dialog";
+import CategoryTreeCheckbox from "@/components/admin/categories/category-tree-checkbox";
+import { Label } from "@/components/ui/label";
+import QuillEditor from "@/components/admin/quill-editor/d-quill-editor";
 
-import { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { createCategory } from '@/server/categories/create-categories.server'
-import { toast } from '@/hooks/useToast'
-import { useRouter } from 'next/navigation'
-import { locales } from '@/data/locales'
-import { Button } from '@/components/ui/button'
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { createCategory } from "@/server/categories/create-categories.server";
+import { toast } from "@/hooks/useToast";
+import { useRouter } from "next/navigation";
+import { locales } from "@/data/locales";
+import { Button } from "@/components/ui/button";
 
 interface ICategoriesTreeProps {
-  categories: ICategory[]
+  categories: ICategory[];
 }
 
 interface IFormData {
   name: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaTitle: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   description: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaKeywords: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
   metaDescription: {
-    uk: string
-    en: string
-  }
+    uk: string;
+    en: string;
+  };
 }
 
 const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const [descriptionUk, setDescriptionUk] = useState<string>('')
-  const [descriptionEn, setDescriptionEn] = useState<string>('')
+  const [descriptionUk, setDescriptionUk] = useState<string>("");
+  const [descriptionEn, setDescriptionEn] = useState<string>("");
 
   const handleCategoryChange = (categoryId: string): void => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId) ? [] : [categoryId],
-    )
-  }
+    );
+  };
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<IFormData>()
+  } = useForm<IFormData>();
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
-    type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
+    type CreateCategoryDTO = Omit<ICategory, "_id" | "children">;
 
     const formattedData: CreateCategoryDTO = {
       name: data.name,
-      slug: data.name.uk.toLowerCase().replace(/\s+/g, '-'),
+      slug: data.name.uk.toLowerCase().replace(/\s+/g, "-"),
       description: {
         uk: descriptionUk,
         en: descriptionEn,
@@ -86,24 +86,24 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
       parentCategory: selectedCategories.length
         ? selectedCategories[0]
         : undefined,
-    }
+    };
 
-    const result = await createCategory(formattedData)
+    const result = await createCategory(formattedData);
 
     if (result.success) {
-      setIsOpen(false)
+      setIsOpen(false);
       toast({
         title: result.message,
-      })
+      });
     } else {
       toast({
         title: result.message,
-      })
+      });
     }
 
-    router.refresh()
-    reset()
-  }
+    router.refresh();
+    reset();
+  };
 
   return (
     <div className="ml-6">
@@ -142,7 +142,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
               {locales.map((lang) => (
                 <div key={lang} className="mb-4 border-b pb-4">
                   <h3 className="text-lg font-bold uppercase">
-                    {lang === 'uk' ? 'Українська' : 'English'}
+                    {lang === "uk" ? "Українська" : "English"}
                   </h3>
 
                   <div>
@@ -152,7 +152,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
                       type="text"
                       className="w-full border p-2"
                       {...register(`name.${lang}`, {
-                        required: 'Назва обовʼязкова',
+                        required: "Назва обовʼязкова",
                       })}
                     />
 
@@ -170,7 +170,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
                       type="text"
                       className="w-full border p-2"
                       {...register(`metaTitle.${lang}`, {
-                        required: 'Мета заголовок обовʼязковий',
+                        required: "Мета заголовок обовʼязковий",
                       })}
                     />
 
@@ -184,7 +184,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
                   <div className="mt-3">
                     <Label className="block">Опис:</Label>
 
-                    {lang === 'uk' ? (
+                    {lang === "uk" ? (
                       <QuillEditor
                         className="min-h-96"
                         content={descriptionUk}
@@ -206,7 +206,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
                       type="text"
                       className="w-full border p-2"
                       {...register(`metaKeywords.${lang}`, {
-                        required: 'Ключові слова обовʼязкові',
+                        required: "Ключові слова обовʼязкові",
                       })}
                     />
 
@@ -223,7 +223,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
                     <textarea
                       className="w-full border p-2"
                       {...register(`metaDescription.${lang}`, {
-                        required: 'Мета опис обовʼязковий',
+                        required: "Мета опис обовʼязковий",
                       })}
                     />
 
@@ -241,7 +241,7 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
         </DialogContent>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default CreateCategories
+export default CreateCategories;

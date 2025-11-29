@@ -1,12 +1,12 @@
-import { Loader } from 'lucide-react'
+import { Loader } from "lucide-react";
 
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 
 const Reviews = dynamic(
-  () => import('@/components/client/main/reviews/reviews'),
+  () => import("@/components/client/main/reviews/reviews"),
   {
     loading: () => <Loader />,
   },
-)
+);
 
-export default Reviews
+export default Reviews;

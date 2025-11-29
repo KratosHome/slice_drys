@@ -1,5 +1,5 @@
-'use client'
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -8,60 +8,63 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/doodle-select'
-import ChangeQuantityIcon from '@/components/icons/change-quantity-icon'
-import SliderWithThumbnails from './slider/slider'
-import TopLabel from '@/components/client/labels/top-label'
-import NewLabel from '@/components/client/labels/new-label'
-import { useCartStore } from '@/store/cart-store'
-import SaleLabel from '@/components/client/labels/sale-label'
-import { useTranslations } from 'next-intl'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
-import { Button } from '@/components/ui/button'
-import { ResponsiveMotion } from '@/components/client/responsive-motion'
-import UnderlineWave from '@/components/ui/underline-wave'
+} from "@/components/ui/doodle-select";
+import ChangeQuantityIcon from "@/components/icons/change-quantity-icon";
+import SliderWithThumbnails from "./slider/slider";
+import TopLabel from "@/components/client/labels/top-label";
+import NewLabel from "@/components/client/labels/new-label";
+import { useCartStore } from "@/store/cart-store";
+import SaleLabel from "@/components/client/labels/sale-label";
+import { useTranslations } from "next-intl";
+import { useRouter, useSearchParams } from "next/navigation";
+import { increaseProductVisit } from "@/server/products/increase-product-visit.server";
+import { Button } from "@/components/ui/button";
+import { ResponsiveMotion } from "@/components/client/responsive-motion";
+import UnderlineWave from "@/components/ui/underline-wave";
 
 export const ProductInfo = ({ product }: { product: IProduct }) => {
-  const router = useRouter()
-  const t = useTranslations('product')
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const t = useTranslations("product");
+  const searchParams = useSearchParams();
 
-  const weightParam = searchParams.get('weight')
+  const weightParam = searchParams.get("weight");
 
-  const { name, img, composition, variables } = product
+  const { name, img, composition, variables } = product;
 
   const initialSelectedVariable = weightParam
     ? variables.find((variable) => String(variable.weight) === weightParam) ||
       (product.variant ?? variables[0])
-    : (product.variant ?? variables[0])
+    : (product.variant ?? variables[0]);
 
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
     (state) => state,
-  )
+  );
 
   const [selectedVariable, setSelectedVariable] = useState(
     initialSelectedVariable,
-  )
+  );
 
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
 
-  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+  const isInCart = hasItemInCart(
+    product._id as string,
+    selectedVariable.weight,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      await increaseProductVisit(product.slug)
-    }
+      await increaseProductVisit(product.slug);
+    };
 
-    fetchData()
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const handleAddToCart = () => {
     if (product._id && product.img) {
@@ -73,43 +76,43 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         price: selectedVariable.newPrice || selectedVariable.price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
-      })
+      });
     }
-    setOpenCart(true)
-  }
+    setOpenCart(true);
+  };
 
   const handleWeightChange = (value: string) => {
-    const newVariable = variables.find((v) => String(v.weight) === value)
+    const newVariable = variables.find((v) => String(v.weight) === value);
     if (newVariable) {
-      setSelectedVariable(newVariable)
-      setQuantity(1)
-      const currentPath = window.location.pathname
-      router.replace(`${currentPath}?weight=${newVariable.weight}`)
+      setSelectedVariable(newVariable);
+      setQuantity(1);
+      const currentPath = window.location.pathname;
+      router.replace(`${currentPath}?weight=${newVariable.weight}`);
     }
-  }
+  };
 
   return (
     <section className="lg:border-light_gray mb-20 flex flex-col gap-10 pb-10 lg:flex-row lg:border">
       <div className="absolute grid gap-0.5">
-        {product.statusLabel?.includes('top') && <TopLabel />}
+        {product.statusLabel?.includes("top") && <TopLabel />}
         <NewLabel />
-        {product.statusLabel?.includes('new') && <NewLabel />}
-        {product.statusLabel?.includes('sale') && <SaleLabel />}
+        {product.statusLabel?.includes("new") && <NewLabel />}
+        {product.statusLabel?.includes("sale") && <SaleLabel />}
       </div>
       <SliderWithThumbnails img={img!} />
       <div className="lg:w-1/2">
         <h1 className="bg-foreground text-background relative py-2 pl-3 text-[40px] font-bold">
-          {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
+          {t("dried-jerky")} {name} {selectedVariable.weight}&nbsp;{t("g")}.
           {selectedVariable.count === 0 && (
             <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
-              {t('expect-soon')}
+              {t("expect-soon")}
             </div>
           )}
         </h1>
         <div className="mt-6 pb-14 sm:mt-3 sm:text-xl sm:leading-8">
           <div className="flex gap-2">
-            <p className="font-bold">{t('composition')}:</p>
-            <p>{composition.join(', ')}</p>
+            <p className="font-bold">{t("composition")}:</p>
+            <p>{composition.join(", ")}</p>
           </div>
         </div>
         <div className="relative flex items-stretch justify-center gap-6 pb-[3.75rem] sm:justify-start">
@@ -122,26 +125,26 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                 htmlFor="weight"
                 className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
               >
-                {t('choose-weight')}
+                {t("choose-weight")}
               </label>
-              <SelectValue placeholder={t('weight')} />
+              <SelectValue placeholder={t("weight")} />
             </SelectTrigger>
             <SelectContent className="bg-grey-select">
               <SelectGroup>
-                <SelectLabel>{t('weight')}</SelectLabel>
+                <SelectLabel>{t("weight")}</SelectLabel>
                 {variables.map((variable) => (
                   <SelectItem
                     key={variable.weight}
                     value={String(variable.weight)}
                   >
-                    {variable.weight} {t('g')}.
+                    {variable.weight} {t("g")}.
                   </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
           <div className="bg-grey-select content-center rounded-sm border px-8 py-2 text-2xl font-medium">
-            {selectedVariable.weight} {t('g')}.
+            {selectedVariable.weight} {t("g")}.
           </div>
         </div>
         <div className="flex flex-col items-end justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
@@ -170,14 +173,14 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               <ResponsiveMotion
                 className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                transition={{ type: "spring", stiffness: 300 }}
                 onClick={() =>
                   setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
                 }
               >
                 <ChangeQuantityIcon
                   content="-"
-                  aria-label={t('remove')}
+                  aria-label={t("remove")}
                   disabled={quantity === 1}
                   aria-disabled={quantity === 1}
                 />
@@ -186,18 +189,18 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               <ResponsiveMotion
                 className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                transition={{ type: "spring", stiffness: 300 }}
                 onClick={() =>
                   setQuantity((prev) =>
                     prev < selectedVariable.count ? prev + 1 : prev,
                   )
                 }
               >
-                <ChangeQuantityIcon content="+" aria-label={t('add')} />
+                <ChangeQuantityIcon content="+" aria-label={t("add")} />
               </ResponsiveMotion>
             </div>
             <Button
-              aria-label={isInCart ? t('in-cart') : t('add-to-cart')}
+              aria-label={isInCart ? t("in-cart") : t("add-to-cart")}
               className="h-[50px] min-w-[190px] rounded-none"
               type="button"
               variant="danger"
@@ -206,9 +209,9 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             >
               {mounted
                 ? isInCart
-                  ? t('in-cart')
-                  : t('add-to-cart')
-                : t('add-to-cart')}
+                  ? t("in-cart")
+                  : t("add-to-cart")
+                : t("add-to-cart")}
             </Button>
           </div>
         </div>
@@ -229,5 +232,5 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

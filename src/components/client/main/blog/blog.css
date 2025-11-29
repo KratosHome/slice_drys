@@ -1,158 +1,160 @@
 .about-us .splide__arrow {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .about-us .splide__pagination__page {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .about-us .about__wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 32px;
-  padding-bottom: 32px;
-  max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    max-width: 1440px;
 }
 
 @media (min-width: 768px) {
-  .about-us .about__wrapper {
-    display: block;
-    padding-left: clamp(20px, calc(20px + 80 * (100vw - 768px) / 672), 100px);
-  }
+    .about-us .about__wrapper {
+        display: block;
+        padding-left: clamp(20px, calc(20px + 80 * (100vw - 768px) / 672), 100px);
+    }
 }
 
 @media (min-width: 1024px) {
-  .about-us .about__wrapper {
-    padding-top: 52px;
-    padding-bottom: 52px;
-  }
+    .about-us .about__wrapper {
+        padding-top: 52px;
+        padding-bottom: 52px;
+    }
 }
 
 .about-us .about__card {
-  position: relative;
-  height: 100%;
-  border-radius: 0.75rem; /* rounded-xl */
-  background-color: #1f2937; /* gray-900 */
-  transition: all 0.3s ease-in-out;
-  will-change: transform;
+    position: relative;
+    height: 100%;
+    border-radius: 0.75rem; /* rounded-xl */
+    background-color: #1f2937; /* gray-900 */
+    transition: all 0.3s ease-in-out;
+    will-change: transform;
 }
 
 @media (min-width: 1024px) {
-  .about-us .about__card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 4px 10px 3px rgba(255, 255, 255, 0.15);
-  }
+    .about-us .about__card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0px 4px 10px 3px rgba(255, 255, 255, 0.15);
+    }
 }
 
 .about-us .about__card:active {
-  transform: translateY(-4px);
-  box-shadow: 0px 4px 10px 3px rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0px 4px 10px 3px rgba(255, 255, 255, 0.15);
 }
 
 .about-us .card__link {
-  text-wrap: balance;
-  font-size: clamp(16px, calc(16px + 4 * (100vw - 768px) / 672), 20px);
-  font-weight: 500;
-  position: relative;
+    text-wrap: balance;
+    font-size: clamp(16px, calc(16px + 4 * (100vw - 768px) / 672), 20px);
+    font-weight: 500;
+    position: relative;
 }
 
 .about-us .card__link::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  cursor: pointer;
+    content: '';
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
 }
 
 @media (min-width: 768px) {
-  .about-us .splide__slide:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -1px;
-    width: 0px;
-    height: 100%;
-    border-right: 1px dashed hsl(var(--background));
-  }
+    .about-us .splide__slide:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -1px;
+        width: 0px;
+        height: 100%;
+        border-right: 1px dashed hsl(var(--background));
+    }
 }
 
 @media (min-width: 1024px) {
-  .about-us .splide__slide:not(:last-child)::after {
-    border-right: 2px dashed hsl(var(--background));
-    right: -2px;
-  }
+    .about-us .splide__slide:not(:last-child)::after {
+        border-right: 2px dashed hsl(var(--background));
+        right: -2px;
+    }
 }
 
 .about-us .splide__pagination.custom__pagination {
-  bottom: -80px;
-  gap: 3px;
+    bottom: -80px;
+    gap: 3px;
 }
 
 @media (min-width: 768px) {
-  .about-us .splide__pagination.custom__pagination {
-    bottom: -77px;
-  }
+    .about-us .splide__pagination.custom__pagination {
+        bottom: -77px;
+    }
 }
 
 @media (min-width: 1280px) {
-  .about-us .splide__pagination.custom__pagination {
-    bottom: -79px;
-  }
+    .about-us .splide__pagination.custom__pagination {
+        bottom: -79px;
+    }
 }
 
 .about-us .splide__pagination__page.custom__pagination-page {
-  background: url('/icons/slider-bullet-light.svg') no-repeat center / cover;
+    background: url('/icons/slider-bullet-light.svg') no-repeat center / cover;
 }
+
 .dark .about-us .splide__pagination__page.custom__pagination-page {
-  background: url('/icons/slider-bullet.svg') no-repeat center / cover;
+    background: url('/icons/slider-bullet.svg') no-repeat center / cover;
 }
 
 .about-us .splide__pagination__page.custom__pagination-page.is-active {
-  background: url('/icons/slider-bullet-active-light.svg') no-repeat center /
+    background: url('/icons/slider-bullet-active-light.svg') no-repeat center /
     cover;
 }
+
 .dark .about-us .splide__pagination__page.custom__pagination-page.is-active {
-  background: url('/icons/slider-bullet-active.svg') no-repeat center / cover;
+    background: url('/icons/slider-bullet-active.svg') no-repeat center / cover;
 }
 
 .about-us .splide__slide {
-  position: relative;
-  align-items: stretch;
+    position: relative;
+    align-items: stretch;
 }
 
 @media (min-width: 768px) {
-  .about-us .splide__slide {
-    margin-right: 1px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+    .about-us .splide__slide {
+        margin-right: 1px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 @media (min-width: 1024px) {
-  .about-us .splide__slide {
-    margin-right: 2px;
-    padding-left: 18px;
-    padding-right: 18px;
-  }
+    .about-us .splide__slide {
+        margin-right: 2px;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
 }
 
 .about-us .splide__track {
-  margin-bottom: 130px;
-  overflow: visible;
-  overflow-x: clip;
+    margin-bottom: 130px;
+    overflow: visible;
+    overflow-x: clip;
 }
 
 @media (min-width: 768px) {
-  .about-us .splide__track {
-    margin-bottom: 100px;
-  }
+    .about-us .splide__track {
+        margin-bottom: 100px;
+    }
 }
 
 .about-us .splide__arrow.custom__arrow {
-  bottom: -90px;
-  top: auto;
+    bottom: -90px;
+    top: auto;
 }

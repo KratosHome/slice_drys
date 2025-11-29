@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { Combobox, transformToCombo } from '@/components/ui/combobox'
-import { useCartStore } from '@/store/cart-store'
-import { useTranslations } from 'next-intl'
-import { UseControllerProps } from 'react-hook-form'
+import { Combobox, transformToCombo } from "@/components/ui/combobox";
+import { useCartStore } from "@/store/cart-store";
+import { useTranslations } from "next-intl";
+import { UseControllerProps } from "react-hook-form";
 
 interface DeliveryProviderProps {
-  control: UseControllerProps['control']
-  onCityChange: (city: IComboboxData) => void
-  onBranchChange: (branch: IComboboxData) => void
-  defaultValues?: IDirectoryCity[]
+  control: UseControllerProps["control"];
+  onCityChange: (city: IComboboxData) => void;
+  onBranchChange: (branch: IComboboxData) => void;
+  defaultValues?: IDirectoryCity[];
 }
 
 export default function DeliveryProvider({
@@ -18,18 +18,18 @@ export default function DeliveryProvider({
   defaultValues,
   onBranchChange,
 }: DeliveryProviderProps) {
-  const t = useTranslations('order')
+  const t = useTranslations("order");
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
-  )
+  );
 
   const handleCitySelect = async (city: IComboboxData) => {
-    onCityChange(city)
-  }
+    onCityChange(city);
+  };
 
   const handleBranchSelect = (branch: IComboboxData) => {
-    onBranchChange(branch)
-  }
+    onBranchChange(branch);
+  };
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function DeliveryProvider({
         rules={{
           required: {
             value: true,
-            message: t('validation-required'),
+            message: t("validation-required"),
           },
         }}
         defaultValues={defaultValues?.map((city) =>
@@ -46,7 +46,7 @@ export default function DeliveryProvider({
         )}
         control={control}
         onSelect={handleCitySelect}
-        placeholder={t('city-placeholder')}
+        placeholder={t("city-placeholder")}
       />
       {deliveryInfo?.city?.label && (
         <Combobox
@@ -54,16 +54,16 @@ export default function DeliveryProvider({
           rules={{
             required: {
               value: true,
-              message: t('validation-required'),
+              message: t("validation-required"),
             },
           }}
           control={control}
           onSelect={handleBranchSelect}
-          placeholder={t('branch-placeholder', {
-            type: deliveryInfo?.deliveryMethod || '',
+          placeholder={t("branch-placeholder", {
+            type: deliveryInfo?.deliveryMethod || "",
           })}
         />
       )}
     </>
-  )
+  );
 }

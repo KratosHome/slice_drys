@@ -1,9 +1,9 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { ResponsiveMotion } from '@/components/client/responsive-motion'
+import Image from "next/image";
+import Link from "next/link";
+import { ResponsiveMotion } from "@/components/client/responsive-motion";
 
 interface IInstaFeedCardProps {
-  post: InstaFeed
+  post: InstaFeed;
 }
 
 export default function InstaCard({ post }: IInstaFeedCardProps) {
@@ -12,7 +12,7 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
       className="bg-background relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl will-change-transform md:max-w-none"
       whileHover={{
         y: -5,
-        boxShadow: '0px 10px 20px hsla(var(--popover-foreground) / 0.2)',
+        boxShadow: "0px 10px 20px hsla(var(--popover-foreground) / 0.2)",
       }}
       transition={{ duration: 0.3 }}
     >
@@ -37,10 +37,10 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
       <div className="relative">
         <Image
           src={
-            ('thumbnail_url' in post && post?.thumbnail_url) ||
-            ('media_url' in post && post?.media_url) ||
-            ('children' in post && post.children.data[0]?.media_url) ||
-            'https://via.placeholder.com/500x400?text=No+Image'
+            ("thumbnail_url" in post && post?.thumbnail_url) ||
+            ("media_url" in post && post?.media_url) ||
+            ("children" in post && post.children.data[0]?.media_url) ||
+            "https://via.placeholder.com/500x400?text=No+Image"
           }
           sizes="(max-width: 1024px) 100vw, 50vw"
           alt={`Travel ${post.id}`}
@@ -48,20 +48,20 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
           height={200}
           className="aspect-square w-full object-cover"
         />
-        <Dots number={'children' in post ? post.children.data.length : 0} />
+        <Dots number={"children" in post ? post.children.data.length : 0} />
       </div>
       <p className="line-clamp-2 overflow-hidden px-[17px] pt-[12px] text-[14px] text-wrap text-ellipsis lg:text-[16px]">
-        {'children' in post
+        {"children" in post
           ? post?.caption || post.children.data[0]?.caption
           : post.caption}
       </p>
       <CardFooter />
     </ResponsiveMotion>
-  )
+  );
 }
 
 const Dots = ({ number }: { number: number }) => {
-  if (!number) return null
+  if (!number) return null;
 
   return (
     <div className="absolute right-[50%] bottom-[20px] flex translate-x-1/2 gap-[4px]">
@@ -72,8 +72,8 @@ const Dots = ({ number }: { number: number }) => {
         ></span>
       ))}
     </div>
-  )
-}
+  );
+};
 
 const CardFooter = () => {
   return (
@@ -128,5 +128,5 @@ const CardFooter = () => {
         />
       </svg>
     </div>
-  )
-}
+  );
+};

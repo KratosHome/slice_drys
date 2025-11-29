@@ -5,15 +5,15 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumbs'
-import React, { FC } from 'react'
-import { getTranslations } from 'next-intl/server'
+} from "@/components/ui/breadcrumbs";
+import React, { FC } from "react";
+import { getTranslations } from "next-intl/server";
 
 interface BreadcrumbsProps {
-  category: string
-  product: string
-  categoryLink: string
-  locale: string
+  category: string;
+  product: string;
+  categoryLink: string;
+  locale: string;
 }
 
 export const Breadcrumbs: FC<BreadcrumbsProps> = async ({
@@ -22,13 +22,13 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = async ({
   categoryLink,
   locale,
 }) => {
-  const t = await getTranslations('product-list')
+  const t = await getTranslations("product-list");
 
   return (
     <Breadcrumb className="my-2">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+          <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
@@ -42,5 +42,5 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = async ({
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
-}
+  );
+};

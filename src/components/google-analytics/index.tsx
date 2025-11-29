@@ -1,8 +1,8 @@
-import Script from 'next/script'
+import Script from "next/script";
 
 export default function GoogleAnalytics() {
   const GOOGLE_ANALYTICS_ID: string =
-    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''
+    process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || "";
 
   return (
     <>
@@ -20,5 +20,5 @@ export default function GoogleAnalytics() {
          `}
       </Script>
     </>
-  )
+  );
 }

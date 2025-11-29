@@ -1,99 +1,99 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
-import { Arrow } from '@/components/ui/arrow'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { UnderlinedLink } from '@/components/ui/underlined-link'
-import { TransitionLink } from '@/components/client/transition-link'
+import Image from "next/image";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import { Arrow } from "@/components/ui/arrow";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { UnderlinedLink } from "@/components/ui/underlined-link";
+import { TransitionLink } from "@/components/client/transition-link";
 
-import { useEffect } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
-import { formatDate } from '@/utils/format-date'
+import { useEffect } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { formatDate } from "@/utils/format-date";
 
-import '@/components/client/styles/slider.css'
-import '@splidejs/react-splide/css'
-import './blog.css'
+import "@/components/client/styles/slider.css";
+import "@splidejs/react-splide/css";
+import "./blog.css";
 
 interface IBlogSectionProps {
-  data: IPost[]
+  data: IPost[];
 }
 
 export default function BlogSection({ data }: IBlogSectionProps) {
-  const t = useTranslations('main.more-about-us')
-  const locale = useLocale() as ILocale
+  const t = useTranslations("main.more-about-us");
+  const locale = useLocale() as ILocale;
 
   useEffect(() => {
-    const target = document.querySelector('.blog-slider')
+    const target = document.querySelector(".blog-slider");
 
-    if (!target) return
+    if (!target) return;
 
     const handleResize = (): void => {
-      let k: number
+      let k: number;
 
       switch (true) {
         case window.innerWidth >= 1280:
-          k = 35
-          break
+          k = 35;
+          break;
         case window.innerWidth >= 1024:
-          k = 30
-          break
+          k = 30;
+          break;
         case window.innerWidth >= 768:
-          k = 28
-          break
+          k = 28;
+          break;
         case window.innerWidth < 768:
-          k = 23
-          break
+          k = 23;
+          break;
         default:
-          k = 30
+          k = 30;
       }
 
-      const x: number = data.length * k
+      const x: number = data.length * k;
 
       const prev = document.querySelector(
-        '.blog-slider .splide__arrow--prev.custom__arrow-prev',
-      ) as HTMLElement
+        ".blog-slider .splide__arrow--prev.custom__arrow-prev",
+      ) as HTMLElement;
       const next = document.querySelector(
-        '.blog-slider .splide__arrow--next.custom__arrow-next',
-      ) as HTMLElement
+        ".blog-slider .splide__arrow--next.custom__arrow-next",
+      ) as HTMLElement;
 
       if (prev && next) {
-        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
-        next.style.setProperty('--tw-arrow-translate', `${x}px`)
+        prev.style.setProperty("--tw-arrow-translate", `-${x}px`);
+        next.style.setProperty("--tw-arrow-translate", `${x}px`);
       }
-    }
+    };
 
-    const resizeObserver = new ResizeObserver(handleResize)
+    const resizeObserver = new ResizeObserver(handleResize);
 
-    if (target) resizeObserver.observe(target)
+    if (target) resizeObserver.observe(target);
 
     return () => {
-      if (target) resizeObserver.unobserve(target)
-    }
-  }, [data])
+      if (target) resizeObserver.unobserve(target);
+    };
+  }, [data]);
 
   const splideOptions = {
     arrowPath: Arrow(),
-    type: 'loop',
+    type: "loop",
     perPage: 3,
     perMove: 1,
     pagination: true,
     arrows: true,
     autoplay: true,
     interval: 3000,
-    focus: 'center',
+    focus: "center",
     breakpoints: {
       768: { perPage: 1 },
     },
     classes: {
-      arrows: 'splide__arrows custom__arrows',
-      arrow: 'splide__arrow custom__arrow',
-      prev: 'splide__arrow--prev custom__arrow-prev',
-      next: 'splide__arrow--next custom__arrow-next',
-      pagination: 'splide__pagination custom__pagination',
-      page: 'splide__pagination__page custom__pagination-page',
+      arrows: "splide__arrows custom__arrows",
+      arrow: "splide__arrow custom__arrow",
+      prev: "splide__arrow--prev custom__arrow-prev",
+      next: "splide__arrow--next custom__arrow-next",
+      pagination: "splide__pagination custom__pagination",
+      page: "splide__pagination__page custom__pagination-page",
     },
-  }
+  };
 
   return (
     <section
@@ -106,13 +106,13 @@ export default function BlogSection({ data }: IBlogSectionProps) {
             id="more about us"
             className="title-section text-center !normal-case md:text-start"
           >
-            {t('title')}
+            {t("title")}
           </h2>
           <UnderlinedLink
             href={`${locale}/blog`}
             className="order-1 md:order-0"
           >
-            {t('more-btn')}
+            {t("more-btn")}
           </UnderlinedLink>
         </div>
         <div className="mt-[40px] w-full max-w-[400px] md:mt-[80px] md:max-w-none">
@@ -147,5 +147,5 @@ export default function BlogSection({ data }: IBlogSectionProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

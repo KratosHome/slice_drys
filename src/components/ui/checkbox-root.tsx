@@ -6,5 +6,5 @@ export default function CheckboxRoot() {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }

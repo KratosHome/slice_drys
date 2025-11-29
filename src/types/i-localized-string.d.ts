@@ -1,9 +1,9 @@
 interface ILocalizedString {
-  en: string
-  uk: string
+  en: string;
+  uk: string;
 }
 
 interface ILocalizedStringArray {
-  en: string[]
-  uk: string[]
+  en: string[];
+  uk: string[];
 }

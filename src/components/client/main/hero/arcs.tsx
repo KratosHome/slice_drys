@@ -1,9 +1,9 @@
-import Image from 'next/image'
+import Image from "next/image";
 
-import { cn } from '@/utils/cn'
+import { cn } from "@/utils/cn";
 
 interface IArcsProps {
-  color: string
+  color: string;
 }
 
 export default function Arcs({ color }: IArcsProps) {
@@ -31,7 +31,7 @@ export default function Arcs({ color }: IArcsProps) {
       </svg>
       <Image
         src="/icons/slider-line-down.svg"
-        className={cn('-z-20 mt-[16px] px-[32px] md:mt-[33px] md:px-[62px]')}
+        className={cn("-z-20 mt-[16px] px-[32px] md:mt-[33px] md:px-[62px]")}
         alt="Slider line down"
         fill
         priority
@@ -41,5 +41,5 @@ export default function Arcs({ color }: IArcsProps) {
         role="img"
       />
     </>
-  )
+  );
 }

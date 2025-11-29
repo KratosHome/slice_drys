@@ -1,45 +1,45 @@
-import { Metadata } from 'next'
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
-import 'quill/dist/quill.snow.css'
-import Share from '@/components/ui/share'
-import NotFoundPage from '@/components/not-found'
-import { locales } from '@/data/locales'
-import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
-import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
-import { fetchTags } from '@/data/fetch-tags'
-import JoinCommunity from '@/components/client/promo-banner/join-community'
-import ToTheTop from '@/components/ui/to-the-top'
+import { Metadata } from "next";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import "quill/dist/quill.snow.css";
+import Share from "@/components/ui/share";
+import NotFoundPage from "@/components/not-found";
+import { locales } from "@/data/locales";
+import { getPostsUrls } from "@/server/posts/get-posts-urls.server";
+import BlogItemJsonLd from "@/components/client/json-ld/blog-item-json-ld";
+import { fetchTags } from "@/data/fetch-tags";
+import JoinCommunity from "@/components/client/promo-banner/join-community";
+import ToTheTop from "@/components/ui/to-the-top";
 
-const baseUrl = process.env.NEXT_URL
+const baseUrl = process.env.NEXT_URL;
 
 type Props = {
-  params: Promise<{ locale: ILocale; slug: string }>
-}
+  params: Promise<{ locale: ILocale; slug: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug, locale } = await params
+  const { slug, locale } = await params;
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
       next: { tags: [`${fetchTags.post}`] },
     },
-  ).then((res) => res.json())
+  ).then((res) => res.json());
 
   if (!data.success || !data.post.length) {
     return {
-      title: 'Post not found',
-      description: 'The requested post could not be found.',
-      robots: 'noindex, nofollow',
-    }
+      title: "Post not found",
+      description: "The requested post could not be found.",
+      robots: "noindex, nofollow",
+    };
   }
 
-  const post = data.post[0]
+  const post = data.post[0];
   const metaKeywordsArray =
-    post.keywords?.split(',').map((keyword: string) => keyword.trim()) || []
+    post.keywords?.split(",").map((keyword: string) => keyword.trim()) || [];
 
-  const url = `${baseUrl}/${locale}/blog/${slug}`
+  const url = `${baseUrl}/${locale}/blog/${slug}`;
 
   return {
     title: post.title,
@@ -59,12 +59,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             },
           ]
         : [],
-      type: 'article',
+      type: "article",
       publishedTime: post.createdAt,
       authors: post.author,
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: post.title,
       description: post.metaDescription,
       images: post.img,
@@ -76,41 +76,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         uk: `${url}`,
       },
     },
-  }
+  };
 }
 
 export async function generateStaticParams() {
-  const postSlug = await getPostsUrls()
+  const postSlug = await getPostsUrls();
   return postSlug.data.flatMap((item: { slug: string }) =>
     locales.map((locale) => ({
       slug: item.slug,
       locale,
     })),
-  )
+  );
 }
 
 export default async function PostPage({ params }: Props) {
-  const { slug, locale } = await params
+  const { slug, locale } = await params;
 
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
     {
-      cache: 'force-cache',
+      cache: "force-cache",
       next: { tags: [`${fetchTags.post}`] },
     },
-  ).then((res) => res.json())
+  ).then((res) => res.json());
 
   if (!data.success) {
-    return <NotFoundPage />
+    return <NotFoundPage />;
   }
-  const url = `${baseUrl}/${locale}/blog/${slug}`
+  const url = `${baseUrl}/${locale}/blog/${slug}`;
 
-  const content = JSON.parse(data.post[0].content)
-  const title = data.post[0].title
-  const date = new Date(data.post[0].updatedAt).toLocaleDateString('uk-UA')
-  const author = data.post[0].author
-  const converter = new QuillDeltaToHtmlConverter(content.ops)
-  const html = converter.convert().replace(/(<p>(?:<br\/>)+<\/p>)/g, '')
+  const content = JSON.parse(data.post[0].content);
+  const title = data.post[0].title;
+  const date = new Date(data.post[0].updatedAt).toLocaleDateString("uk-UA");
+  const author = data.post[0].author;
+  const converter = new QuillDeltaToHtmlConverter(content.ops);
+  const html = converter.convert().replace(/(<p>(?:<br\/>)+<\/p>)/g, "");
 
   return (
     <>
@@ -140,5 +140,5 @@ export default async function PostPage({ params }: Props) {
       </div>
       <ToTheTop />
     </>
-  )
+  );
 }

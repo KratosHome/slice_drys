@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { useRef } from 'react'
-import { gsap } from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP);
 
 interface IHeaderInfoProps {
-  title: string
+  title: string;
 }
 
 export default function HeaderInfo({ title }: IHeaderInfoProps) {
-  const infoRef = useRef<HTMLDivElement>(null)
+  const infoRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -21,11 +21,11 @@ export default function HeaderInfo({ title }: IHeaderInfoProps) {
         yPercent: 0,
         opacity: 1,
         duration: 0.6,
-        ease: 'power3.out',
+        ease: "power3.out",
         delay: 0.6,
       },
-    )
-  })
+    );
+  });
 
   return (
     <div
@@ -37,5 +37,5 @@ export default function HeaderInfo({ title }: IHeaderInfoProps) {
         {title}
       </p>
     </div>
-  )
+  );
 }

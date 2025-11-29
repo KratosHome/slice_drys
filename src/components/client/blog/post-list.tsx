@@ -1,11 +1,11 @@
-import PostCard from './post-card'
+import PostCard from "./post-card";
 
 interface BlogProps {
-  posts: IPost[]
+  posts: IPost[];
 }
 
 export default function PostList({ posts }: BlogProps) {
-  if (!posts.length) return <h1>Оце трагедія! Біжимо писати для вас пости!</h1>
+  if (!posts.length) return <h1>Оце трагедія! Біжимо писати для вас пости!</h1>;
 
   return (
     <div className="mt-[50px] flex flex-col gap-12 lg:mt-[108px]">
@@ -25,5 +25,5 @@ export default function PostList({ posts }: BlogProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }

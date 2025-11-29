@@ -1,32 +1,32 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: '*',
+        userAgent: "*",
         disallow: [
-          '/*?sort=*',
-          '/*?new=*',
-          '/*?filters=*',
-          '/*?page=*',
-          '/*?categories=*',
-          '/*?minWeight=*',
-          '/*?maxWeight=*',
+          "/*?sort=*",
+          "/*?new=*",
+          "/*?filters=*",
+          "/*?page=*",
+          "/*?categories=*",
+          "/*?minWeight=*",
+          "/*?maxWeight=*",
         ],
         allow: [
-          '/',
-          '/uk/',
-          '/en/',
-          '/uk/*',
-          '/en/*',
-          '/*/privacy-policy/',
-          '/*/public-offer/',
-          '/*/blog/',
-          '/*/blog/*',
+          "/",
+          "/uk/",
+          "/en/",
+          "/uk/*",
+          "/en/*",
+          "/*/privacy-policy/",
+          "/*/public-offer/",
+          "/*/blog/",
+          "/*/blog/*",
         ],
       },
     ],
-    sitemap: 'https://codecraftmaster.com/sitemap.xml',
-  }
+    sitemap: "https://codecraftmaster.com/sitemap.xml",
+  };
 }

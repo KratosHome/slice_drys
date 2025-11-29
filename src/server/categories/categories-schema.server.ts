@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const categoriesSchemaServer = new mongoose.Schema(
   {
@@ -25,20 +25,21 @@ const categoriesSchemaServer = new mongoose.Schema(
     },
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: "Category",
       default: null,
     },
     children: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+        ref: "Category",
       },
     ],
     order: { type: Number, default: 0 },
     image: { type: String, maxlength: 255 },
   },
   { timestamps: true },
-)
+);
 
 export const Category =
-  mongoose.models.Category || mongoose.model('Category', categoriesSchemaServer)
+  mongoose.models.Category ||
+  mongoose.model("Category", categoriesSchemaServer);

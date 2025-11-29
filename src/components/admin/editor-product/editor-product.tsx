@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   AlertDialog,
@@ -8,30 +8,30 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import Image from 'next/image'
+} from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import Image from "next/image";
 
-import { type ChangeEvent, useEffect, useState } from 'react'
-import { useFieldArray, useForm, Controller } from 'react-hook-form'
-import { createProduct } from '@/server/products/create-product.server'
-import { toast } from '@/hooks/useToast'
-import Loading from '@/components/ui/loading'
-import { editProduct } from '@/server/products/edit-product.server'
-import { useRouter } from 'next/navigation'
-import { deleteProduct } from '@/server/products/delete-product.server'
-import CategoryTreeCheckbox from '@/components/admin/categories/category-tree-checkbox'
-import { Button } from '@/components/ui/button'
-import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
-import { convertToBase64 } from '@/utils/convert-to-base-64'
+import { type ChangeEvent, useEffect, useState } from "react";
+import { useFieldArray, useForm, Controller } from "react-hook-form";
+import { createProduct } from "@/server/products/create-product.server";
+import { toast } from "@/hooks/useToast";
+import Loading from "@/components/ui/loading";
+import { editProduct } from "@/server/products/edit-product.server";
+import { useRouter } from "next/navigation";
+import { deleteProduct } from "@/server/products/delete-product.server";
+import CategoryTreeCheckbox from "@/components/admin/categories/category-tree-checkbox";
+import { Button } from "@/components/ui/button";
+import QuillEditor from "@/components/admin/quill-editor/d-quill-editor";
+import { convertToBase64 } from "@/utils/convert-to-base-64";
 
 interface ICrateProduct {
-  buttonTitle: string
-  product?: IProductLocal
-  recommendations: IRecommendations
-  categories: ICategory[]
+  buttonTitle: string;
+  product?: IProductLocal;
+  recommendations: IRecommendations;
+  categories: ICategory[];
 }
 
 const EditorProduct = ({
@@ -48,95 +48,96 @@ const EditorProduct = ({
     formState: { errors },
   } = useForm<IProductLocal>({
     defaultValues: {
-      name: { en: '', uk: '' },
+      name: { en: "", uk: "" },
       categories: [],
       composition: { en: [], uk: [] },
-      img: '',
-      slug: '',
+      img: "",
+      slug: "",
       statusLabel: [],
       variables: [
         {
           weight: 0,
           price: 0,
           newPrice: 0,
-          currency: '',
+          currency: "",
           count: 0,
         },
       ],
       nutritionalValue: {
-        proteins: '',
-        fats: '',
-        carbohydrates: '',
-        energyValue: '',
+        proteins: "",
+        fats: "",
+        carbohydrates: "",
+        energyValue: "",
       },
-      title: { uk: '', en: '' },
-      metaDescription: { uk: '', en: '' },
+      title: { uk: "", en: "" },
+      metaDescription: { uk: "", en: "" },
       keywords: { uk: [], en: [] },
     },
-  })
-  const router = useRouter()
+  });
+  const router = useRouter();
 
-  const [loading, setLoading] = useState<boolean>(false)
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] =
+    useState<boolean>(false);
 
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const [compositionInput, setCompositionInput] = useState({ en: '', uk: '' })
+  const [compositionInput, setCompositionInput] = useState({ en: "", uk: "" });
   const [composition, setComposition] = useState({
     en: product?.composition?.en || [],
     uk: product?.composition?.uk || [],
-  })
+  });
 
-  const [descriptionUk, setDescriptionUk] = useState<string>('')
-  const [descriptionEn, setDescriptionEn] = useState<string>('')
+  const [descriptionUk, setDescriptionUk] = useState<string>("");
+  const [descriptionEn, setDescriptionEn] = useState<string>("");
 
   const {
     fields: variableFields,
     append: appendVariable,
     remove: removeVariable,
     replace,
-  } = useFieldArray<IProductLocal, 'variables'>({
+  } = useFieldArray<IProductLocal, "variables">({
     control,
-    name: 'variables',
-  })
+    name: "variables",
+  });
 
   useEffect(() => {
-    let url: string | null = null
+    let url: string | null = null;
 
     if (imageFile) {
-      url = URL.createObjectURL(imageFile)
-      setImagePreviewUrl(url)
+      url = URL.createObjectURL(imageFile);
+      setImagePreviewUrl(url);
     } else if (product?.img) {
-      setImagePreviewUrl(product.img)
+      setImagePreviewUrl(product.img);
     } else {
-      setImagePreviewUrl(null)
+      setImagePreviewUrl(null);
     }
-  }, [imageFile, product?.img])
+  }, [imageFile, product?.img]);
 
   useEffect(() => {
     if (product && product.categories) {
-      setSelectedCategories(product.categories)
+      setSelectedCategories(product.categories);
     }
-  }, [product])
+  }, [product]);
 
   useEffect(() => {
     if (product) {
-      setValue('name', product.name)
-      setValue('slug', product.slug)
-      setValue('description', product.description)
-      setValue('statusLabel', product.statusLabel)
-      setValue('title', product.title)
-      setValue('metaDescription', product.metaDescription)
-      setValue('keywords', product.keywords)
-      setDescriptionUk(product.description.uk)
-      setDescriptionEn(product.description.en)
+      setValue("name", product.name);
+      setValue("slug", product.slug);
+      setValue("description", product.description);
+      setValue("statusLabel", product.statusLabel);
+      setValue("title", product.title);
+      setValue("metaDescription", product.metaDescription);
+      setValue("keywords", product.keywords);
+      setDescriptionUk(product.description.uk);
+      setDescriptionEn(product.description.en);
 
       if (product.nutritionalValue) {
-        setValue('nutritionalValue', product.nutritionalValue)
+        setValue("nutritionalValue", product.nutritionalValue);
       }
 
       if (product.variables && product.variables.length > 0) {
@@ -148,26 +149,26 @@ const EditorProduct = ({
             newPrice: variable.newPrice ? Number(variable.newPrice) : 0,
             count: Number(variable.count),
           }),
-        )
-        replace(variablesWithNumberWeights)
+        );
+        replace(variablesWithNumberWeights);
       }
     }
-  }, [product, setValue, replace])
+  }, [product, setValue, replace]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
 
-    if (file) setImageFile(file)
-  }
+    if (file) setImageFile(file);
+  };
 
   const onSubmit = async (data: IProductLocal) => {
-    if (isConfirmDeleteOpen) return
+    if (isConfirmDeleteOpen) return;
 
-    setLoading(true)
+    setLoading(true);
 
-    let result: IResponse
+    let result: IResponse;
 
-    const image: string = imageFile ? await convertToBase64(imageFile) : ''
+    const image: string = imageFile ? await convertToBase64(imageFile) : "";
 
     const newData = {
       ...data,
@@ -189,58 +190,58 @@ const EditorProduct = ({
         count: Number(variable.count),
         sold: 0,
       })),
-    }
+    };
 
     if (product?._id) {
-      result = await editProduct(product._id, newData, image)
+      result = await editProduct(product._id, newData, image);
     } else {
-      result = await createProduct(newData, image)
+      result = await createProduct(newData, image);
     }
 
     if (result.success) {
-      setIsOpen(false)
+      setIsOpen(false);
 
       toast({
         title: result.message,
-      })
+      });
     } else {
       toast({
         title: result.message,
-      })
+      });
     }
-    router.refresh()
-    setLoading(false)
-  }
+    router.refresh();
+    setLoading(false);
+  };
 
   const handleDelete = async () => {
     if (!product || !product._id) {
-      return toast({ title: 'Product is not defined' })
+      return toast({ title: "Product is not defined" });
     }
 
-    setLoading(true)
+    setLoading(true);
 
-    const result = await deleteProduct(product._id)
+    const result = await deleteProduct(product._id);
 
-    if (result.success) setIsConfirmDeleteOpen(false)
+    if (result.success) setIsConfirmDeleteOpen(false);
 
     toast({
       title: result.message,
-    })
+    });
 
-    router.refresh()
-    setLoading(false)
-  }
+    router.refresh();
+    setLoading(false);
+  };
 
   const handleCategoryChange = (categoryId: string, checked: boolean): void => {
     setSelectedCategories((prev) =>
       checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId),
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    setValue('categories', selectedCategories)
+    setValue("categories", selectedCategories);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategories, setValue])
+  }, [selectedCategories, setValue]);
 
   const ConfirmDeletePopup = () => (
     <AlertDialog
@@ -277,7 +278,7 @@ const EditorProduct = ({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 
   return (
     <div>
@@ -304,8 +305,8 @@ const EditorProduct = ({
 
                     <Input
                       id="name-uk"
-                      {...register('name.uk', {
-                        required: 'Це поле є обов’язковим',
+                      {...register("name.uk", {
+                        required: "Це поле є обов’язковим",
                       })}
                     />
 
@@ -321,8 +322,8 @@ const EditorProduct = ({
 
                     <Input
                       id="name-en"
-                      {...register('name.en', {
-                        required: 'Це поле є обов’язковим',
+                      {...register("name.en", {
+                        required: "Це поле є обов’язковим",
                       })}
                     />
 
@@ -338,8 +339,8 @@ const EditorProduct = ({
 
                     <Input
                       id="slug"
-                      {...register('slug', {
-                        required: 'Це поле є обов’язковим',
+                      {...register("slug", {
+                        required: "Це поле є обов’язковим",
                       })}
                     />
 
@@ -447,8 +448,8 @@ const EditorProduct = ({
                           setComposition((prev) => ({
                             en: [...prev.en, compositionInput.en],
                             uk: [...prev.uk, compositionInput.uk],
-                          }))
-                          setCompositionInput({ en: '', uk: '' })
+                          }));
+                          setCompositionInput({ en: "", uk: "" });
                         }}
                       >
                         Додати
@@ -474,7 +475,7 @@ const EditorProduct = ({
                                 setComposition((prev) => ({
                                   en: prev.en.filter((_, i) => i !== index),
                                   uk: prev.uk.filter((_, i) => i !== index),
-                                }))
+                                }));
                               }}
                             >
                               Видалити
@@ -496,8 +497,8 @@ const EditorProduct = ({
                       <Input
                         id="nutritionalValue.proteins"
                         list="proteins-suggestions"
-                        {...register('nutritionalValue.proteins', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("nutritionalValue.proteins", {
+                          required: "Це поле є обов’язковим",
                         })}
                       />
 
@@ -520,8 +521,8 @@ const EditorProduct = ({
                       <Input
                         id="nutritionalValue.fats"
                         list="fats-suggestions"
-                        {...register('nutritionalValue.fats', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("nutritionalValue.fats", {
+                          required: "Це поле є обов’язковим",
                         })}
                       />
 
@@ -546,8 +547,8 @@ const EditorProduct = ({
                       <Input
                         id="nutritionalValue.carbohydrates"
                         list="carbohydrates-suggestions"
-                        {...register('nutritionalValue.carbohydrates', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("nutritionalValue.carbohydrates", {
+                          required: "Це поле є обов’язковим",
                         })}
                       />
 
@@ -574,8 +575,8 @@ const EditorProduct = ({
                       <Input
                         id="nutritionalValue.energyValue"
                         list="energyValue-suggestions"
-                        {...register('nutritionalValue.energyValue', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("nutritionalValue.energyValue", {
+                          required: "Це поле є обов’язковим",
                         })}
                       />
 
@@ -624,16 +625,16 @@ const EditorProduct = ({
                         <Checkbox
                           id="new"
                           value="new"
-                          checked={field.value?.includes('new') || false}
+                          checked={field.value?.includes("new") || false}
                           onCheckedChange={(checked) => {
-                            const value = 'new'
+                            const value = "new";
 
                             if (checked) {
-                              field.onChange([...field.value, value])
+                              field.onChange([...field.value, value]);
                             } else {
                               field.onChange(
                                 field.value.filter((v) => v !== value),
-                              )
+                              );
                             }
                           }}
                         />
@@ -645,16 +646,16 @@ const EditorProduct = ({
                         <Checkbox
                           id="sale"
                           value="sale"
-                          checked={field.value?.includes('sale') || false}
+                          checked={field.value?.includes("sale") || false}
                           onCheckedChange={(checked) => {
-                            const value = 'sale'
+                            const value = "sale";
 
                             if (checked) {
-                              field.onChange([...field.value, value])
+                              field.onChange([...field.value, value]);
                             } else {
                               field.onChange(
                                 field.value.filter((v) => v !== value),
-                              )
+                              );
                             }
                           }}
                         />
@@ -666,16 +667,16 @@ const EditorProduct = ({
                         <Checkbox
                           id="top"
                           value="top"
-                          checked={field.value?.includes('top') || false}
+                          checked={field.value?.includes("top") || false}
                           onCheckedChange={(checked) => {
-                            const value = 'top'
+                            const value = "top";
 
                             if (checked) {
-                              field.onChange([...field.value, value])
+                              field.onChange([...field.value, value]);
                             } else {
                               field.onChange(
                                 field.value.filter((v) => v !== value),
-                              )
+                              );
                             }
                           }}
                         />
@@ -697,10 +698,10 @@ const EditorProduct = ({
                         </Label>
 
                         <Input
-                          type={'number'}
+                          type={"number"}
                           id={`variables.${index}.weight`}
                           {...register(`variables.${index}.weight`, {
-                            required: 'Це поле є обов’язковим',
+                            required: "Це поле є обов’язковим",
                           })}
                         />
 
@@ -715,10 +716,10 @@ const EditorProduct = ({
                         <Label htmlFor={`variables.${index}.price`}>Ціна</Label>
 
                         <Input
-                          type={'number'}
+                          type={"number"}
                           id={`variables.${index}.price`}
                           {...register(`variables.${index}.price`, {
-                            required: 'Це поле є обов’язковим',
+                            required: "Це поле є обов’язковим",
                           })}
                         />
 
@@ -735,7 +736,7 @@ const EditorProduct = ({
                         </Label>
 
                         <Input
-                          type={'number'}
+                          type={"number"}
                           id={`variables.${index}.newPrice`}
                           {...register(`variables.${index}.newPrice`)}
                         />
@@ -749,7 +750,7 @@ const EditorProduct = ({
                         <Input
                           id={`variables.${index}.currency`}
                           {...register(`variables.${index}.currency`, {
-                            required: 'Це поле є обов’язковим',
+                            required: "Це поле є обов’язковим",
                           })}
                         />
 
@@ -766,10 +767,10 @@ const EditorProduct = ({
                         </Label>
 
                         <Input
-                          type={'number'}
+                          type={"number"}
                           id={`variables.${index}.count`}
                           {...register(`variables.${index}.count`, {
-                            required: 'Це поле є обов’язковим',
+                            required: "Це поле є обов’язковим",
                           })}
                         />
 
@@ -798,7 +799,7 @@ const EditorProduct = ({
                         weight: 0,
                         price: 0,
                         newPrice: 0,
-                        currency: '',
+                        currency: "",
                         count: 0,
                       })
                     }
@@ -816,15 +817,15 @@ const EditorProduct = ({
                       <Label>Тайтел (UK)</Label>
 
                       <Input
-                        {...register('title.uk', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("title.uk", {
+                          required: "Це поле є обов’язковим",
                           minLength: {
                             value: 20,
-                            message: 'Мінімальна довжина 20 символів',
+                            message: "Мінімальна довжина 20 символів",
                           },
                           maxLength: {
                             value: 70,
-                            message: 'Максимальна довжина 70 символів',
+                            message: "Максимальна довжина 70 символів",
                           },
                         })}
                       />
@@ -834,15 +835,15 @@ const EditorProduct = ({
                       <Label>Тайтел (EN)</Label>
 
                       <Input
-                        {...register('title.en', {
-                          required: 'This field is required',
+                        {...register("title.en", {
+                          required: "This field is required",
                           minLength: {
                             value: 20,
-                            message: 'Minimum length is 20 characters',
+                            message: "Minimum length is 20 characters",
                           },
                           maxLength: {
                             value: 70,
-                            message: 'Maximum length is 70 characters',
+                            message: "Maximum length is 70 characters",
                           },
                         })}
                       />
@@ -854,15 +855,15 @@ const EditorProduct = ({
                       <Label>Мета Дескріпшен (UK)</Label>
 
                       <Input
-                        {...register('metaDescription.uk', {
-                          required: 'Це поле є обов’язковим',
+                        {...register("metaDescription.uk", {
+                          required: "Це поле є обов’язковим",
                           minLength: {
                             value: 50,
-                            message: 'Мінімальна довжина 50 символів',
+                            message: "Мінімальна довжина 50 символів",
                           },
                           maxLength: {
                             value: 160,
-                            message: 'Максимальна довжина 160 символів',
+                            message: "Максимальна довжина 160 символів",
                           },
                         })}
                       />
@@ -872,15 +873,15 @@ const EditorProduct = ({
                       <Label>Мета Дескріпшен (EN)</Label>
 
                       <Input
-                        {...register('metaDescription.en', {
-                          required: 'This field is required',
+                        {...register("metaDescription.en", {
+                          required: "This field is required",
                           minLength: {
                             value: 50,
-                            message: 'Minimum length is 50 characters',
+                            message: "Minimum length is 50 characters",
                           },
                           maxLength: {
                             value: 160,
-                            message: 'Maximum length is 160 characters',
+                            message: "Maximum length is 160 characters",
                           },
                         })}
                       />
@@ -891,13 +892,13 @@ const EditorProduct = ({
                     <div>
                       <Label>Кейвордс (UK)</Label>
 
-                      <Input {...register('keywords.uk')} />
+                      <Input {...register("keywords.uk")} />
                     </div>
 
                     <div>
                       <Label>Кейвордс (EN)</Label>
 
-                      <Input {...register('keywords.en')} />
+                      <Input {...register("keywords.en")} />
                     </div>
                   </div>
                 </div>
@@ -933,7 +934,7 @@ const EditorProduct = ({
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
-}
+  );
+};
 
-export default EditorProduct
+export default EditorProduct;

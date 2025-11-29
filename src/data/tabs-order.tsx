@@ -6,47 +6,47 @@ import {
   XCircle,
   AlertCircle,
   Package,
-} from 'lucide-react'
+} from "lucide-react";
 
 export const tabsOrder = [
   {
-    value: 'new',
+    value: "new",
     icon: <Clock className="h-5 w-5 text-blue-500" />,
-    label: 'Нові',
+    label: "Нові",
   },
   {
-    value: 'awaiting-payment',
+    value: "awaiting-payment",
     icon: <AlertCircle className="h-5 w-5 text-yellow-500" />,
-    label: 'Очікує оплати',
+    label: "Очікує оплати",
   },
   {
-    value: 'awaiting-shipment',
+    value: "awaiting-shipment",
     icon: <Package className="h-5 w-5 text-purple-500" />,
-    label: 'Очікує відправки',
+    label: "Очікує відправки",
   },
   {
-    value: 'shipped',
+    value: "shipped",
     icon: <Truck className="h-5 w-5 text-green-500" />,
-    label: 'Відправлено',
+    label: "Відправлено",
   },
   {
-    value: 'completed',
+    value: "completed",
     icon: <CheckCircle className="h-5 w-5 text-gray-700" />,
-    label: 'Виконано',
+    label: "Виконано",
   },
   {
-    value: 'awaiting-return',
+    value: "awaiting-return",
     icon: <RefreshCw className="h-5 w-5 text-orange-500" />,
-    label: 'Очікує повернення',
+    label: "Очікує повернення",
   },
   {
-    value: 'cancelled',
+    value: "cancelled",
     icon: <XCircle className="h-5 w-5 text-red-500" />,
-    label: 'Скасовано',
+    label: "Скасовано",
   },
   {
-    value: 'failed-delivery',
+    value: "failed-delivery",
     icon: <AlertCircle className="h-5 w-5 text-red-700" />,
-    label: 'Не доставлено',
+    label: "Не доставлено",
   },
-]
+];

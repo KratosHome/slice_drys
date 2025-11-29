@@ -20,7 +20,7 @@ export function TopIcon() {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 export function NewIcon() {
@@ -53,7 +53,7 @@ export function NewIcon() {
         </clipPath>
       </defs>
     </svg>
-  )
+  );
 }
 
 export function CardIcon() {
@@ -74,7 +74,7 @@ export function CardIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function ChequeIcon() {
@@ -102,7 +102,7 @@ export function ChequeIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
 export function PaperIcon() {
@@ -137,5 +137,5 @@ export function PaperIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }

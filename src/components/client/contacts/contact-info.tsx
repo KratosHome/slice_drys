@@ -1,11 +1,11 @@
-import { contacts } from '@/data/contacts'
-import { useLocale, useTranslations } from 'next-intl'
-import { TransitionLink } from '@/components/client/transition-link'
+import { contacts } from "@/data/contacts";
+import { useLocale, useTranslations } from "next-intl";
+import { TransitionLink } from "@/components/client/transition-link";
 
 const ContactInfo = ({ block_title }: { block_title: string }) => {
-  const locale = useLocale() as ILocale
+  const locale = useLocale() as ILocale;
 
-  const t = useTranslations('contacts')
+  const t = useTranslations("contacts");
 
   return (
     <div className="info bg-foreground text-background p-6 md:py-10">
@@ -18,7 +18,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
             width="32px"
             height="32px"
             role="img"
-            aria-label={t('mail-icon')}
+            aria-label={t("mail-icon")}
           >
             <use href="/icons/sprite.svg#mail" />
           </svg>
@@ -31,7 +31,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
             width="32px"
             height="32px"
             role="img"
-            aria-label={t('phone-icon')}
+            aria-label={t("phone-icon")}
           >
             <use href="/icons/sprite.svg#phone" />
           </svg>
@@ -44,7 +44,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
             width="32px"
             height="32px"
             role="img"
-            aria-label={t('home-icon')}
+            aria-label={t("home-icon")}
           >
             <use href="/icons/sprite.svg#home" />
           </svg>
@@ -55,7 +55,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
             width="32px"
             height="32px"
             role="img"
-            aria-label={t('time-icon')}
+            aria-label={t("time-icon")}
           >
             <use href="/icons/sprite.svg#time" />
           </svg>
@@ -63,7 +63,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ContactInfo
+export default ContactInfo;
