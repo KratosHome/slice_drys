@@ -1,17 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended", "next/typescript"],
-  "rules": {
-    "prettier/prettier": [
-      "warn",
-      {
-        "endOfLine": "auto"
-      }
-    ],
-    "no-console": [
-      "error",
-      {
-        "allow": ["error", "warn"]
-      }
-    ]
-  }
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "endOfLine": "auto",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
