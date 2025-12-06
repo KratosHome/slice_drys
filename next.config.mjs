@@ -11,7 +11,7 @@ const withMDX = NextMdx.default({
 
 const nextConfig = {
   images: {
-    formats: ['image/webp'],
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

@@ -23,7 +23,7 @@ interface IHeroProps {
 
 export default function Hero({ device, productLinks }: IHeroProps) {
   const { isDesktop } = device;
-  const [hoveredIndex, setHoveredIndex] = useState<number>(1);
+  const [hoveredIndex, setHoveredIndex] = useState<number>(0);
 
   const locale = useLocale() as ILocale;
   const slidersLocale = sliders[locale];
@@ -34,20 +34,11 @@ export default function Hero({ device, productLinks }: IHeroProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const subImagesRefs = useRef<HTMLImageElement[]>([]);
 
-  useEffect(() => {
-    const timeoutID = setTimeout(() => {
-      setHoveredIndex(0);
-    }, 100);
-
-    return () => clearTimeout(timeoutID);
-  }, []);
-
   useGSAP(
     () => {
       gsap.fromTo(
         imgRef.current,
         {
-          opacity: 0,
           scaleX: 0.2,
           scaleY: 0.2,
           filter: "blur(30px)",
