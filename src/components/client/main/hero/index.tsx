@@ -34,8 +34,15 @@ export default function Hero({ device, productLinks }: IHeroProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const subImagesRefs = useRef<HTMLImageElement[]>([]);
 
+  const isMounted = useRef(false);
+
   useGSAP(
     () => {
+      if (!isMounted.current) {
+        isMounted.current = true;
+        return;
+      }
+
       gsap.fromTo(
         imgRef.current,
         {
