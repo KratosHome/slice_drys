@@ -23,7 +23,7 @@ export default function LocaleLayout({
   children,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: LanguageType }>;
+  params: Promise<{ locale: string; ordersId: string }>;
 }) {
   const pathname = usePathname();
 

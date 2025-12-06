@@ -42,8 +42,8 @@ export async function editPostServer(
 
     await Post.findByIdAndUpdate(id, updatedData, { new: true });
 
-    revalidateTag(fetchTags.posts);
-    revalidateTag(fetchTags.post);
+    revalidateTag(fetchTags.posts, "max");
+    revalidateTag(fetchTags.post, "max");
 
     return { success: true, message: "Post updated successfully" };
   } catch (error) {

@@ -34,8 +34,8 @@ export async function createPost(
     const post = new Post(postData);
     await post.save();
 
-    revalidateTag(fetchTags.posts);
-    revalidateTag(fetchTags.post);
+    revalidateTag(fetchTags.posts, "max");
+    revalidateTag(fetchTags.post, "max");
 
     return { success: true, message: "Post created" };
   } catch (error) {

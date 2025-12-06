@@ -26,8 +26,8 @@ export async function deleteProduct(id?: string): Promise<IResponse> {
       });
     }
 
-    revalidateTag(fetchTags.products);
-    revalidateTag(fetchTags.product);
+    revalidateTag(fetchTags.products, "max");
+    revalidateTag(fetchTags.product, "max");
 
     return { success: true, message: "Product was deleted" };
   } catch (error) {

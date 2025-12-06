@@ -239,7 +239,6 @@ const EditorProduct = ({
 
   useEffect(() => {
     setValue('categories', selectedCategories)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategories, setValue])
 
   const ConfirmDeletePopup = () => (

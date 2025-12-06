@@ -1,6 +1,6 @@
-import React from "react";
-import Product from "@/components/client/product";
-import ProductFilters from "@/components/client/product-filters/product-filters";
+import React from 'react'
+import Product from '@/components/client/product'
+import ProductFilters from '@/components/client/product-filters/product-filters'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,8 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumbs";
-import ToTheTop from "@/components/ui/to-the-top";
+} from '@/components/ui/breadcrumbs'
+import ToTheTop from '@/components/ui/to-the-top'
 import {
   Pagination,
   PaginationContent,
@@ -18,65 +18,69 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import Image from "next/image";
-import { getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
-import { getProductBgImg } from "@/data/product-bg-img";
-import ProductListJsonLd from "@/components/client/json-ld/product-list-json-ld";
-import Delivery from "@/components/client/promo-banner/delivery";
-import { getPaginationRange } from "@/utils/get-pagination-range";
-import { locales } from "@/data/locales";
-import { getCategoryUrls } from "@/server/categories/get-category-urls.server";
-import NotFoundPage from "@/components/not-found";
-import { fetchTags } from "@/data/fetch-tags";
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
-import "quill/dist/quill.snow.css";
+} from '@/components/ui/pagination'
+import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { getProductBgImg } from '@/data/product-bg-img'
+import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
+import Delivery from '@/components/client/promo-banner/delivery'
+import { getPaginationRange } from '@/utils/get-pagination-range'
+import { locales } from '@/data/locales'
+import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
+import NotFoundPage from '@/components/not-found'
+import { fetchTags } from '@/data/fetch-tags'
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
+import 'quill/dist/quill.snow.css'
+import { revalidateDay } from '@/constants/revalidate'
 
-type Params = Promise<{ locale: ILocale; menu: string }>;
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type Params = Promise<{ locale: ILocale; menu: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 export async function generateMetadata({
   params,
   searchParams,
 }: {
-  params: Params;
-  searchParams: SearchParams;
+  params: Params
+  searchParams: SearchParams
 }): Promise<Metadata> {
-  const url = process.env.NEXT_URL;
+  const url = process.env.NEXT_URL
 
-  const { locale, menu } = await params;
-  const { categories } = await searchParams;
+  const { locale, menu } = await params
+  const { categories } = await searchParams
 
   const categoriesParam =
-    !categories || categories.includes(",") ? menu : categories;
+    !categories || categories.includes(',') ? menu : categories
 
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
-    { cache: "force-cache", next: { tags: [`${fetchTags.products}`] } },
-  ).then((res) => res.json());
+    {
+      cache: 'force-cache',
+      next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+    },
+  ).then((res) => res.json())
 
   if (currentCategories.success === false) {
     return {
-      title: "post not found",
-      description: "post not found",
-    };
+      title: 'post not found',
+      description: 'post not found',
+    }
   }
 
-  const description = currentCategories.data.metaDescription?.[locale] || "";
+  const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${locale}/${categoriesParam}`;
+  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
-      ?.split(",")
-      .map((keyword: string) => keyword.trim()) || [];
+      ?.split(',')
+      .map((keyword: string) => keyword.trim()) || []
 
   return {
     title: currentCategories.data.metaTitle?.[locale],
     description: currentCategories.data.metaDescription?.[locale],
     keywords: metaKeywordsArray,
-    robots: "index, follow",
+    robots: 'index, follow',
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -88,8 +92,8 @@ export async function generateMetadata({
       title: currentCategories.data.name?.[locale],
       description,
       url: canonicalUrl,
-      type: "website",
-      locale: locale === "uk" ? "uk_UA" : "en_US",
+      type: 'website',
+      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
       images: [
         {
           url: currentCategories.data.image,
@@ -99,83 +103,86 @@ export async function generateMetadata({
         },
       ],
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  const categorySlug = await getCategoryUrls();
+  const categorySlug = await getCategoryUrls()
 
   return categorySlug.data.flatMap((item: { slug: string }) =>
     locales.map((locale) => ({
       menu: item.slug,
       locale,
     })),
-  );
+  )
 }
 
 export default async function MenuPage(props: {
-  params: Params;
-  searchParams: SearchParams;
+  params: Params
+  searchParams: SearchParams
 }) {
-  const { locale, menu } = await props.params;
-  const { categories, minWeight, maxWeight, page } = await props.searchParams;
+  const { locale, menu } = await props.params
+  const { categories, minWeight, maxWeight, page } = await props.searchParams
 
-  const params = new URLSearchParams({ locale: String(locale) });
+  const params = new URLSearchParams({ locale: String(locale) })
 
-  const t = await getTranslations("product-list");
-  const tPagin = await getTranslations("pagination");
+  const t = await getTranslations('product-list')
+  const tPagin = await getTranslations('pagination')
 
-  const productBgImg = getProductBgImg(t);
-  const url = process.env.NEXT_URL;
+  const productBgImg = getProductBgImg(t)
+  const url = process.env.NEXT_URL
 
-  if (menu) params.append("menu", String(menu));
-  if (page) params.append("page", String(page));
-  if (categories) params.append("categories", String(categories));
-  if (minWeight) params.append("minWeight", String(minWeight));
-  if (maxWeight) params.append("maxWeight", String(maxWeight));
+  if (menu) params.append('menu', String(menu))
+  if (page) params.append('page', String(page))
+  if (categories) params.append('categories', String(categories))
+  if (minWeight) params.append('minWeight', String(minWeight))
+  if (maxWeight) params.append('maxWeight', String(maxWeight))
 
   const categoriesParam = Array.isArray(categories)
-    ? categories.join(",")
-    : !categories || categories.includes(",")
+    ? categories.join(',')
+    : !categories || categories.includes(',')
       ? menu
-      : categories;
+      : categories
 
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        cache: "force-cache",
-        next: { tags: [`${fetchTags.products}`] },
+        cache: 'force-cache',
+        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        cache: "force-cache",
-        next: { tags: [`${fetchTags.products}`] },
+        cache: 'force-cache',
+        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
-        { cache: "force-cache", next: { tags: [`${fetchTags.products}`] } },
+        {
+          cache: 'force-cache',
+          next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+        },
       ).then((res) => res.json()),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        cache: "force-cache",
-        next: { tags: [`${fetchTags.products}`] },
+        cache: 'force-cache',
+        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
-    ]);
+    ])
 
   if (productsData.data.length === 0) {
-    return <NotFoundPage />;
+    return <NotFoundPage />
   }
 
-  const pageInfo = page ? ` - ${t("page")} ${page}` : "";
+  const pageInfo = page ? ` - ${t('page')} ${page}` : ''
   const weightInfo =
     minWeight && maxWeight
-      ? ` (${minWeight}-${maxWeight} ${t("weight-unit")})`
-      : "";
+      ? ` (${minWeight}-${maxWeight} ${t('weight-unit')})`
+      : ''
 
-  const content = JSON.parse(currentCategories.data.description[locale]);
-  const converter = new QuillDeltaToHtmlConverter(content.ops);
-  const html = converter.convert();
+  const content = JSON.parse(currentCategories.data.description[locale])
+  const converter = new QuillDeltaToHtmlConverter(content.ops)
+  const html = converter.convert()
   // .replace(/(<p>(?:<br\/>)+<\/p>)|((?:<br\/>)+)/g, '')
 
   const flattenedProducts = productsData.data.flatMap((product: IProduct) =>
@@ -184,28 +191,28 @@ export default async function MenuPage(props: {
       variant,
       key: `${product.slug}-${variant._id ?? variant.weight}`,
     })),
-  );
+  )
 
   const getPageUrl = (pageNum: number) => {
-    const newParams = new URLSearchParams();
+    const newParams = new URLSearchParams()
 
-    if (categories && String(categories).trim() !== "") {
-      newParams.set("categories", String(categories));
+    if (categories && String(categories).trim() !== '') {
+      newParams.set('categories', String(categories))
     }
-    if (minWeight && String(minWeight).trim() !== "") {
-      newParams.set("minWeight", String(minWeight));
+    if (minWeight && String(minWeight).trim() !== '') {
+      newParams.set('minWeight', String(minWeight))
     }
-    if (maxWeight && String(maxWeight).trim() !== "") {
-      newParams.set("maxWeight", String(maxWeight));
+    if (maxWeight && String(maxWeight).trim() !== '') {
+      newParams.set('maxWeight', String(maxWeight))
     }
 
-    newParams.set("page", pageNum.toString());
+    newParams.set('page', pageNum.toString())
 
-    const queryString = newParams.toString();
-    return queryString ? `?${queryString}` : "";
-  };
+    const queryString = newParams.toString()
+    return queryString ? `?${queryString}` : ''
+  }
 
-  const canonicalUrl = `${url}/${categoriesParam}`;
+  const canonicalUrl = `${url}/${categoriesParam}`
 
   return (
     <>
@@ -221,7 +228,7 @@ export default async function MenuPage(props: {
           <Breadcrumb className="my-2">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
+                <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -255,11 +262,11 @@ export default async function MenuPage(props: {
               <PaginationItem>
                 <PaginationPrevious
                   className="text-[36px] md:text-[64px]"
-                  label={tPagin("previous")}
+                  label={tPagin('previous')}
                   href={
                     productsData.currentPage > 1
                       ? getPageUrl(productsData.currentPage - 1)
-                      : "#"
+                      : '#'
                   }
                 />
               </PaginationItem>
@@ -267,23 +274,23 @@ export default async function MenuPage(props: {
                 productsData.currentPage,
                 productsData.totalPages,
               ).map((item, index) => {
-                if (item === "ellipsis") {
+                if (item === 'ellipsis') {
                   return (
                     <PaginationItem key={`ellipsis-${index}`}>
                       <PaginationEllipsis className="text-xl sm:text-2xl md:text-4xl" />
                     </PaginationItem>
-                  );
+                  )
                 }
                 return (
                   <PaginationItem key={item}>
                     <PaginationLink
                       label={
                         productsData.currentPage === item
-                          ? tPagin("active-page", {
+                          ? tPagin('active-page', {
                               page: productsData.currentPage + 1,
                             })
-                          : typeof item === "number"
-                            ? tPagin("go-to-page", {
+                          : typeof item === 'number'
+                            ? tPagin('go-to-page', {
                                 page: item,
                               })
                             : undefined
@@ -295,17 +302,17 @@ export default async function MenuPage(props: {
                       {item}
                     </PaginationLink>
                   </PaginationItem>
-                );
+                )
               })}
 
               <PaginationItem>
                 <PaginationNext
                   className="text-[36px] md:text-[64px]"
-                  label={tPagin("previous")}
+                  label={tPagin('previous')}
                   href={
                     productsData.currentPage < productsData.totalPages
                       ? getPageUrl(productsData.currentPage + 1)
-                      : "#"
+                      : '#'
                   }
                 />
               </PaginationItem>
@@ -340,5 +347,5 @@ export default async function MenuPage(props: {
         <ToTheTop />
       </main>
     </>
-  );
+  )
 }

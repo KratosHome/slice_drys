@@ -35,7 +35,7 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
 
 interface ILocaleLayoutProps {
   children: ReactNode;
-  params: Promise<{ locale: LanguageType }>;
+  params: Promise<{ locale: string }>;
 }
 
 export default async function LocaleLayout(props: ILocaleLayoutProps) {

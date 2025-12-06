@@ -23,8 +23,8 @@ export async function createProduct(
     const product = new Product(productData);
     await product.save();
 
-    revalidateTag(fetchTags.products);
-    revalidateTag(fetchTags.product);
+    revalidateTag(fetchTags.products, "max");
+    revalidateTag(fetchTags.product, "max");
 
     return { success: true, message: "Product created" };
   } catch (error) {

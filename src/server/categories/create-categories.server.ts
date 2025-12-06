@@ -20,8 +20,8 @@ export async function createCategory(categoryData: CreateCategoryDTO) {
       });
     }
 
-    revalidateTag(fetchTags.menu);
-    revalidateTag(fetchTags.products);
+    revalidateTag(fetchTags.menu, "max");
+    revalidateTag(fetchTags.products, "max");
 
     return {
       data: newCategory,

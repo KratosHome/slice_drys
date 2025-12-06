@@ -41,7 +41,7 @@ export async function updateHelpData(
       await Block.create({ help: helpData });
     }
 
-    revalidateTag(fetchTags.helpMain);
+    revalidateTag(fetchTags.helpMain, "max");
 
     return {
       success: true,

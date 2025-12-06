@@ -27,8 +27,8 @@ export async function deletePost(id: string): Promise<IResponse> {
       });
     }
 
-    revalidateTag(fetchTags.posts);
-    revalidateTag(fetchTags.post);
+    revalidateTag(fetchTags.posts, "max");
+    revalidateTag(fetchTags.post, "max");
 
     return { success: true, message: "Post was deleted" };
   } catch (error) {

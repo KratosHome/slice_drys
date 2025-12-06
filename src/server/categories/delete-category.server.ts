@@ -27,8 +27,8 @@ export async function deleteCategory(categoryId: string): Promise<IResponse> {
 
     await Category.deleteOne({ _id: categoryId });
 
-    revalidateTag(fetchTags.menu);
-    revalidateTag(fetchTags.products);
+    revalidateTag(fetchTags.menu, "max");
+    revalidateTag(fetchTags.products, "max");
 
     return {
       success: true,

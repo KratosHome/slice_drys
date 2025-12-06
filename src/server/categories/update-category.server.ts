@@ -58,8 +58,8 @@ export async function updateCategory(
       return { success: false, message: "Категорію не знайдено" };
     }
 
-    revalidateTag(fetchTags.menu);
-    revalidateTag(fetchTags.products);
+    revalidateTag(fetchTags.menu, "max");
+    revalidateTag(fetchTags.products, "max");
 
     return {
       data: updatedCategory,

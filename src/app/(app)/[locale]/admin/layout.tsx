@@ -8,7 +8,7 @@ import Login from "@/components/admin/login/login";
 
 interface IAdminLayoutProps {
   children: ReactNode;
-  params: Promise<{ locale: LanguageType }>;
+  params: Promise<{ locale: string }>;
 }
 
 export const metadata = {
