@@ -7,17 +7,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## 1. Install dependencies:
 
 ```bash
-npm i
-# or
-yarn
+bun
 ```
 // 
 If you have an error during installation use the command:
 
 ```bash
-npm i --legacy-peer-deps
-# or
-yarn --legacy-peer-deps
+bun install 
 ```
 
 ## 2. Create MongoDB database:
@@ -31,25 +27,19 @@ The project uses the `Cloudinary` platform to work with images. Go to the site [
 ## 4. Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
+bun --bun next dev
 ```
 
 ## 5. Build and run project:
 
 ```bash
-npm run build
-# or
-yarn build
+bun --bun next build
 ```
 
 and
 
 ```bash
-npm run start
-# or
-yarn start
+bun --bun next star
 ```
 
 ### Additionally:
