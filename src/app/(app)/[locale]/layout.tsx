@@ -18,6 +18,7 @@ import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
 import "../globals.css";
+import { revalidateDay } from '@/constants/revalidate'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -63,8 +64,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const categoriesData: IResult<ICategory> = await fetch(
     `${SITE_URL}/api/categories`,
     {
-      cache: "force-cache",
-      next: { tags: [`${fetchTags.menu}`] },
+      next: { revalidate: revalidateDay, tags: [`${fetchTags.menu}`] },
     },
   ).then((res) => res.json());
 

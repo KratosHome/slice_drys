@@ -112,7 +112,6 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const postsData = await fetch(
     `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
     {
-      cache: 'force-cache',
       next: { revalidate: revalidateDay, tags: [`${fetchTags.posts}`] },
     },
   ).then((res) => res.json())

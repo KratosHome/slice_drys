@@ -23,7 +23,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
     {
-      cache: 'force-cache',
       next: { revalidate: revalidateDay, tags: [`${fetchTags.post}`] },
     },
   ).then((res) => res.json())
@@ -96,7 +95,6 @@ export default async function PostPage({ params }: Props) {
   const data = await fetch(
     `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
     {
-      cache: 'force-cache',
       next: { revalidate: revalidateDay, tags: [`${fetchTags.post}`] },
     },
   ).then((res) => res.json())

@@ -55,7 +55,6 @@ export async function generateMetadata({
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
     {
-      cache: 'force-cache',
       next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
     },
   ).then((res) => res.json())
@@ -147,25 +146,21 @@ export default async function MenuPage(props: {
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        cache: 'force-cache',
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        cache: 'force-cache',
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
 
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
         {
-          cache: 'force-cache',
           next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
         },
       ).then((res) => res.json()),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        cache: 'force-cache',
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       }).then((res) => res.json()),
     ])

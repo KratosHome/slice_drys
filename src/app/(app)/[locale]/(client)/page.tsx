@@ -15,6 +15,7 @@ import ProductSlider from "@/components/client/product-slider";
 import { headers } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import { detectDevice } from "@/utils/device-detection";
+import { revalidateDay } from '@/constants/revalidate'
 
 export async function generateMetadata({
   params,
@@ -47,19 +48,16 @@ export default async function HomePage(props: {
     fetch(
       `${SITE_URL}/api/products/get-products-slider-main?locale=${locale}`,
       {
-        cache: "force-cache",
-        next: { tags: [`${fetchTags.products}`] },
+        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       },
     ).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/categories`, {
-      cache: "force-cache",
-      next: { tags: [`${fetchTags.menu}`] },
+      next: { revalidate: revalidateDay, tags: [`${fetchTags.menu}`] },
     }).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/posts?locale=${locale}&page=1&limit=5`, {
-      cache: "force-cache",
-      next: { tags: [`${fetchTags.posts}`] },
+      next: { revalidate: revalidateDay, tags: [`${fetchTags.posts}`] },
     }).then((res) => res.json()),
   ]);
 

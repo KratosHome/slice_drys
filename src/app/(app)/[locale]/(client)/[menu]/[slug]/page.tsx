@@ -36,7 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const productData = await fetch(
     `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
     {
-      cache: 'force-cache',
       next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
     },
   ).then((res) => res.json())
@@ -117,7 +116,6 @@ export default async function ProductPage({ params }: Props) {
     fetch(
       `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
       {
-        cache: 'force-cache',
         next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
       },
     ).then((res) => res.json()),
@@ -125,7 +123,6 @@ export default async function ProductPage({ params }: Props) {
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
       {
-        cache: 'force-cache',
         next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
       },
     ).then((res) => res.json()),
