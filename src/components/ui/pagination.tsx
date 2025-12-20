@@ -83,7 +83,7 @@ const PaginationLink = ({
         whileTap="tap"
         className={cn(
           buttonVariants({ variant: isActive ? "none" : "none" }),
-          "font-rubik relative flex items-center justify-center",
+          "font-rubik relative flex items-center justify-center h-[50px] w-[50px]  sm:h-[70px] sm:w-[70px] ",
           className,
         )}
         href={href}
@@ -96,7 +96,7 @@ const PaginationLink = ({
           <svg
             role="img"
             aria-label={"active page"}
-            className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
+            className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px] "
           >
             <use href="/icons/sprite.svg#o" />
           </svg>
