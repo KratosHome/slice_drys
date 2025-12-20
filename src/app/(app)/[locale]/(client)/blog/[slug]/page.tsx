@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 
+export const revalidate = 86400
+
 import Share from '@/components/ui/share'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
@@ -42,11 +44,13 @@ async function fetchPost(slug: string, locale: ILocale, isVisited: boolean) {
 
   if (res.status === 404) return null
 
-  if (!res.ok) throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
+  if (!res.ok)
+    throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
 
   const data = (await res.json()) as PostResponse
 
-  if (!data || data.success !== true) throw new Error('fetchPost returned success:false')
+  if (!data || data.success !== true)
+    throw new Error('fetchPost returned success:false')
 
   const post = data.post?.[0]
   if (!post) return null
@@ -68,7 +72,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const url = `${requireSiteUrl()}/${locale}/blog/${slug}`
   const keywords =
-    post.keywords?.split(',').map((k: string) => k.trim()).filter(Boolean) ?? []
+    post.keywords
+      ?.split(',')
+      .map((k: string) => k.trim())
+      .filter(Boolean) ?? []
 
   return {
     title: post.title,

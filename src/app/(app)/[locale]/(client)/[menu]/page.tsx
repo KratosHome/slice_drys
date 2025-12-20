@@ -34,6 +34,8 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 import { revalidateDay } from '@/constants/revalidate'
 
+export const revalidate = 86400
+
 type Params = Promise<{ locale: ILocale; menu: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 

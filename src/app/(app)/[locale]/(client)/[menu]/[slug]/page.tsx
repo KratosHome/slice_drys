@@ -15,9 +15,14 @@ import ToTheTop from '@/components/ui/to-the-top'
 import ProductSlider from '@/components/client/product-slider'
 import { revalidateDay } from '@/constants/revalidate'
 
-const Delivery = dynamic(() => import('@/components/client/promo-banner/delivery'), {
-  loading: () => <Loader />,
-})
+export const revalidate = 86400
+
+const Delivery = dynamic(
+  () => import('@/components/client/promo-banner/delivery'),
+  {
+    loading: () => <Loader />,
+  },
+)
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -30,7 +35,10 @@ function requireSiteUrl() {
   return SITE_URL
 }
 
-async function fetchJson<T>(url: string, init?: RequestInit): Promise<{ res: Response; json: T }> {
+async function fetchJson<T>(
+  url: string,
+  init?: RequestInit,
+): Promise<{ res: Response; json: T }> {
   const res = await fetch(url, init)
   const json = (await res.json()) as T
   return { res, json }
@@ -81,7 +89,8 @@ async function getSlider(slug: string, locale: ILocale) {
     },
   })
 
-  if (!res.ok) throw new Error(`getSlider failed: ${res.status} ${res.statusText}`)
+  if (!res.ok)
+    throw new Error(`getSlider failed: ${res.status} ${res.statusText}`)
   if (!json || json.success !== true) return []
 
   return json.data
@@ -144,7 +153,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const [productSlug, categorySlug] = await Promise.all([getProductsUrls(), getCategoryUrls()])
+  const [productSlug, categorySlug] = await Promise.all([
+    getProductsUrls(),
+    getCategoryUrls(),
+  ])
 
   return productSlug.data.flatMap((item: { slug: string }) =>
     categorySlug.data.flatMap((category: { slug: string }) =>
@@ -162,7 +174,10 @@ export default async function ProductPage({ params }: Props) {
 
   const t = await getTranslations('product')
 
-  const [product, slider] = await Promise.all([getProduct(slug, locale), getSlider(slug, locale)])
+  const [product, slider] = await Promise.all([
+    getProduct(slug, locale),
+    getSlider(slug, locale),
+  ])
 
   if (!product) notFound()
 
@@ -180,7 +195,10 @@ export default async function ProductPage({ params }: Props) {
           categoryLink={product.categories?.[0]?.slug}
         />
         <ProductInfo product={product} />
-        <Accordions nutrition={product.nutritionalValue} description={product.description} />
+        <Accordions
+          nutrition={product.nutritionalValue}
+          description={product.description}
+        />
         <ProductSlider
           products={slider}
           title={t('also-buy')}

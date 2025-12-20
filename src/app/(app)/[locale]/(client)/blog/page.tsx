@@ -37,6 +37,8 @@ type PageProps = {
   searchParams: Promise<{ page?: string }>
 }
 
+export const revalidate = 86400
+
 const baseUrl = process.env.NEXT_URL
 
 export async function generateMetadata({
