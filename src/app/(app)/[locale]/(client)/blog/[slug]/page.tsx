@@ -28,40 +28,48 @@ type PostResponse =
   | { success: true; post: Array<any> }
   | { success: false; post?: Array<any>; message?: string }
 
-async function fetchPost(slug: string, locale: ILocale, isVisited: boolean) {
+async function fetchPost(slug: string, locale: ILocale) {
   const baseUrl = requireSiteUrl()
   const url = new URL('/api/posts/post', baseUrl)
   url.searchParams.set('locale', locale)
   url.searchParams.set('slug', slug)
-  url.searchParams.set('isVisited', String(isVisited))
+  url.searchParams.set('isVisited', 'false')
 
-  const res = await fetch(url.toString(), {
-    next: {
-      revalidate: revalidateDay,
-      tags: [`post:${locale}:${slug}`],
-    },
-  })
+  const doFetch = (init?: RequestInit) =>
+    fetch(url.toString(), {
+      ...init,
+      next: {
+        revalidate: revalidateDay,
+        tags: [`post:${locale}:${slug}`],
+      },
+    })
 
-  if (res.status === 404) return null
+  const parse = async (res: Response) => {
+    if (res.status === 404) return null
+    if (!res.ok)
+      throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
 
-  if (!res.ok)
-    throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
+    const data = (await res.json()) as PostResponse
+    if (!data || data.success !== true)
+      throw new Error('fetchPost returned success:false')
 
-  const data = (await res.json()) as PostResponse
+    return data.post?.[0] ?? null
+  }
 
-  if (!data || data.success !== true)
-    throw new Error('fetchPost returned success:false')
+  const res1 = await doFetch()
 
-  const post = data.post?.[0]
-  if (!post) return null
+  if (res1.status === 404 || res1.status >= 500) {
+    const res2 = await doFetch({ cache: 'no-store' })
+    return parse(res2)
+  }
 
-  return post
+  return parse(res1)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
-  const post = await fetchPost(slug, locale, false).catch(() => null)
+  const post = await fetchPost(slug, locale).catch(() => null)
   if (!post) {
     return {
       title: 'Post not found',
@@ -121,7 +129,7 @@ export async function generateStaticParams() {
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
-  const post = await fetchPost(slug, locale, true)
+  const post = await fetchPost(slug, locale)
 
   if (!post) notFound()
 

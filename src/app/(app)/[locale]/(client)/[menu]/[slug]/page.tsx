@@ -54,24 +54,35 @@ async function getProduct(slug: string, locale: ILocale) {
   url.searchParams.set('slug', slug)
   url.searchParams.set('locale', locale)
 
-  const { res, json } = await fetchJson<ProductApiResponse>(url.toString(), {
-    next: {
-      revalidate: revalidateDay,
-      tags: [`product:${locale}:${slug}`],
-    },
-  })
+  const doFetch = (init?: RequestInit) =>
+    fetch(url.toString(), {
+      ...init,
+      next: {
+        revalidate: revalidateDay,
+        tags: [`post:${locale}:${slug}`],
+      },
+    })
 
-  if (res.status === 404) return null
+  const parse = async (res: Response) => {
+    if (res.status === 404) return null
+    if (!res.ok)
+      throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
 
-  if (!res.ok) {
-    throw new Error(`getProduct failed: ${res.status} ${res.statusText}`)
+    const data = (await res.json()) as ProductApiResponse
+    if (!data || data.success !== true)
+      throw new Error('fetchPost returned success:false')
+
+    return data.data ?? null
   }
 
-  if (!json || json.success !== true) {
-    throw new Error('getProduct returned success:false (treating as 500)')
+  const res1 = await doFetch()
+
+  if (res1.status === 404 || res1.status >= 500) {
+    const res2 = await doFetch({ cache: 'no-store' })
+    return parse(res2)
   }
 
-  return json.data
+  return parse(res1)
 }
 
 type SliderApiResponse = { success: true; data: any[] } | { success: false }
@@ -82,18 +93,35 @@ async function getSlider(slug: string, locale: ILocale) {
   url.searchParams.set('locale', locale)
   url.searchParams.set('productSlug', slug)
 
-  const { res, json } = await fetchJson<SliderApiResponse>(url.toString(), {
-    next: {
-      revalidate: revalidateDay,
-      tags: [`product-slider:${locale}:${slug}`],
-    },
-  })
+  const doFetch = (init?: RequestInit) =>
+    fetch(url.toString(), {
+      ...init,
+      next: {
+        revalidate: revalidateDay,
+        tags: [`post:${locale}:${slug}`],
+      },
+    })
 
-  if (!res.ok)
-    throw new Error(`getSlider failed: ${res.status} ${res.statusText}`)
-  if (!json || json.success !== true) return []
+  const parse = async (res: Response) => {
+    if (res.status === 404) return null
+    if (!res.ok)
+      throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
 
-  return json.data
+    const data = (await res.json()) as SliderApiResponse
+    if (!data || data.success !== true)
+      throw new Error('fetchPost returned success:false')
+
+    return data.data ?? null
+  }
+
+  const res1 = await doFetch()
+
+  if (res1.status === 404 || res1.status >= 500) {
+    const res2 = await doFetch({ cache: 'no-store' })
+    return parse(res2)
+  }
+
+  return parse(res1)
 }
 
 export const dynamicParams = true
@@ -200,7 +228,7 @@ export default async function ProductPage({ params }: Props) {
           description={product.description}
         />
         <ProductSlider
-          products={slider}
+          products={slider || []}
           title={t('also-buy')}
           message={t('something-that-will-come-handy-along-with-your-choice')}
         />
