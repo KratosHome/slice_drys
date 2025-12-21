@@ -214,8 +214,8 @@ export default async function ProductPage({ params }: Props) {
   const categorySlug = product.categories?.[0]?.slug ?? ''
   const canonicalUrl = `${requireSiteUrl()}/${locale}/${categorySlug}/${slug}`
 
-  console.log('productsDataUk', productsDataUk.length)
-  console.log('productsDataEn', productsDataEn.length)
+  console.log('productsDataUk', productsDataUk)
+  console.log('productsDataEn', productsDataEn)
   console.log('product', product)
 
   return (
