@@ -14,6 +14,8 @@ import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import ProductSlider from '@/components/client/product-slider'
 import { revalidateDay } from '@/constants/revalidate'
+import { productsData, productsDataUk } from '@/data/prodcuts/productDataUk'
+import { productsDataEn } from '@/data/prodcuts/productDataEn'
 
 export const revalidate = 86400
 
@@ -211,6 +213,10 @@ export default async function ProductPage({ params }: Props) {
 
   const categorySlug = product.categories?.[0]?.slug ?? ''
   const canonicalUrl = `${requireSiteUrl()}/${locale}/${categorySlug}/${slug}`
+
+  console.log('productsDataUk', productsDataUk.length)
+  console.log('productsDataEn', productsDataEn.length)
+  console.log('product', product)
 
   return (
     <>
