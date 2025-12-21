@@ -1,11 +1,7 @@
 import dynamic from 'next/dynamic'
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { Loader } from 'lucide-react'
-
-import { getProductsUrls } from '@/server/products/get-products-urls.server'
-import { getCategoryUrls } from '@/server/categories/get-category-urls.server'
 import { locales } from '@/data/locales'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
@@ -13,15 +9,18 @@ import { ProductInfo } from '@/components/client/product-page/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import ProductSlider from '@/components/client/product-slider'
-import { revalidateDay } from '@/constants/revalidate'
+import { productsDataUk } from '@/data/prodcuts/productDataUk'
+import { productsDataEn } from '@/data/prodcuts/productDataEn'
+import { pickRandom } from '@/utils/pickRandom'
+import NotFoundPage from '@/components/not-found'
+import { categorySlugUk } from '@/data/prodcuts/categorySlugUk'
+import { categorySlugEn } from '@/data/prodcuts/categorySlugEn'
 
 export const revalidate = 86400
 
 const Delivery = dynamic(
   () => import('@/components/client/promo-banner/delivery'),
-  {
-    loading: () => <Loader />,
-  },
+  { loading: () => <Loader /> },
 )
 
 type Props = {
@@ -35,107 +34,25 @@ function requireSiteUrl() {
   return SITE_URL
 }
 
-async function fetchJson<T>(
-  url: string,
-  init?: RequestInit,
-): Promise<{ res: Response; json: T }> {
-  const res = await fetch(url, init)
-  const json = (await res.json()) as T
-  return { res, json }
-}
-
-type ProductApiResponse =
-  | { success: true; data: any }
-  | { success: false; message?: string }
-
-async function getProduct(slug: string, locale: ILocale) {
-  const baseUrl = requireSiteUrl()
-  const url = new URL('/api/products/get-by-slug', baseUrl)
-  url.searchParams.set('slug', slug)
-  url.searchParams.set('locale', locale)
-
-  const doFetch = (init?: RequestInit) =>
-    fetch(url.toString(), {
-      ...init,
-      next: {
-        revalidate: revalidateDay,
-        tags: [`post:${locale}:${slug}`],
-      },
-    })
-
-  const parse = async (res: Response) => {
-    if (res.status === 404) return null
-    if (!res.ok)
-      throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
-
-    const data = (await res.json()) as ProductApiResponse
-    if (!data || data.success !== true)
-      throw new Error('fetchPost returned success:false')
-
-    return data.data ?? null
-  }
-
-  const res1 = await doFetch()
-
-  if (res1.status === 404 || res1.status >= 500) {
-    const res2 = await doFetch({ cache: 'no-store' })
-    return parse(res2)
-  }
-
-  return parse(res1)
-}
-
-type SliderApiResponse = { success: true; data: any[] } | { success: false }
-
-async function getSlider(slug: string, locale: ILocale) {
-  const baseUrl = requireSiteUrl()
-  const url = new URL('/api/products/get-products-slider-product', baseUrl)
-  url.searchParams.set('locale', locale)
-  url.searchParams.set('productSlug', slug)
-
-  const doFetch = (init?: RequestInit) =>
-    fetch(url.toString(), {
-      ...init,
-      next: {
-        revalidate: revalidateDay,
-        tags: [`post:${locale}:${slug}`],
-      },
-    })
-
-  const parse = async (res: Response) => {
-    if (res.status === 404) return null
-    if (!res.ok)
-      throw new Error(`fetchPost failed: ${res.status} ${res.statusText}`)
-
-    const data = (await res.json()) as SliderApiResponse
-    if (!data || data.success !== true)
-      throw new Error('fetchPost returned success:false')
-
-    return data.data ?? null
-  }
-
-  const res1 = await doFetch()
-
-  if (res1.status === 404 || res1.status >= 500) {
-    const res2 = await doFetch({ cache: 'no-store' })
-    return parse(res2)
-  }
-
-  return parse(res1)
-}
-
-export const dynamicParams = true
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
-  const product = await getProduct(slug, locale).catch(() => null)
+  let product
+  if (locale === 'uk') {
+    product = productsDataUk.find((item) => item.slug === slug)
+  }
+  if (locale === 'en') {
+    product = productsDataEn.find((item) => item.slug === slug)
+  }
+
   if (!product) {
     return {
       title: '404',
-      description: '404',
-      keywords: ['404'],
-      robots: 'noindex, nofollow',
+      description: 'Not Found',
+      robots: {
+        index: false,
+        follow: false,
+      },
     }
   }
 
@@ -181,54 +98,60 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const [productSlug, categorySlug] = await Promise.all([
-    getProductsUrls(),
-    getCategoryUrls(),
-  ])
+  const categorySlugByLocale = {
+    uk: categorySlugUk,
+    en: categorySlugEn,
+  } as const
 
-  return productSlug.data.flatMap((item: { slug: string }) =>
-    categorySlug.data.flatMap((category: { slug: string }) =>
-      locales.map((locale) => ({
-        slug: item.slug,
-        locale,
-        menu: category.slug,
-      })),
+  const productSlugByLocale = {
+    uk: productsDataUk.map((p) => ({ slug: p.slug })),
+    en: productsDataEn.map((p) => ({ slug: p.slug })),
+  } as const
+
+  return locales.flatMap((locale) =>
+    productSlugByLocale[locale as 'uk' | 'en'].flatMap((item) =>
+      categorySlugByLocale[locale as 'uk' | 'en'].data.map(
+        (category: { slug: string }) => ({
+          slug: item.slug,
+          locale,
+          menu: category.slug,
+        }),
+      ),
     ),
   )
 }
 
 export default async function ProductPage({ params }: Props) {
   const { slug, locale } = await params
-
   const t = await getTranslations('product')
 
-  const [product, slider] = await Promise.all([
-    getProduct(slug, locale),
-    getSlider(slug, locale),
-  ])
+  const data = locale === 'uk' ? productsDataUk : productsDataEn
 
-  if (!product) notFound()
+  const resultProduct = data.find((item) => item.slug === slug)
+  if (!resultProduct) return <NotFoundPage />
 
-  const categorySlug = product.categories?.[0]?.slug ?? ''
+  const categorySlug = resultProduct.categories?.[0]?.slug ?? ''
+  const resultSlider = pickRandom(data, 6)
+
   const canonicalUrl = `${requireSiteUrl()}/${locale}/${categorySlug}/${slug}`
 
   return (
     <>
-      <ProductJsonLd productData={product} canonicalUrl={canonicalUrl} />
+      <ProductJsonLd productData={resultProduct} canonicalUrl={canonicalUrl} />
       <div className="mx-auto max-w-[1280px] px-4">
         <Breadcrumbs
           locale={locale}
-          category={product.categories?.[0]?.name}
-          product={product.name}
-          categoryLink={product.categories?.[0]?.slug}
+          category={resultProduct.categories?.[0]?.name}
+          product={resultProduct.name}
+          categoryLink={resultProduct.categories?.[0]?.slug}
         />
-        <ProductInfo product={product} />
+        <ProductInfo product={resultProduct} />
         <Accordions
-          nutrition={product.nutritionalValue}
-          description={product.description}
+          nutrition={resultProduct.nutritionalValue}
+          description={resultProduct.description}
         />
         <ProductSlider
-          products={slider || []}
+          products={resultSlider}
           title={t('also-buy')}
           message={t('something-that-will-come-handy-along-with-your-choice')}
         />
