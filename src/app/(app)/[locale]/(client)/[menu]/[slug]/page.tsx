@@ -111,7 +111,7 @@ export async function generateStaticParams() {
 
 export default async function ProductPage({ params }: Props) {
   const { slug, locale } = await params
-
+  //
   const t = await getTranslations('product')
 
   const [productData, productSliderData] = await Promise.all([
