@@ -32,12 +32,12 @@ import { fetchTags } from '@/data/fetch-tags'
 import ToTheTop from '@/components/ui/to-the-top'
 import { revalidateDay } from '@/constants/revalidate'
 
+export const revalidate = 86400
+
 type PageProps = {
   params: Promise<{ locale: ILocale }>
   searchParams: Promise<{ page?: string }>
 }
-
-export const revalidate = 86400
 
 const baseUrl = process.env.NEXT_URL
 
