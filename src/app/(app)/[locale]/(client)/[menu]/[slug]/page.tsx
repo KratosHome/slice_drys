@@ -120,7 +120,12 @@ export default async function ProductPage({ params }: Props) {
       {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
       },
-    ).then((res) => res.json()),
+    ).then(async (res) => {
+      if (!res.ok) throw new Error(`product fetch failed: ${res.status}`)
+      const data = await res.json()
+      if (data?.success === false) throw new Error('product not found')
+      return data
+    }),
 
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
