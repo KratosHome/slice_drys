@@ -116,9 +116,14 @@ export default async function Blog({ params, searchParams }: PageProps) {
     {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.posts}`] },
     },
-  ).then((res) => res.json())
+  ).then(async (res) => {
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.success === false) return null
+    return data
+  })
 
-  if (!postsData.success) return <NotFoundPage />
+  if (!postsData) return <NotFoundPage />
 
   const { postsLocalized, currentPage, totalPages } = postsData
 

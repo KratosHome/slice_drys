@@ -59,12 +59,17 @@ export async function generateMetadata({
     {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
     },
-  ).then((res) => res.json())
+  ).then(async (res) => {
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.success === false) return null
+    return data
+  })
 
-  if (currentCategories.success === false) {
+  if (!currentCategories) {
     return {
-      title: 'post not found',
-      description: 'post not found',
+      title: 'categories not found',
+      description: 'categories not found',
     }
   }
 
@@ -149,25 +154,45 @@ export default async function MenuPage(props: {
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
-      }).then((res) => res.json()),
+      }).then(async (res) => {
+        if (!res.ok) return null
+        const data = await res.json()
+        if (data?.success === false) return null
+        return data
+      }),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
-      }).then((res) => res.json()),
+      }).then(async (res) => {
+        if (!res.ok) return null
+        const data = await res.json()
+        if (data?.success === false) return null
+        return data
+      }),
 
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
         {
           next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
         },
-      ).then((res) => res.json()),
+      ).then(async (res) => {
+        if (!res.ok) return null
+        const data = await res.json()
+        if (data?.success === false) return null
+        return data
+      }),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
-      }).then((res) => res.json()),
+      }).then(async (res) => {
+        if (!res.ok) return null
+        const data = await res.json()
+        if (data?.success === false) return null
+        return data
+      }),
     ])
 
-  if (productsData.data.length === 0) {
+  if (!productsData) {
     return <NotFoundPage />
   }
 

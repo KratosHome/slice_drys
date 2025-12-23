@@ -40,9 +40,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
     },
-  ).then((res) => res.json())
+  ).then(async (res) => {
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.success === false) return null
+    return data
+  })
 
-  if (productData.success === false) {
+  if (!productData) {
     return {
       title: '404',
       description: '404',
@@ -111,7 +116,7 @@ export async function generateStaticParams() {
 
 export default async function ProductPage({ params }: Props) {
   const { slug, locale } = await params
-  //
+
   const t = await getTranslations('product')
 
   const [productData, productSliderData] = await Promise.all([
@@ -121,9 +126,9 @@ export default async function ProductPage({ params }: Props) {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
       },
     ).then(async (res) => {
-      if (!res.ok) throw new Error(`product fetch failed: ${res.status}`)
+      if (!res.ok) return null
       const data = await res.json()
-      if (data?.success === false) throw new Error('product not found')
+      if (data?.success === false) return null
       return data
     }),
 
@@ -132,10 +137,15 @@ export default async function ProductPage({ params }: Props) {
       {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
       },
-    ).then((res) => res.json()),
+    ).then(async (res) => {
+      if (!res.ok) return null
+      const data = await res.json()
+      if (data?.success === false) return null
+      return data
+    }),
   ])
 
-  if (productData.success === false) {
+  if (!productData) {
     return <NotFoundPage />
   }
 

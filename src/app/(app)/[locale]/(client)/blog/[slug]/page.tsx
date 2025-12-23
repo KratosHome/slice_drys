@@ -27,9 +27,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.post}`] },
     },
-  ).then((res) => res.json())
+  ).then(async (res) => {
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.success === false) return null
+    return data
+  })
 
-  if (!data.success || !data.post.length) {
+  if (!data) {
     return {
       title: 'Post not found',
       description: 'The requested post could not be found.',
@@ -99,9 +104,14 @@ export default async function PostPage({ params }: Props) {
     {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.post}`] },
     },
-  ).then((res) => res.json())
+  ).then(async (res) => {
+    if (!res.ok) return null
+    const data = await res.json()
+    if (data?.success === false) return null
+    return data
+  })
 
-  if (!data.success) {
+  if (!data) {
     return <NotFoundPage />
   }
   const url = `${baseUrl}/${locale}/blog/${slug}`
