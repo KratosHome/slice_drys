@@ -15,7 +15,6 @@ import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
 import ProductSlider from '@/components/client/product-slider'
-import { revalidateDay } from '@/constants/revalidate'
 
 export const revalidate = 86400
 
@@ -38,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const productData = await fetch(
     `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
     {
-      next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
+      cache: 'no-store',
+      next: { tags: [fetchTags.product] },
     },
   ).then(async (res) => {
     if (!res.ok) return null
@@ -123,7 +123,8 @@ export default async function ProductPage({ params }: Props) {
     fetch(
       `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
       {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
+        cache: 'no-store',
+        next: { tags: [`${fetchTags.product}`] },
       },
     ).then(async (res) => {
       if (!res.ok) return null
@@ -135,7 +136,8 @@ export default async function ProductPage({ params }: Props) {
     fetch(
       `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
       {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.product}`] },
+        cache: 'no-store',
+        next: { tags: [`${fetchTags.product}`] },
       },
     ).then(async (res) => {
       if (!res.ok) return null

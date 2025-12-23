@@ -32,7 +32,6 @@ import NotFoundPage from '@/components/not-found'
 import { fetchTags } from '@/data/fetch-tags'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
-import { revalidateDay } from '@/constants/revalidate'
 
 export const revalidate = 86400
 
@@ -57,7 +56,8 @@ export async function generateMetadata({
   const currentCategories = await fetch(
     `${url}/api/products/current-categories?&slug=${categoriesParam}`,
     {
-      next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+      cache: 'no-store',
+      next: { tags: [`${fetchTags.products}`] },
     },
   ).then(async (res) => {
     if (!res.ok) return null
@@ -153,7 +153,8 @@ export default async function MenuPage(props: {
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
       fetch(`${url}/api/products/get-list?${params.toString()}`, {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+        cache: 'no-store',
+        next: { tags: [`${fetchTags.products}`] },
       }).then(async (res) => {
         if (!res.ok) return null
         const data = await res.json()
@@ -162,7 +163,8 @@ export default async function MenuPage(props: {
       }),
 
       fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+        cache: 'no-store',
+        next: { tags: [`${fetchTags.products}`] },
       }).then(async (res) => {
         if (!res.ok) return null
         const data = await res.json()
@@ -173,7 +175,8 @@ export default async function MenuPage(props: {
       fetch(
         `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
         {
-          next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+          cache: 'no-store',
+          next: { tags: [`${fetchTags.products}`] },
         },
       ).then(async (res) => {
         if (!res.ok) return null
@@ -183,7 +186,8 @@ export default async function MenuPage(props: {
       }),
 
       fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
+        cache: 'no-store',
+        next: { tags: [`${fetchTags.products}`] },
       }).then(async (res) => {
         if (!res.ok) return null
         const data = await res.json()
