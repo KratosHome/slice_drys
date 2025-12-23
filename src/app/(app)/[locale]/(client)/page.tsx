@@ -52,30 +52,15 @@ export default async function HomePage(props: {
       {
         next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
       },
-    ).then(async (res) => {
-      if (!res.ok) return null
-      const data = await res.json()
-      if (data?.success === false) return null
-      return data
-    }),
+    ).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/categories`, {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.menu}`] },
-    }).then(async (res) => {
-      if (!res.ok) return null
-      const data = await res.json()
-      if (data?.success === false) return null
-      return data
-    }),
+    }).then((res) => res.json()),
 
     fetch(`${SITE_URL}/api/posts?locale=${locale}&page=1&limit=5`, {
       next: { revalidate: revalidateDay, tags: [`${fetchTags.posts}`] },
-    }).then(async (res) => {
-      if (!res.ok) return null
-      const data = await res.json()
-      if (data?.success === false) return null
-      return data
-    }),
+    }).then((res) => res.json()),
   ])
 
   return (
