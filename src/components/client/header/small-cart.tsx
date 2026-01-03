@@ -12,6 +12,7 @@ import CartProductCard from '@/components/client/cart-product-card'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
+import { cn } from '@/utils/cn'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
@@ -136,13 +137,17 @@ export default function SmallCart() {
                   <ResponsiveMotion
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-foreground text-background flex w-full items-center justify-center"
+                    disabled={totalPrice < minOrderAmount}
+                    className={cn(
+                      'bg-foreground text-background flex w-full items-center justify-center',
+                      totalPrice < minOrderAmount && 'bg-gray-500',
+                    )}
                   >
                     <Button
                       variant={'none'}
                       disabled={totalPrice < minOrderAmount}
                       onClick={handleOpenCart}
-                      className="text-base md:text-xl"
+                      className={'text-base md:text-xl'}
                     >
                       {t('order')}
                     </Button>
