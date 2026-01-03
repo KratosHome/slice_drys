@@ -80,8 +80,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: url,
       languages: {
-        en: `${url}`,
-        uk: `${url}`,
+        en: `${baseUrl}/en/blog/${slug}`,
+        uk: `${baseUrl}/uk/blog/${slug}`,
       },
     },
   }
