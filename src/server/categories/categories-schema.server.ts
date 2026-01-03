@@ -1,10 +1,14 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const categoriesSchemaServer = new mongoose.Schema(
   {
     name: {
       en: { type: String, required: true, minlength: 1, maxlength: 255 },
       uk: { type: String, required: true, minlength: 1, maxlength: 255 },
+    },
+    h1: {
+      en: { type: String, maxlength: 255 },
+      uk: { type: String, maxlength: 255 },
     },
     slug: { type: String, required: true, unique: true },
     description: {
@@ -25,21 +29,20 @@ const categoriesSchemaServer = new mongoose.Schema(
     },
     parentCategory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
       default: null,
     },
     children: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: 'Category',
       },
     ],
     order: { type: Number, default: 0 },
     image: { type: String, maxlength: 255 },
   },
   { timestamps: true },
-);
+)
 
 export const Category =
-  mongoose.models.Category ||
-  mongoose.model("Category", categoriesSchemaServer);
+  mongoose.models.Category || mongoose.model('Category', categoriesSchemaServer)

@@ -267,7 +267,7 @@ export default async function MenuPage(props: {
 
           <div className="flex items-end justify-between border border-[#E4E4E4]">
             <h1 className="p-[20px] text-[32px] leading-none font-black text-[#A90909] sm:text-[48px] md:text-[54px] lg:text-[64px]">
-              {currentCategories.data.name[locale]} {pageInfo} {weightInfo}
+              {currentCategories.data.h1[locale]} {pageInfo} {weightInfo}
             </h1>
           </div>
           <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
