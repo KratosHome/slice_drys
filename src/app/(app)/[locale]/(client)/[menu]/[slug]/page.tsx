@@ -15,6 +15,7 @@ import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
 import ProductSlider from '@/components/client/product-slider'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
 
@@ -29,13 +30,11 @@ type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
 }
 
-const baseUrl = process.env.NEXT_URL
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
   const productData = await fetch(
-    `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+    `${SITE_URL}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
     {
       cache: 'no-store',
       next: { tags: [fetchTags.product] },
@@ -58,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const categorySlug = productData.data.categories[0].slug
 
-  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categorySlug}/${slug}`
 
   return {
     title: productData.data.title,
@@ -70,8 +69,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/${categorySlug}/${slug}`,
+        uk: `${SITE_URL}/uk/${categorySlug}/${slug}`,
       },
     },
     openGraph: {
@@ -121,7 +120,7 @@ export default async function ProductPage({ params }: Props) {
 
   const [productData, productSliderData] = await Promise.all([
     fetch(
-      `${baseUrl}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
+      `${SITE_URL}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
       {
         cache: 'no-store',
         next: { tags: [`${fetchTags.product}`] },
@@ -134,7 +133,7 @@ export default async function ProductPage({ params }: Props) {
     }),
 
     fetch(
-      `${baseUrl}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
+      `${SITE_URL}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
       {
         cache: 'no-store',
         next: { tags: [`${fetchTags.product}`] },
@@ -152,7 +151,7 @@ export default async function ProductPage({ params }: Props) {
   }
 
   const categorySlug = productData.data.categories[0].slug
-  const canonicalUrl = `${baseUrl}/${locale}/${categorySlug}/${slug}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categorySlug}/${slug}`
 
   return (
     <>

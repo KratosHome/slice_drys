@@ -19,6 +19,7 @@ import { routing } from '@/i18n/routing'
 
 import '../globals.css'
 import { revalidateDay } from '@/constants/revalidate'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
 
@@ -42,8 +43,6 @@ interface ILocaleLayoutProps {
 }
 
 export default async function LocaleLayout(props: ILocaleLayoutProps) {
-  const SITE_URL: string | undefined = process.env.NEXT_URL
-
   const params = await props.params
 
   const { locale } = params

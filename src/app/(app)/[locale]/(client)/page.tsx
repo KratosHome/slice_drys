@@ -16,6 +16,7 @@ import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
 import { detectDevice } from '@/utils/device-detection'
 import { revalidateDay } from '@/constants/revalidate'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
 
@@ -37,8 +38,6 @@ export default async function HomePage(props: {
   params: Params
   searchParams: ISearchParams
 }) {
-  const SITE_URL: string | undefined = process.env.NEXT_URL
-
   const { locale } = await props.params
 
   const t = await getTranslations('main')

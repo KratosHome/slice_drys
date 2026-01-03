@@ -1,7 +1,7 @@
-import InstaFeed from "@/components/client/main/insta-feed";
-import { instaData } from "@/data/main/insta-data";
-import ToTheTop from "@/components/ui/to-the-top";
-import Help from "@/components/client/main/help/help";
+import InstaFeed from '@/components/client/main/insta-feed'
+import { instaData } from '@/data/main/insta-data'
+import ToTheTop from '@/components/ui/to-the-top'
+import Help from '@/components/client/main/help/help'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,31 +9,30 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumbs";
-import { getTranslations } from "next-intl/server";
-import WholesaleForm from "@/components/client/wholesale/wholesale-form";
-import { helpData } from "@/data/wholesale-about";
-import { whyWe } from "@/data/wholesale-why-wr";
-import WholesaleJsonLd from "@/components/client/json-ld/wholesale-json-ld";
-import { locales } from "@/data/locales";
-
-const baseUrl = process.env.NEXT_URL;
+} from '@/components/ui/breadcrumbs'
+import { getTranslations } from 'next-intl/server'
+import WholesaleForm from '@/components/client/wholesale/wholesale-form'
+import { helpData } from '@/data/wholesale-about'
+import { whyWe } from '@/data/wholesale-why-wr'
+import WholesaleJsonLd from '@/components/client/json-ld/wholesale-json-ld'
+import { locales } from '@/data/locales'
+import { SITE_URL } from '@/data/contacts'
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { locale } = await params;
-  const isUk = locale === "uk";
+  const { locale } = await params
+  const isUk = locale === 'uk'
 
   const keywords = isUk
-    ? ["сушеники", "опт", "сушені продукти", "закупівлі", "slice&drys"]
-    : ["dried", "wholesale", "dried products", "bulk", "slice&drys"];
+    ? ['сушеники', 'опт', 'сушені продукти', 'закупівлі', 'slice&drys']
+    : ['dried', 'wholesale', 'dried products', 'bulk', 'slice&drys']
 
-  const canonicalUrl = `${baseUrl}/${locale}/wholesale`;
+  const canonicalUrl = `${SITE_URL}/${locale}/wholesale`
 
   return {
-    title: isUk ? "Оптові закупівлі" : "Wholesale",
+    title: isUk ? 'Оптові закупівлі' : 'Wholesale',
     description: isUk
-      ? "Сторінка оптових закупівель наших сушеників"
-      : "Our wholesale page for dried products",
+      ? 'Сторінка оптових закупівель наших сушеників'
+      : 'Our wholesale page for dried products',
     keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -43,55 +42,55 @@ export async function generateMetadata({ params }: { params: Params }) {
       },
     },
     openGraph: {
-      title: isUk ? "Оптові закупівлі" : "Wholesale",
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
       description: isUk
-        ? "Сторінка оптових закупівель наших сушеників"
-        : "Our wholesale page for dried products",
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
       url: `${canonicalUrl}`,
     },
     twitter: {
-      card: "summary_large_image",
-      title: isUk ? "Оптові закупівлі" : "Wholesale",
+      card: 'summary_large_image',
+      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
       description: isUk
-        ? "Сторінка оптових закупівель наших сушеників"
-        : "Our wholesale page for dried products",
+        ? 'Сторінка оптових закупівель наших сушеників'
+        : 'Our wholesale page for dried products',
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function Wholesale(props: { params: Params }) {
-  const { locale } = await props.params;
-  const t = await getTranslations("wholesale");
+  const { locale } = await props.params
+  const t = await getTranslations('wholesale')
 
   return (
     <>
       <WholesaleJsonLd locale={locale} />
       <div className="relative mx-auto max-w-[1280px] px-4">
-        <Breadcrumb className={"mt-5"}>
+        <Breadcrumb className={'mt-5'}>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t("wholesale")}</BreadcrumbPage>
+              <BreadcrumbPage>{t('wholesale')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <h1 className="font-rubik mt-[40px] mb-[66px] text-center text-[40px] leading-[38px] lg:mt-[66px] lg:text-[98px] lg:leading-[88px]">
-          {t("wholesale-dried-fruits-in-bulk")}
+          {t('wholesale-dried-fruits-in-bulk')}
         </h1>
         <div className="flex justify-center">
           <div className="bg-foreground text-background min-h-28 w-[100%] max-w-[790px] items-center justify-center px-10 py-5 text-left text-[20px] leading-[28px] drop-shadow-[16px_-16px_0px_#A90909]">
-            {t("do-you-have-business")}
+            {t('do-you-have-business')}
           </div>
         </div>
         <div className="font-rubik mt-[77px] text-center text-[32px] lg:mt-[130px] lg:text-[64px]">
-          {t("why-us")}
+          {t('why-us')}
         </div>
         <div className="mt-[71px] grid grid-cols-1 gap-[29px] md:grid-cols-3">
           {whyWe[locale].map((item) => (
@@ -109,9 +108,9 @@ export default async function Wholesale(props: { params: Params }) {
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">
         <WholesaleForm />
-        <InstaFeed title={t("join-us")} data={instaData[locale]} />
+        <InstaFeed title={t('join-us')} data={instaData[locale]} />
         <ToTheTop />
       </div>
     </>
-  );
+  )
 }

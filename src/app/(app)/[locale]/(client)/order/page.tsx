@@ -1,6 +1,6 @@
-import { getTranslations } from "next-intl/server";
-import Order from "@/components/client/order/order";
-import Delivery from "@/components/client/promo-banner/delivery";
+import { getTranslations } from 'next-intl/server'
+import Order from '@/components/client/order/order'
+import Delivery from '@/components/client/promo-banner/delivery'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,63 +8,63 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumbs";
-import ToTheTop from "@/components/ui/to-the-top";
+} from '@/components/ui/breadcrumbs'
+import ToTheTop from '@/components/ui/to-the-top'
 import {
   seedNovaPoshtaCitiesDictionary,
   seedNovaPoshtaDefaultCities,
-} from "@/server/seed/nova-poshta-default-cities.server";
-import { getDefaultNPCitiesFromDictionary } from "@/server/delivery/get-cities.server";
-import { locales } from "@/data/locales";
+} from '@/server/seed/nova-poshta-default-cities.server'
+import { getDefaultNPCitiesFromDictionary } from '@/server/delivery/get-cities.server'
+import { locales } from '@/data/locales'
+import { SITE_URL } from '@/data/contacts'
 
 export async function generateStaticParams() {
-  await seedNovaPoshtaDefaultCities();
-  await seedNovaPoshtaCitiesDictionary();
-  return locales.map((locale) => ({ locale }));
+  await seedNovaPoshtaDefaultCities()
+  await seedNovaPoshtaCitiesDictionary()
+  return locales.map((locale) => ({ locale }))
 }
 
-export const revalidate = 604800; //7 days
-const baseUrl = process.env.NEXT_URL;
+export const revalidate = 604800 //7 days
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { locale } = await params;
-  const isUk = locale === "uk";
+  const { locale } = await params
+  const isUk = locale === 'uk'
 
   const keywords = isUk
     ? [
-        "оформлення замовлення",
-        "доставка сушеників",
-        "оплата сушеників",
-        "нова пошта",
-        "сушеники",
-        "сушені продукти",
-        "замовлення сушеників",
-        "способи доставки",
-        "способи оплати",
-        "slice&drys",
+        'оформлення замовлення',
+        'доставка сушеників',
+        'оплата сушеників',
+        'нова пошта',
+        'сушеники',
+        'сушені продукти',
+        'замовлення сушеників',
+        'способи доставки',
+        'способи оплати',
+        'slice&drys',
       ]
     : [
-        "order checkout",
-        "delivery of dry snacks",
-        "payment for dry snacks",
-        "nova poshta",
-        "dry snacks",
-        "dried products",
-        "dry snacks order",
-        "delivery options",
-        "payment methods",
-        "slice&drys",
-      ];
+        'order checkout',
+        'delivery of dry snacks',
+        'payment for dry snacks',
+        'nova poshta',
+        'dry snacks',
+        'dried products',
+        'dry snacks order',
+        'delivery options',
+        'payment methods',
+        'slice&drys',
+      ]
 
-  const canonicalUrl = `${baseUrl}/${locale}/order`;
+  const canonicalUrl = `${SITE_URL}/${locale}/order`
 
   return {
     title: isUk
-      ? "Оформлення замовлення Slice&Drys"
-      : "Order processing Slice&Drys",
+      ? 'Оформлення замовлення Slice&Drys'
+      : 'Order processing Slice&Drys',
     description: isUk
-      ? "Тут ви можете зручно оформити замовлення на нашому сайті."
-      : "Here you can easily make an order on our website.",
+      ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+      : 'Here you can easily make an order on our website.',
     keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -74,41 +74,41 @@ export async function generateMetadata({ params }: { params: Params }) {
       },
     },
     openGraph: {
-      title: isUk ? "Оформлення замовлення" : "Order processing",
+      title: isUk ? 'Оформлення замовлення' : 'Order processing',
       description: isUk
-        ? "Тут ви можете зручно оформити замовлення на нашому сайті."
-        : "Here you can easily make an order on our website.",
+        ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+        : 'Here you can easily make an order on our website.',
       url: `${canonicalUrl}`,
     },
     twitter: {
-      card: "summary_large_image",
-      title: isUk ? "Оформлення замовлення" : "Order processing",
+      card: 'summary_large_image',
+      title: isUk ? 'Оформлення замовлення' : 'Order processing',
       description: isUk
-        ? "Тут ви можете зручно оформити замовлення на нашому сайті."
-        : "Here you can easily make an order on our website.",
+        ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
+        : 'Here you can easily make an order on our website.',
     },
-  };
+  }
 }
 
 export default async function OrderPage() {
-  const t = await getTranslations("breadcrumbs");
-  const defaultCities = await getDefaultNPCitiesFromDictionary();
+  const t = await getTranslations('breadcrumbs')
+  const defaultCities = await getDefaultNPCitiesFromDictionary()
   return (
     <>
       <div className="mx-auto max-w-[1280px] overflow-hidden px-5">
         <Breadcrumb className="mt-[30px] md:mt-[70px]">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t("order")}</BreadcrumbPage>
+              <BreadcrumbPage>{t('order')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <h1 className="title-section title-rubik mt-10 normal-case! md:mt-[66px]">
-          {t("order")}
+          {t('order')}
         </h1>
         <Order
           defaultCities={{
@@ -119,5 +119,5 @@ export default async function OrderPage() {
       <Delivery className="my-[150px] mb-[100px] md:mt-[250px]" />
       <ToTheTop />
     </>
-  );
+  )
 }

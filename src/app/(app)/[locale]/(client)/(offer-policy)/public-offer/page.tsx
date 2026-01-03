@@ -1,58 +1,57 @@
-import PublicOfferJsonLd from "@/components/client/json-ld/public-offer-json-ld";
-import { locales } from "@/data/locales";
+import PublicOfferJsonLd from '@/components/client/json-ld/public-offer-json-ld'
+import { locales } from '@/data/locales'
+import { SITE_URL } from '@/data/contacts'
 
-type Params = Promise<{ locale: ILocale }>;
-
-const baseUrl = process.env.NEXT_URL;
+type Params = Promise<{ locale: ILocale }>
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { locale } = await params;
-  const isUk = locale === "uk";
+  const { locale } = await params
+  const isUk = locale === 'uk'
 
   return {
-    title: isUk ? "Публічна пропозиція" : "Public Offer",
+    title: isUk ? 'Публічна пропозиція' : 'Public Offer',
     description: isUk
-      ? "Умови публічної пропозиції"
-      : "Terms of the public offer",
+      ? 'Умови публічної пропозиції'
+      : 'Terms of the public offer',
     openGraph: {
-      title: isUk ? "Публічна пропозиція" : "Public Offer",
+      title: isUk ? 'Публічна пропозиція' : 'Public Offer',
       description: isUk
-        ? "Умови публічної пропозиції"
-        : "Terms of the public offer",
-      url: `${baseUrl}/${locale}/public-offer`,
+        ? 'Умови публічної пропозиції'
+        : 'Terms of the public offer',
+      url: `${SITE_URL}/${locale}/public-offer`,
     },
     twitter: {
-      card: "summary_large_image",
-      title: isUk ? "Публічна пропозиція" : "Public Offer",
+      card: 'summary_large_image',
+      title: isUk ? 'Публічна пропозиція' : 'Public Offer',
       description: isUk
-        ? "Умови публічної пропозиції"
-        : "Terms of the public offer",
+        ? 'Умови публічної пропозиції'
+        : 'Terms of the public offer',
     },
     alternates: {
-      canonical: `${baseUrl}/${locale}/public-offer`,
+      canonical: `${SITE_URL}/${locale}/public-offer`,
       languages: {
-        en: `${baseUrl}/${locale}/public-offer`,
-        uk: `${baseUrl}/${locale}/public-offer`,
+        en: `${SITE_URL}/${locale}/public-offer`,
+        uk: `${SITE_URL}/${locale}/public-offer`,
       },
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function PublicOffer({ params }: { params: Params }) {
-  const { locale } = await params;
+  const { locale } = await params
 
-  let MarkdownToHtml;
+  let MarkdownToHtml
   try {
     MarkdownToHtml = await import(
       `@/data/public-offer/${locale}-public-offer.mdx`
-    );
+    )
   } catch (error) {
-    console.error(`Cannot load privacy policy for locale: ${locale}`, error);
-    return <div>Error loading privacy public offer content.</div>;
+    console.error(`Cannot load privacy policy for locale: ${locale}`, error)
+    return <div>Error loading privacy public offer content.</div>
   }
 
   return (
@@ -64,5 +63,5 @@ export default async function PublicOffer({ params }: { params: Params }) {
         </article>
       </div>
     </>
-  );
+  )
 }

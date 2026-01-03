@@ -31,6 +31,7 @@ import NotFoundPage from '@/components/not-found'
 import { fetchTags } from '@/data/fetch-tags'
 import ToTheTop from '@/components/ui/to-the-top'
 import { revalidateDay } from '@/constants/revalidate'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
 
@@ -39,8 +40,6 @@ type PageProps = {
   searchParams: Promise<{ page?: string }>
 }
 
-const baseUrl = process.env.NEXT_URL
-
 export async function generateMetadata({
   params,
   searchParams,
@@ -48,14 +47,14 @@ export async function generateMetadata({
   const { locale } = await params
   const { page } = await searchParams
 
-  const ogImage = `${baseUrl}/blog-image.webp`
+  const ogImage = `${SITE_URL}/blog-image.webp`
 
-  const canonicalUrl = `${baseUrl}/${locale}/blog`
+  const canonicalUrl = `${SITE_URL}/${locale}/blog`
 
   const url =
     page && +page > 1
-      ? `${baseUrl}/${locale}/blog?page=${page}`
-      : `${baseUrl}/${locale}/blog`
+      ? `${SITE_URL}/${locale}/blog?page=${page}`
+      : `${SITE_URL}/${locale}/blog`
 
   return {
     title: blogMetaData[locale].title,
@@ -65,8 +64,8 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/blog`,
+        uk: `${SITE_URL}/uk/blog`,
       },
     },
     openGraph: {
@@ -112,7 +111,7 @@ export default async function Blog({ params, searchParams }: PageProps) {
   const pageItem = parseInt(blogSearchParams.page || '1', 10)
 
   const postsData = await fetch(
-    `${baseUrl}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
+    `${SITE_URL}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
     {
       cache: 'no-store',
       next: { tags: [`${fetchTags.posts}`] },

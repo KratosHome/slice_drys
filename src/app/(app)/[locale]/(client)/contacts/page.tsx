@@ -1,5 +1,5 @@
-import { getTranslations } from "next-intl/server";
-import Contacts from "@/components/client/contacts/contacts";
+import { getTranslations } from 'next-intl/server'
+import Contacts from '@/components/client/contacts/contacts'
 
 import {
   Breadcrumb,
@@ -8,29 +8,28 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumbs";
-import ContactsJsonLd from "@/components/client/json-ld/contacts-json-ld";
-import JoinCommunity from "@/components/client/promo-banner/join-community";
-import ToTheTop from "@/components/ui/to-the-top";
-import { locales } from "@/data/locales";
-
-const baseUrl = process.env.NEXT_URL;
+} from '@/components/ui/breadcrumbs'
+import ContactsJsonLd from '@/components/client/json-ld/contacts-json-ld'
+import JoinCommunity from '@/components/client/promo-banner/join-community'
+import ToTheTop from '@/components/ui/to-the-top'
+import { locales } from '@/data/locales'
+import { SITE_URL } from '@/data/contacts'
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { locale } = await params;
-  const isUk = locale === "uk";
+  const { locale } = await params
+  const isUk = locale === 'uk'
 
   const keywords = isUk
-    ? ["контакти", "запитання", "замовлення", "звʼязок", "slice&drys"]
-    : ["contacts", "questions", "orders", "communication", "slice&drys"];
+    ? ['контакти', 'запитання', 'замовлення', 'звʼязок', 'slice&drys']
+    : ['contacts', 'questions', 'orders', 'communication', 'slice&drys']
 
-  const canonicalUrl = `${baseUrl}/${locale}/contacts`;
+  const canonicalUrl = `${SITE_URL}/${locale}/contacts`
 
   return {
-    title: isUk ? "Контакти Slice&Drys" : "Contacts Slice&Drys",
+    title: isUk ? 'Контакти Slice&Drys' : 'Contacts Slice&Drys',
     description: isUk
-      ? "Звʼяжіться з нами для запитань, замовлень чи співпраці."
-      : "Contact us for inquiries, orders, or cooperation.",
+      ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+      : 'Contact us for inquiries, orders, or cooperation.',
     keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -40,29 +39,29 @@ export async function generateMetadata({ params }: { params: Params }) {
       },
     },
     openGraph: {
-      title: isUk ? "Контакти" : "Contacts",
+      title: isUk ? 'Контакти' : 'Contacts',
       description: isUk
-        ? "Звʼяжіться з нами для запитань, замовлень чи співпраці."
-        : "Contact us for inquiries, orders, or cooperation.",
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
       url: `${canonicalUrl}`,
     },
     twitter: {
-      card: "summary_large_image",
-      title: isUk ? "Контакти" : "Contacts",
+      card: 'summary_large_image',
+      title: isUk ? 'Контакти' : 'Contacts',
       description: isUk
-        ? "Звʼяжіться з нами для запитань, замовлень чи співпраці."
-        : "Contact us for inquiries, orders, or cooperation.",
+        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
+        : 'Contact us for inquiries, orders, or cooperation.',
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.map((locale) => ({ locale }))
 }
 
 export default async function ContactsPage(props: { params: Params }) {
-  const { locale } = await props.params;
-  const t = await getTranslations("breadcrumbs");
+  const { locale } = await props.params
+  const t = await getTranslations('breadcrumbs')
 
   return (
     <>
@@ -71,11 +70,11 @@ export default async function ContactsPage(props: { params: Params }) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t("home")}</BreadcrumbLink>
+              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{t("contacts")}</BreadcrumbPage>
+              <BreadcrumbPage>{t('contacts')}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -84,5 +83,5 @@ export default async function ContactsPage(props: { params: Params }) {
         <ToTheTop />
       </div>
     </>
-  );
+  )
 }

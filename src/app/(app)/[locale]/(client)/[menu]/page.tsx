@@ -32,6 +32,7 @@ import NotFoundPage from '@/components/not-found'
 import { fetchTags } from '@/data/fetch-tags'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
 
@@ -45,8 +46,6 @@ export async function generateMetadata({
   params: Params
   searchParams: SearchParams
 }): Promise<Metadata> {
-  const url = process.env.NEXT_URL
-
   const { locale, menu } = await params
   const { categories } = await searchParams
 
@@ -54,7 +53,7 @@ export async function generateMetadata({
     !categories || categories.includes(',') ? menu : categories
 
   const currentCategories = await fetch(
-    `${url}/api/products/current-categories?&slug=${categoriesParam}`,
+    `${SITE_URL}/api/products/current-categories?&slug=${categoriesParam}`,
     {
       cache: 'no-store',
       next: { tags: [`${fetchTags.products}`] },
@@ -75,7 +74,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${url}/${locale}/${categoriesParam}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categoriesParam}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -90,8 +89,8 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/${categoriesParam}`,
+        uk: `${SITE_URL}/uk/${categoriesParam}`,
       },
     },
     openGraph: {
@@ -136,7 +135,6 @@ export default async function MenuPage(props: {
   const tPagin = await getTranslations('pagination')
 
   const productBgImg = getProductBgImg(t)
-  const url = process.env.NEXT_URL
 
   if (menu) params.append('menu', String(menu))
   if (page) params.append('page', String(page))
@@ -152,7 +150,7 @@ export default async function MenuPage(props: {
 
   const [productsData, weightData, categoriesData, currentCategories] =
     await Promise.all([
-      fetch(`${url}/api/products/get-list?${params.toString()}`, {
+      fetch(`${SITE_URL}/api/products/get-list?${params.toString()}`, {
         cache: 'no-store',
         next: { tags: [`${fetchTags.products}`] },
       }).then(async (res) => {
@@ -162,7 +160,7 @@ export default async function MenuPage(props: {
         return data
       }),
 
-      fetch(`${url}/api/products/get-weight?&menu=${menu}`, {
+      fetch(`${SITE_URL}/api/products/get-weight?&menu=${menu}`, {
         cache: 'no-store',
         next: { tags: [`${fetchTags.products}`] },
       }).then(async (res) => {
@@ -173,7 +171,7 @@ export default async function MenuPage(props: {
       }),
 
       fetch(
-        `${url}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
+        `${SITE_URL}/api/products/get-categories?&menu=${menu}&locale=${locale}`,
         {
           cache: 'no-store',
           next: { tags: [`${fetchTags.products}`] },
@@ -185,10 +183,13 @@ export default async function MenuPage(props: {
         return data
       }),
 
-      fetch(`${url}/api/products/current-categories?&slug=${categoriesParam}`, {
-        cache: 'no-store',
-        next: { tags: [`${fetchTags.products}`] },
-      }).then(async (res) => {
+      fetch(
+        `${SITE_URL}/api/products/current-categories?&slug=${categoriesParam}`,
+        {
+          cache: 'no-store',
+          next: { tags: [`${fetchTags.products}`] },
+        },
+      ).then(async (res) => {
         if (!res.ok) return null
         const data = await res.json()
         if (data?.success === false) return null
@@ -238,7 +239,7 @@ export default async function MenuPage(props: {
     return queryString ? `?${queryString}` : ''
   }
 
-  const canonicalUrl = `${url}/${categoriesParam}`
+  const canonicalUrl = `${SITE_URL}/${categoriesParam}`
 
   return (
     <>

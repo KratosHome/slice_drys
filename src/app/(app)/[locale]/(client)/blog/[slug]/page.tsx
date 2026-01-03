@@ -10,10 +10,9 @@ import { fetchTags } from '@/data/fetch-tags'
 import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
 import { revalidateDay } from '@/constants/revalidate'
+import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
-
-const baseUrl = process.env.NEXT_URL
 
 type Props = {
   params: Promise<{ locale: ILocale; slug: string }>
@@ -23,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
   const data = await fetch(
-    `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
+    `${SITE_URL}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
     {
       cache: 'no-store',
       next: { tags: [`${fetchTags.post}`] },
@@ -47,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const metaKeywordsArray =
     post.keywords?.split(',').map((keyword: string) => keyword.trim()) || []
 
-  const url = `${baseUrl}/${locale}/blog/${slug}`
+  const url = `${SITE_URL}/${locale}/blog/${slug}`
 
   return {
     title: post.title,
@@ -80,8 +79,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: url,
       languages: {
-        en: `${baseUrl}/en/blog/${slug}`,
-        uk: `${baseUrl}/uk/blog/${slug}`,
+        en: `${SITE_URL}/en/blog/${slug}`,
+        uk: `${SITE_URL}/uk/blog/${slug}`,
       },
     },
   }
@@ -101,7 +100,7 @@ export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
 
   const data = await fetch(
-    `${baseUrl}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
+    `${SITE_URL}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
     {
       cache: 'no-store',
       next: { tags: [`${fetchTags.post}`] },
@@ -116,7 +115,7 @@ export default async function PostPage({ params }: Props) {
   if (!data) {
     return <NotFoundPage />
   }
-  const url = `${baseUrl}/${locale}/blog/${slug}`
+  const url = `${SITE_URL}/${locale}/blog/${slug}`
 
   const content = JSON.parse(data.post[0].content)
   const title = data.post[0].title
