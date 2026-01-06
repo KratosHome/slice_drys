@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { SITE_URL } from '@/data/contacts'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -16,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://slicedrys.com/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }
