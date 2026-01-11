@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import Loading from '@/components/ui/loading'
+import { referals } from '@/data/referals'
 
 type Props = {
   defaultCities: {
@@ -56,26 +57,46 @@ export default function Order({ defaultCities }: Props) {
     }
   }, [minOrderAmount, totalPrice, userData?.formStep])
 
+  const refRaw = localStorage.getItem('ref')
+
+  const referral = (() => {
+    if (!refRaw) return undefined
+
+    const { code } = JSON.parse(refRaw) as { code: string }
+    return referals.find((r) => r.cod === code)
+  })()
+
   const handleSubmit = async () => {
     if (!formRef.current) return
     setLoading(true)
+
+    const referralInterest = referral?.interest ?? 0
+
     const messageData = {
-      totalPrice: totalPrice.toString() + ' ₴',
+      totalPrice: `${totalPrice} ₴`,
       paymentMethod:
         userData?.paymentInfo === 'cash' ? 'післяоплата' : 'на картку',
-      name: userData?.name + ' ' + userData?.surname,
+      name: `${userData?.name ?? ''} ${userData?.surname ?? ''}`.trim(),
       phone: userData?.phoneNumber ?? '',
       delivery: userData?.deliveryInfo?.courierInfo
-        ? `Кур'єром: ${userData?.deliveryInfo?.courierInfo}`
+        ? `Кур'єром: ${userData.deliveryInfo.courierInfo}`
         : `Новою поштою: ${userData?.deliveryInfo?.city?.label}, ${userData?.deliveryInfo?.branch?.label}`,
       comment: userData?.comment ?? 'Немає коментарів',
-      products: (itemList || [])
-        ?.map(
+      products: (itemList ?? [])
+        .map(
           (item, i) =>
             `${i + 1}. ${item.name} (вага ${item.weight}) x ${item.quantity} од`,
         )
         .join('\n'),
-      callback: userData?.noCall ? 'НE ПОТРІБЕН' : 'ПОТРІБЕН',
+      callback: userData?.noCall ? 'НЕ ПОТРІБЕН' : 'ПОТРІБЕН',
+      blogger: referral
+        ? {
+            name: referral.name,
+            interest: referral.interest,
+            link: referral.link,
+            payment: (totalPrice * referralInterest) / 100,
+          }
+        : undefined,
     }
 
     const cb = async (resp: IOrderResponse) => {

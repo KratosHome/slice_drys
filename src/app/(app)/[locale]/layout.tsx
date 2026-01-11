@@ -20,6 +20,7 @@ import { routing } from '@/i18n/routing'
 import '../globals.css'
 import { revalidateDay } from '@/constants/revalidate'
 import { SITE_URL } from '@/data/contacts'
+import SaveReferral from '@/components/client/save-referral'
 
 export const revalidate = 86400
 
@@ -92,6 +93,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
+      <SaveReferral />
       <Analytics />
     </html>
   )
