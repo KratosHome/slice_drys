@@ -9,7 +9,6 @@ import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
 import { fetchTags } from '@/data/fetch-tags'
 import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
-import { revalidateDay } from '@/constants/revalidate'
 import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
@@ -46,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const metaKeywordsArray =
     post.keywords?.split(',').map((keyword: string) => keyword.trim()) || []
 
-  const url = `${SITE_URL}/${locale}/blog/${slug}`
+  const url = `${SITE_URL}/${locale}/blog/${slug.toLowerCase()}`
 
   return {
     title: post.title,

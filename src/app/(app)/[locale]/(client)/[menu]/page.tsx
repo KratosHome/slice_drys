@@ -74,7 +74,7 @@ export async function generateMetadata({
 
   const description = currentCategories.data.metaDescription?.[locale] || ''
 
-  const canonicalUrl = `${SITE_URL}/${locale}/${categoriesParam}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categoriesParam.toString().toLowerCase()}`
 
   const metaKeywordsArray =
     currentCategories.data.metaKeywords?.[locale]
@@ -314,12 +314,12 @@ export default async function MenuPage(props: {
                       label={
                         productsData.currentPage === item
                           ? tPagin('active-page', {
-                              page: productsData.currentPage + 1,
-                            })
+                            page: productsData.currentPage + 1,
+                          })
                           : typeof item === 'number'
                             ? tPagin('go-to-page', {
-                                page: item,
-                              })
+                              page: item,
+                            })
                             : undefined
                       }
                       href={getPageUrl(item)}

@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const categorySlug = productData.data.categories[0].slug
 
-  const canonicalUrl = `${SITE_URL}/${locale}/${categorySlug}/${slug}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categorySlug.toLowerCase()}/${slug.toLowerCase()}`
 
   return {
     title: productData.data.title,
