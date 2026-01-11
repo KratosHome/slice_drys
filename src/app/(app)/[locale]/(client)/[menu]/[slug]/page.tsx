@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: Props) {
           description={productData.data.description}
         />
         <ProductSlider
-          products={productSliderData.data}
+          products={productSliderData?.data}
           title={t('also-buy')}
           message={t('something-that-will-come-handy-along-with-your-choice')}
         />
