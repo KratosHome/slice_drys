@@ -239,7 +239,7 @@ export default async function MenuPage(props: {
     return queryString ? `?${queryString}` : ''
   }
 
-  const canonicalUrl = `${SITE_URL}/${categoriesParam}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${categoriesParam}`
 
   return (
     <>
