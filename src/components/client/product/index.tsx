@@ -66,7 +66,7 @@ export default function Product({ product }: IProductProps) {
 
   return (
     <TransitionLink
-      href={`/${locale}/meat/${product.slug.toLowerCase()}?weight=${selectedVariable.weight}`}
+      href={`/${locale}/${product.category}/${product.slug.toLowerCase()}?weight=${selectedVariable.weight}`}
       className="block px-2 py-8 sm:px-3 md:px-4"
     >
       <CardContainer className="relative h-full w-full rounded-sm">

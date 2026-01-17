@@ -10,7 +10,7 @@ import BlogSection from '@/components/client/main/blog'
 import InstaFeed from '@/components/client/main/insta-feed'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import ToTheTop from '@/components/ui/to-the-top'
-import ProductSlider from '@/components/client/product-slider'
+import ProductSlider from '@/components/client/product-slider/product-slider'
 
 import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
