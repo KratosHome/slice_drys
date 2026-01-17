@@ -14,7 +14,7 @@ import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
 import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
-import ProductSlider from '@/components/client/product-slider'
+import ProductSlider from '@/components/client/product-slider/product-slider'
 import { SITE_URL } from '@/data/contacts'
 
 export const revalidate = 86400
