@@ -6,49 +6,49 @@ import {
   CircleUser,
   FolderKanban,
   TrendingUp,
-} from "lucide-react";
+} from 'lucide-react'
 
 export const appSidebarData = [
   {
     id: 1,
-    name: "Замовлення",
+    name: 'Замовлення',
     icon: Home,
-    link: "admin/new",
+    link: 'admin/new',
   },
   {
     id: 2,
-    name: "Категорії",
+    name: 'Категорії',
     icon: Tag,
-    link: "admin/categories",
+    link: 'admin/categories',
   },
   {
     id: 3,
-    name: "Товари",
+    name: 'Товари',
     icon: FolderKanban,
-    link: "admin/products",
+    link: 'admin/products',
   },
   {
     id: 4,
-    name: "Блог",
+    name: 'Блог',
     icon: Rss,
-    link: "admin/blog",
+    link: 'admin/blog',
   },
   {
     id: 5,
-    name: "Блоки",
+    name: 'Блоки',
     icon: StickyNote,
-    link: "admin/block",
+    link: 'admin/block',
   },
   {
     id: 6,
-    name: "Клієнти",
+    name: 'Клієнти',
     icon: CircleUser,
-    link: "admin/clients",
+    link: 'admin/clients',
   },
   {
     id: 7,
-    name: "Статистика",
+    name: 'Статистика',
     icon: TrendingUp,
-    link: "admin/statistics",
+    link: 'admin/statistics',
   },
-];
+]

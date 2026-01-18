@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ErrorMessage } from "@hookform/error-message";
-import { CommandLoading } from "cmdk";
+import { Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ErrorMessage } from '@hookform/error-message'
+import { CommandLoading } from 'cmdk'
 import {
   Command,
   CommandEmpty,
@@ -11,58 +11,59 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from '@/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
 
-import { type InputHTMLAttributes, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
-import { type UseControllerProps, useController } from "react-hook-form";
-import { useDebounce } from "use-debounce";
-import { useCartStore } from "@/store/cart-store";
-import { getNPBranchesByCityRef } from "@/server/delivery/get-branches.server";
+import { type InputHTMLAttributes, useEffect, useMemo, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { type UseControllerProps, useController } from 'react-hook-form'
+import { useDebounce } from 'use-debounce'
+import { useCartStore } from '@/store/cart-store'
+import { getNPBranchesByCityRef } from '@/server/delivery/get-branches.server'
 import {
   getDefaultNPCitiesFromDictionary,
   getNPCitiesFromDictionary,
-} from "@/server/delivery/get-cities.server";
-import { cn } from "@/utils/cn";
+} from '@/server/delivery/get-cities.server'
+import { cn } from '@/utils/cn'
 
 interface IComboboxProps
-  extends UseControllerProps,
+  extends
+    UseControllerProps,
     Omit<
       InputHTMLAttributes<HTMLInputElement>,
-      "onSelect" | "defaultValue" | "name"
+      'onSelect' | 'defaultValue' | 'name'
     > {
-  onSelect: ({ value, label }: IComboboxData) => Promise<void> | void;
-  placeholder: string;
-  defaultValues?: IComboboxData[];
+  onSelect: ({ value, label }: IComboboxData) => Promise<void> | void
+  placeholder: string
+  defaultValues?: IComboboxData[]
 }
 
 type TransformingDataType<
   T extends IDirectoryCity | IDirectoryBranch | IComboboxData,
 > = T extends IDirectoryCity | IDirectoryBranch
   ? IComboboxData
-  : IDirectoryCity | IDirectoryBranch;
+  : IDirectoryCity | IDirectoryBranch
 
 export function transformToCombo<
   T extends IDirectoryCity | IDirectoryBranch | IComboboxData,
->(data: T, toType?: "city" | "branch"): TransformingDataType<T> {
-  if ("ref" in data && "city" in data) {
+>(data: T, toType?: 'city' | 'branch'): TransformingDataType<T> {
+  if ('ref' in data && 'city' in data) {
     return {
       value: data.ref,
       label: data.city,
-    } as TransformingDataType<T>;
-  } else if ("branchRef" in data && "branchName" in data) {
+    } as TransformingDataType<T>
+  } else if ('branchRef' in data && 'branchName' in data) {
     return {
       value: data.branchRef,
       label: data.branchName,
-    } as TransformingDataType<T>;
-  } else if ("value" in data && "label" in data) {
-    return toType === "city"
+    } as TransformingDataType<T>
+  } else if ('value' in data && 'label' in data) {
+    return toType === 'city'
       ? ({
           ref: data.value,
           city: data.label,
@@ -70,36 +71,36 @@ export function transformToCombo<
       : ({
           branchRef: data.value,
           branchName: data.label,
-        } as TransformingDataType<T>);
+        } as TransformingDataType<T>)
   } else {
-    console.error("Unsupported type provided to transformToCombo");
-    return {} as TransformingDataType<T>;
+    console.error('Unsupported type provided to transformToCombo')
+    return {} as TransformingDataType<T>
   }
 }
 
 const handleCitySearch = async (city?: string): Promise<IComboboxData[]> => {
-  let allCities;
+  let allCities
 
   if (city) {
-    allCities = await getNPCitiesFromDictionary(city);
+    allCities = await getNPCitiesFromDictionary(city)
   } else {
-    allCities = await getDefaultNPCitiesFromDictionary();
+    allCities = await getDefaultNPCitiesFromDictionary()
   }
 
   return allCities
     ? allCities.map((cityData) => transformToCombo(cityData))
-    : [];
-};
+    : []
+}
 
 const handleBranchSearch = async (
   cityRef?: string,
 ): Promise<IDirectoryBranch[]> => {
-  if (!cityRef) return [];
+  if (!cityRef) return []
 
-  const branches = await getNPBranchesByCityRef(cityRef);
+  const branches = await getNPBranchesByCityRef(cityRef)
 
-  return branches ?? [];
-};
+  return branches ?? []
+}
 
 const Loading = () => {
   return (
@@ -110,8 +111,8 @@ const Loading = () => {
         ))}
       </div>
     </CommandLoading>
-  );
-};
+  )
+}
 
 export function Combobox({
   defaultValues,
@@ -128,104 +129,104 @@ export function Combobox({
     name,
     rules,
     control,
-  });
+  })
 
-  const t = useTranslations("order");
+  const t = useTranslations('order')
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false)
 
-  const [search, setSearch] = useState<string>("");
-  const [debouncedSearchValue] = useDebounce<string>(search, 500);
+  const [search, setSearch] = useState<string>('')
+  const [debouncedSearchValue] = useDebounce<string>(search, 500)
 
   const [elements, setElements] = useState<
     IComboboxData[] | IDirectoryBranch[]
-  >([]);
+  >([])
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false)
 
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
-  );
+  )
   const deliveryMethod = useCartStore(
     (state) => state.cart.userData?.deliveryInfo?.deliveryMethod,
-  );
+  )
 
   const handleUpdateDataList = useMemo(() => {
-    if (name === "deliveryInfo.city") {
-      return handleCitySearch;
+    if (name === 'deliveryInfo.city') {
+      return handleCitySearch
     } else {
-      return () => handleBranchSearch(deliveryInfo?.city?.value);
+      return () => handleBranchSearch(deliveryInfo?.city?.value)
     }
-  }, [name, deliveryInfo]);
+  }, [name, deliveryInfo])
 
   useEffect(() => {
-    if (name === "deliveryInfo.branch") setElements([]);
+    if (name === 'deliveryInfo.branch') setElements([])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deliveryInfo?.city?.value]);
+  }, [deliveryInfo?.city?.value])
 
   useEffect(() => {
-    if (name === "deliveryInfo.city") {
-      (async () => {
-        setLoading(true);
+    if (name === 'deliveryInfo.city') {
+      ;(async () => {
+        setLoading(true)
 
         try {
           const data = (await handleUpdateDataList(
             debouncedSearchValue,
-          )) as IComboboxData[];
+          )) as IComboboxData[]
 
-          setElements(data);
+          setElements(data)
         } catch (error) {
           console.error(
-            `Error fetching data with (${name.split(".")[1]}): `,
+            `Error fetching data with (${name.split('.')[1]}): `,
             error,
-          );
-          setElements([]);
+          )
+          setElements([])
         } finally {
-          setLoading(false);
+          setLoading(false)
         }
-      })();
+      })()
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchValue, handleUpdateDataList]);
+  }, [debouncedSearchValue, handleUpdateDataList])
 
   // Початкове завантаження даних
   useEffect(() => {
     if (open && elements.length === 0 && !debouncedSearchValue) {
       if (defaultValues) {
-        setElements(defaultValues);
-        return;
+        setElements(defaultValues)
+        return
       }
 
-      (async () => {
-        setLoading(true);
+      ;(async () => {
+        setLoading(true)
 
         try {
-          const data = await handleUpdateDataList(undefined);
-          setElements(data);
+          const data = await handleUpdateDataList(undefined)
+          setElements(data)
         } catch (error) {
           console.error(
-            `Error fetching initial data (${name.split(".")[1]}): `,
+            `Error fetching initial data (${name.split('.')[1]}): `,
             error,
-          );
-          setElements([]);
+          )
+          setElements([])
         } finally {
-          setLoading(false);
+          setLoading(false)
         }
-      })();
+      })()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, handleUpdateDataList, debouncedSearchValue, elements.length]);
+  }, [open, handleUpdateDataList, debouncedSearchValue, elements.length])
 
   const selectedValue: IComboboxData =
-    name === "deliveryInfo.city"
-      ? deliveryInfo?.city || { value: "", label: "" }
-      : deliveryInfo?.branch || { value: "", label: "" };
+    name === 'deliveryInfo.city'
+      ? deliveryInfo?.city || { value: '', label: '' }
+      : deliveryInfo?.branch || { value: '', label: '' }
 
   // Фільтруємо елементи по debouncedSearchValue тільки для відділень
   const filteredElements = elements.every(
-    (el): el is IDirectoryBranch => "branchType" in el,
+    (el): el is IDirectoryBranch => 'branchType' in el,
   )
     ? (elements as IDirectoryBranch[])
         .filter((el) => el.branchType.toLowerCase() === deliveryMethod)
@@ -237,7 +238,7 @@ export function Combobox({
                 .includes(debouncedSearchValue.toLowerCase())
             : true,
         )
-    : elements;
+    : elements
 
   return (
     <div>
@@ -276,10 +277,10 @@ export function Combobox({
               ) : (
                 <>
                   <CommandEmpty>
-                    {name === "deliveryInfo.city"
-                      ? t("city-search-placeholder")
-                      : t("branch-search-placeholder", {
-                          type: deliveryInfo?.deliveryMethod || "",
+                    {name === 'deliveryInfo.city'
+                      ? t('city-search-placeholder')
+                      : t('branch-search-placeholder', {
+                          type: deliveryInfo?.deliveryMethod || '',
                         })}
                   </CommandEmpty>
                   <CommandGroup>
@@ -291,19 +292,19 @@ export function Combobox({
                           if (currentValue !== selectedValue.label) {
                             const selectedElement = filteredElements.find(
                               (el) => el.label === currentValue,
-                            );
-                            if (selectedElement) onSelect(selectedElement);
+                            )
+                            if (selectedElement) onSelect(selectedElement)
                           }
-                          setOpen(false);
+                          setOpen(false)
                         }}
                       >
                         {element.label}
                         <Check
                           className={cn(
-                            "ml-auto",
+                            'ml-auto',
                             selectedValue.label === element.label
-                              ? "opacity-100"
-                              : "opacity-0",
+                              ? 'opacity-100'
+                              : 'opacity-0',
                           )}
                         />
                       </CommandItem>
@@ -328,5 +329,5 @@ export function Combobox({
         }
       />
     </div>
-  );
+  )
 }

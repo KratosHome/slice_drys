@@ -1,8 +1,8 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from 'react'
 
 type ChangeQuantityIconProps = {
-  content: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+  content: string
+} & ButtonHTMLAttributes<HTMLButtonElement>
 
 export default function ChangeQuantityIcon({
   content,
@@ -15,5 +15,5 @@ export default function ChangeQuantityIcon({
     >
       {content}
     </button>
-  );
+  )
 }

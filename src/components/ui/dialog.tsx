@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon } from '@radix-ui/react-icons'
 import {
   Root,
   Trigger,
@@ -10,24 +10,24 @@ import {
   Content,
   Title,
   Description,
-} from "@radix-ui/react-dialog";
-import { ResponsiveMotion } from "@/components/client/responsive-motion";
+} from '@radix-ui/react-dialog'
+import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
   type HTMLAttributes,
   forwardRef,
-} from "react";
-import { cn } from "@/utils/cn";
+} from 'react'
+import { cn } from '@/utils/cn'
 
-const Dialog = Root;
+const Dialog = Root
 
-const DialogTrigger = Trigger;
+const DialogTrigger = Trigger
 
-const DialogPortal = Portal;
+const DialogPortal = Portal
 
-const DialogClose = Close;
+const DialogClose = Close
 
 const DialogOverlay = forwardRef<
   ComponentRef<typeof Overlay>,
@@ -36,14 +36,14 @@ const DialogOverlay = forwardRef<
   <Overlay
     ref={ref}
     className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80",
+      'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80',
       className,
     )}
     {...props}
   />
-));
+))
 
-DialogOverlay.displayName = Overlay.displayName;
+DialogOverlay.displayName = Overlay.displayName
 
 const DialogContent = forwardRef<
   ComponentRef<typeof Content>,
@@ -54,7 +54,7 @@ const DialogContent = forwardRef<
     <Content
       ref={ref}
       className={cn(
-        "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg",
+        'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg',
         className,
       )}
       {...props}
@@ -66,9 +66,9 @@ const DialogContent = forwardRef<
       </Close>
     </Content>
   </DialogPortal>
-));
+))
 
-DialogContent.displayName = Content.displayName;
+DialogContent.displayName = Content.displayName
 
 const DialogHeader = ({
   className,
@@ -76,14 +76,14 @@ const DialogHeader = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
+      'flex flex-col space-y-1.5 text-center sm:text-left',
       className,
     )}
     {...props}
   />
-);
+)
 
-DialogHeader.displayName = "DialogHeader";
+DialogHeader.displayName = 'DialogHeader'
 
 const ClientDialogContent = forwardRef<
   ComponentRef<typeof Content>,
@@ -94,7 +94,7 @@ const ClientDialogContent = forwardRef<
     <Content
       ref={ref}
       className={cn(
-        "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg",
+        'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg',
         className,
       )}
       {...props}
@@ -102,9 +102,9 @@ const ClientDialogContent = forwardRef<
       {children}
     </Content>
   </DialogPortal>
-));
+))
 
-ClientDialogContent.displayName = "ClientDialogContent";
+ClientDialogContent.displayName = 'ClientDialogContent'
 
 const ClientDialogHeader = ({
   className,
@@ -112,7 +112,7 @@ const ClientDialogHeader = ({
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex items-center justify-between space-y-1.5", className)}
+    className={cn('flex items-center justify-between space-y-1.5', className)}
     {...props}
   >
     {children}
@@ -121,7 +121,7 @@ const ClientDialogHeader = ({
         initial={{ rotate: 0, scale: 1 }}
         whileHover={{ scale: 1.2 }}
         whileTap={{ rotate: 90, scale: 0.9, opacity: 0.8 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        transition={{ type: 'spring', stiffness: 300 }}
         className="text-red-cust cursor-pointer"
         aria-label="Close"
       >
@@ -131,9 +131,9 @@ const ClientDialogHeader = ({
       </ResponsiveMotion>
     </Close>
   </div>
-);
+)
 
-ClientDialogHeader.displayName = "ClientDialogHeader";
+ClientDialogHeader.displayName = 'ClientDialogHeader'
 
 const DialogFooter = ({
   className,
@@ -141,14 +141,14 @@ const DialogFooter = ({
 }: HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
       className,
     )}
     {...props}
   />
-);
+)
 
-DialogFooter.displayName = "DialogFooter";
+DialogFooter.displayName = 'DialogFooter'
 
 const DialogTitle = forwardRef<
   ComponentRef<typeof Title>,
@@ -157,14 +157,14 @@ const DialogTitle = forwardRef<
   <Title
     ref={ref}
     className={cn(
-      "text-lg leading-none font-semibold tracking-tight",
+      'text-lg leading-none font-semibold tracking-tight',
       className,
     )}
     {...props}
   />
-));
+))
 
-DialogTitle.displayName = Title.displayName;
+DialogTitle.displayName = Title.displayName
 
 const DialogDescription = forwardRef<
   ComponentRef<typeof Description>,
@@ -172,12 +172,12 @@ const DialogDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <Description
     ref={ref}
-    className={cn("text-muted-foreground text-sm", className)}
+    className={cn('text-muted-foreground text-sm', className)}
     {...props}
   />
-));
+))
 
-DialogDescription.displayName = Description.displayName;
+DialogDescription.displayName = Description.displayName
 
 export {
   Dialog,
@@ -192,4 +192,4 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-};
+}

@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+'use client'
+import * as React from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,7 +11,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,9 +20,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dropdown-menu'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
@@ -30,7 +30,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table'
 import {
   AlertCircle,
   CheckCircle,
@@ -39,9 +39,9 @@ import {
   Truck,
   XCircle,
   RefreshCw,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 const statusIcons = {
   new: <Clock className="text-blue-500" />,
@@ -52,22 +52,22 @@ const statusIcons = {
   awaitingReturn: <RefreshCw className="text-gray-500" />,
   cancelled: <XCircle className="text-red-500" />,
   failedDelivery: <AlertCircle className="text-red-500" />,
-};
+}
 
 function DataTable<TData>({
   columns,
   data,
 }: {
-  columns: ColumnDef<TData>[];
-  data: TData[];
+  columns: ColumnDef<TData>[]
+  data: TData[]
 }) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
-  );
+  )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
@@ -86,16 +86,16 @@ function DataTable<TData>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  });
+  })
 
   return (
     <div className="mt-6 w-full">
       <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Фільтр по email..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn('email')?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -121,7 +121,7 @@ function DataTable<TData>({
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -154,7 +154,7 @@ function DataTable<TData>({
                 <TableRow
                   key={row.id}
                   className="hover:bg-gray-50"
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -185,7 +185,7 @@ function DataTable<TData>({
 
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} з{" "}
+          {table.getFilteredSelectedRowModel().rows.length} з{' '}
           {table.getFilteredRowModel().rows.length} сторінки
         </div>
         <div className="space-x-2">
@@ -208,20 +208,20 @@ function DataTable<TData>({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function OrdersList({ data }: { data: IOrder[] }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const columns: ColumnDef<IOrder>[] = [
     {
-      id: "select",
+      id: 'select',
       header: ({ table }) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         />
@@ -236,25 +236,25 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       enableHiding: false,
     },
     {
-      id: "id",
-      header: "ID",
+      id: 'id',
+      header: 'ID',
       accessorFn: (row) => row.id,
       cell: ({ row }) => <div>{row.original.id}</div>,
     },
     {
-      accessorKey: "status",
-      header: "Статус",
+      accessorKey: 'status',
+      header: 'Статус',
       cell: ({ row }) => {
-        const status = row.getValue("status") as keyof typeof statusIcons;
+        const status = row.getValue('status') as keyof typeof statusIcons
         return (
           <div className="flex items-center gap-2 capitalize">
             {statusIcons[status] || <AlertCircle className="text-gray-500" />}
           </div>
-        );
+        )
       },
     },
     {
-      id: "name",
+      id: 'name',
       header: "Ім'я користувача",
       accessorFn: (row) => `${row.user.name} ${row.user.surname}`,
       cell: ({ row }) => (
@@ -264,35 +264,35 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       ),
     },
     {
-      id: "phone",
-      header: "Телефон",
+      id: 'phone',
+      header: 'Телефон',
       accessorFn: (row) => row.user.phone,
       cell: ({ row }) => <div>{row.original.user.phone}</div>,
     },
     {
-      id: "total",
-      header: "Сума",
+      id: 'total',
+      header: 'Сума',
       accessorFn: (row) => row.total,
       cell: ({ row }) => <div>{row.original.total} грн</div>,
     },
     {
-      id: "city",
-      header: "Місто",
+      id: 'city',
+      header: 'Місто',
       accessorFn: (row) => row.delivery.city,
       cell: ({ row }) => <div>{row.original.delivery.city}</div>,
     },
     {
-      id: "comment",
-      header: "Коментар",
+      id: 'comment',
+      header: 'Коментар',
       accessorFn: (row) => row.comment,
       cell: ({ row }) => <div>{row.original.comment}</div>,
     },
     {
-      id: "actions",
-      header: "Дії",
-      accessorKey: "actions",
+      id: 'actions',
+      header: 'Дії',
+      accessorKey: 'actions',
       cell: ({ row }) => {
-        const order = row.original;
+        const order = row.original
 
         return (
           <div className="flex flex-col gap-2">
@@ -311,14 +311,14 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        );
+        )
       },
     },
-  ];
+  ]
 
   return (
     <div>
       <DataTable columns={columns} data={data} />
     </div>
-  );
+  )
 }

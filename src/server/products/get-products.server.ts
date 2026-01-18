@@ -1,7 +1,7 @@
-"use server";
+'use server'
 
-import { connectToDbServer } from "@/server/connect-to-db.server";
-import { Product } from "@/server/products/product-schema.server";
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { Product } from '@/server/products/product-schema.server'
 
 export async function getProducts(
   page: number = 1,
@@ -12,22 +12,22 @@ export async function getProducts(
   locale: string,
   fetchAll: boolean = false,
 ) {
-  "use server";
+  'use server'
   try {
-    await connectToDbServer();
+    await connectToDbServer()
 
-    const query: IQueryType = {};
+    const query: IQueryType = {}
 
     if (composition.length > 0) {
-      query[`composition.${locale}`] = { $in: composition };
+      query[`composition.${locale}`] = { $in: composition }
     }
 
     if (menu.length > 0) {
-      query[`menu.${locale}`] = { $in: menu };
+      query[`menu.${locale}`] = { $in: menu }
     }
 
     if (category.length > 0) {
-      query[`category.${locale}`] = { $in: category };
+      query[`category.${locale}`] = { $in: category }
     }
 
     const products = await Product.find(query)
@@ -51,7 +51,7 @@ export async function getProducts(
       .sort({ createdAt: -1 })
       .lean()
       .skip((page - 1) * limit)
-      .limit(limit);
+      .limit(limit)
 
     const formattedProducts: IProduct[] = products.map((product) => ({
       ...product,
@@ -68,26 +68,26 @@ export async function getProducts(
       title: product.title[locale],
       metaDescription: product.metaDescription[locale],
       keywords: product.keywords[locale],
-    }));
+    }))
 
     const allProducts: IProductLocal[] = fetchAll
       ? ((await Product.find()
           .sort({ createdAt: -1 })
           .lean()) as unknown as IProductLocal[])
-      : [];
+      : []
 
     return {
       success: true,
       product: formattedProducts,
       productAll: allProducts,
-      message: "Products retrieved",
-    };
+      message: 'Products retrieved',
+    }
   } catch (error) {
     return {
       success: false,
       product: [],
       productAll: [],
       message: `Can't retrieve products ${error}`,
-    };
+    }
   }
 }

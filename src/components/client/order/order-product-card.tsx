@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import Image from "next/image";
+import Image from 'next/image'
 
-import { useCartStore } from "@/store/cart-store";
+import { useCartStore } from '@/store/cart-store'
 
 export default function CartProductCard({
   id,
@@ -12,7 +12,7 @@ export default function CartProductCard({
   weight,
   quantity,
 }: ICartItem) {
-  const { removeItemFromCart, addItemToCart } = useCartStore((state) => state);
+  const { removeItemFromCart, addItemToCart } = useCartStore((state) => state)
 
   return (
     <div className="mx-3 flex h-40 items-center border-b border-gray-200 py-2 hover:bg-gray-100">
@@ -60,8 +60,8 @@ export default function CartProductCard({
               }
             >
               -
-            </div>{" "}
-            {quantity}{" "}
+            </div>{' '}
+            {quantity}{' '}
             <div
               className="cursor-pointer"
               onClick={() =>
@@ -81,5 +81,5 @@ export default function CartProductCard({
         </div>
       </div>
     </div>
-  );
+  )
 }

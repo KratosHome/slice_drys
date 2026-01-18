@@ -1,56 +1,56 @@
-"use server";
-import { connectToDbServer } from "@/server/connect-to-db.server";
-import Block from "@/server/block/blocks-schema.server";
-import cloudinary from "@/server/cloudinary-config.server";
-import { revalidateTag } from "next/cache";
-import { fetchTags } from "@/data/fetch-tags";
+'use server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import Block from '@/server/block/blocks-schema.server'
+import cloudinary from '@/server/cloudinary-config.server'
+import { revalidateTag } from 'next/cache'
+import { fetchTags } from '@/data/fetch-tags'
 
 export async function updateHelpData(
-  formData: Omit<IHelp, "images">,
+  formData: Omit<IHelp, 'images'>,
   images: string[],
 ) {
-  "use server";
+  'use server'
   try {
-    await connectToDbServer();
-    const block = await Block.findOne();
+    await connectToDbServer()
+    const block = await Block.findOne()
 
     if (block && block.images?.length) {
       const deletePromises = block.images.map((url: string) => {
-        const publicId = url.split("/").slice(-2).join("/").split(".")[0];
-        return cloudinary.uploader.destroy(publicId, { invalidate: true });
-      });
+        const publicId = url.split('/').slice(-2).join('/').split('.')[0]
+        return cloudinary.uploader.destroy(publicId, { invalidate: true })
+      })
 
-      await Promise.all(deletePromises);
+      await Promise.all(deletePromises)
     }
 
     const uploadPromises = images.map((image) =>
       cloudinary.uploader.upload(image, {
-        folder: "help-slice",
+        folder: 'help-slice',
       }),
-    );
-    const uploads = await Promise.all(uploadPromises);
+    )
+    const uploads = await Promise.all(uploadPromises)
 
-    const secureUrls = uploads.map((upload) => upload.secure_url);
+    const secureUrls = uploads.map((upload) => upload.secure_url)
 
-    const helpData = { ...formData, images: secureUrls };
+    const helpData = { ...formData, images: secureUrls }
 
     if (block) {
-      block.help = helpData;
-      await block.save();
+      block.help = helpData
+      await block.save()
     } else {
-      await Block.create({ help: helpData });
+      await Block.create({ help: helpData })
     }
 
-    revalidateTag(fetchTags.helpMain, "max");
+    revalidateTag(fetchTags.helpMain, 'max')
 
     return {
       success: true,
-      message: "Дані успішно оновлено",
-    };
+      message: 'Дані успішно оновлено',
+    }
   } catch (error) {
     return {
       success: false,
       message: `Помилка: ${error}`,
-    };
+    }
   }
 }

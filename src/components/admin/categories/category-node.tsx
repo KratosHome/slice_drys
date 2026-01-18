@@ -1,12 +1,12 @@
-import React, { FC } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import React, { FC } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface CategoriesTreeProps {
-  category: ICategory;
-  expanded: { [key: string]: boolean };
-  toggleExpand: (id: string) => void;
-  setSelectedCategory: (category: ICategory) => void;
+  category: ICategory
+  expanded: { [key: string]: boolean }
+  toggleExpand: (id: string) => void
+  setSelectedCategory: (category: ICategory) => void
 }
 
 const CategoryNode: FC<CategoriesTreeProps> = ({
@@ -16,12 +16,12 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
   setSelectedCategory,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: category._id });
+    useSortable({ id: category._id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  };
+  }
 
   return (
     <li className="mb-2" ref={setNodeRef} style={style} {...attributes}>
@@ -40,11 +40,11 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
           <button
             className="text-gray-500 hover:text-gray-700"
             onClick={(e) => {
-              e.stopPropagation();
-              toggleExpand(category._id);
+              e.stopPropagation()
+              toggleExpand(category._id)
             }}
           >
-            {expanded[category._id] ? "−" : "+"}
+            {expanded[category._id] ? '−' : '+'}
           </button>
         )}
       </div>
@@ -63,7 +63,7 @@ const CategoryNode: FC<CategoriesTreeProps> = ({
         </ul>
       )}
     </li>
-  );
-};
+  )
+}
 
-export default CategoryNode;
+export default CategoryNode

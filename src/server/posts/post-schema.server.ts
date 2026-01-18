@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const postSchemaServer = new mongoose.Schema(
   {
@@ -83,7 +83,7 @@ const postSchemaServer = new mongoose.Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 export const Post =
-  mongoose.models.Blog || mongoose.model("Blog", postSchemaServer);
+  mongoose.models.Blog || mongoose.model('Blog', postSchemaServer)

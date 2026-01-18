@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const novaPoshtaCitiesSchema = new mongoose.Schema(
   {
@@ -13,11 +13,11 @@ const novaPoshtaCitiesSchema = new mongoose.Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 export const NovaPoshtaCities =
   mongoose.models.NovaPoshtaCities ||
-  mongoose.model("NovaPoshtaCities", novaPoshtaCitiesSchema);
+  mongoose.model('NovaPoshtaCities', novaPoshtaCitiesSchema)
 
 const novaPoshtaDefaultCitiesSchema = new mongoose.Schema(
   {
@@ -29,15 +29,15 @@ const novaPoshtaDefaultCitiesSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      ref: "NovaPoshtaCities",
+      ref: 'NovaPoshtaCities',
     },
   },
   { timestamps: true },
-);
+)
 
 export const NovaPoshtaDefaultCities =
   mongoose.models.NovaPoshtaDefaultCities ||
-  mongoose.model("NovaPoshtaDefaultCities", novaPoshtaDefaultCitiesSchema);
+  mongoose.model('NovaPoshtaDefaultCities', novaPoshtaDefaultCitiesSchema)
 
 const novaPoshtaBranchesSchema = new mongoose.Schema(
   {
@@ -71,8 +71,8 @@ const novaPoshtaBranchesSchema = new mongoose.Schema(
     ],
   },
   { timestamps: true },
-);
+)
 
 export const NovaPoshtaBranches =
   mongoose.models.NovaPoshtaBranches ||
-  mongoose.model("NovaPoshtaBranches", novaPoshtaBranchesSchema);
+  mongoose.model('NovaPoshtaBranches', novaPoshtaBranchesSchema)

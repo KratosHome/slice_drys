@@ -1,18 +1,18 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from 'react'
 
-import { Check } from "lucide-react";
+import { Check } from 'lucide-react'
 
-import { cn } from "@/utils/cn";
+import { cn } from '@/utils/cn'
 
 type CheckboxSimpleProps = Readonly<
   {
-    label: string;
-    name: string;
-    isValid: boolean;
-    className?: string;
-    isChecked?: boolean;
-  } & ComponentPropsWithoutRef<"input">
->;
+    label: string
+    name: string
+    isValid: boolean
+    className?: string
+    isChecked?: boolean
+  } & ComponentPropsWithoutRef<'input'>
+>
 
 export default function CheckboxSimple({
   name,
@@ -27,7 +27,7 @@ export default function CheckboxSimple({
       htmlFor={name}
     >
       <span className="relative mr-4 grid h-[27px] w-[27px] place-items-center">
-        <Check size={16} className={cn(isChecked ? "visible" : "invisible")} />
+        <Check size={16} className={cn(isChecked ? 'visible' : 'invisible')} />
         <svg
           height={27}
           width={27}
@@ -39,10 +39,10 @@ export default function CheckboxSimple({
           type="checkbox"
           {...props}
           id={name}
-          className={`${isValid ? "" : "text-red-700"} absolute inset-0 cursor-pointer opacity-0`}
+          className={`${isValid ? '' : 'text-red-700'} absolute inset-0 cursor-pointer opacity-0`}
         />
       </span>
       {label}
     </label>
-  );
+  )
 }

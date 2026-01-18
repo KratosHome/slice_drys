@@ -1,9 +1,9 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { LazyMotion, domAnimation, m } from "framer-motion";
+'use client'
+import React, { useState, useEffect } from 'react'
+import { useDebounce } from 'use-debounce'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
@@ -11,123 +11,122 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import CheckboxRoot from "@/components/ui/checkbox-root";
-import CheckboxIndicator from "@/components/ui/checkbox-indicator";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/accordion'
+import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
+import CheckboxRoot from '@/components/ui/checkbox-root'
+import CheckboxIndicator from '@/components/ui/checkbox-indicator'
+import { Slider } from '@/components/ui/slider'
+import { Button } from '@/components/ui/button'
 
 interface ProductFiltersProps {
-  categories: ICategory[];
-  weights: string[];
+  categories: ICategory[]
+  weights: string[]
 }
 
 const ProductFilters: React.FC<ProductFiltersProps> = ({
   weights,
   categories,
 }) => {
-  const t = useTranslations("product-list");
+  const t = useTranslations('product-list')
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const locale = useLocale() as ILocale;
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const locale = useLocale() as ILocale
 
-  const numericWeights = weights.map(Number);
+  const numericWeights = weights.map(Number)
 
   const getInitialCategories = () => {
-    const params = searchParams.get("categories");
-    return params ? params.split(",") : [];
-  };
+    const params = searchParams.get('categories')
+    return params ? params.split(',') : []
+  }
 
   const getInitialSliderValues = () => {
-    const minWeight =
-      Number(searchParams.get("minWeight")) || numericWeights[0];
+    const minWeight = Number(searchParams.get('minWeight')) || numericWeights[0]
     const maxWeight =
-      Number(searchParams.get("maxWeight")) ||
-      numericWeights[numericWeights.length - 1];
-    return [minWeight, maxWeight];
-  };
+      Number(searchParams.get('maxWeight')) ||
+      numericWeights[numericWeights.length - 1]
+    return [minWeight, maxWeight]
+  }
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const [selectedCategories, setSelectedCategories] =
-    useState<string[]>(getInitialCategories);
+    useState<string[]>(getInitialCategories)
   const [sliderValue, setSliderValue] = useState<number[]>(
     getInitialSliderValues,
-  );
+  )
 
-  const [debouncedSliderValue] = useDebounce(sliderValue, 700);
+  const [debouncedSliderValue] = useDebounce(sliderValue, 700)
 
   useEffect(() => {
-    setSelectedCategories(getInitialCategories());
-    setSliderValue(getInitialSliderValues());
+    setSelectedCategories(getInitialCategories())
+    setSliderValue(getInitialSliderValues())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams])
 
   useEffect(() => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
 
     if (
       debouncedSliderValue[0] !== numericWeights[0] ||
       debouncedSliderValue[1] !== numericWeights[numericWeights.length - 1]
     ) {
-      params.set("minWeight", debouncedSliderValue[0].toString());
-      params.set("maxWeight", debouncedSliderValue[1].toString());
+      params.set('minWeight', debouncedSliderValue[0].toString())
+      params.set('maxWeight', debouncedSliderValue[1].toString())
     } else {
-      params.delete("minWeight");
-      params.delete("maxWeight");
+      params.delete('minWeight')
+      params.delete('maxWeight')
     }
 
-    updateUrlParams(params);
+    updateUrlParams(params)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSliderValue]);
+  }, [debouncedSliderValue])
 
   const updateUrlParams = (params: URLSearchParams) => {
-    const query = params.toString();
-    const newUrl = query ? `?${query}` : window.location.pathname;
-    window.history.replaceState(null, "", newUrl);
-    router.refresh();
-  };
+    const query = params.toString()
+    const newUrl = query ? `?${query}` : window.location.pathname
+    window.history.replaceState(null, '', newUrl)
+    router.refresh()
+  }
 
   const updateCategoriesQuery = (updatedCategories: string[]) => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
     if (updatedCategories.length > 0) {
-      params.set("categories", updatedCategories.join(","));
+      params.set('categories', updatedCategories.join(','))
     } else {
-      params.delete("categories");
+      params.delete('categories')
     }
-    params.set("page", "1");
-    updateUrlParams(params);
-  };
+    params.set('page', '1')
+    updateUrlParams(params)
+  }
 
   const handleToggleCategory = (category: string) => {
     const updatedCategories = selectedCategories.includes(category)
       ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category];
+      : [...selectedCategories, category]
 
-    setSelectedCategories(updatedCategories);
-    updateCategoriesQuery(updatedCategories);
-  };
+    setSelectedCategories(updatedCategories)
+    updateCategoriesQuery(updatedCategories)
+  }
 
   const resetFilters = () => {
-    setSelectedCategories([]);
+    setSelectedCategories([])
     setSliderValue([
       numericWeights[0],
       numericWeights[numericWeights.length - 1],
-    ]);
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
-    params.delete("categories");
-    params.delete("minWeight");
-    params.delete("maxWeight");
-    updateUrlParams(params);
-  };
+    ])
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
+    params.delete('categories')
+    params.delete('minWeight')
+    params.delete('maxWeight')
+    updateUrlParams(params)
+  }
 
   return (
     <div className="relative min-w-[259px] lg:min-w-[319px]">
@@ -143,10 +142,10 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
               <LazyMotion features={domAnimation}>
                 <m.div
                   whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   <AccordionTrigger className="font-rubik">
-                    {t("type")}
+                    {t('type')}
                   </AccordionTrigger>
                 </m.div>
               </LazyMotion>
@@ -158,7 +157,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         htmlFor={category.slug}
                         className="flex cursor-pointer items-center gap-[24px]"
                         whileHover={{ scale: 1.05, marginLeft: 15 }}
-                        transition={{ type: "spring", stiffness: 300 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
                       >
                         <CheckboxPrimitive.Root
                           id={category.slug}
@@ -180,7 +179,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </LazyMotion>
                   ))
                 ) : (
-                  <div>{t("no-categories-available")}</div>
+                  <div>{t('no-categories-available')}</div>
                 )}
               </AccordionContent>
             </AccordionItem>
@@ -191,10 +190,10 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
               <LazyMotion features={domAnimation}>
                 <m.div
                   whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   <AccordionTrigger className="font-rubik">
-                    {t("weight")}
+                    {t('weight')}
                   </AccordionTrigger>
                 </m.div>
               </LazyMotion>
@@ -209,20 +208,20 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                   <div className="mt-10 flex items-center justify-between pt-9 text-xl">
                     <div className="flex gap-10">
-                      <span className="">{t("from")}</span>
+                      <span className="">{t('from')}</span>
                       <span className="relative flex items-center justify-center">
                         {sliderValue[0]}
-                        {t("g")}
+                        {t('g')}
                         <svg className="absolute h-[40px] w-[70px] origin-center">
                           <use href="/icons/sprite.svg#o-oval" />
                         </svg>
                       </span>
                     </div>
                     <div className="mr-5 flex gap-10">
-                      <span className="">{t("to")}</span>
+                      <span className="">{t('to')}</span>
                       <span className="relative flex items-center justify-center">
                         {sliderValue[1]}
-                        {t("g")}
+                        {t('g')}
                         <svg className="absolute h-[40px] w-[70px] origin-center">
                           <use href="/icons/sprite.svg#o-oval" />
                         </svg>
@@ -239,13 +238,13 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger className="flex items-center gap-2">
               <div className="font-rubik text-xl sm:text-2xl">
-                {t("filter")}
+                {t('filter')}
               </div>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-rubik text-[32px]">
-                  {t("filter")}
+                  {t('filter')}
                 </DialogTitle>
                 <DialogDescription>
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-[30px] pb-[40px]">
@@ -255,14 +254,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       type="button"
                       onClick={resetFilters}
                     >
-                      {t("reset-all")}
+                      {t('reset-all')}
                     </Button>
                     <Button
                       className="rounded-none text-base"
                       type="button"
                       onClick={() => setDialogOpen(false)}
                     >
-                      {t("show")}
+                      {t('show')}
                     </Button>
                   </div>
                   <Accordion
@@ -273,7 +272,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger className="font-rubik">
-                        {t("type")}
+                        {t('type')}
                       </AccordionTrigger>
                       <AccordionContent className="flex max-h-[400px] flex-col gap-2 pt-8 pb-[40px]">
                         {categories.length > 0 ? (
@@ -304,7 +303,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                             </label>
                           ))
                         ) : (
-                          <div>{t("no-categories-available")}</div>
+                          <div>{t('no-categories-available')}</div>
                         )}
                       </AccordionContent>
                     </AccordionItem>
@@ -313,7 +312,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                   <Accordion type="single" collapsible defaultValue="item-2">
                     <AccordionItem value="item-2">
                       <AccordionTrigger className="font-rubik">
-                        {t("weight")}
+                        {t('weight')}
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="my-[50px]">
@@ -326,20 +325,20 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                           />
                           <div className="mt-10 flex items-center justify-between pt-9 text-xl">
                             <div className="flex gap-10">
-                              <span className="">{t("from")}</span>
+                              <span className="">{t('from')}</span>
                               <span className="relative flex items-center justify-center">
                                 {sliderValue[0]}
-                                {t("g")}
+                                {t('g')}
                                 <svg className="absolute h-[40px] w-[70px] origin-center">
                                   <use href="/icons/sprite.svg#o-oval" />
                                 </svg>
                               </span>
                             </div>
                             <div className="mr-5 flex gap-10">
-                              <span className="">{t("to")}</span>
+                              <span className="">{t('to')}</span>
                               <span className="relative flex items-center justify-center">
                                 {sliderValue[1]}
-                                {t("g")}
+                                {t('g')}
                                 <svg className="absolute h-[40px] w-[70px] origin-center">
                                   <use href="/icons/sprite.svg#o-oval" />
                                 </svg>
@@ -357,7 +356,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductFilters;
+export default ProductFilters

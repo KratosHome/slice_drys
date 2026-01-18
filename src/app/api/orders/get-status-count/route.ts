@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import { getOrderStatusCounts } from "@/server/orders/get-status-order.server";
+import { NextResponse } from 'next/server'
+import { getOrderStatusCounts } from '@/server/orders/get-status-order.server'
 
 export async function GET() {
-  const data = await getOrderStatusCounts();
+  const data = await getOrderStatusCounts()
 
-  return NextResponse.json(data);
+  return NextResponse.json(data)
 }

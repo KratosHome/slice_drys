@@ -1,12 +1,12 @@
-import { Loader } from "lucide-react";
+import { Loader } from 'lucide-react'
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic'
 
 const QuillEditor = dynamic(
-  () => import("@/components/admin/quill-editor/quill-editor"),
+  () => import('@/components/admin/quill-editor/quill-editor'),
   {
     loading: () => <Loader />,
   },
-);
+)
 
-export default QuillEditor;
+export default QuillEditor

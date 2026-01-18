@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { appSidebarData } from "@/data/app-sidebar";
+import { appSidebarData } from '@/data/app-sidebar'
 import {
   Sidebar,
   SidebarContent,
@@ -9,13 +9,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar'
 
-import { useLocale } from "next-intl";
-import { TransitionLink } from "@/components/client/transition-link";
+import { useLocale } from 'next-intl'
+import { TransitionLink } from '@/components/client/transition-link'
 
 export function AppSidebar() {
-  const locale: string = useLocale();
+  const locale: string = useLocale()
 
   return (
     <Sidebar>
@@ -39,5 +39,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  );
+  )
 }

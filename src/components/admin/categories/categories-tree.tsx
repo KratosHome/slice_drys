@@ -1,49 +1,49 @@
-"use client";
-import React, { FC, useEffect, useState } from "react";
-import CategoryNode from "@/components/admin/categories/category-node";
-import UpdateTree from "@/components/admin/categories/update-tree";
-import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
+'use client'
+import React, { FC, useEffect, useState } from 'react'
+import CategoryNode from '@/components/admin/categories/category-node'
+import UpdateTree from '@/components/admin/categories/update-tree'
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core'
 import {
   SortableContext,
   verticalListSortingStrategy,
   arrayMove,
-} from "@dnd-kit/sortable";
-import { changePosition } from "@/server/categories/change-position.server";
+} from '@dnd-kit/sortable'
+import { changePosition } from '@/server/categories/change-position.server'
 
 interface CategoriesTreeProps {
-  categories: ICategory[];
+  categories: ICategory[]
 }
 
 const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
-  const [orderedCategories, setOrderedCategories] = useState(categories);
-  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+  const [orderedCategories, setOrderedCategories] = useState(categories)
+  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({})
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
     null,
-  );
+  )
 
   useEffect(() => {
-    setOrderedCategories(categories);
-  }, [categories]);
+    setOrderedCategories(categories)
+  }, [categories])
 
   const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
+    const { active, over } = event
+    if (!over || active.id === over.id) return
 
-    const oldIndex = orderedCategories.findIndex((c) => c._id === active.id);
-    const newIndex = orderedCategories.findIndex((c) => c._id === over.id);
+    const oldIndex = orderedCategories.findIndex((c) => c._id === active.id)
+    const newIndex = orderedCategories.findIndex((c) => c._id === over.id)
 
-    const newOrder = arrayMove(orderedCategories, oldIndex, newIndex);
+    const newOrder = arrayMove(orderedCategories, oldIndex, newIndex)
 
-    setOrderedCategories(newOrder);
+    setOrderedCategories(newOrder)
 
     await changePosition(
       newOrder.map((cat, index) => ({ ...cat, order: index })),
-    );
-  };
+    )
+  }
 
   const toggleExpand = (id: string) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6 md:flex-row">
@@ -83,7 +83,7 @@ const CategoriesTree: FC<CategoriesTreeProps> = ({ categories }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CategoriesTree;
+export default CategoriesTree

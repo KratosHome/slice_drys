@@ -1,23 +1,23 @@
- .products-slider .splide__pagination.custom__pagination {
-    bottom: -33px;
+.products-slider .splide__pagination.custom__pagination {
+  bottom: -33px;
 }
 
 @media (min-width: 768px) {
-    .products-slider .splide__pagination.custom__pagination {
-        bottom: -43px;
-    }
+  .products-slider .splide__pagination.custom__pagination {
+    bottom: -43px;
+  }
 }
 
 @media (min-width: 1024px) {
-    .products-slider .splide__pagination.custom__pagination {
-        bottom: -50px;
-    }
+  .products-slider .splide__pagination.custom__pagination {
+    bottom: -50px;
+  }
 }
 
 .products-slider .splide__arrow {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .products-slider .splide__pagination__page {
-    background-color: transparent;
+  background-color: transparent;
 }

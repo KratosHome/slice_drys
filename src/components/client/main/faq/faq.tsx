@@ -1,38 +1,38 @@
-"use client";
+'use client'
 
-import { Item } from "./item";
-import UnderlineWave from "@/components/ui/underline-wave";
+import { Item } from './item'
+import UnderlineWave from '@/components/ui/underline-wave'
 
-import { useEffect, useRef } from "react";
-import { useTranslations } from "next-intl";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 interface IFaqProps {
-  data: IFaq[];
+  data: IFaq[]
 }
 
 export default function Faq({ data }: IFaqProps) {
-  const t = useTranslations("main.faq");
-  const faqRef = useRef<HTMLDivElement[]>([]);
+  const t = useTranslations('main.faq')
+  const faqRef = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
     const timeoutID = setTimeout(() => {
-      ScrollTrigger.refresh(true);
-    }, 1);
+      ScrollTrigger.refresh(true)
+    }, 1)
 
-    return () => clearTimeout(timeoutID);
-  }, []);
+    return () => clearTimeout(timeoutID)
+  }, [])
 
   useGSAP(() => {
     ScrollTrigger.create({
       trigger: faqRef.current[0],
-      start: "top 80%",
-      end: "400px 10%",
-      toggleActions: "play reset play reset",
+      start: 'top 80%',
+      end: '400px 10%',
+      toggleActions: 'play reset play reset',
       preventOverlaps: true,
       onToggle: (self) => {
         if (!self.isActive) {
@@ -42,10 +42,10 @@ export default function Faq({ data }: IFaqProps) {
             duration: 0.6,
             stagger: {
               each: 0.2,
-              from: self.direction === -1 ? "start" : "end",
+              from: self.direction === -1 ? 'start' : 'end',
             },
-            ease: "power1.out",
-          });
+            ease: 'power1.out',
+          })
         } else {
           gsap.fromTo(
             faqRef.current,
@@ -56,16 +56,16 @@ export default function Faq({ data }: IFaqProps) {
               duration: 0.6,
               stagger: {
                 each: 0.2,
-                from: self.direction === -1 ? "end" : "start",
+                from: self.direction === -1 ? 'end' : 'start',
               },
-              ease: "power1.out",
+              ease: 'power1.out',
             },
-          );
+          )
         }
       },
-    });
-    ScrollTrigger.refresh(true);
-  });
+    })
+    ScrollTrigger.refresh(true)
+  })
 
   return (
     <section
@@ -74,10 +74,10 @@ export default function Faq({ data }: IFaqProps) {
     >
       <div className="mx-auto w-full max-w-[880px] items-center px-[20px] lg:px-0">
         <h2 id="FAQ" className="title-section pr-0 text-center md:pr-20">
-          {t("all-about-dry-fruits")}
+          {t('all-about-dry-fruits')}
         </h2>
         <p className="relative mt-5 mb-7 ml-auto w-fit pb-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] lg:mb-[116px]">
-          {t("even-what-did-not-ask")}
+          {t('even-what-did-not-ask')}
           <UnderlineWave />
         </p>
         <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
@@ -85,7 +85,7 @@ export default function Faq({ data }: IFaqProps) {
             <Item
               ref={(el) => {
                 if (el) {
-                  if (el) faqRef.current[index] = el;
+                  if (el) faqRef.current[index] = el
                 }
               }}
               key={item.title}
@@ -96,5 +96,5 @@ export default function Faq({ data }: IFaqProps) {
         </div>
       </div>
     </section>
-  );
+  )
 }

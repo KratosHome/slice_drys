@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const subscriptionSchemaServer = new mongoose.Schema(
   {
@@ -9,8 +9,8 @@ const subscriptionSchemaServer = new mongoose.Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 export const Subscription =
   mongoose.models.Subscription ||
-  mongoose.model("Subscription", subscriptionSchemaServer);
+  mongoose.model('Subscription', subscriptionSchemaServer)

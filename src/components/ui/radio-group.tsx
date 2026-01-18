@@ -1,37 +1,37 @@
-"use client";
+'use client'
 
-import { CheckIcon } from "@radix-ui/react-icons";
-import { Root, Item, Indicator } from "@radix-ui/react-radio-group";
+import { CheckIcon } from '@radix-ui/react-icons'
+import { Root, Item, Indicator } from '@radix-ui/react-radio-group'
 
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from 'class-variance-authority'
 
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
   forwardRef,
-} from "react";
-import { cn } from "@/utils/cn";
+} from 'react'
+import { cn } from '@/utils/cn'
 
 const RadioGroup = forwardRef<
   ComponentRef<typeof Root>,
   ComponentPropsWithoutRef<typeof Root>
 >(({ className, ...props }, ref) => {
-  return <Root className={cn("grid gap-2", className)} {...props} ref={ref} />;
-});
+  return <Root className={cn('grid gap-2', className)} {...props} ref={ref} />
+})
 
-RadioGroup.displayName = Root.displayName;
+RadioGroup.displayName = Root.displayName
 
-const radioStyles = cva("", {
+const radioStyles = cva('', {
   variants: {
     iconSize: {
-      default: "h-3.5 w-3.5 ",
-      large: "h-4.5 w-4.5",
+      default: 'h-3.5 w-3.5 ',
+      large: 'h-4.5 w-4.5',
     },
   },
   defaultVariants: {
-    iconSize: "default",
+    iconSize: 'default',
   },
-});
+})
 
 const RadioGroupItem = forwardRef<
   ComponentRef<typeof Item>,
@@ -41,18 +41,18 @@ const RadioGroupItem = forwardRef<
     <Item
       ref={ref}
       className={cn(
-        "border-foreground text-primary focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow-sm focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50",
+        'border-foreground text-primary focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow-sm focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}
     >
       <Indicator className="flex items-center justify-center">
-        <CheckIcon className={cn("fill-primary", radioStyles({ iconSize }))} />
+        <CheckIcon className={cn('fill-primary', radioStyles({ iconSize }))} />
       </Indicator>
     </Item>
-  );
-});
+  )
+})
 
-RadioGroupItem.displayName = Item.displayName;
+RadioGroupItem.displayName = Item.displayName
 
-export { RadioGroup, RadioGroupItem };
+export { RadioGroup, RadioGroupItem }

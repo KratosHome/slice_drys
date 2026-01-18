@@ -55,7 +55,7 @@
   width: 1px;
 }
 
-.splide--loop>.splide__track {
+.splide--loop > .splide__track {
   overflow: hidden;
   position: relative;
   z-index: 0;
@@ -68,13 +68,13 @@
   user-select: none;
 }
 
-.splide__track--fade>.splide__list>.splide__slide {
+.splide__track--fade > .splide__list > .splide__slide {
   margin: 0 !important;
   opacity: 0;
   z-index: 0;
 }
 
-.splide__track--fade>.splide__list>.splide__slide.is-active {
+.splide__track--fade > .splide__list > .splide__slide.is-active {
   opacity: 1;
   z-index: 1;
 }
@@ -87,17 +87,17 @@
   outline: 0;
 }
 
-.splide__track--nav>.splide__list>.splide__slide {
+.splide__track--nav > .splide__list > .splide__slide {
   border: 3px solid transparent;
   cursor: pointer;
 }
 
-.splide__track--nav>.splide__list>.splide__slide:not(.is-active) {
+.splide__track--nav > .splide__list > .splide__slide:not(.is-active) {
   outline: 2px solid #e4e4e4;
   outline-offset: 8px;
 }
 
-.splide__track--nav>.splide__list>.splide__slide.is-active {
+.splide__track--nav > .splide__list > .splide__slide.is-active {
   background-color: #e4e4e4 !important;
   outline: 10px #e4e4e4 solid;
 }

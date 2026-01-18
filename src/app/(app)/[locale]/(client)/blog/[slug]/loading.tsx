@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import { Skeleton } from '@/components/ui/skeleton'
+import React from 'react'
 
 export default function AnimatedLoader() {
   return (
@@ -7,5 +7,5 @@ export default function AnimatedLoader() {
       <Skeleton className="mt-20 h-[155px] w-full rounded-xl" />
       <Skeleton className="mt-20 h-[955px] w-full rounded-xl" />
     </div>
-  );
+  )
 }

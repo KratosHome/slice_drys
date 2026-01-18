@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import type { ChangeEvent, InputHTMLAttributes } from "react";
+import type { ChangeEvent, InputHTMLAttributes } from 'react'
 
-import { ErrorMessage } from "@hookform/error-message";
+import { ErrorMessage } from '@hookform/error-message'
 
-import { useController, type UseControllerProps } from "react-hook-form";
-import { cn } from "@/utils/cn";
+import { useController, type UseControllerProps } from 'react-hook-form'
+import { cn } from '@/utils/cn'
 
 type InputProps = {
-  helpText?: string;
+  helpText?: string
 } & UseControllerProps &
-  InputHTMLAttributes<HTMLInputElement>;
+  InputHTMLAttributes<HTMLInputElement>
 
 function Input(props: InputProps) {
   const {
@@ -23,7 +23,7 @@ function Input(props: InputProps) {
     className,
     helpText,
     ...inputProps
-  } = props;
+  } = props
 
   const {
     field,
@@ -35,7 +35,7 @@ function Input(props: InputProps) {
     shouldUnregister,
     defaultValue,
     disabled,
-  });
+  })
 
   return (
     <div>
@@ -43,13 +43,13 @@ function Input(props: InputProps) {
         {...inputProps}
         {...field}
         onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          if (props.onChange) props.onChange(event);
+          if (props.onChange) props.onChange(event)
         }}
         placeholder={props.placeholder}
-        type={props.type || "text"}
+        type={props.type || 'text'}
         id={props.id}
         className={cn(
-          "border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+          'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
       />
@@ -70,7 +70,7 @@ function Input(props: InputProps) {
         <p className="text-muted-foreground mt-1 text-base">{helpText}</p>
       ) : null}
     </div>
-  );
+  )
 }
 
-export { Input };
+export { Input }

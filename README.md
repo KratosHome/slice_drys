@@ -9,11 +9,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ```bash
 bun
 ```
-// 
+
+//
 If you have an error during installation use the command:
 
 ```bash
-bun install 
+bun install
 ```
 
 ## 2. Create MongoDB database:

@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
 interface IRootLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function RootLayout({ children }: IRootLayoutProps) {
-  return <>{children}</>;
+  return <>{children}</>
 }

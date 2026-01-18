@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const localizedString = {
   en: { type: String, required: false },
   uk: { type: String, required: false },
-};
+}
 
 const blockSchema = new mongoose.Schema(
   {
@@ -31,8 +31,8 @@ const blockSchema = new mongoose.Schema(
     },
   },
   { timestamps: true },
-);
+)
 
-const Block = mongoose.models.Block || mongoose.model("Block", blockSchema);
+const Block = mongoose.models.Block || mongoose.model('Block', blockSchema)
 
-export default Block;
+export default Block

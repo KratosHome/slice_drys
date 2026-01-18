@@ -314,12 +314,12 @@ export default async function MenuPage(props: {
                       label={
                         productsData.currentPage === item
                           ? tPagin('active-page', {
-                            page: productsData.currentPage + 1,
-                          })
+                              page: productsData.currentPage + 1,
+                            })
                           : typeof item === 'number'
                             ? tPagin('go-to-page', {
-                              page: item,
-                            })
+                                page: item,
+                              })
                             : undefined
                       }
                       href={getPageUrl(item)}

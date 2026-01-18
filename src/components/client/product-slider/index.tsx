@@ -1,12 +1,12 @@
-import { Loader } from "lucide-react";
+import { Loader } from 'lucide-react'
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic'
 
 const ProductSlider = dynamic(
-  () => import("@/components/client/product-slider/product-slider"),
+  () => import('@/components/client/product-slider/product-slider'),
   {
     loading: () => <Loader />,
   },
-);
+)
 
-export default ProductSlider;
+export default ProductSlider

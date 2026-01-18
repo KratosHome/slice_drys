@@ -1,145 +1,145 @@
-"use client";
+'use client'
 
-import { pageLinks } from "@/data/main/nav-links";
+import { pageLinks } from '@/data/main/nav-links'
 
-import HeaderInfo from "@/components/client/header/header-info";
-import HamburgerMenu from "@/components/client/header/hamburger-menu";
-import LocaleChange from "@/components/client/header/locale-change";
-import SmallCart from "@/components/client/header/small-cart";
-import CallMe from "@/components/client/header/call-me";
-import ThemeToggle from "@/components/client/theme-toggle";
-import NumberCall from "@/components/client/number-call";
-import Socials from "@/components/ui/socials";
-import { TransitionLink } from "@/components/client/transition-link";
+import HeaderInfo from '@/components/client/header/header-info'
+import HamburgerMenu from '@/components/client/header/hamburger-menu'
+import LocaleChange from '@/components/client/header/locale-change'
+import SmallCart from '@/components/client/header/small-cart'
+import CallMe from '@/components/client/header/call-me'
+import ThemeToggle from '@/components/client/theme-toggle'
+import NumberCall from '@/components/client/number-call'
+import Socials from '@/components/ui/socials'
+import { TransitionLink } from '@/components/client/transition-link'
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+import { useLocale, useTranslations } from 'next-intl'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 interface IHeaderProps {
-  productLinks: ICategory[];
+  productLinks: ICategory[]
 }
 
 export default function Header({ productLinks }: IHeaderProps) {
-  const t = useTranslations("main.header");
+  const t = useTranslations('main.header')
 
-  const locale = useLocale() as ILocale;
+  const locale = useLocale() as ILocale
 
-  const headerRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLAnchorElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const socialRef = useRef<HTMLDivElement>(null);
-  const callRef = useRef<HTMLDivElement>(null);
-  const cartRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const socialRef = useRef<HTMLDivElement>(null)
+  const callRef = useRef<HTMLDivElement>(null)
+  const cartRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const timeoutID = setTimeout(() => {
-      ScrollTrigger.refresh(true);
-    }, 1);
+      ScrollTrigger.refresh(true)
+    }, 1)
 
-    return () => clearTimeout(timeoutID);
-  }, []);
+    return () => clearTimeout(timeoutID)
+  }, [])
 
   useGSAP(() => {
-    const mm = gsap.matchMedia();
+    const mm = gsap.matchMedia()
 
-    mm.add("(min-width: 1024px)", () => {
+    mm.add('(min-width: 1024px)', () => {
       const tl = gsap.timeline({
-        defaults: { duration: 0.5, ease: "power1.out" },
+        defaults: { duration: 0.5, ease: 'power1.out' },
         scrollTrigger: {
           trigger: headerRef.current,
-          start: "top top",
-          end: "+=100px",
+          start: 'top top',
+          end: '+=100px',
           scrub: true,
-          toggleActions: "play none none reverse",
+          toggleActions: 'play none none reverse',
         },
-      });
+      })
 
       tl.to(
         headerRef.current,
         {
           opacity: 0.9,
-          backdropFilter: "blur(10px)",
-          height: "80px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          backdropFilter: 'blur(10px)',
+          height: '80px',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
           duration: 0.5,
-          ease: "power1.out",
+          ease: 'power1.out',
         },
         0,
-      );
+      )
 
-      tl.to(logoRef.current, { height: 55 }, "<");
+      tl.to(logoRef.current, { height: 55 }, '<')
       tl.to(
         socialRef.current,
         {
           autoAlpha: 0,
-          display: "none",
+          display: 'none',
           marginTop: -30,
           scale: 0.5,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         },
-        "<",
-      );
+        '<',
+      )
       tl.to(
         callRef.current,
         {
           autoAlpha: 0,
-          display: "none",
+          display: 'none',
           marginTop: -30,
           scale: 0.5,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         },
-        "<",
-      );
-    });
+        '<',
+      )
+    })
 
-    mm.add("(max-width: 1023px)", () => {
+    mm.add('(max-width: 1023px)', () => {
       const tl = gsap.timeline({
-        defaults: { duration: 0.4, ease: "power1.out" },
+        defaults: { duration: 0.4, ease: 'power1.out' },
         scrollTrigger: {
           trigger: headerRef.current,
-          start: "top top",
-          end: "+=200px",
+          start: 'top top',
+          end: '+=200px',
           scrub: true,
-          toggleActions: "play none none reverse",
+          toggleActions: 'play none none reverse',
         },
-      });
+      })
 
       tl.to(
         headerRef.current,
         {
           opacity: 0.95,
-          backdropFilter: "blur(5px)",
-          marginTop: "0px",
-          boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.08)",
+          backdropFilter: 'blur(5px)',
+          marginTop: '0px',
+          boxShadow: '0px 3px 8px rgba(0, 0, 0, 0.08)',
           duration: 0.5,
-          ease: "power1.out",
+          ease: 'power1.out',
         },
         0,
-      );
+      )
 
-      tl.to(logoRef.current, { height: 55 }, "<");
+      tl.to(logoRef.current, { height: 55 }, '<')
       tl.to(
         callRef.current,
         {
           opacity: 0,
-          display: "none",
+          display: 'none',
           marginTop: -30,
           scale: 0.5,
-          pointerEvents: "none",
+          pointerEvents: 'none',
         },
-        "<",
-      );
-    });
-  });
+        '<',
+      )
+    })
+  })
 
   return (
     <>
-      <HeaderInfo title={t("free-delivery-from")} />
+      <HeaderInfo title={t('free-delivery-from')} />
       <header
         ref={headerRef}
         className="bg-background sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
@@ -179,7 +179,7 @@ export default function Header({ productLinks }: IHeaderProps) {
               height="100px"
               className="h-full"
               role="img"
-              aria-label={t("logo-slice-drys")}
+              aria-label={t('logo-slice-drys')}
             >
               <use href="/icons/sprite.svg#logo" />
             </svg>
@@ -217,5 +217,5 @@ export default function Header({ productLinks }: IHeaderProps) {
         </div>
       </header>
     </>
-  );
+  )
 }

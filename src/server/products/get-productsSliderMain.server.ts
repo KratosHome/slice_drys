@@ -1,34 +1,34 @@
-"use server";
+'use server'
 
-import { Product } from "@/server/products/product-schema.server";
+import { Product } from '@/server/products/product-schema.server'
 
-import { connectToDbServer } from "@/server/connect-to-db.server";
-import cloudinary from "../cloudinary-config.server";
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import cloudinary from '../cloudinary-config.server'
 
 export async function getProductsSliderMain(
   locale: ILocale,
 ): Promise<IGetProducts> {
   try {
-    await connectToDbServer();
+    await connectToDbServer()
 
     const products = await Product.find()
-      .populate("categories", "slug")
+      .populate('categories', 'slug')
       .sort({ visited: -1 })
       .limit(5)
-      .lean<IProductLocal[]>();
+      .lean<IProductLocal[]>()
 
     const formattedProducts: IProduct[] = products.map(
       (product: IProductLocal) => {
         const populatedCategories =
-          product.categories as unknown as CategorySlug[];
+          product.categories as unknown as CategorySlug[]
 
         const transformedImage: string = cloudinary.url(`${product.images}`, {
           transformation: [
-            { width: 500, crop: "scale" },
+            { width: 500, crop: 'scale' },
             { quality: 35 },
-            { fetch_format: "auto" },
+            { fetch_format: 'auto' },
           ],
-        });
+        })
 
         return {
           ...product,
@@ -41,7 +41,7 @@ export async function getProductsSliderMain(
           category:
             populatedCategories && populatedCategories[0]
               ? populatedCategories[0].slug
-              : "",
+              : '',
           menu: product.menu[locale],
           composition: product.composition[locale],
           variables: JSON.parse(JSON.stringify(product.variables)),
@@ -51,20 +51,20 @@ export async function getProductsSliderMain(
           metaDescription: product.metaDescription[locale],
           keywords: product.keywords[locale],
           images: [transformedImage],
-        };
+        }
       },
-    );
+    )
 
     return {
       success: true,
       products: formattedProducts,
-      message: "Products retrieved",
-    };
+      message: 'Products retrieved',
+    }
   } catch (error) {
     return {
       success: false,
       products: [],
       message: `${error}`,
-    };
+    }
   }
 }

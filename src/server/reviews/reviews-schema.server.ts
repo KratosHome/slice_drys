@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const reviewsSchemaServer = new mongoose.Schema(
   {
@@ -34,7 +34,7 @@ const reviewsSchemaServer = new mongoose.Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 export const Reviews =
-  mongoose.models.Reviews || mongoose.model("Reviews", reviewsSchemaServer);
+  mongoose.models.Reviews || mongoose.model('Reviews', reviewsSchemaServer)

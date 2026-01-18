@@ -1,7 +1,7 @@
 interface FilterOperators {
-  $in?: string[];
-  $gte?: number;
-  $lte?: number;
+  $in?: string[]
+  $gte?: number
+  $lte?: number
 }
 
-type IQueryType = Record<string, FilterOperators>;
+type IQueryType = Record<string, FilterOperators>

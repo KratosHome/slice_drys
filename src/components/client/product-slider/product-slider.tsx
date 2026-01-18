@@ -1,20 +1,20 @@
-"use client";
+'use client'
 
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { Arrow } from "@/components/ui/arrow";
-import Product from "@/components/client/product";
-import UnderlineWave from "@/components/ui/underline-wave";
+import { Splide, SplideSlide } from '@splidejs/react-splide'
+import { Arrow } from '@/components/ui/arrow'
+import Product from '@/components/client/product'
+import UnderlineWave from '@/components/ui/underline-wave'
 
-import { useSplideConfig } from "@/hooks/useSplideConfig";
+import { useSplideConfig } from '@/hooks/useSplideConfig'
 
-import "@splidejs/react-splide/css";
-import "@/components/client/styles/slider.css";
-import "./product-slider.css";
+import '@splidejs/react-splide/css'
+import '@/components/client/styles/slider.css'
+import './product-slider.css'
 
 interface IProductSlider {
-  products: IProduct[];
-  title: string;
-  message: string;
+  products: IProduct[]
+  title: string
+  message: string
 }
 
 export default function ProductSlider({
@@ -22,34 +22,34 @@ export default function ProductSlider({
   title,
   message,
 }: IProductSlider) {
-  useSplideConfig(".products-slider", products);
+  useSplideConfig('.products-slider', products)
 
   const splideOptions = {
     arrowPath: Arrow(),
     autoplay: true,
-    type: "loop",
+    type: 'loop',
     interval: 3000,
     perPage: Math.min(products.length, 3),
     perMove: 1,
-    gap: "18px",
+    gap: '18px',
     focus: 0,
     arrows: true,
     pagination: true,
     breakpoints: {
       768: {
         perPage: 1,
-        gap: "0",
+        gap: '0',
       },
     },
     classes: {
-      arrows: "splide__arrows custom__arrows",
-      arrow: "splide__arrow custom__arrow",
-      prev: "splide__arrow--prev custom__arrow-prev",
-      next: "splide__arrow--next custom__arrow-next",
-      pagination: "splide__pagination custom__pagination",
-      page: "splide__pagination__page custom__pagination-page",
+      arrows: 'splide__arrows custom__arrows',
+      arrow: 'splide__arrow custom__arrow',
+      prev: 'splide__arrow--prev custom__arrow-prev',
+      next: 'splide__arrow--next custom__arrow-next',
+      pagination: 'splide__pagination custom__pagination',
+      page: 'splide__pagination__page custom__pagination-page',
     },
-  };
+  }
 
   return (
     <section
@@ -80,5 +80,5 @@ export default function ProductSlider({
         ))}
       </Splide>
     </section>
-  );
+  )
 }

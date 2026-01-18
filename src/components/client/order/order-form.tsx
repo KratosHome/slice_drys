@@ -213,9 +213,9 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
           city:
             value === 'courier'
               ? {
-                value: '',
-                label: '',
-              }
+                  value: '',
+                  label: '',
+                }
               : userData?.deliveryInfo?.city,
           branch: {
             value: '',
@@ -308,8 +308,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
             'relative flex flex-col',
             userData?.formStep === 4 && 'bg-order-background p-6',
             userData?.formStep === 4 &&
-            showFieldset.step1 &&
-            'border-foreground border bg-transparent',
+              showFieldset.step1 &&
+              'border-foreground border bg-transparent',
           )}
         >
           <legend className="sr-only">{t('contacts-title')}</legend>
@@ -485,8 +485,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
               'relative flex flex-col',
               userData?.formStep === 4 && 'bg-order-background p-6',
               userData?.formStep === 4 &&
-              showFieldset.step2 &&
-              'border-foreground border bg-transparent',
+                showFieldset.step2 &&
+                'border-foreground border bg-transparent',
             )}
           >
             <legend className="sr-only">{t('delivery-title')}</legend>
@@ -521,7 +521,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                               src={deliveryProviderLabels.novaPoshta.icon.src}
                               alt={
                                 deliveryProviderLabels.novaPoshta.icon.alt[
-                                locale
+                                  locale
                                 ]
                               }
                               width={
@@ -537,169 +537,169 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         </Label>
                         {userData?.deliveryInfo?.deliveryProvider ==
                           'novaPoshta' && (
-                            <>
-                              <RadioGroup
-                                onValueChange={handleDeliveryMethodChange}
-                                value={userData?.deliveryInfo?.deliveryMethod}
-                                className="ml-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
+                          <>
+                            <RadioGroup
+                              onValueChange={handleDeliveryMethodChange}
+                              value={userData?.deliveryInfo?.deliveryMethod}
+                              className="ml-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center lg:gap-0"
+                            >
+                              <Label
+                                htmlFor="NP-b"
+                                className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
                               >
-                                <Label
-                                  htmlFor="NP-b"
-                                  className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                                >
-                                  <RadioGroupItem
-                                    value="branch"
-                                    id="NP-b"
-                                    className={cn(radioItemStyle)}
-                                    iconSize="large"
-                                  />
-                                  {t('delivery-method-to-branch')}
-                                </Label>
+                                <RadioGroupItem
+                                  value="branch"
+                                  id="NP-b"
+                                  className={cn(radioItemStyle)}
+                                  iconSize="large"
+                                />
+                                {t('delivery-method-to-branch')}
+                              </Label>
 
-                                <Label
-                                  htmlFor="NP-p"
-                                  className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                                >
-                                  <RadioGroupItem
-                                    value="postomat"
-                                    id="NP-p"
-                                    className={cn(radioItemStyle)}
-                                    iconSize="large"
-                                  />
-                                  {t('delivery-method-to-postomat')}
-                                </Label>
+                              <Label
+                                htmlFor="NP-p"
+                                className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
+                              >
+                                <RadioGroupItem
+                                  value="postomat"
+                                  id="NP-p"
+                                  className={cn(radioItemStyle)}
+                                  iconSize="large"
+                                />
+                                {t('delivery-method-to-postomat')}
+                              </Label>
 
-                                <Label
-                                  htmlFor="NP-c"
-                                  className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
-                                >
-                                  <RadioGroupItem
-                                    value="courier"
-                                    id="NP-c"
-                                    className={cn(radioItemStyle)}
-                                    iconSize="large"
-                                  />
-                                  {t('delivery-method-courier')}
-                                </Label>
-                              </RadioGroup>
-                              {['branch', 'postomat'].some(
-                                (method) =>
-                                  method ==
-                                  userData?.deliveryInfo?.deliveryMethod,
-                              ) ? (
-                                <DeliveryProvider
-                                  defaultValues={
-                                    defaultCities[
+                              <Label
+                                htmlFor="NP-c"
+                                className="flex cursor-pointer items-center gap-5 text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal select-none"
+                              >
+                                <RadioGroupItem
+                                  value="courier"
+                                  id="NP-c"
+                                  className={cn(radioItemStyle)}
+                                  iconSize="large"
+                                />
+                                {t('delivery-method-courier')}
+                              </Label>
+                            </RadioGroup>
+                            {['branch', 'postomat'].some(
+                              (method) =>
+                                method ==
+                                userData?.deliveryInfo?.deliveryMethod,
+                            ) ? (
+                              <DeliveryProvider
+                                defaultValues={
+                                  defaultCities[
                                     userData?.deliveryInfo?.deliveryProvider
-                                    ]
-                                  }
-                                  control={control}
-                                  onCityChange={(newCity) => {
-                                    setValue('deliveryInfo.city', newCity.label, {
-                                      shouldValidate: true,
-                                    })
-                                    setValue('deliveryInfo.branch', '')
+                                  ]
+                                }
+                                control={control}
+                                onCityChange={(newCity) => {
+                                  setValue('deliveryInfo.city', newCity.label, {
+                                    shouldValidate: true,
+                                  })
+                                  setValue('deliveryInfo.branch', '')
 
-                                    const partialData: IUserData<
-                                      IDeliveryInfo<
-                                        'branch' | 'postomat' | 'courier',
-                                        IComboboxData
-                                      >
-                                    > = {
-                                      ...userData,
-                                      deliveryInfo: {
-                                        ...userData?.deliveryInfo,
-                                        city: newCity,
-                                        branch: {
-                                          value: '',
-                                          label: '',
-                                        },
+                                  const partialData: IUserData<
+                                    IDeliveryInfo<
+                                      'branch' | 'postomat' | 'courier',
+                                      IComboboxData
+                                    >
+                                  > = {
+                                    ...userData,
+                                    deliveryInfo: {
+                                      ...userData?.deliveryInfo,
+                                      city: newCity,
+                                      branch: {
+                                        value: '',
+                                        label: '',
                                       },
-                                    }
-                                    setUserData(partialData)
-
-                                    if (errors.deliveryInfo?.branch)
-                                      clearErrors('deliveryInfo.branch')
-                                    if (errors.deliveryInfo?.city)
-                                      clearErrors('deliveryInfo.city')
-                                  }}
-                                  onBranchChange={(newBranch) => {
-                                    setValue(
-                                      'deliveryInfo.branch',
-                                      newBranch.label,
-                                      {
-                                        shouldValidate: true,
-                                      },
-                                    )
-                                    const partialData: IUserData<
-                                      IDeliveryInfo<
-                                        'branch' | 'postomat' | 'courier',
-                                        IComboboxData
-                                      >
-                                    > = {
-                                      ...userData,
-                                      deliveryInfo: {
-                                        ...userData?.deliveryInfo,
-                                        branch: newBranch,
-                                      },
-                                    }
-                                    setUserData(partialData)
-                                  }}
-                                />
-                              ) : (
-                                <Controller
-                                  name="deliveryInfo.courierInfo"
-                                  control={control}
-                                  rules={{
-                                    required: {
-                                      value: true,
-                                      message: t('validation-required'),
                                     },
-                                  }}
-                                  render={({ field }) => (
-                                    <div>
-                                      <input
-                                        {...field}
-                                        onChange={(
-                                          event: React.ChangeEvent<HTMLInputElement>,
-                                        ) => {
-                                          field.onChange(event)
-                                          clearErrors('deliveryInfo.courierInfo')
-                                          setUserData({
-                                            ...useCartStore.getState().cart
-                                              .userData,
-                                            deliveryInfo: {
-                                              ...userData.deliveryInfo,
-                                              courierInfo: event.target.value,
-                                            },
-                                          })
-                                        }}
-                                        placeholder={t('courier-placeholder')}
-                                        className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
-                                      />
-                                      <ErrorMessage
-                                        errors={errors}
-                                        name={field.name}
-                                        render={({ messages }) =>
-                                          messages &&
-                                          Object.entries(messages).map(
-                                            ([type, message]) => (
-                                              <p
-                                                key={type}
-                                                className="mt-1 text-xs text-red-600"
-                                              >
-                                                {message}
-                                              </p>
-                                            ),
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  )}
-                                />
-                              )}
-                            </>
-                          )}
+                                  }
+                                  setUserData(partialData)
+
+                                  if (errors.deliveryInfo?.branch)
+                                    clearErrors('deliveryInfo.branch')
+                                  if (errors.deliveryInfo?.city)
+                                    clearErrors('deliveryInfo.city')
+                                }}
+                                onBranchChange={(newBranch) => {
+                                  setValue(
+                                    'deliveryInfo.branch',
+                                    newBranch.label,
+                                    {
+                                      shouldValidate: true,
+                                    },
+                                  )
+                                  const partialData: IUserData<
+                                    IDeliveryInfo<
+                                      'branch' | 'postomat' | 'courier',
+                                      IComboboxData
+                                    >
+                                  > = {
+                                    ...userData,
+                                    deliveryInfo: {
+                                      ...userData?.deliveryInfo,
+                                      branch: newBranch,
+                                    },
+                                  }
+                                  setUserData(partialData)
+                                }}
+                              />
+                            ) : (
+                              <Controller
+                                name="deliveryInfo.courierInfo"
+                                control={control}
+                                rules={{
+                                  required: {
+                                    value: true,
+                                    message: t('validation-required'),
+                                  },
+                                }}
+                                render={({ field }) => (
+                                  <div>
+                                    <input
+                                      {...field}
+                                      onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>,
+                                      ) => {
+                                        field.onChange(event)
+                                        clearErrors('deliveryInfo.courierInfo')
+                                        setUserData({
+                                          ...useCartStore.getState().cart
+                                            .userData,
+                                          deliveryInfo: {
+                                            ...userData.deliveryInfo,
+                                            courierInfo: event.target.value,
+                                          },
+                                        })
+                                      }}
+                                      placeholder={t('courier-placeholder')}
+                                      className="border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring m-0.5 flex h-[60px] w-full rounded-md border bg-transparent px-4 py-[18px] text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 md:py-[15px] md:text-xl lg:max-w-[90%]"
+                                    />
+                                    <ErrorMessage
+                                      errors={errors}
+                                      name={field.name}
+                                      render={({ messages }) =>
+                                        messages &&
+                                        Object.entries(messages).map(
+                                          ([type, message]) => (
+                                            <p
+                                              key={type}
+                                              className="mt-1 text-xs text-red-600"
+                                            >
+                                              {message}
+                                            </p>
+                                          ),
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                )}
+                              />
+                            )}
+                          </>
+                        )}
                       </div>
                       {/* <Label
                     htmlFor="UP"
@@ -808,8 +808,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
               'relative flex flex-col',
               userData?.formStep === 4 && 'bg-order-background p-6',
               userData?.formStep === 4 &&
-              showFieldset.step3 &&
-              'border-foreground border bg-transparent',
+                showFieldset.step3 &&
+                'border-foreground border bg-transparent',
             )}
           >
             <legend className="sr-only">{t('payment-title')}</legend>
@@ -884,8 +884,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                 'relative flex flex-col',
                 userData?.formStep === 4 && 'bg-order-background p-6',
                 userData?.formStep === 4 &&
-                showFieldset.step4 &&
-                'border-foreground border bg-transparent',
+                  showFieldset.step4 &&
+                  'border-foreground border bg-transparent',
               )}
             >
               <legend className="sr-only">{t('comment-title')}</legend>

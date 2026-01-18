@@ -1,1 +1,1 @@
-type ILocale = "en" | "uk";
+type ILocale = 'en' | 'uk'

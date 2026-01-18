@@ -1,1 +1,1 @@
-type ISearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type ISearchParams = Promise<{ [key: string]: string | string[] | undefined }>

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const userSchemaServer = new mongoose.Schema(
   {
@@ -30,12 +30,12 @@ const userSchemaServer = new mongoose.Schema(
     role: {
       required: true,
       type: String,
-      enum: ["client", "super-admin", "manager"],
+      enum: ['client', 'super-admin', 'manager'],
     },
     resetPasswordToken: String,
   },
   { timestamps: true },
-);
+)
 
 export const UserSlice =
-  mongoose.models?.UserSlice || mongoose.model("UserSlice", userSchemaServer);
+  mongoose.models?.UserSlice || mongoose.model('UserSlice', userSchemaServer)

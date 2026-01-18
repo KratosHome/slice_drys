@@ -1,19 +1,19 @@
-"use server";
-import { connectToDbServer } from "@/server/connect-to-db.server";
-import Block from "@/server/block/blocks-schema.server";
+'use server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import Block from '@/server/block/blocks-schema.server'
 
 export async function getHelpMain(locale: ILocale, isLocal: boolean) {
-  "use server";
+  'use server'
   try {
-    await connectToDbServer();
+    await connectToDbServer()
 
-    const block = await Block.findOne().select("help").lean<{ help: IHelp }>();
+    const block = await Block.findOne().select('help').lean<{ help: IHelp }>()
 
     if (!block || !block.help) {
       return {
         success: false,
-        message: "Дані блоку допомоги не знайдено",
-      };
+        message: 'Дані блоку допомоги не знайдено',
+      }
     }
 
     const dataLocale = {
@@ -22,17 +22,17 @@ export async function getHelpMain(locale: ILocale, isLocal: boolean) {
       button: block.help.button[locale],
       link: block.help.link,
       images: block.help.images,
-    };
+    }
 
     return {
       success: true,
       data: isLocal ? dataLocale : block.help,
-    };
+    }
   } catch (error) {
     return {
       data: undefined,
       success: false,
       message: `Помилка: ${error}`,
-    };
+    }
   }
 }

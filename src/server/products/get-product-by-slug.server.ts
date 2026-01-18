@@ -1,21 +1,21 @@
-"use server";
-import cloudinary from "../cloudinary-config.server";
-import { connectToDbServer } from "../connect-to-db.server";
-import { Product } from "./product-schema.server";
+'use server'
+import cloudinary from '../cloudinary-config.server'
+import { connectToDbServer } from '../connect-to-db.server'
+import { Product } from './product-schema.server'
 
 export async function getProductBySlug({
   slug,
   locale,
 }: {
-  slug: string;
-  locale: ILocale;
+  slug: string
+  locale: ILocale
 }) {
-  "use server";
+  'use server'
   try {
-    await connectToDbServer();
+    await connectToDbServer()
 
     const product = await Product.findOne(
-      { slug: { $regex: `^${slug}$`, $options: "i" } },
+      { slug: { $regex: `^${slug}$`, $options: 'i' } },
       {
         [`name.${locale}`]: 1,
         [`description.${locale}`]: 1,
@@ -32,23 +32,23 @@ export async function getProductBySlug({
         keywords: 1,
         slug: 1,
       },
-    ).populate("categories");
+    ).populate('categories')
 
     if (!product) {
       return {
         data: [],
         success: false,
-        message: "Product not found",
-      };
+        message: 'Product not found',
+      }
     }
 
     const transformedImg = cloudinary.url(`${product.img}`, {
       transformation: [
-        { width: 500, crop: "scale" },
+        { width: 500, crop: 'scale' },
         { quality: 35 },
-        { fetch_format: "auto" },
+        { fetch_format: 'auto' },
       ],
-    });
+    })
 
     const categories = product.categories.map((category: ICategory) => ({
       id: category._id,
@@ -59,7 +59,7 @@ export async function getProductBySlug({
       metaKeywords: category.metaKeywords?.[locale],
       slug: category.slug,
       children: category.children,
-    }));
+    }))
 
     const data = {
       _id: product._id,
@@ -77,18 +77,18 @@ export async function getProductBySlug({
       visited: product.visited,
       slug: product.slug,
       categories,
-    };
+    }
 
     return {
       data: data,
       success: true,
-      message: "Product retrieved successfully",
-    };
+      message: 'Product retrieved successfully',
+    }
   } catch (error) {
     return {
       data: [],
       success: false,
       message: `Can't retrieve product: ${error}`,
-    };
+    }
   }
 }

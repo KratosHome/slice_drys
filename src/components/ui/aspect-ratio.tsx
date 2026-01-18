@@ -1,5 +1,5 @@
-import { Root } from "@radix-ui/react-aspect-ratio";
+import { Root } from '@radix-ui/react-aspect-ratio'
 
-const AspectRatio = Root;
+const AspectRatio = Root
 
-export { AspectRatio };
+export { AspectRatio }

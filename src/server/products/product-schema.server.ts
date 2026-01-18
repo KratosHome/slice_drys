@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const productSchemaServer = new mongoose.Schema(
   {
@@ -145,7 +145,7 @@ const productSchemaServer = new mongoose.Schema(
     },
     statusLabel: {
       type: [String],
-      enum: ["new", "sale", "top"],
+      enum: ['new', 'sale', 'top'],
       required: false,
       minlength: 1,
       maxlength: 255,
@@ -184,11 +184,11 @@ const productSchemaServer = new mongoose.Schema(
       },
     },
     categories: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
+      { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
     ],
   },
   { timestamps: true },
-);
+)
 
 export const Product =
-  mongoose.models.Product || mongoose.model("Product", productSchemaServer);
+  mongoose.models.Product || mongoose.model('Product', productSchemaServer)

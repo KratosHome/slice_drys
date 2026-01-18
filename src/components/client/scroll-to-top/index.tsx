@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic'
 
 const ScrollToTop = dynamic(
-  () => import("@/components/client/scroll-to-top/scroll-to-top"),
+  () => import('@/components/client/scroll-to-top/scroll-to-top'),
   {
     ssr: false,
   },
-);
+)
 
-export default ScrollToTop;
+export default ScrollToTop

@@ -1,74 +1,74 @@
-"use client";
-import { FC, useEffect } from "react";
-import Image from "next/image";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
+'use client'
+import { FC, useEffect } from 'react'
+import Image from 'next/image'
+import { Splide, SplideSlide } from '@splidejs/react-splide'
 
-import { Arrow } from "@/components/ui/arrow";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/useMobile";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Arrow } from '@/components/ui/arrow'
+import { Button } from '@/components/ui/button'
+import { useIsMobile } from '@/hooks/useMobile'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
-import "./help.css";
-import "../../styles/slider.css";
-import "@splidejs/react-splide/css";
+import './help.css'
+import '../../styles/slider.css'
+import '@splidejs/react-splide/css'
 
 interface HelpProps {
-  data: IHelpLocal;
+  data: IHelpLocal
 }
 
 const Help: FC<HelpProps> = ({ data }) => {
   const handleImageClick = (link: string) => {
-    window.open(link, "_blank");
-  };
-  const isMobile = useIsMobile();
+    window.open(link, '_blank')
+  }
+  const isMobile = useIsMobile()
 
   useEffect(() => {
-    const target = document.querySelector(".help-slider");
-    if (!target) return;
+    const target = document.querySelector('.help-slider')
+    if (!target) return
     const handleResize = () => {
-      let k: number;
+      let k: number
       switch (true) {
         case window.innerWidth >= 1280:
-          k = 35;
-          break;
+          k = 35
+          break
         case window.innerWidth >= 1024:
-          k = 30;
-          break;
+          k = 30
+          break
         case window.innerWidth >= 768:
-          k = 28;
-          break;
+          k = 28
+          break
         case window.innerWidth < 768:
-          k = 23;
-          break;
+          k = 23
+          break
         default:
-          k = 30;
+          k = 30
       }
-      const x = data.images.length * k;
+      const x = data.images.length * k
       const prev = document.querySelector(
-        ".help .splide__arrow--prev.custom__arrow-prev",
-      ) as HTMLElement;
+        '.help .splide__arrow--prev.custom__arrow-prev',
+      ) as HTMLElement
       const next = document.querySelector(
-        ".help .splide__arrow--next.custom__arrow-next",
-      ) as HTMLElement;
+        '.help .splide__arrow--next.custom__arrow-next',
+      ) as HTMLElement
 
       if (prev && next) {
-        prev.style.setProperty("--tw-arrow-translate", `-${x}px`);
-        next.style.setProperty("--tw-arrow-translate", `${x}px`);
+        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
+        next.style.setProperty('--tw-arrow-translate', `${x}px`)
       }
-    };
+    }
 
-    const resizeObserver = new ResizeObserver(handleResize);
+    const resizeObserver = new ResizeObserver(handleResize)
 
     if (target) {
-      resizeObserver.observe(target);
+      resizeObserver.observe(target)
     }
 
     return () => {
       if (target) {
-        resizeObserver.unobserve(target);
+        resizeObserver.unobserve(target)
       }
-    };
-  }, [data]);
+    }
+  }, [data])
 
   return (
     <section aria-labelledby="help" className="help section">
@@ -78,7 +78,7 @@ const Help: FC<HelpProps> = ({ data }) => {
             className="help-slider"
             options={{
               arrowPath: Arrow(),
-              type: "loop",
+              type: 'loop',
               perPage: 1,
               pagination: true,
               arrows: true,
@@ -92,12 +92,12 @@ const Help: FC<HelpProps> = ({ data }) => {
                 },
               },
               classes: {
-                arrows: "splide__arrows custom__arrows",
-                arrow: "splide__arrow custom__arrow px-3",
-                prev: "splide__arrow--prev custom__arrow-prev",
-                next: "splide__arrow--next custom__arrow-next",
-                pagination: "splide__pagination custom__pagination",
-                page: "splide__pagination__page custom__pagination-page",
+                arrows: 'splide__arrows custom__arrows',
+                arrow: 'splide__arrow custom__arrow px-3',
+                prev: 'splide__arrow--prev custom__arrow-prev',
+                next: 'splide__arrow--next custom__arrow-next',
+                pagination: 'splide__pagination custom__pagination',
+                page: 'splide__pagination__page custom__pagination-page',
               },
             }}
           >
@@ -143,7 +143,7 @@ const Help: FC<HelpProps> = ({ data }) => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Help;
+export default Help
