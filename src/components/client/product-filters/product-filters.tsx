@@ -65,8 +65,24 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
   const [debouncedSliderValue] = useDebounce(sliderValue, 700)
 
   useEffect(() => {
-    setSelectedCategories(getInitialCategories())
-    setSliderValue(getInitialSliderValues())
+    const categoriesFromParams = getInitialCategories()
+    const sliderFromParams = getInitialSliderValues()
+
+    const categoriesChanged =
+      categoriesFromParams.length !== selectedCategories.length ||
+      categoriesFromParams.some((val, i) => val !== selectedCategories[i])
+
+    if (categoriesChanged) {
+      setSelectedCategories(categoriesFromParams)
+    }
+
+    const sliderChanged =
+      sliderFromParams[0] !== sliderValue[0] ||
+      sliderFromParams[1] !== sliderValue[1]
+
+    if (sliderChanged) {
+      setSliderValue(sliderFromParams)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
 
@@ -84,15 +100,33 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
       params.delete('maxWeight')
     }
 
-    updateUrlParams(params)
+    // Check if params actually changed before updating
+    const currentParams = new URLSearchParams(
+      Array.from(searchParams.entries()),
+    )
+    const minWeightChanged =
+      params.get('minWeight') !== currentParams.get('minWeight')
+    const maxWeightChanged =
+      params.get('maxWeight') !== currentParams.get('maxWeight')
+
+    if (minWeightChanged || maxWeightChanged) {
+      updateUrlParams(params)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSliderValue])
 
   const updateUrlParams = (params: URLSearchParams) => {
     const query = params.toString()
-    const newUrl = query ? `?${query}` : window.location.pathname
-    window.history.replaceState(null, '', newUrl)
-    router.refresh()
+    const currentPath = window.location.pathname
+    const currentSearch = window.location.search
+    const newUrl = query ? `${currentPath}?${query}` : currentPath
+
+    // Check if the URL is actually changing
+    if (`${currentPath}${currentSearch}` !== newUrl) {
+      window.history.replaceState(null, '', newUrl)
+      router.refresh()
+    }
   }
 
   const updateCategoriesQuery = (updatedCategories: string[]) => {
