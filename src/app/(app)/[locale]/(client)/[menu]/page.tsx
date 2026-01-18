@@ -49,8 +49,7 @@ export async function generateMetadata({
   const { locale, menu } = await params
   const { categories } = await searchParams
 
-  const categoriesParam =
-    !categories || categories.includes(',') ? menu : categories
+  const categoriesParam = !categories || categories.includes(',') ? menu : menu
 
   const currentCategories = await fetch(
     `${SITE_URL}/api/products/current-categories?&slug=${categoriesParam}`,
