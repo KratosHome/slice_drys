@@ -27,11 +27,15 @@ import { Button } from '@/components/ui/button'
 interface ProductFiltersProps {
   categories: ICategory[]
   weights: string[]
+  rootCategorySlug: string
+  activeCategorySlugs?: string[]
 }
 
 const ProductFilters: React.FC<ProductFiltersProps> = ({
   weights,
   categories,
+  rootCategorySlug,
+  activeCategorySlugs = [],
 }) => {
   const t = useTranslations('product-list')
 
@@ -43,7 +47,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   const getInitialCategories = () => {
     const params = searchParams.get('categories')
-    return params ? params.split(',') : []
+    return params ? params.split(',') : activeCategorySlugs
   }
 
   const getInitialSliderValues = () => {
@@ -131,13 +135,27 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   const updateCategoriesQuery = (updatedCategories: string[]) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
-    if (updatedCategories.length > 0) {
-      params.set('categories', updatedCategories.join(','))
-    } else {
-      params.delete('categories')
+    params.delete('categories')
+    params.delete('page')
+
+    const basePath = `/${locale}/products/${rootCategorySlug}`
+    let nextPath = basePath
+
+    if (updatedCategories.length === 1) {
+      nextPath = `${basePath}/${updatedCategories[0]}`
     }
-    params.set('page', '1')
-    updateUrlParams(params)
+
+    if (updatedCategories.length > 1) {
+      params.set('categories', updatedCategories.join(','))
+    }
+
+    const query = params.toString()
+    const newUrl = query ? `${nextPath}?${query}` : nextPath
+
+    if (`${window.location.pathname}${window.location.search}` !== newUrl) {
+      window.history.replaceState(null, '', newUrl)
+      router.refresh()
+    }
   }
 
   const handleToggleCategory = (category: string) => {
@@ -159,7 +177,16 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     params.delete('categories')
     params.delete('minWeight')
     params.delete('maxWeight')
-    updateUrlParams(params)
+    params.delete('page')
+
+    const query = params.toString()
+    const basePath = `/${locale}/products/${rootCategorySlug}`
+    const newUrl = query ? `${basePath}?${query}` : basePath
+
+    if (`${window.location.pathname}${window.location.search}` !== newUrl) {
+      window.history.replaceState(null, '', newUrl)
+      router.refresh()
+    }
   }
 
   return (

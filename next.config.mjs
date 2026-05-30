@@ -10,6 +10,7 @@ const withMDX = NextMdx.default({
 })
 
 const nextConfig = {
+  serverExternalPackages: ['mongoose'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

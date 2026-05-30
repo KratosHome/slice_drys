@@ -131,7 +131,7 @@ export default function Hero({ device, productLinks }: IHeroProps) {
               )}
             >
               <TransitionLink
-                href={`${locale}/${item.slug}`}
+                href={`/${locale}/products/${item.slug}`}
                 className={cn(
                   'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
                   'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',

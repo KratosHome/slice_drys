@@ -117,7 +117,7 @@ export default function HamburgerMenu({
                   {productLinks.slice(0, 4)?.map((link) => (
                     <TransitionLink
                       key={link.slug}
-                      href={`/${locale}/${link.slug}`}
+                      href={`/${locale}/products/${link.slug}`}
                       onClick={toggleMenu}
                       className={cn(
                         'block py-2 transition active:translate-x-2 active:text-red-700',

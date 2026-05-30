@@ -37,7 +37,7 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
     },
     products: productsData.data.map((product) => ({
       '@type': 'Product',
-      '@id': `${SITE_URL}/${product.category}/${product.slug}`,
+      '@id': `${SITE_URL}/${locale}/products/${product.category}/product/${product.slug}`,
       name: product.name,
       image: product.img,
       description: product.description,
@@ -48,7 +48,7 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
       sku: product._id,
       offers: product.variables.map((variable) => ({
         '@type': 'Offer',
-        url: `${SITE_URL}/${product.category}/${product.slug}`,
+        url: `${SITE_URL}/${locale}/products/${product.category}/product/${product.slug}`,
         priceCurrency: 'UAH',
         price: variable.price,
         itemCondition: 'https://schema.org/NewCondition',
@@ -58,11 +58,11 @@ const ProductListJsonLd: FC<JsonLdProps> = ({
     pagination: {
       prev:
         productsData.currentPage > 1
-          ? `${SITE_URL}/category/?page=${productsData.currentPage - 1}`
+          ? `${canonicalUrl}?page=${productsData.currentPage - 1}`
           : canonicalUrl,
       next:
         productsData.currentPage < productsData.totalPages
-          ? `${SITE_URL}/category/?page=${productsData.currentPage + 1}`
+          ? `${canonicalUrl}?page=${productsData.currentPage + 1}`
           : canonicalUrl,
     },
     breadcrumb: {

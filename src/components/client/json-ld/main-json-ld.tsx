@@ -43,7 +43,7 @@ export default function MainJsonLd({ products }: IMainJsonLdProps) {
       },
       ...products.map((product) => ({
         '@type': 'Product',
-        '@id': `${SITE_URL}/${product.category}/${product.slug}`,
+        '@id': `${SITE_URL}/products/${product.category}/product/${product.slug}`,
         name: product.name,
         image: product.img,
         description: product.description,
@@ -54,7 +54,7 @@ export default function MainJsonLd({ products }: IMainJsonLdProps) {
         sku: product._id,
         offers: product.variables.map((variable) => ({
           '@type': 'Offer',
-          url: `${SITE_URL}/${product.category}/${product.slug}`,
+          url: `${SITE_URL}/products/${product.category}/product/${product.slug}`,
           priceCurrency: 'UAH',
           price: variable.price,
           itemCondition: 'https://schema.org/NewCondition',
@@ -68,7 +68,7 @@ export default function MainJsonLd({ products }: IMainJsonLdProps) {
         itemListElement: products.map((product, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          url: `${SITE_URL}/${product.category}/${product.slug}`,
+          url: `${SITE_URL}/products/${product.category}/product/${product.slug}`,
         })),
       },
     ],

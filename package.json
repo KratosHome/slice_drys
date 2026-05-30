@@ -61,7 +61,7 @@
     "quill": "^2.0.3",
     "quill-delta-to-html": "^0.12.1",
     "react": "19.2.3",
-    "react-dom": "19.2.1",
+    "react-dom": "19.2.3",
     "react-hook-form": "^7.69.0",
     "react-text-mask": "^5.5.0",
     "shadcn-ui": "^0.9.5",
