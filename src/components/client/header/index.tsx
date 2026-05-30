@@ -1,6 +1,6 @@
 'use client'
 
-import { pageLinks } from '@/data/main/nav-links'
+import { pageLinks, routs } from '@/data/main/routs'
 
 import HeaderInfo from '@/components/client/header/header-info'
 import HamburgerMenu from '@/components/client/header/hamburger-menu'
@@ -154,7 +154,7 @@ export default function Header({ productLinks }: IHeaderProps) {
               {productLinks.slice(0, 4)?.map((link) => (
                 <TransitionLink
                   key={link.slug}
-                  href={`/${locale}/${link.slug}`}
+                  href={`/${locale}${routs.products}/${link.slug}`}
                   className="pr-3 text-[20px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-500"
                 >
                   {link.name[locale]}

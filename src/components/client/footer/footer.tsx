@@ -1,6 +1,6 @@
 'use client'
 
-import { pageLinks } from '@/data/main/nav-links'
+import { pageLinks } from '@/data/main/routs'
 
 import Socials from '@/components/ui/socials'
 import NumberCall from '@/components/client/number-call'
@@ -40,8 +40,11 @@ export default function Footer({ productLinks }: IFooterProps) {
         <ul className="flex flex-col gap-[19px] justify-self-start md:hidden">
           {productLinks.map((link) => (
             <li key={link.slug} className={linkStyle}>
-              <TransitionLink key={link.slug} href={`/${locale}/${link.slug}`}>
-                {link.name[locale]}
+              <TransitionLink
+                key={link.slug}
+                href={`/${locale}/products/${link.slug}`}
+              >
+                ff {link.name[locale]}
               </TransitionLink>
             </li>
           ))}

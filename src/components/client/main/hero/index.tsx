@@ -8,7 +8,7 @@ import Arcs from './arcs'
 import SubImages from './sub-images'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'

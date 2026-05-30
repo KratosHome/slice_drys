@@ -16,3 +16,7 @@ export const pageLinks = {
   en: pageLinksEn,
   uk: pageLinksUk,
 }
+
+export const routs = {
+  products: '/products',
+}
