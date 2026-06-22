@@ -11,4 +11,10 @@ export const referals = [
     interest: 10,
     link: 'https://www.instagram.com/oleg.kus.kz/',
   },
+  {
+    name: 'Олександре',
+    cod: 'keddr',
+    interest: 10,
+    link: 'https://www.youtube.com/@keddr/featured',
+  },
 ]
