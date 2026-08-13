@@ -10,17 +10,11 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumbs'
 import ToTheTop from '@/components/ui/to-the-top'
-import {
-  seedNovaPoshtaCitiesDictionary,
-  seedNovaPoshtaDefaultCities,
-} from '@/server/seed/nova-poshta-default-cities.server'
 import { getDefaultNPCitiesFromDictionary } from '@/server/delivery/get-cities.server'
 import { locales } from '@/data/locales'
 import { SITE_URL } from '@/data/contacts'
 
 export async function generateStaticParams() {
-  await seedNovaPoshtaDefaultCities()
-  await seedNovaPoshtaCitiesDictionary()
   return locales.map((locale) => ({ locale }))
 }
 
@@ -60,17 +54,23 @@ export async function generateMetadata({ params }: { params: Params }) {
 
   return {
     title: isUk
-      ? 'Оформлення замовлення Slice&Drys'
-      : 'Order processing Slice&Drys',
+      ? "Оформлення замовлення | Slice & Dry's"
+      : "Order processing | Slice & Dry's",
     description: isUk
       ? 'Тут ви можете зручно оформити замовлення на нашому сайті.'
       : 'Here you can easily make an order on our website.',
     keywords,
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: { index: false, follow: true },
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/order`,
+        uk: `${SITE_URL}/uk/order`,
+        'x-default': `${SITE_URL}/uk/order`,
       },
     },
     openGraph: {
@@ -90,7 +90,8 @@ export async function generateMetadata({ params }: { params: Params }) {
   }
 }
 
-export default async function OrderPage() {
+export default async function OrderPage({ params }: { params: Params }) {
+  const { locale } = await params
   const t = await getTranslations('breadcrumbs')
   const defaultCities = await getDefaultNPCitiesFromDictionary()
   return (
@@ -99,7 +100,7 @@ export default async function OrderPage() {
         <Breadcrumb className="mt-[30px] md:mt-[70px]">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              <BreadcrumbLink href={`/${locale}`}>{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

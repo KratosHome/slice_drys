@@ -15,7 +15,7 @@ export async function getProductBySlug({
     await connectToDbServer()
 
     const product = await Product.findOne(
-      { slug: { $regex: `^${slug}$`, $options: 'i' } },
+      { slug: slug.toLowerCase() },
       {
         [`name.${locale}`]: 1,
         [`description.${locale}`]: 1,
@@ -32,7 +32,10 @@ export async function getProductBySlug({
         keywords: 1,
         slug: 1,
       },
-    ).populate('categories')
+    ).populate(
+      'categories',
+      'name description metaTitle metaDescription metaKeywords slug children parentCategory',
+    )
 
     if (!product) {
       return {
@@ -51,7 +54,7 @@ export async function getProductBySlug({
     })
 
     const categories = product.categories.map((category: ICategory) => ({
-      id: category._id,
+      _id: category._id?.toString(),
       name: category.name?.[locale],
       description: category.description?.[locale],
       metaTitle: category.metaTitle?.[locale],
@@ -59,10 +62,11 @@ export async function getProductBySlug({
       metaKeywords: category.metaKeywords?.[locale],
       slug: category.slug,
       children: category.children,
+      parentCategory: category.parentCategory?.toString() ?? null,
     }))
 
     const data = {
-      _id: product._id,
+      _id: product._id?.toString(),
       title: product.title[locale],
       metaDescription: product.metaDescription[locale],
       keywords: product.keywords[locale],
@@ -71,8 +75,8 @@ export async function getProductBySlug({
       menu: product.menu?.[locale],
       composition: product.composition?.[locale],
       img: transformedImg,
-      variables: product.variables,
-      nutritionalValue: product.nutritionalValue,
+      variables: JSON.parse(JSON.stringify(product.variables)),
+      nutritionalValue: JSON.parse(JSON.stringify(product.nutritionalValue)),
       statusLabel: product.statusLabel,
       visited: product.visited,
       slug: product.slug,
@@ -80,7 +84,7 @@ export async function getProductBySlug({
     }
 
     return {
-      data: data,
+      data: JSON.parse(JSON.stringify(data)) as typeof data,
       success: true,
       message: 'Product retrieved successfully',
     }

@@ -1,8 +1,7 @@
-import React from 'react'
-import NotFound from '@/components/not-found'
+import { notFound } from 'next/navigation'
 
 const Page = () => {
-  return <NotFound />
+  notFound()
 }
 
 export default Page

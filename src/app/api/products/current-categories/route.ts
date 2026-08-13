@@ -7,5 +7,5 @@ export async function GET(request: Request) {
 
   const data = await getCurrentCategory(slug)
 
-  return NextResponse.json(data)
+  return NextResponse.json(data, { status: data.success ? 200 : 404 })
 }

@@ -2,21 +2,22 @@ import type { Metadata } from 'next'
 
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
-import { fetchTags } from '@/data/fetch-tags'
 import { instaData } from '@/data/main/insta-data'
 
 import Hero from '@/components/client/main/hero'
-import BlogSection from '@/components/client/main/blog/blog'
-import InstaFeed from '@/components/client/main/insta-feed/Insta-feed'
+import BlogSection from '@/components/client/main/blog'
+import InstaFeed from '@/components/client/main/insta-feed'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import ToTheTop from '@/components/ui/to-the-top'
-import ProductSlider from '@/components/client/product-slider/product-slider'
+import ProductSlider from '@/components/client/product-slider'
 
-import { headers } from 'next/headers'
 import { getTranslations } from 'next-intl/server'
-import { detectDevice } from '@/utils/device-detection'
-import { revalidateDay } from '@/constants/revalidate'
-import { SITE_URL } from '@/data/contacts'
+import {
+  getPublicCategories,
+  getPublicMainProducts,
+  getPublicPosts,
+} from '@/server/public-data-cache.server'
+import { toPlainObject } from '@/utils/to-plain-object'
 
 export const revalidate = 86400
 
@@ -42,36 +43,27 @@ export default async function HomePage(props: {
 
   const t = await getTranslations('main')
 
-  const userAgent: string = (await headers()).get('user-agent') || ''
-  const device: IDevice = detectDevice(userAgent)
-
   const [productsData, categoriesData, blogData] = await Promise.all([
-    fetch(
-      `${SITE_URL}/api/products/get-products-slider-main?locale=${locale}`,
-      {
-        next: { revalidate: revalidateDay, tags: [`${fetchTags.products}`] },
-      },
-    ).then((res) => res.json()),
-
-    fetch(`${SITE_URL}/api/categories`, {
-      next: { revalidate: revalidateDay, tags: [`${fetchTags.menu}`] },
-    }).then((res) => res.json()),
-
-    fetch(`${SITE_URL}/api/posts?locale=${locale}&page=1&limit=5`, {
-      next: { revalidate: revalidateDay, tags: [`${fetchTags.posts}`] },
-    }).then((res) => res.json()),
+    getPublicMainProducts(locale),
+    getPublicCategories(),
+    getPublicPosts(locale, 1, 5),
   ])
+  const products = toPlainObject(productsData.products)
+  const productLinks: IPublicCategoryLink[] = categoriesData.data.map(
+    ({ slug, name }) => ({ slug, name }),
+  )
+  const posts = toPlainObject(blogData.postsLocalized ?? [])
 
   return (
     <>
-      <MainJsonLd products={productsData.products} />
-      <Hero device={device} productLinks={categoriesData.data} />
+      <MainJsonLd products={products} />
+      <Hero productLinks={productLinks} />
       <ProductSlider
-        products={productsData.products}
+        products={products}
         title={t('products-slider.title')}
         message={t('products-slider.message')}
       />
-      <BlogSection data={blogData.postsLocalized} />
+      <BlogSection data={posts} />
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>

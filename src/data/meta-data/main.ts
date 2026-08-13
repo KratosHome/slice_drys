@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import { SITE_URL } from '@/data/contacts'
 
 export const mainMetaDataUk: Metadata = {
-  title:
-    "Сушені снеки (м'ясо, фрукти, овочі) — Slice&Dry's | Найсмачніші закуски",
+  title: "Сушені снеки з м'яса, фруктів та овочів | Slice & Dry's",
   description:
-    "Сушені снеки з м'яса, овочів і фруктів. Ідеальні для перекусів під час подорожей, спорту та відпочинку. Slice&Dry's — натурально, без консервантів і надзвичайно смачно.",
+    "Натуральні сушені снеки з м'яса, фруктів та овочів без консервантів. Замовляйте корисні перекуси для подорожей, спорту й відпочинку зі швидкою доставкою.",
   keywords: [
     'сушені снеки',
     "м'ясні снеки",
@@ -18,16 +17,16 @@ export const mainMetaDataUk: Metadata = {
     'снеки для спорту',
   ],
   openGraph: {
-    title: "Сушені снеки (м'ясо, овочі, фрукти) — Slice&Dry's",
+    title: "Сушені снеки з м'яса, фруктів та овочів | Slice & Dry's",
     description:
       "Насолоджуйтеся сушеними снеками з м'яса, овочів і фруктів найвищої якості. Ідеальні для подорожей, спорту та перекусів. Натурально і без консервантів.",
     url: `${SITE_URL}/uk`,
-    siteName: "Slice&Dry's",
+    siteName: "Slice & Dry's",
     images: [
       {
         url: `${SITE_URL}/main.webp`,
-        width: 1200,
-        height: 630,
+        width: 1005,
+        height: 895,
         alt: "Сушені снеки з м'яса, овочів та фруктів",
       },
     ],
@@ -36,7 +35,7 @@ export const mainMetaDataUk: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Сушені снеки (м'ясо, овочі, фрукти) — Slice&Dry's",
+    title: "Сушені снеки з м'яса, фруктів та овочів | Slice & Dry's",
     description:
       "Спробуйте найсмачніші сушені снеки з м'яса, овочів і фруктів. Без консервантів, натурально та ідеально для активного способу життя.",
     images: [`${SITE_URL}/main.webp`],
@@ -47,6 +46,7 @@ export const mainMetaDataUk: Metadata = {
     languages: {
       en: `${SITE_URL}/en`,
       uk: `${SITE_URL}/uk`,
+      'x-default': `${SITE_URL}/uk`,
     },
   },
   robots: {
@@ -56,10 +56,9 @@ export const mainMetaDataUk: Metadata = {
 }
 
 export const mainMetaDataEn: Metadata = {
-  title:
-    "Dried Snacks (Meat, Fruits, Vegetables) — Slice&Dry's | The Tastiest Snacks",
+  title: "Dried Meat, Fruit & Vegetable Snacks | Slice & Dry's",
   description:
-    "Dried snacks made from meat, vegetables, and fruits. Perfect for on-the-go snacking during travels, sports, and leisure. Slice&Dry's — natural, preservative-free, and incredibly tasty.",
+    'Natural dried meat, fruit and vegetable snacks without preservatives. Order healthy snacks for travel, sports and everyday breaks with delivery across Ukraine.',
   keywords: [
     'dried snacks',
     'meat snacks',
@@ -72,16 +71,16 @@ export const mainMetaDataEn: Metadata = {
     'sports snacks',
   ],
   openGraph: {
-    title: "Dried Snacks (Meat, Vegetables, Fruits) — Slice&Dry's",
+    title: "Dried Meat, Fruit & Vegetable Snacks | Slice & Dry's",
     description:
       'Enjoy high-quality dried snacks made from meat, vegetables, and fruits. Perfect for travel, sports, and snacking. Natural and preservative-free.',
     url: `${SITE_URL}/en`,
-    siteName: "Slice&Dry's",
+    siteName: "Slice & Dry's",
     images: [
       {
         url: `${SITE_URL}/main.webp`,
-        width: 1200,
-        height: 630,
+        width: 1005,
+        height: 895,
         alt: 'Dried snacks made from meat, vegetables, and fruits',
       },
     ],
@@ -90,7 +89,7 @@ export const mainMetaDataEn: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Dried Snacks (Meat, Vegetables, Fruits) — Slice&Dry's",
+    title: "Dried Meat, Fruit & Vegetable Snacks | Slice & Dry's",
     description:
       'Try the tastiest dried snacks made from meat, vegetables, and fruits. Preservative-free, natural, and perfect for an active lifestyle.',
     images: [`${SITE_URL}/main.webp`],
@@ -101,6 +100,7 @@ export const mainMetaDataEn: Metadata = {
     languages: {
       en: `${SITE_URL}/en`,
       uk: `${SITE_URL}/uk`,
+      'x-default': `${SITE_URL}/uk`,
     },
   },
   robots: {

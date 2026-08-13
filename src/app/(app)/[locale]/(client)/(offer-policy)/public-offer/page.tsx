@@ -7,31 +7,39 @@ type Params = Promise<{ locale: ILocale }>
 export async function generateMetadata({ params }: { params: Params }) {
   const { locale } = await params
   const isUk = locale === 'uk'
+  const title = isUk
+    ? "Публічна оферта | Slice & Dry's"
+    : "Public Offer | Slice & Dry's"
+  const description = isUk
+    ? "Ознайомтеся з умовами продажу, оплати, доставки та повернення товарів в інтернет-магазині Slice&Dry's."
+    : "Review the terms for purchasing, payment, delivery, and returns in the Slice&Dry's online store."
+  const canonicalUrl = `${SITE_URL}/${locale}/public-offer`
+  const socialImage = `${SITE_URL}/main.webp`
 
   return {
-    title: isUk ? 'Публічна пропозиція' : 'Public Offer',
-    description: isUk
-      ? 'Умови публічної пропозиції'
-      : 'Terms of the public offer',
+    title,
+    description,
     openGraph: {
-      title: isUk ? 'Публічна пропозиція' : 'Public Offer',
-      description: isUk
-        ? 'Умови публічної пропозиції'
-        : 'Terms of the public offer',
-      url: `${SITE_URL}/${locale}/public-offer`,
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: "Slice & Dry's",
+      locale: isUk ? 'uk_UA' : 'en_US',
+      images: [{ url: socialImage, width: 1005, height: 895, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isUk ? 'Публічна пропозиція' : 'Public Offer',
-      description: isUk
-        ? 'Умови публічної пропозиції'
-        : 'Terms of the public offer',
+      title,
+      description,
+      images: [socialImage],
     },
     alternates: {
-      canonical: `${SITE_URL}/${locale}/public-offer`,
+      canonical: canonicalUrl,
       languages: {
-        en: `${SITE_URL}/${locale}/public-offer`,
-        uk: `${SITE_URL}/${locale}/public-offer`,
+        en: `${SITE_URL}/en/public-offer`,
+        uk: `${SITE_URL}/uk/public-offer`,
+        'x-default': `${SITE_URL}/uk/public-offer`,
       },
     },
   }
@@ -50,8 +58,9 @@ export default async function PublicOffer({ params }: { params: Params }) {
       `@/data/public-offer/${locale}-public-offer.mdx`
     )
   } catch (error) {
-    console.error(`Cannot load privacy policy for locale: ${locale}`, error)
-    return <div>Error loading privacy public offer content.</div>
+    throw new Error(`Cannot load public offer for locale: ${locale}`, {
+      cause: error,
+    })
   }
 
   return (

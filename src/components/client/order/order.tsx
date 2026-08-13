@@ -57,18 +57,22 @@ export default function Order({ defaultCities }: Props) {
     }
   }, [minOrderAmount, totalPrice, userData?.formStep])
 
-  const refRaw = localStorage.getItem('ref')
-
-  const referral = (() => {
-    if (!refRaw) return undefined
-
-    const { code } = JSON.parse(refRaw) as { code: string }
-    return referals.find((r) => r.cod === code)
-  })()
-
   const handleSubmit = async () => {
     if (!formRef.current) return
     setLoading(true)
+
+    const referral = (() => {
+      try {
+        const refRaw = window.localStorage.getItem('ref')
+        if (!refRaw) return undefined
+
+        const { code } = JSON.parse(refRaw) as { code?: string }
+        return referals.find((item) => item.cod === code)
+      } catch {
+        window.localStorage.removeItem('ref')
+        return undefined
+      }
+    })()
 
     const referralInterest = referral?.interest ?? 0
 

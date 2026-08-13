@@ -1,50 +1,56 @@
-import React, { FC } from 'react'
-import { SITE_URL } from '@/data/contacts'
+import {
+  buildBreadcrumbList,
+  buildOrganization,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  ORGANIZATION_ID,
+  serializeJsonLd,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
-interface WholesaleJsonLdProps {
+interface ContactsJsonLdProps {
   locale: ILocale
 }
 
-const ContactsJsonLd: FC<WholesaleJsonLdProps> = ({ locale }) => {
-  const canonicalUrl = `${SITE_URL}/${locale}/contacts`
-
+export default function ContactsJsonLd({ locale }: ContactsJsonLdProps) {
+  const canonicalUrl = localizedUrl(locale, 'contacts')
+  const pageId = `${canonicalUrl}#webpage`
+  const breadcrumbId = `${canonicalUrl}#breadcrumb`
   const isUk = locale === 'uk'
+  const pageName = isUk ? 'Контакти' : 'Contacts'
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: "Slice & Dry's",
-    url: canonicalUrl,
-    logo: `${SITE_URL}/logo.png`,
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: '+38 (093) 979 79 10',
-      email: 'slice&drys@gmail.com',
-      contactType: isUk ? 'Служба підтримки' : 'Customer Service',
-      areaServed: 'UA',
-      availableLanguage: isUk
-        ? ['Українська', 'Англійська']
-        : ['Ukrainian', 'English'],
-    },
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: isUk ? 'вул. Надпільна 248А' : '248A Nadpilna St.',
-      addressLocality: isUk ? 'Черкаси' : 'Cherkasy',
-      addressCountry: 'UA',
-    },
-    openingHours: isUk ? 'Пн-Нд 10:00-19:00' : 'Mo-Su 10:00-19:00',
-    sameAs: [
-      'https://www.facebook.com/slicedrys',
-      'https://www.instagram.com/slicedrys',
+    '@graph': [
+      buildOrganization(locale),
+      buildWebsite(),
+      buildBreadcrumbList(breadcrumbId, [
+        { name: isUk ? 'Головна' : 'Home', url: localizedUrl(locale) },
+        { name: pageName, url: canonicalUrl },
+      ]),
+      {
+        '@type': 'ContactPage',
+        '@id': pageId,
+        url: canonicalUrl,
+        name: pageName,
+        description: isUk
+          ? "Контактна інформація Slice & Dry's"
+          : "Slice & Dry's contact information",
+        inLanguage: languageTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        breadcrumb: { '@id': breadcrumbId },
+        mainEntity: { '@id': ORGANIZATION_ID },
+        about: { '@id': ORGANIZATION_ID },
+      },
     ],
   }
 
   return (
     <script
+      id="contacts-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
-
-export default ContactsJsonLd

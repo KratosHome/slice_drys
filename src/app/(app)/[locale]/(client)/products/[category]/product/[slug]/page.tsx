@@ -1,17 +1,20 @@
 import dynamic from 'next/dynamic'
-import { headers } from 'next/headers'
 import type { Metadata } from 'next'
-import NotFoundPage from '@/components/not-found'
+import { notFound, permanentRedirect } from 'next/navigation'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 import { ProductInfo } from '@/components/client/product-page/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
-import { fetchTags } from '@/data/fetch-tags'
 import { Loader } from 'lucide-react'
-import ProductSlider from '@/components/client/product-slider/product-slider'
+import ProductSlider from '@/components/client/product-slider'
 import { SITE_URL } from '@/data/contacts'
+import {
+  getPublicProduct,
+  getPublicProductRecommendations,
+} from '@/server/public-data-cache.server'
+import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 
 export const revalidate = 86400
 
@@ -27,29 +30,40 @@ type Props = {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-const getRequestOrigin = async () => {
-  const requestHeaders = await headers()
-  const host = requestHeaders.get('host')
-  const protocol = requestHeaders.get('x-forwarded-proto') ?? 'http'
+type ProductCategoryData = {
+  _id: string
+  name: string
+  slug: string
+  parentCategory?: string | null
+}
 
-  return host ? `${protocol}://${host}` : SITE_URL
+type ProductPageData = Omit<IProduct, 'categories'> & {
+  categories: ProductCategoryData[]
+  img: string
+  title: string
+  metaDescription: string
 }
 
 const getProductData = async (slug: string, locale: ILocale) => {
-  const apiOrigin = await getRequestOrigin()
+  const result = await getPublicProduct(slug.toLowerCase(), locale)
+  if (!result.success || Array.isArray(result.data)) return null
 
-  return fetch(
-    `${apiOrigin}/api/products/get-by-slug?&slug=${slug}&locale=${locale}`,
-    {
-      cache: 'no-store',
-      next: { tags: [fetchTags.product] },
-    },
-  ).then(async (res) => {
-    if (!res.ok) return null
-    const data = await res.json()
-    if (data?.success === false) return null
-    return data
+  return result.data as unknown as ProductPageData
+}
+
+const appendSearchParams = (
+  pathname: string,
+  searchParams: Record<string, string | string[] | undefined>,
+) => {
+  const query = new URLSearchParams()
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (Array.isArray(value)) value.forEach((item) => query.append(key, item))
+    else if (value !== undefined) query.set(key, value)
   })
+
+  const queryString = query.toString()
+  return queryString ? `${pathname}?${queryString}` : pathname
 }
 
 const getProductKeywords = (keywords?: string | string[]) => {
@@ -63,85 +77,61 @@ const getProductKeywords = (keywords?: string | string[]) => {
   )
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale, category } = await params
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const hasQueryParams = Object.keys(resolvedSearchParams).length > 0
-  const productData = await getProductData(slug, locale)
+  const normalizedSlug = slug.toLowerCase()
+  const normalizedCategory = category.toLowerCase()
+  const productData = await getProductData(normalizedSlug, locale)
 
-  if (!productData) {
-    return {
-      title: '404',
-      description: '404',
-      keywords: ['404'],
-      robots: 'noindex, nofollow',
-    }
-  }
+  if (!productData) notFound()
 
-  const canonicalUrl = `${SITE_URL}/${locale}/products/${category.toLowerCase()}/product/${slug.toLowerCase()}`
+  const assignedCategorySlugs = new Set(
+    productData.categories.map(({ slug: categorySlug }) =>
+      categorySlug.toLowerCase(),
+    ),
+  )
+  if (!assignedCategorySlugs.has(normalizedCategory)) notFound()
 
-  if (hasQueryParams) {
-    return {
-      title: productData.data.title,
-      description: productData.data.metaDescription,
-      keywords: getProductKeywords(productData.data.keywords),
-      robots: 'noindex, nofollow',
-      openGraph: {
-        title: productData.data.title,
-        description: productData.data.metaDescription,
-        images: [
-          {
-            url: productData.data.img,
-            width: 1200,
-            height: 630,
-            alt: productData.data.name,
-          },
-        ],
-        siteName: 'SliceDrys',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: productData.data.title,
-        description: productData.data.metaDescription,
-        images: [productData.data.img],
-      },
-    }
-  }
+  const canonicalCategory = getCanonicalProductCategorySlug(
+    productData.categories,
+  )
+  if (!canonicalCategory) notFound()
+
+  const canonicalPath = `products/${canonicalCategory}/product/${normalizedSlug}`
+  const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}`
 
   return {
-    title: productData.data.title,
-    description: productData.data.metaDescription,
-    keywords: getProductKeywords(productData.data.keywords),
+    title: productData.title,
+    description: productData.metaDescription,
+    keywords: getProductKeywords(productData.keywords),
     robots: 'index, follow',
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${SITE_URL}/en/products/${category}/product/${slug}`,
-        uk: `${SITE_URL}/uk/products/${category}/product/${slug}`,
+        en: `${SITE_URL}/en/${canonicalPath}`,
+        uk: `${SITE_URL}/uk/${canonicalPath}`,
+        'x-default': `${SITE_URL}/uk/${canonicalPath}`,
       },
     },
     openGraph: {
-      title: productData.data.title,
-      description: productData.data.metaDescription,
+      title: productData.title,
+      description: productData.metaDescription,
       url: canonicalUrl,
+      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
+      type: 'website',
       images: [
         {
-          url: productData.data.img,
-          width: 1200,
-          height: 630,
-          alt: productData.data.name,
+          url: productData.img,
+          alt: productData.name,
         },
       ],
-      siteName: 'SliceDrys',
+      siteName: "Slice & Dry's",
     },
     twitter: {
       card: 'summary_large_image',
-      title: productData.data.title,
-      description: productData.data.metaDescription,
-      images: [productData.data.img],
+      title: productData.title,
+      description: productData.metaDescription,
+      images: [productData.img],
     },
   }
 }
@@ -149,52 +139,65 @@ export async function generateMetadata({
 export default async function ProductPage({ params, searchParams }: Props) {
   const { slug, locale, category } = await params
   const resolvedSearchParams = searchParams ? await searchParams : {}
-  const hasQueryParams = Object.keys(resolvedSearchParams).length > 0
+  const normalizedSlug = slug.toLowerCase()
+  const normalizedCategory = category.toLowerCase()
   const t = await getTranslations('product')
-  const apiOrigin = await getRequestOrigin()
+  const productData = await getProductData(normalizedSlug, locale)
 
-  const [productData, productSliderData] = await Promise.all([
-    getProductData(slug, locale),
-    fetch(
-      `${apiOrigin}/api/products/get-products-slider-product?&locale=${locale}&productSlug=${slug}`,
-      {
-        cache: 'no-store',
-        next: { tags: [`${fetchTags.product}`] },
-      },
-    ).then(async (res) => {
-      if (!res.ok) return null
-      const data = await res.json()
-      if (data?.success === false) return null
-      return data
-    }),
-  ])
+  if (!productData) notFound()
 
-  if (!productData) {
-    return <NotFoundPage />
+  const assignedCategorySlugs = new Set(
+    productData.categories.map(({ slug: categorySlug }) =>
+      categorySlug.toLowerCase(),
+    ),
+  )
+  if (!assignedCategorySlugs.has(normalizedCategory)) notFound()
+
+  const canonicalCategorySlug = getCanonicalProductCategorySlug(
+    productData.categories,
+  )
+  if (!canonicalCategorySlug) notFound()
+
+  const canonicalPath = `/${locale}/products/${canonicalCategorySlug}/product/${normalizedSlug}`
+
+  if (
+    slug !== normalizedSlug ||
+    category !== normalizedCategory ||
+    normalizedCategory !== canonicalCategorySlug
+  ) {
+    permanentRedirect(appendSearchParams(canonicalPath, resolvedSearchParams))
   }
 
-  const productCategorySlug = productData.data.categories[0].slug
-  const canonicalUrl = `${SITE_URL}/${locale}/products/${category}/product/${slug}`
+  const productSliderData = await getPublicProductRecommendations(
+    locale,
+    normalizedSlug,
+  )
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`
+  const canonicalCategory =
+    productData.categories.find(
+      ({ slug: categorySlug }) =>
+        categorySlug.toLowerCase() === canonicalCategorySlug,
+    ) ?? productData.categories[0]
 
   return (
     <>
-      {!hasQueryParams ? (
-        <ProductJsonLd
-          productData={productData.data}
-          canonicalUrl={canonicalUrl}
-        />
-      ) : null}
+      <ProductJsonLd
+        productData={productData as unknown as IProduct}
+        canonicalUrl={canonicalUrl}
+        categoryName={canonicalCategory.name}
+        categoryUrl={`${SITE_URL}/${locale}/products/${canonicalCategorySlug}`}
+      />
       <div className="mx-auto max-w-[1280px] px-4">
         <Breadcrumbs
           locale={locale}
-          category={productData.data.categories[0].name}
-          product={productData.data.name}
-          categoryLink={`products/${productCategorySlug}`}
+          category={canonicalCategory.name}
+          product={productData.name}
+          categoryLink={`products/${canonicalCategorySlug}`}
         />
-        <ProductInfo product={productData.data} />
+        <ProductInfo product={productData as unknown as IProduct} />
         <Accordions
-          nutrition={productData.data.nutritionalValue}
-          description={productData.data.description}
+          nutrition={productData.nutritionalValue}
+          description={productData.description}
         />
         <ProductSlider
           products={productSliderData?.data}

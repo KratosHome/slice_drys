@@ -13,7 +13,7 @@ const linkStyle =
   'md:hover:text-red-500 px-[10px] md:py-[10px] text-[clamp(16px,calc(16px+4*(100vw-375px)/1065),20px)] transition-all duration-300 ease-in-out md:hover:translate-x-3 active:translate-x-3 active:text-red-500'
 
 interface IFooterProps {
-  productLinks: ICategory[]
+  productLinks: IPublicCategoryLink[]
 }
 
 export default function Footer({ productLinks }: IFooterProps) {
@@ -44,7 +44,7 @@ export default function Footer({ productLinks }: IFooterProps) {
                 key={link.slug}
                 href={`/${locale}/products/${link.slug}`}
               >
-                ff {link.name[locale]}
+                {link.name[locale]}
               </TransitionLink>
             </li>
           ))}

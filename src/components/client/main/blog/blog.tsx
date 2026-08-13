@@ -109,7 +109,7 @@ export default function BlogSection({ data }: IBlogSectionProps) {
             {t('title')}
           </h2>
           <UnderlinedLink
-            href={`${locale}/blog`}
+            href={`/${locale}/blog`}
             className="order-1 md:order-0"
           >
             {t('more-btn')}
@@ -130,12 +130,17 @@ export default function BlogSection({ data }: IBlogSectionProps) {
                         src={post.img}
                         alt={post.title}
                         fill
+                        sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1439px) 30vw, 400px"
                         className="rounded-[12px_12px_0_0] object-cover"
                       />
                     </AspectRatio>
                     <div className="p-4">
                       <p className="mt-2 text-sm text-gray-400">
-                        {formatDate(post.createdAt)}
+                        {formatDate(
+                          post.createdAt instanceof Date
+                            ? post.createdAt
+                            : new Date(post.createdAt),
+                        )}
                       </p>
                       <h3 className="card__link text-white">{post.title}</h3>
                     </div>

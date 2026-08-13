@@ -11,8 +11,6 @@ const connection: IConnection = {}
 export const connectToDbServer = async (): Promise<void> => {
   try {
     if (connection.isConnected) {
-      console.warn('Using existing connection')
-
       return
     }
 
@@ -20,5 +18,6 @@ export const connectToDbServer = async (): Promise<void> => {
     connection.isConnected = db.connections[0].readyState
   } catch (error) {
     console.error('Connect to Db error', error)
+    throw error
   }
 }

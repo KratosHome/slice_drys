@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function NotFoundPage() {
-  const t = await getTranslations('not-found-page')
+  const [t, locale] = await Promise.all([
+    getTranslations('not-found-page'),
+    getLocale(),
+  ])
 
   const fruits = [
     {
@@ -92,7 +95,7 @@ export default async function NotFoundPage() {
         <p className="text-foreground text-[20px]">
           {t('not-found-message')}{' '}
           <TransitionLink
-            href="/"
+            href={`/${locale}`}
             className="text-red-400 duration-300 hover:text-red-600"
           >
             {t('go-home')}

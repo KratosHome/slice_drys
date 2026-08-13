@@ -13,6 +13,7 @@ const nextConfig = {
   serverExternalPackages: ['mongoose'],
   images: {
     formats: ['image/avif', 'image/webp'],
+    qualities: [50, 60, 70, 75],
     remotePatterns: [
       {
         protocol: 'https',

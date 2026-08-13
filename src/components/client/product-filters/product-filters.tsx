@@ -139,13 +139,19 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     params.delete('page')
 
     const basePath = `/${locale}/products/${rootCategorySlug}`
+    const categoryPathsEnabled = !['mixes', 'promotions'].includes(
+      rootCategorySlug,
+    )
     let nextPath = basePath
 
-    if (updatedCategories.length === 1) {
+    if (categoryPathsEnabled && updatedCategories.length === 1) {
       nextPath = `${basePath}/${updatedCategories[0]}`
     }
 
-    if (updatedCategories.length > 1) {
+    if (
+      updatedCategories.length > 1 ||
+      (!categoryPathsEnabled && updatedCategories.length > 0)
+    ) {
       params.set('categories', updatedCategories.join(','))
     }
 

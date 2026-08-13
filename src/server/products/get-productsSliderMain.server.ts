@@ -3,7 +3,7 @@
 import { Product } from '@/server/products/product-schema.server'
 
 import { connectToDbServer } from '@/server/connect-to-db.server'
-import cloudinary from '../cloudinary-config.server'
+import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 
 export async function getProductsSliderMain(
   locale: ILocale,
@@ -12,7 +12,7 @@ export async function getProductsSliderMain(
     await connectToDbServer()
 
     const products = await Product.find()
-      .populate('categories', 'slug')
+      .populate('categories', 'slug parentCategory')
       .sort({ visited: -1 })
       .limit(5)
       .lean<IProductLocal[]>()
@@ -22,26 +22,15 @@ export async function getProductsSliderMain(
         const populatedCategories =
           product.categories as unknown as CategorySlug[]
 
-        const transformedImage: string = cloudinary.url(`${product.images}`, {
-          transformation: [
-            { width: 500, crop: 'scale' },
-            { quality: 35 },
-            { fetch_format: 'auto' },
-          ],
-        })
-
         return {
           ...product,
           _id: product._id?.toString(),
           name: product.name[locale],
           description: product.description[locale],
           categories: populatedCategories
-            ? populatedCategories.map((category) => category._id)
+            ? populatedCategories.map((category) => category._id.toString())
             : [],
-          category:
-            populatedCategories && populatedCategories[0]
-              ? populatedCategories[0].slug
-              : '',
+          category: getCanonicalProductCategorySlug(populatedCategories) ?? '',
           menu: product.menu[locale],
           composition: product.composition[locale],
           variables: JSON.parse(JSON.stringify(product.variables)),
@@ -50,7 +39,10 @@ export async function getProductsSliderMain(
           title: product.title[locale],
           metaDescription: product.metaDescription[locale],
           keywords: product.keywords[locale],
-          images: [transformedImage],
+          // Cards and Product JSON-LD use the verified primary `img` URL.
+          // Legacy gallery values are not safe to send through Cloudinary's
+          // public-ID helper because some records already contain absolute URLs.
+          images: [],
         }
       },
     )

@@ -17,16 +17,24 @@ import { cn } from '@/utils/cn'
 gsap.registerPlugin(useGSAP)
 
 interface IHeroProps {
-  device: IDevice
-  productLinks: ICategory[]
+  productLinks: IPublicCategoryLink[]
 }
 
-export default function Hero({ device, productLinks }: IHeroProps) {
-  const { isDesktop } = device
-  const [hoveredIndex, setHoveredIndex] = useState<number>(0)
-
+export default function Hero({ productLinks }: IHeroProps) {
   const locale = useLocale() as ILocale
   const slidersLocale = sliders[locale]
+  const heroLinks = productLinks
+    .filter((link) =>
+      slidersLocale.some((slider) => slider.slug === link.slug.toLowerCase()),
+    )
+    .slice(0, slidersLocale.length)
+  const [activeSlug, setActiveSlug] = useState(
+    heroLinks[0]?.slug.toLowerCase() ?? slidersLocale[0].slug,
+  )
+  const hoveredIndex = Math.max(
+    0,
+    slidersLocale.findIndex((slider) => slider.slug === activeSlug),
+  )
 
   const hoverHexColor = slidersLocale[hoveredIndex].color
 
@@ -38,8 +46,45 @@ export default function Hero({ device, productLinks }: IHeroProps) {
 
   useGSAP(
     () => {
+      const currentSubImages = slidersLocale[hoveredIndex].subImages ?? []
+      const currentSubImageElements = subImagesRefs.current
+        .slice(0, currentSubImages.length)
+        .filter((element) => element?.isConnected)
+
+      const placeSubImages = (): void => {
+        currentSubImageElements.forEach((element, index) => {
+          const position = currentSubImages[index]?.position.desktop
+
+          if (!position) return
+
+          gsap.set(element, {
+            opacity: 1,
+            x: position.x,
+            y: position.y,
+          })
+        })
+      }
+
       if (!isMounted.current) {
         isMounted.current = true
+        placeSubImages()
+        return
+      }
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set(imgRef.current, {
+          opacity: 1,
+          scaleX: 1,
+          scaleY: 1,
+          filter: 'blur(0px)',
+        })
+        gsap.set(titleRef.current, {
+          opacity: 1,
+          scaleX: 1,
+          scaleY: 1,
+          filter: 'blur(0px)',
+        })
+        placeSubImages()
         return
       }
 
@@ -73,22 +118,26 @@ export default function Hero({ device, productLinks }: IHeroProps) {
         },
       )
 
-      if (slidersLocale[hoveredIndex].subImages) {
+      if (currentSubImages.length > 0) {
         const mm = gsap.matchMedia()
 
-        subImagesRefs.current.forEach((el, index) => {
+        currentSubImageElements.forEach((el, index) => {
           mm.add('(min-width: 1024px)', () => {
-            gsap.to(el, {
-              opacity: 1,
-              duration: 1.5,
-              x: slidersLocale[hoveredIndex].subImages?.[index]?.position
-                .desktop.x,
-              y: slidersLocale[hoveredIndex]?.subImages?.[index]?.position
-                .desktop.y,
-              ease: 'power2.out',
-            })
+            gsap.fromTo(
+              el,
+              { opacity: 0, x: 0, y: 0 },
+              {
+                opacity: 1,
+                duration: 1.5,
+                x: currentSubImages[index]?.position.desktop.x,
+                y: currentSubImages[index]?.position.desktop.y,
+                ease: 'power2.out',
+              },
+            )
           })
         })
+
+        return () => mm.revert()
       }
     },
     { scope: imgRef, dependencies: [hoveredIndex] },
@@ -118,7 +167,7 @@ export default function Hero({ device, productLinks }: IHeroProps) {
           </div>
         </div>
         <nav className="relative -mx-0.5 mt-16 flex justify-around lg:mt-20">
-          {productLinks.map((item, index) => (
+          {heroLinks.map((item, index) => (
             <div
               key={item.slug}
               className={cn(
@@ -136,13 +185,14 @@ export default function Hero({ device, productLinks }: IHeroProps) {
                   'relative left-1/2 flex size-[80px] -translate-x-1/2 -translate-y-[61%] uppercase',
                   'items-center justify-center rounded-full text-[20px] text-[#9B9B9B] transition-colors duration-300',
                 )}
-                onMouseEnter={() => setHoveredIndex(index)}
+                onFocus={() => setActiveSlug(item.slug.toLowerCase())}
+                onMouseEnter={() => setActiveSlug(item.slug.toLowerCase())}
                 aria-label={item.name[locale]}
               >
                 <SliderItem
                   title={item.name[locale]}
                   hoverHexColor={hoverHexColor}
-                  isHovered={hoveredIndex === index}
+                  isHovered={activeSlug === item.slug.toLowerCase()}
                 />
               </TransitionLink>
             </div>
@@ -154,22 +204,20 @@ export default function Hero({ device, productLinks }: IHeroProps) {
               <Image
                 ref={imgRef}
                 src={slidersLocale[hoveredIndex].image}
-                alt="Slider image"
+                alt={slidersLocale[hoveredIndex].title}
                 fill
-                priority
+                priority={hoveredIndex === 0}
                 loading="eager"
                 quality={60}
-                sizes="(max-width: 550px) 100vw, 50vw"
-                role="img"
+                sizes="(max-width: 1280px) 64vw, 736px"
                 className="object-contain"
               />
             </div>
 
-            {slidersLocale[hoveredIndex].subImages && isDesktop ? (
+            {slidersLocale[hoveredIndex].subImages ? (
               <SubImages
                 subImages={slidersLocale[hoveredIndex].subImages}
                 subImagesRefs={subImagesRefs}
-                device={device}
               />
             ) : null}
           </div>

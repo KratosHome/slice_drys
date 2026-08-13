@@ -1,10 +1,7 @@
 import { Suspense, type ReactNode } from 'react'
 
-import { fetchTags } from '@/data/fetch-tags'
-
 import Header from '@/components/client/header'
 import Footer from '@/components/client/footer'
-import NotFoundPage from '@/components/not-found'
 import ScrollToTop from '@/components/client/scroll-to-top'
 import Toaster from '@/components/ui/toaster'
 import ThemeProvider from '@/components/providers/theme-provider'
@@ -13,15 +10,15 @@ import { Analytics } from '@vercel/analytics/react'
 
 import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
+import { getMessages, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
 
 import '../globals.css'
-import { revalidateDay } from '@/constants/revalidate'
-import { SITE_URL } from '@/data/contacts'
 import SaveReferral from '@/components/client/save-referral'
 import PageTransition from '@/components/client/page-transition'
+import { getPublicCategories } from '@/server/public-data-cache.server'
 
 export const revalidate = 86400
 
@@ -35,6 +32,7 @@ const montserrat = Montserrat({
 const rubikDoodleShadow = Rubik_Doodle_Shadow({
   subsets: ['latin'],
   display: 'swap',
+  preload: false,
   variable: '--font-rubik-doodle-shadow',
   weight: ['400'],
 })
@@ -51,26 +49,18 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
   const { children } = props
 
   if (!hasLocale(routing.locales, locale)) {
-    return (
-      <html>
-        <body>
-          <Suspense fallback={null}>
-            <PageTransition locale={locale} />
-          </Suspense>
-          <NotFoundPage />
-        </body>
-      </html>
-    )
+    notFound()
   }
 
-  const messages = await getMessages()
+  setRequestLocale(locale)
 
-  const categoriesData: IResult<ICategory> = await fetch(
-    `${SITE_URL}/api/categories`,
-    {
-      next: { revalidate: revalidateDay, tags: [`${fetchTags.menu}`] },
-    },
-  ).then((res) => res.json())
+  const [messages, categoriesData] = await Promise.all([
+    getMessages(),
+    getPublicCategories(),
+  ])
+  const productLinks: IPublicCategoryLink[] = categoriesData.data.map(
+    ({ slug, name }) => ({ slug, name }),
+  )
 
   return (
     <html
@@ -94,14 +84,14 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           <NextIntlClientProvider messages={messages}>
             <ScrollToTop />
             <Toaster />
-            <Header productLinks={categoriesData.data} />
+            <Header productLinks={productLinks} />
             <main className="flex-1">{children}</main>
-            <Footer productLinks={categoriesData.data} />
+            <Footer productLinks={productLinks} />
+            <SaveReferral />
+            <Analytics />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
-      <SaveReferral />
-      <Analytics />
     </html>
   )
 }

@@ -61,7 +61,8 @@ const productSchemaServer = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
-      unique: true,
+      lowercase: true,
+      trim: true,
     },
     description: {
       en: {
@@ -189,6 +190,9 @@ const productSchemaServer = new mongoose.Schema(
   },
   { timestamps: true },
 )
+
+productSchemaServer.index({ categories: 1, visited: -1, _id: 1 })
+productSchemaServer.index({ slug: 1 }, { unique: true })
 
 export const Product =
   mongoose.models.Product || mongoose.model('Product', productSchemaServer)

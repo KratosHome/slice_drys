@@ -2,7 +2,7 @@ const PAGE_TRANSITION_CLASS = 'page-transition'
 const PAGE_TRANSITION_BRAND_CLASS = '.page-transition-brand'
 const PAGE_TRANSITION_BRAND_SELECTOR = `body > ${PAGE_TRANSITION_BRAND_CLASS}`
 const PAGE_TRANSITION_STATUS_SELECTOR = '.page-transition-status'
-const PAGE_TRANSITION_TIMEOUT = 550
+const PAGE_TRANSITION_TIMEOUT = 280
 const TRANSITION_SAFETY_TIMEOUT = 8_000
 
 let safetyTimeoutId: number | undefined

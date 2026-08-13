@@ -1,28 +1,34 @@
-import { connectToDbServer } from '@/server/connect-to-db.server'
-import { Post } from '@/server/posts/post-schema.server'
+'use server'
 
-export async function getPostsUrls() {
-  'use server'
+import { Post } from '@/server/posts/post-schema.server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+
+export interface PostSitemapEntry {
+  slug: string
+  updatedAt: Date
+}
+
+export async function getPostsUrls(): Promise<IResult<PostSitemapEntry>> {
   try {
     await connectToDbServer()
 
-    const posts = await Post.find({}).select('slug').lean()
-
-    const postsWithLowercaseSlug = posts.map((item) => ({
-      ...item,
-      slug: item.slug.toLowerCase(),
-    }))
+    const posts = await Post.find({})
+      .select('slug updatedAt')
+      .lean<PostSitemapEntry[]>()
 
     return {
-      data: postsWithLowercaseSlug,
+      data: posts.map((post) => ({
+        ...post,
+        slug: post.slug.toLowerCase(),
+      })),
       success: true,
-      message: 'Posts URLs retrieved',
+      message: 'Posts retrieved',
     }
   } catch (error) {
     return {
       success: false,
       data: [],
-      message: `Can't retrieve posts URLs: ${error}`,
+      message: `Can't retrieve posts: ${error}`,
     }
   }
 }

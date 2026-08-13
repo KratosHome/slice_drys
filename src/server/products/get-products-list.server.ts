@@ -2,9 +2,9 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
 import { Category } from '@/server/categories/categories-schema.server'
-import cloudinary from '../cloudinary-config.server'
+import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 
-interface IGetProductsParams {
+export interface IGetProductsParams {
   page: number
   limit: number
   menu: string
@@ -27,7 +27,7 @@ export async function getProductsList({
   try {
     await connectToDbServer()
 
-    const categoryDoc = await Category.findOne({ slug: menu })
+    const categoryDoc = await Category.findOne({ slug: menu.toLowerCase() })
     if (!categoryDoc) {
       return {
         data: [],
@@ -36,20 +36,37 @@ export async function getProductsList({
       }
     }
 
-    const query: IQueryType = {}
-
-    query.categories = categoryDoc._id
+    const query: Record<string, unknown> = { categories: categoryDoc._id }
 
     if (categories && categories.length > 0) {
-      const categoryDocs = await Category.find({ slug: { $in: categories } })
+      const normalizedCategories = Array.from(
+        new Set(categories.map((category) => category.toLowerCase())),
+      )
+      const categoryDocs = await Category.find({
+        slug: { $in: normalizedCategories },
+      })
+
+      if (categoryDocs.length !== normalizedCategories.length) {
+        return {
+          data: [],
+          success: false,
+          message: 'One or more selected categories were not found',
+        }
+      }
+
       const categoryIds = categoryDocs.map((cat) => cat._id)
-      query.categories = { $in: categoryIds }
+      query.$and = [
+        { categories: categoryDoc._id },
+        { categories: { $in: categoryIds } },
+      ]
+      delete query.categories
     }
 
     if (minWeight || maxWeight) {
-      query['variables.weight'] = {}
-      if (minWeight) query['variables.weight'].$gte = Number(minWeight)
-      if (maxWeight) query['variables.weight'].$lte = Number(maxWeight)
+      const weightQuery: { $gte?: number; $lte?: number } = {}
+      if (minWeight) weightQuery.$gte = Number(minWeight)
+      if (maxWeight) weightQuery.$lte = Number(maxWeight)
+      query['variables.weight'] = weightQuery
     }
 
     const skip = (page - 1) * limit
@@ -57,30 +74,33 @@ export async function getProductsList({
       .sort({ visited: -1, _id: 1 })
       .skip(skip)
       .limit(limit)
+      .populate('categories', 'slug parentCategory')
       .lean()
 
     const totalItems = await Product.countDocuments(query)
     const totalPages = Math.ceil(totalItems / limit)
 
-    const localizedProducts = products.map((product) => ({
-      ...product,
-      name: product.name[locale],
-      category: menu,
-      description: product.description[locale],
-      menu: product.menu[locale],
-      composition: product.composition[locale],
-      images: product.images
-        ? [
-            cloudinary.url(`${product.images}`, {
-              transformation: [
-                { width: 500, crop: 'scale' },
-                { quality: 35 },
-                { fetch_format: 'auto' },
-              ],
-            }),
-          ]
-        : [],
-    }))
+    const localizedProducts = products.map((product) => {
+      const populatedCategories = product.categories as unknown as Array<{
+        _id: unknown
+        slug: string
+        parentCategory?: unknown
+      }>
+
+      return {
+        _id: product._id?.toString(),
+        slug: product.slug,
+        name: product.name[locale],
+        category: getCanonicalProductCategorySlug(populatedCategories) ?? menu,
+        description: product.description[locale],
+        metaDescription: product.metaDescription?.[locale],
+        img: product.img,
+        variables: JSON.parse(JSON.stringify(product.variables)),
+        statusLabel: product.statusLabel,
+        categories: populatedCategories.map((category) => String(category._id)),
+        images: [],
+      }
+    })
 
     return {
       data: localizedProducts,

@@ -5,13 +5,18 @@ interface BlogProps {
 }
 
 export default function PostList({ posts }: BlogProps) {
-  if (!posts.length) return <h1>Оце трагедія! Біжимо писати для вас пости!</h1>
+  if (!posts.length) return <p>Оце трагедія! Біжимо писати для вас пости!</p>
 
   return (
     <div className="mt-[50px] flex flex-col gap-12 lg:mt-[108px]">
       <div className="grid justify-center gap-7 md:grid-cols-2 md:gap-[50px]">
         {posts.slice(0, 2).map((post, index) => (
-          <PostCard key={post._id} post={posts[index]} variant="big" />
+          <PostCard
+            key={post._id}
+            post={posts[index]}
+            variant="big"
+            priority={index === 0}
+          />
         ))}
       </div>
       <span className="border-foreground h-1 border-t border-dashed"></span>

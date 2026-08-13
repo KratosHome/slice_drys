@@ -1,8 +1,18 @@
-import { FC } from 'react'
-import { SITE_URL } from '@/data/contacts'
+import {
+  absoluteUrl,
+  buildBreadcrumbList,
+  buildOrganization,
+  buildProductNode,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  serializeJsonLd,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
 interface JsonLdProps {
   currentCategories: ICategory
+  rootCategory?: ICategory
   locale: string
   canonicalUrl: string
   productsData: {
@@ -14,82 +24,86 @@ interface JsonLdProps {
   categoriesParam: string
 }
 
-const ProductListJsonLd: FC<JsonLdProps> = ({
+export default function ProductListJsonLd({
   currentCategories,
+  rootCategory,
   locale,
   canonicalUrl,
   productsData,
   categoriesParam,
-}) => {
+}: JsonLdProps) {
+  const pageLocale = locale as ILocale
+  const pageId = `${canonicalUrl}#webpage`
+  const itemListId = `${canonicalUrl}#itemlist`
+  const breadcrumbId = `${canonicalUrl}#breadcrumb`
+  const categoryName = currentCategories.name[pageLocale]
+  const rootCategorySlug = categoriesParam.split('/')[1]
+  const homeName = pageLocale === 'uk' ? 'Головна' : 'Home'
+  const breadcrumbItems = [
+    { name: homeName, url: localizedUrl(pageLocale) },
+    ...(rootCategory && rootCategory.slug !== currentCategories.slug
+      ? [
+          {
+            name: rootCategory.name[pageLocale],
+            url: localizedUrl(pageLocale, `products/${rootCategory.slug}`),
+          },
+        ]
+      : []),
+    { name: categoryName, url: canonicalUrl },
+  ]
+
+  const products = productsData.data.flatMap((product) => {
+    const categorySlug = product.category || rootCategorySlug
+    if (!categorySlug || !product.slug) return []
+
+    const productUrl = localizedUrl(
+      pageLocale,
+      `products/${categorySlug}/product/${product.slug}`,
+    )
+
+    return [
+      buildProductNode({ ...product, category: categorySlug }, productUrl),
+    ]
+  })
+
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: currentCategories.name[locale as ILocale],
-    description: currentCategories?.metaDescription?.[locale as ILocale],
-    url: canonicalUrl,
-    image: currentCategories.image || `${SITE_URL}/default-category-image.jpg`,
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        uk: `${SITE_URL}/uk/${categoriesParam}`,
-        en: `${SITE_URL}/en/${categoriesParam}`,
+    '@graph': [
+      buildOrganization(pageLocale),
+      buildWebsite(),
+      buildBreadcrumbList(breadcrumbId, breadcrumbItems),
+      {
+        '@type': 'CollectionPage',
+        '@id': pageId,
+        url: canonicalUrl,
+        name: categoryName,
+        description: currentCategories.metaDescription?.[pageLocale],
+        image: absoluteUrl(currentCategories.image),
+        inLanguage: languageTag(pageLocale),
+        isPartOf: { '@id': WEBSITE_ID },
+        breadcrumb: { '@id': breadcrumbId },
+        mainEntity: { '@id': itemListId },
       },
-    },
-    products: productsData.data.map((product) => ({
-      '@type': 'Product',
-      '@id': `${SITE_URL}/${locale}/products/${product.category}/product/${product.slug}`,
-      name: product.name,
-      image: product.img,
-      description: product.description,
-      brand: {
-        '@type': 'Brand',
-        name: "Slice & Dry's",
+      {
+        '@type': 'ItemList',
+        '@id': itemListId,
+        name: categoryName,
+        numberOfItems: products.length,
+        itemListElement: products.map((product, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: { '@id': product['@id'] },
+        })),
       },
-      sku: product._id,
-      offers: product.variables.map((variable) => ({
-        '@type': 'Offer',
-        url: `${SITE_URL}/${locale}/products/${product.category}/product/${product.slug}`,
-        priceCurrency: 'UAH',
-        price: variable.price,
-        itemCondition: 'https://schema.org/NewCondition',
-        availability: 'https://schema.org/InStock',
-      })),
-    })),
-    pagination: {
-      prev:
-        productsData.currentPage > 1
-          ? `${canonicalUrl}?page=${productsData.currentPage - 1}`
-          : canonicalUrl,
-      next:
-        productsData.currentPage < productsData.totalPages
-          ? `${canonicalUrl}?page=${productsData.currentPage + 1}`
-          : canonicalUrl,
-    },
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: 'Головна',
-          item: SITE_URL,
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: currentCategories.name[locale as ILocale],
-          item: canonicalUrl,
-        },
-      ],
-    },
+      ...products,
+    ],
   }
 
   return (
     <script
+      id="product-list-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
-
-export default ProductListJsonLd

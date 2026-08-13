@@ -10,7 +10,12 @@ const categoriesSchemaServer = new mongoose.Schema(
       en: { type: String, maxlength: 255 },
       uk: { type: String, maxlength: 255 },
     },
-    slug: { type: String, required: true, unique: true },
+    slug: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
     description: {
       en: { type: String, maxlength: 8500 },
       uk: { type: String, maxlength: 8500 },
@@ -43,6 +48,9 @@ const categoriesSchemaServer = new mongoose.Schema(
   },
   { timestamps: true },
 )
+
+categoriesSchemaServer.index({ parentCategory: 1, order: 1 })
+categoriesSchemaServer.index({ slug: 1 }, { unique: true })
 
 export const Category =
   mongoose.models.Category || mongoose.model('Category', categoriesSchemaServer)

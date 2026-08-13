@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { notFound, permanentRedirect } from 'next/navigation'
 
 import {
   Pagination,
@@ -27,11 +28,9 @@ import { cn } from '@/utils/cn'
 
 import { blogMetaData } from '@/data/blog/blog-meta-data'
 import { locales } from '@/data/locales'
-import NotFoundPage from '@/components/not-found'
-import { fetchTags } from '@/data/fetch-tags'
 import ToTheTop from '@/components/ui/to-the-top'
-import { revalidateDay } from '@/constants/revalidate'
 import { SITE_URL } from '@/data/contacts'
+import { getPublicPosts } from '@/server/public-data-cache.server'
 
 export const revalidate = 86400
 
@@ -40,48 +39,64 @@ type PageProps = {
   searchParams: Promise<{ page?: string }>
 }
 
+const parsePageNumber = (value?: string) => {
+  if (value === undefined) return 1
+  if (!/^\d+$/.test(value)) return null
+
+  const page = Number(value)
+  return Number.isSafeInteger(page) && page >= 1 ? page : null
+}
+
 export async function generateMetadata({
   params,
   searchParams,
 }: PageProps): Promise<Metadata> {
   const { locale } = await params
-  const { page } = await searchParams
+  const { page: pageParam } = await searchParams
+  const page = parsePageNumber(pageParam)
 
   const ogImage = `${SITE_URL}/blog-image.webp`
 
-  const canonicalUrl = `${SITE_URL}/${locale}/blog`
-
-  const url =
-    page && +page > 1
-      ? `${SITE_URL}/${locale}/blog?page=${page}`
-      : `${SITE_URL}/${locale}/blog`
+  const pageSuffix = page && page > 1 ? `?page=${page}` : ''
+  const canonicalUrl = `${SITE_URL}/${locale}/blog${pageSuffix}`
+  const pageTitle =
+    page && page > 1
+      ? `${blogMetaData[locale].title} — ${locale === 'uk' ? 'Сторінка' : 'Page'} ${page}`
+      : blogMetaData[locale].title
 
   return {
-    title: blogMetaData[locale].title,
+    title: pageTitle,
     description: blogMetaData[locale].description,
     keywords: blogMetaData[locale].keywords,
     robots: 'index, follow',
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${SITE_URL}/en/blog`,
-        uk: `${SITE_URL}/uk/blog`,
+        en: `${SITE_URL}/en/blog${pageSuffix}`,
+        uk: `${SITE_URL}/uk/blog${pageSuffix}`,
+        'x-default': `${SITE_URL}/uk/blog${pageSuffix}`,
       },
     },
     openGraph: {
-      title: blogMetaData[locale].openGraphTitle,
+      title: pageTitle,
       description: blogMetaData[locale].openGraphDescription,
-      url,
+      url: canonicalUrl,
       type: 'website',
       locale: locale === 'uk' ? 'uk_UA' : 'en_US',
       images: [
         {
           url: ogImage,
-          width: 1200,
-          height: 1012,
+          width: 828,
+          height: 648,
           alt: blogMetaData[locale].alt,
         },
       ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: blogMetaData[locale].description,
+      images: [ogImage],
     },
   }
 }
@@ -93,48 +108,48 @@ export async function generateStaticParams() {
 const getPageUrl = (
   newPage: number,
   searchParamsObj: Record<string, string>,
+  basePath: string,
 ) => {
   const searchParams = new URLSearchParams(searchParamsObj)
-  if (searchParams.get('page')) {
-    searchParams.set('page', newPage.toString())
-  } else {
-    searchParams.append('page', newPage.toString())
-  }
-  return '?' + searchParams.toString()
+  if (newPage === 1) searchParams.delete('page')
+  else searchParams.set('page', newPage.toString())
+
+  const query = searchParams.toString()
+  return query ? `${basePath}?${query}` : basePath
 }
 
 export default async function Blog({ params, searchParams }: PageProps) {
   const { locale } = await params
-  const t = await getTranslations('breadcrumbs')
+  const [t, tPagin] = await Promise.all([
+    getTranslations('breadcrumbs'),
+    getTranslations('pagination'),
+  ])
   const blogSearchParams = await searchParams
 
-  const pageItem = parseInt(blogSearchParams.page || '1', 10)
+  const pageItem = parsePageNumber(blogSearchParams.page)
 
-  const postsData = await fetch(
-    `${SITE_URL}/api/posts?${new URLSearchParams({ ...(await searchParams), locale }).toString()}&page=1&limit=8`,
-    {
-      cache: 'no-store',
-      next: { tags: [`${fetchTags.posts}`] },
-    },
-  ).then(async (res) => {
-    if (!res.ok) return null
-    const data = await res.json()
-    if (data?.success === false) return null
-    return data
-  })
+  if (pageItem === null) notFound()
+  if (blogSearchParams.page !== undefined && pageItem === 1) {
+    permanentRedirect(`/${locale}/blog`)
+  }
 
-  if (!postsData) return <NotFoundPage />
+  const postsData = await getPublicPosts(locale, pageItem, 8)
 
-  const { postsLocalized, currentPage, totalPages } = postsData
+  if (!postsData.success || !('postsLocalized' in postsData)) notFound()
+
+  const validatedPostsData = postsData as IGetPostsClient
+  const { postsLocalized, currentPage, totalPages } = validatedPostsData
+
+  if (pageItem > 1 && (totalPages === 0 || pageItem > totalPages)) notFound()
 
   return (
     <>
-      <BlogJsonLd data={postsData} />
+      <BlogJsonLd data={validatedPostsData} />
       <div className="mx-auto max-w-[1280px] overflow-hidden p-5">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              <BreadcrumbLink href={`/${locale}`}>{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -160,9 +175,14 @@ export default async function Blog({ params, searchParams }: PageProps) {
                   <PaginationPrevious
                     className="text-[36px] md:text-[64px]"
                     disabled={currentPage === 1}
+                    label={tPagin('previous')}
                     href={
                       currentPage > 1
-                        ? getPageUrl(currentPage - 1, blogSearchParams)
+                        ? getPageUrl(
+                            currentPage - 1,
+                            blogSearchParams,
+                            `/${locale}/blog`,
+                          )
                         : '#'
                     }
                   />
@@ -179,8 +199,17 @@ export default async function Blog({ params, searchParams }: PageProps) {
                     return (
                       <PaginationItem key={item}>
                         <PaginationLink
-                          href={getPageUrl(item, blogSearchParams)}
-                          isActive={postsData.currentPage === item}
+                          href={getPageUrl(
+                            item,
+                            blogSearchParams,
+                            `/${locale}/blog`,
+                          )}
+                          isActive={validatedPostsData.currentPage === item}
+                          label={
+                            validatedPostsData.currentPage === item
+                              ? tPagin('active-page', { page: item })
+                              : tPagin('go-to-page', { page: item })
+                          }
                           className="text-xl sm:text-2xl md:text-4xl"
                         >
                           {item}
@@ -196,9 +225,14 @@ export default async function Blog({ params, searchParams }: PageProps) {
                   <PaginationNext
                     className="text-[36px] md:text-[64px]"
                     disabled={currentPage === totalPages}
+                    label={tPagin('next')}
                     href={
                       currentPage < totalPages
-                        ? getPageUrl(currentPage + 1, blogSearchParams)
+                        ? getPageUrl(
+                            currentPage + 1,
+                            blogSearchParams,
+                            `/${locale}/blog`,
+                          )
                         : '#'
                     }
                   />

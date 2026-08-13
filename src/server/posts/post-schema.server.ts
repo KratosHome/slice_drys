@@ -50,7 +50,8 @@ const postSchemaServer = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
-      unique: true,
+      lowercase: true,
+      trim: true,
     },
     metaDescription: {
       en: {
@@ -84,6 +85,9 @@ const postSchemaServer = new mongoose.Schema(
   },
   { timestamps: true },
 )
+
+postSchemaServer.index({ createdAt: -1 })
+postSchemaServer.index({ slug: 1 }, { unique: true })
 
 export const Post =
   mongoose.models.Blog || mongoose.model('Blog', postSchemaServer)

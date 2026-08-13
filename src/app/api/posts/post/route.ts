@@ -5,9 +5,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const locale = searchParams.get('locale') as ILocale
   const slug = searchParams.get('slug') as string
-  const isVisited = searchParams.get('isVisited') === 'true'
+  const data = await getPost({ locale, slug })
 
-  const data = await getPost({ locale, slug, isVisited })
-
-  return NextResponse.json(data)
+  return NextResponse.json(data, { status: data.success ? 200 : 404 })
 }

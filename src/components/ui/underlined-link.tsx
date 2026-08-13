@@ -36,7 +36,7 @@ const UnderlinedLink = forwardRef<
     as = 'a',
     className,
     children,
-    target = '_blank',
+    target = '_self',
     ...restProps
   } = props
 
@@ -93,7 +93,7 @@ const UnderlinedLink = forwardRef<
       restProps as AnchorHTMLAttributes<HTMLAnchorElement>
     return (
       <Link
-        href={href || '/public'}
+        href={href || `/${locale}`}
         ref={ref as Ref<HTMLAnchorElement>}
         className={classes}
         target={target}

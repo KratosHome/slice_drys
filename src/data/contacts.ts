@@ -10,4 +10,21 @@ export const contacts = {
   time: '10:00 - 19:00',
 } as const
 
-export const SITE_URL = process.env.NEXT_URL ?? 'https://slicedrys.com'
+const PRODUCTION_SITE_URL = 'https://slicedrys.com'
+const configuredSiteUrl = process.env.NEXT_URL?.replace(/\/+$/, '')
+
+const isLocalSiteUrl = (value?: string) => {
+  if (!value) return false
+
+  try {
+    const hostname = new URL(value).hostname
+    return hostname === 'localhost' || hostname === '127.0.0.1'
+  } catch {
+    return true
+  }
+}
+
+export const SITE_URL =
+  process.env.NODE_ENV === 'production' && isLocalSiteUrl(configuredSiteUrl)
+    ? PRODUCTION_SITE_URL
+    : (configuredSiteUrl ?? PRODUCTION_SITE_URL)

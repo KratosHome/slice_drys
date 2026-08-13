@@ -16,26 +16,38 @@ import SaleLabel from '@/components/client/labels/sale-label'
 import { Button } from '@/components/ui/button'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
 
 interface IProductProps {
   product: IProduct
+  priority?: boolean
+  initialVariant?: IVariableProduct
 }
 
-export default function Product({ product }: IProductProps) {
+const subscribeToHydration = () => () => undefined
+
+export default function Product({
+  product,
+  priority = false,
+  initialVariant,
+}: IProductProps) {
   const locale = useLocale() as ILocale
   const t = useTranslations('product')
 
-  const mounted = typeof window !== 'undefined'
+  const mounted = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  )
 
   const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
     (state) => state,
   )
 
   const [selectedVariable, setSelectedVariable] = useState(
-    product.variant ?? product.variables[0],
+    initialVariant ?? product.variant ?? product.variables[0],
   )
 
   const isInCart: boolean = hasItemInCart(
@@ -88,10 +100,9 @@ export default function Product({ product }: IProductProps) {
               src={product.img!}
               alt={product.name}
               className="relative aspect-square h-full w-full"
-              sizes="(max-width: 640px) 140px, (min-width: 768px) 229px"
+              sizes="(max-width: 767px) 140px, 229px"
               fill
-              priority
-              loading="eager"
+              priority={priority}
               quality={50}
               style={{
                 objectFit: 'contain',

@@ -1,9 +1,7 @@
 import React from 'react'
-import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import { detectDevice } from '@/utils/device-detection'
 
 import { cn } from '@/utils/cn'
 import Socials from '@/components/ui/socials'
@@ -13,10 +11,6 @@ type Props = Readonly<{
 }>
 const JoinCommunity = async ({ className }: Props) => {
   const t = await getTranslations('promo-banner-join-community')
-  const userAgent: string = (await headers()).get('user-agent') || ''
-  const device: IDevice = detectDevice(userAgent)
-  const { isMobile } = device
-
   return (
     <section
       className={cn(
@@ -33,8 +27,8 @@ const JoinCommunity = async ({ className }: Props) => {
         </div>
         <div className="social-wrapper absolute top-[275px] -left-[30px] z-10 flex -rotate-[12deg] flex-row-reverse items-center justify-start gap-[25px] bg-red-700 p-[15px_15px_15px_40px] sm:-left-[40px] sm:p-[15px_15px_15px_60px] md:-right-[110px] md:left-auto md:gap-[50px] md:p-[20px_20px_20px_40px] md:pr-[160px]">
           <Socials
-            className="text-background dark:text-foreground"
-            size={isMobile ? 40 : 60}
+            className="text-background dark:text-foreground [&_svg]:size-10 md:[&_svg]:size-[60px]"
+            size={40}
           />
         </div>
         <Link
@@ -66,6 +60,7 @@ const JoinCommunity = async ({ className }: Props) => {
             alt={t('title')}
             className="-top-[60px]! -right-[40px]! bottom-auto! left-auto! max-w-[150px] object-contain sm:max-w-[70%] md:top-0! md:right-0! md:max-w-[503px]"
             fill
+            sizes="(max-width: 767px) 150px, (max-width: 1279px) 42vw, 503px"
           />
         </div>
       </div>

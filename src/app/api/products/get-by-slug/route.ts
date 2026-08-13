@@ -11,5 +11,5 @@ export async function GET(request: Request) {
     locale,
   })
 
-  return NextResponse.json(data)
+  return NextResponse.json(data, { status: data.success ? 200 : 404 })
 }

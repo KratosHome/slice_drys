@@ -1,8 +1,7 @@
 const blogMetaDataEn = {
-  title:
-    'Blog about Dried Foods – Original Recipes, Useful Tips & Stories | SLICE&DRY’S',
+  title: "Dried Snack Recipes & Tips | Slice & Dry's Blog",
   description:
-    'Read the SLICE&DRY’S blog about dried meat, fruits, and vegetables: exclusive recipes, flavor-preserving life hacks, health benefits, and healthy eating trends.',
+    'Discover recipes, storage tips and useful facts about dried meat, fruit and vegetables. Find healthy snack ideas and new flavors in the Slice & Dry’s blog.',
   keywords: [
     'dried meat',
     'recipes with dried meat',
@@ -13,20 +12,18 @@ const blogMetaDataEn = {
     'flavor-preserving life hacks',
     'natural products',
     'high-protein snack',
-    'SLICE&DRY’S blog',
+    "Slice & Dry's blog",
   ],
-  openGraphTitle:
-    'Blog about Dried Foods – Original Recipes, Useful Tips & Stories | SLICE&DRY’S',
+  openGraphTitle: "Dried Snack Recipes & Tips | Slice & Dry's Blog",
   openGraphDescription:
     'Learn everything about dried foods: how to store, prepare, and incorporate them into a healthy diet. Discover new flavors with SLICE&DRY’S!',
   alt: 'Delicious dried meat and fruits from SLICE&DRY’S',
 }
 
 const blogMetaDataUk = {
-  title:
-    'Блог про сушеники – авторські рецепти, корисні поради та історії | SLICE&DRY’S',
+  title: "Рецепти та поради про сушені снеки | Блог Slice & Dry's",
   description:
-    'Читайте блог SLICE&DRY’S про сушене м’ясо, фрукти та овочі: ексклюзивні рецепти, лайфхаки зі збереження смаку, корисні властивості та тренди здорового харчування.',
+    'Читайте рецепти, поради зі зберігання та корисні факти про сушене м’ясо, фрукти й овочі. Знаходьте ідеї здорових перекусів у блозі Slice & Dry’s.',
   keywords: [
     'сушене м’ясо',
     'рецепти з сушеного м’яса',
@@ -37,10 +34,9 @@ const blogMetaDataUk = {
     'лайфхаки зі збереження смаку',
     'натуральні продукти',
     'високобілковий перекус',
-    'SLICE&DRY’S блог',
+    "блог Slice & Dry's",
   ],
-  openGraphTitle:
-    'Блог про сушеники – авторські рецепти, корисні поради та історії | SLICE&DRY’S',
+  openGraphTitle: "Рецепти та поради про сушені снеки | Блог Slice & Dry's",
   openGraphDescription:
     'Дізнайтесь усе про сушені продукти: як їх зберігати, готувати та включати у здоровий раціон. Відкривайте нові смаки разом із SLICE&DRY’S!',
   alt: 'Смачне сушене м’ясо та фрукти від SLICE&DRY’S',

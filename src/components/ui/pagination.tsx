@@ -89,6 +89,7 @@ const PaginationLink = ({
         href={href}
         onClick={onClick}
         aria-label={label}
+        aria-current={isActive ? 'page' : undefined}
       >
         {props.children}
 
@@ -116,6 +117,7 @@ const PaginationPrevious = ({
 }: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     label={label}
+    aria-disabled={disabled}
     size="default"
     className={cn(
       'font-rubik gap-1 pl-2.5',
@@ -137,7 +139,7 @@ const PaginationNext = ({
   ...props
 }: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label={label}
+    label={label}
     aria-disabled={disabled}
     size="default"
     className={cn(

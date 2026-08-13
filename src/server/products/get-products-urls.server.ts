@@ -4,14 +4,23 @@ import { Product } from '@/server/products/product-schema.server'
 
 import { connectToDbServer } from '@/server/connect-to-db.server'
 
-export async function getProductsUrls(): Promise<IResult<IProductSlug>> {
+export interface ProductSitemapEntry {
+  slug: string
+  categories: Array<{
+    slug: string
+    parentCategory?: unknown
+  }>
+  updatedAt: Date
+}
+
+export async function getProductsUrls(): Promise<IResult<ProductSitemapEntry>> {
   try {
     await connectToDbServer()
 
     const products = await Product.find({})
-      .select('slug categories')
-      .populate('categories', 'slug')
-      .lean<IProductSlug[]>()
+      .select('slug categories updatedAt')
+      .populate('categories', 'slug parentCategory')
+      .lean<ProductSitemapEntry[]>()
 
     const productsWithLowercaseSlug = products.map((product) => ({
       ...product,

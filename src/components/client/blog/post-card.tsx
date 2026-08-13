@@ -11,12 +11,14 @@ interface PostCardProps {
   post?: IPost
   variant?: 'small' | 'big'
   className?: string
+  priority?: boolean
 }
 
 export default function PostCard({
   post,
   variant = 'small',
   className,
+  priority = false,
 }: PostCardProps) {
   const local = useLocale()
 
@@ -51,6 +53,7 @@ export default function PostCard({
               src={post?.img || ''}
               alt={post?.title}
               fill
+              priority={priority}
               className="h-full w-full object-cover transition-all duration-300 group-hover:rounded-2xl"
               sizes={
                 variant === 'big'

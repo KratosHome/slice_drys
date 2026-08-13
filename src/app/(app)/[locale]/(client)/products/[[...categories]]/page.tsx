@@ -1,4 +1,5 @@
 import React from 'react'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Product from '@/components/client/product'
 import ProductFilters from '@/components/client/product-filters/product-filters'
 import {
@@ -22,16 +23,19 @@ import {
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
-import { headers } from 'next/headers'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
 import Delivery from '@/components/client/promo-banner/delivery'
 import { getPaginationRange } from '@/utils/get-pagination-range'
-import NotFoundPage from '@/components/not-found'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 import { SITE_URL } from '@/data/contacts'
-import { fetchTags } from '@/data/fetch-tags'
+import {
+  getPublicCategories,
+  getPublicCurrentCategory,
+  getPublicProductsList,
+  getPublicProductWeights,
+} from '@/server/public-data-cache.server'
 
 export const revalidate = 86400
 
@@ -40,14 +44,6 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 const getCategoryPath = (categories?: string[]) =>
   (categories ?? []).map((category) => category.toLowerCase())
-
-const getRequestOrigin = async () => {
-  const requestHeaders = await headers()
-  const host = requestHeaders.get('host')
-  const protocol = requestHeaders.get('x-forwarded-proto') ?? 'http'
-
-  return host ? `${protocol}://${host}` : SITE_URL
-}
 
 const getSelectedCategories = (
   pathCategories: string[],
@@ -63,6 +59,120 @@ const getSelectedCategories = (
   }
 
   return pathCategories.slice(1)
+}
+
+const getSingleSearchValue = (
+  value: string | string[] | undefined,
+): string | undefined => (typeof value === 'string' ? value : undefined)
+
+const parsePageNumber = (value: string | string[] | undefined) => {
+  if (value === undefined) return 1
+  if (typeof value !== 'string' || !/^\d+$/.test(value)) return null
+
+  const page = Number(value)
+  return Number.isSafeInteger(page) && page >= 1 ? page : null
+}
+
+const normalizeSelectedCategories = (
+  pathCategories: string[],
+  queryCategories?: string | string[],
+) =>
+  Array.from(
+    new Set(
+      getSelectedCategories(pathCategories, queryCategories)
+        .map((category) => category.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  )
+
+const serializeSearchParams = (
+  pathname: string,
+  searchParams: Record<string, string | string[] | undefined>,
+) => {
+  const query = new URLSearchParams()
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (Array.isArray(value)) value.forEach((item) => query.append(key, item))
+    else if (value !== undefined) query.set(key, value)
+  })
+
+  const queryString = query.toString()
+  return queryString ? `${pathname}?${queryString}` : pathname
+}
+
+const getCatalogIdentity = async (
+  locale: ILocale,
+  categories: string[] | undefined,
+  searchParams: Record<string, string | string[] | undefined>,
+) => {
+  const originalPath = categories ?? []
+  const categoryPath = getCategoryPath(categories)
+  const rootCategorySlug = categoryPath[0]
+
+  if (!rootCategorySlug || categoryPath.length > 2) notFound()
+
+  const [rootCategoryResult, categoriesData] = await Promise.all([
+    getPublicCurrentCategory(rootCategorySlug),
+    getPublicCategories(rootCategorySlug, locale),
+  ])
+
+  if (!rootCategoryResult.success || !rootCategoryResult.data) notFound()
+  if (rootCategoryResult.data.parentCategory != null) notFound()
+  if (!categoriesData.success) notFound()
+
+  const childCategories = categoriesData.data
+  // Mixes and promotions expose cross-category filter options, not real URL
+  // descendants. Keep those choices in query parameters only.
+  const pathChildCategories =
+    rootCategorySlug === 'mixes' || rootCategorySlug === 'promotions'
+      ? []
+      : childCategories
+  const allowedCategorySlugs = new Set(
+    childCategories.map(({ slug }) => slug.toLowerCase()),
+  )
+  const pathChildSlug = categoryPath[1]
+
+  const allowedPathCategorySlugs = new Set(
+    pathChildCategories.map(({ slug }) => slug.toLowerCase()),
+  )
+
+  if (pathChildSlug && !allowedPathCategorySlugs.has(pathChildSlug)) notFound()
+
+  const selectedCategories = normalizeSelectedCategories(
+    categoryPath,
+    searchParams.categories,
+  )
+  if (
+    selectedCategories.some((category) => !allowedCategorySlugs.has(category))
+  ) {
+    notFound()
+  }
+
+  const currentCategorySlug = pathChildSlug ?? rootCategorySlug
+  const currentCategoryResult =
+    currentCategorySlug === rootCategorySlug
+      ? rootCategoryResult
+      : await getPublicCurrentCategory(currentCategorySlug)
+
+  if (!currentCategoryResult.success || !currentCategoryResult.data) {
+    notFound()
+  }
+
+  const canonicalPath = pathChildSlug
+    ? `products/${rootCategorySlug}/${pathChildSlug}`
+    : `products/${rootCategorySlug}`
+
+  return {
+    categoryPath,
+    originalPath,
+    rootCategorySlug,
+    selectedCategories,
+    currentCategory: currentCategoryResult.data,
+    rootCategory: rootCategoryResult.data,
+    childCategories,
+    categoryName: categoriesData.name ?? rootCategoryResult.data.name[locale],
+    canonicalPath,
+  }
 }
 
 const escapeHtml = (value: string) =>
@@ -94,111 +204,60 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, categories } = await params
   const resolvedSearchParams = await searchParams
-  const { categories: queryCategories } = resolvedSearchParams
-  const categoryPath = getCategoryPath(categories)
-  const rootCategorySlug = categoryPath[0]
-  const hasQueryParams = Object.keys(resolvedSearchParams).length > 0
+  const page = parsePageNumber(resolvedSearchParams.page)
+  if (page === null) notFound()
 
-  if (!rootCategorySlug) {
-    return {
-      title: 'categories not found',
-      description: 'categories not found',
-      robots: 'noindex, nofollow',
-    }
-  }
-
-  const selectedCategories = getSelectedCategories(
-    categoryPath,
-    queryCategories,
+  const { currentCategory, canonicalPath } = await getCatalogIdentity(
+    locale,
+    categories,
+    resolvedSearchParams,
   )
-  const currentCategorySlug =
-    selectedCategories.length === 1 ? selectedCategories[0] : rootCategorySlug
-  const apiOrigin = await getRequestOrigin()
-  const currentCategories = await fetch(
-    `${apiOrigin}/api/products/current-categories?&slug=${currentCategorySlug}`,
-    {
-      cache: 'no-store',
-      next: { tags: [`${fetchTags.products}`] },
-    },
-  ).then(async (res) => {
-    if (!res.ok) return null
-    const data = await res.json()
-    if (data?.success === false) return null
-    return data
-  })
-
-  if (!currentCategories?.data) {
-    return {
-      title: 'categories not found',
-      description: 'categories not found',
-      robots: 'noindex, nofollow',
-    }
-  }
-
-  const currentCategory = currentCategories.data as unknown as ICategory
-  const noIndexMetadata = {
-    title: currentCategory.metaTitle?.[locale],
-    description: currentCategory.metaDescription?.[locale] || '',
-    keywords:
-      currentCategory.metaKeywords?.[locale]
-        ?.split(',')
-        .map((keyword: string) => keyword.trim()) || [],
-    robots: 'noindex, nofollow',
-    openGraph: {
-      title: currentCategory.name?.[locale],
-      description: currentCategory.metaDescription?.[locale] || '',
-      type: 'website',
-      locale: locale === 'uk' ? 'uk_UA' : 'en_US',
-      images: [
-        {
-          url: currentCategory.image || '',
-          width: 1200,
-          height: 630,
-          alt: currentCategory.metaTitle?.[locale],
-        },
-      ],
-    },
-  } satisfies Metadata
-
-  if (hasQueryParams) return noIndexMetadata
-
-  const canonicalPath =
-    selectedCategories.length === 1
-      ? `products/${rootCategorySlug}/${selectedCategories[0]}`
-      : `products/${rootCategorySlug}`
-  const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}`
+  const hasFacetQuery =
+    resolvedSearchParams.categories !== undefined ||
+    resolvedSearchParams.minWeight !== undefined ||
+    resolvedSearchParams.maxWeight !== undefined
+  const pageSuffix = !hasFacetQuery && page > 1 ? `?page=${page}` : ''
+  const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}${pageSuffix}`
   const description = currentCategory.metaDescription?.[locale] || ''
+  const socialTitle =
+    currentCategory.metaTitle?.[locale] ?? currentCategory.name[locale]
+  const socialImage = currentCategory.image
   const metaKeywordsArray =
     currentCategory.metaKeywords?.[locale]
       ?.split(',')
       .map((keyword: string) => keyword.trim()) || []
 
   return {
-    title: currentCategory.metaTitle?.[locale],
+    title:
+      page > 1 && !hasFacetQuery
+        ? `${currentCategory.metaTitle?.[locale] ?? currentCategory.name[locale]} — ${locale === 'uk' ? 'Сторінка' : 'Page'} ${page}`
+        : currentCategory.metaTitle?.[locale],
     description,
     keywords: metaKeywordsArray,
-    robots: 'index, follow',
+    robots: hasFacetQuery
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${SITE_URL}/en/${canonicalPath}`,
-        uk: `${SITE_URL}/uk/${canonicalPath}`,
+        en: `${SITE_URL}/en/${canonicalPath}${pageSuffix}`,
+        uk: `${SITE_URL}/uk/${canonicalPath}${pageSuffix}`,
+        'x-default': `${SITE_URL}/uk/${canonicalPath}${pageSuffix}`,
       },
     },
     openGraph: {
-      title: currentCategory.name?.[locale],
+      title: socialTitle,
       description,
       url: canonicalUrl,
       type: 'website',
       locale: locale === 'uk' ? 'uk_UA' : 'en_US',
-      images: [
-        {
-          url: currentCategory.image || '',
-          width: 1200,
-          height: 630,
-          alt: currentCategory.metaTitle?.[locale],
-        },
-      ],
+      images: socialImage ? [{ url: socialImage, alt: socialTitle }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: socialTitle,
+      description,
+      images: socialImage ? [socialImage] : [],
     },
   }
 }
@@ -213,151 +272,133 @@ export default async function ProductsPage(props: {
     categories: queryCategories,
     minWeight,
     maxWeight,
-    page,
+    page: pageParam,
   } = resolvedSearchParams
-  const hasQueryParams = Object.keys(resolvedSearchParams).length > 0
-  const categoryPath = getCategoryPath(categories)
-  const rootCategorySlug = categoryPath[0]
+  const page = parsePageNumber(pageParam)
+  const minWeightValue = getSingleSearchValue(minWeight)
+  const maxWeightValue = getSingleSearchValue(maxWeight)
 
-  if (!rootCategorySlug) {
-    return <NotFoundPage />
+  if (page === null || Array.isArray(minWeight) || Array.isArray(maxWeight)) {
+    notFound()
   }
 
-  const selectedCategories = getSelectedCategories(
-    categoryPath,
-    queryCategories,
-  )
-  const currentCategorySlug =
-    selectedCategories.length === 1 ? selectedCategories[0] : rootCategorySlug
-
-  const t = await getTranslations('product-list')
-  const tPagin = await getTranslations('pagination')
-  const productBgImg = getProductBgImg(t)
-  const apiOrigin = await getRequestOrigin()
-  const productsParams = new URLSearchParams({ locale: String(locale) })
-
-  productsParams.append('menu', rootCategorySlug)
-  if (page) productsParams.append('page', String(page))
-  if (selectedCategories.length > 0) {
-    productsParams.append('categories', selectedCategories.join(','))
-  }
-  if (minWeight) productsParams.append('minWeight', String(minWeight))
-  if (maxWeight) productsParams.append('maxWeight', String(maxWeight))
-
-  const [productsData, weightData, categoriesData, currentCategories] =
-    await Promise.all([
-      fetch(`${apiOrigin}/api/products/get-list?${productsParams.toString()}`, {
-        cache: 'no-store',
-        next: { tags: [`${fetchTags.products}`] },
-      }).then(async (res) => {
-        if (!res.ok) return null
-        const data = await res.json()
-        if (data?.success === false) return null
-        return data
-      }),
-      fetch(`${apiOrigin}/api/products/get-weight?&menu=${rootCategorySlug}`, {
-        cache: 'no-store',
-        next: { tags: [`${fetchTags.products}`] },
-      }).then(async (res) => {
-        if (!res.ok) return null
-        const data = await res.json()
-        if (data?.success === false) return null
-        return data
-      }),
-      fetch(
-        `${apiOrigin}/api/products/get-categories?&menu=${rootCategorySlug}&locale=${locale}`,
-        {
-          cache: 'no-store',
-          next: { tags: [`${fetchTags.products}`] },
-        },
-      ).then(async (res) => {
-        if (!res.ok) return null
-        const data = await res.json()
-        if (data?.success === false) return null
-        return data
-      }),
-      fetch(
-        `${apiOrigin}/api/products/current-categories?&slug=${currentCategorySlug}`,
-        {
-          cache: 'no-store',
-          next: { tags: [`${fetchTags.products}`] },
-        },
-      ).then(async (res) => {
-        if (!res.ok) return null
-        const data = await res.json()
-        if (data?.success === false) return null
-        return data
-      }),
-    ])
+  const numericMinWeight =
+    minWeightValue === undefined ? undefined : Number(minWeightValue)
+  const numericMaxWeight =
+    maxWeightValue === undefined ? undefined : Number(maxWeightValue)
 
   if (
-    !productsData ||
-    !weightData ||
-    !categoriesData ||
-    !currentCategories?.data
+    (numericMinWeight !== undefined &&
+      (!Number.isFinite(numericMinWeight) || numericMinWeight < 0)) ||
+    (numericMaxWeight !== undefined &&
+      (!Number.isFinite(numericMaxWeight) || numericMaxWeight < 0)) ||
+    (numericMinWeight !== undefined &&
+      numericMaxWeight !== undefined &&
+      numericMinWeight > numericMaxWeight)
   ) {
-    return <NotFoundPage />
+    notFound()
   }
 
-  const currentCategory = currentCategories.data as unknown as ICategory
+  const {
+    categoryPath,
+    originalPath,
+    rootCategorySlug,
+    selectedCategories,
+    currentCategory,
+    rootCategory,
+    childCategories,
+    categoryName,
+    canonicalPath,
+  } = await getCatalogIdentity(locale, categories, resolvedSearchParams)
+
+  const canonicalRoute = `/${locale}/${canonicalPath}`
+  const normalizedSearchParams = { ...resolvedSearchParams }
+  if (page === 1) delete normalizedSearchParams.page
+  else normalizedSearchParams.page = String(page)
+
+  if (
+    originalPath.some((value, index) => value !== categoryPath[index]) ||
+    (pageParam !== undefined && (page === 1 || pageParam !== String(page)))
+  ) {
+    permanentRedirect(
+      serializeSearchParams(canonicalRoute, normalizedSearchParams),
+    )
+  }
+
+  const [productsData, weightData, t, tPagin] = await Promise.all([
+    getPublicProductsList({
+      page,
+      limit: 3,
+      menu: rootCategorySlug,
+      locale,
+      categories: selectedCategories,
+      minWeight: minWeightValue,
+      maxWeight: maxWeightValue,
+    }),
+    getPublicProductWeights(rootCategorySlug),
+    getTranslations('product-list'),
+    getTranslations('pagination'),
+  ])
+
+  if (!productsData.success || !weightData.success) notFound()
+
   const productListData = productsData as unknown as {
     data: IProduct[]
     currentPage: number
     totalItems: number
     totalPages: number
   }
-  const childCategories = categoriesData.data as unknown as ICategory[]
-  const pageInfo = page ? ` - ${t('page')} ${page}` : ''
-  const weightInfo =
-    minWeight && maxWeight
-      ? ` (${minWeight}-${maxWeight} ${t('weight-unit')})`
-      : ''
-  const html = getCategoryDescriptionHtml(currentCategory.description?.[locale])
-  const canonicalPath =
-    selectedCategories.length === 1
-      ? `products/${rootCategorySlug}/${selectedCategories[0]}`
-      : `products/${rootCategorySlug}`
-  const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}`
+  if (
+    page > 1 &&
+    (productListData.totalPages === 0 || page > productListData.totalPages)
+  ) {
+    notFound()
+  }
 
-  const flattenedProducts = productListData.data.flatMap((product: IProduct) =>
-    product.variables.map((variant: IVariableProduct) => ({
-      ...product,
-      variant,
-      key: `${product.slug}-${variant._id ?? variant.weight}`,
+  const hasFacetQuery =
+    queryCategories !== undefined ||
+    minWeightValue !== undefined ||
+    maxWeightValue !== undefined
+  const pageInfo = page > 1 ? ` - ${t('page')} ${page}` : ''
+  const weightInfo =
+    minWeightValue && maxWeightValue
+      ? ` (${minWeightValue}-${maxWeightValue} ${t('weight-unit')})`
+      : ''
+  const productBgImg = getProductBgImg(t)
+  const html = getCategoryDescriptionHtml(currentCategory.description?.[locale])
+  const pageSuffix = !hasFacetQuery && page > 1 ? `?page=${page}` : ''
+  const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}${pageSuffix}`
+
+  const productCards = productListData.data.flatMap((product: IProduct) =>
+    product.variables.map((initialVariant: IVariableProduct) => ({
+      product,
+      initialVariant,
+      key: `${product.slug}-${initialVariant._id ?? initialVariant.weight}`,
     })),
   )
 
   const getPageUrl = (pageNum: number) => {
-    const newParams = new URLSearchParams()
+    const nextSearchParams = { ...resolvedSearchParams }
+    if (categoryPath[1]) delete nextSearchParams.categories
+    if (pageNum === 1) delete nextSearchParams.page
+    else nextSearchParams.page = String(pageNum)
 
-    if (selectedCategories.length > 1) {
-      newParams.set('categories', selectedCategories.join(','))
-    }
-    if (minWeight && String(minWeight).trim() !== '') {
-      newParams.set('minWeight', String(minWeight))
-    }
-    if (maxWeight && String(maxWeight).trim() !== '') {
-      newParams.set('maxWeight', String(maxWeight))
-    }
-
-    newParams.set('page', pageNum.toString())
-
-    const queryString = newParams.toString()
-    return queryString ? `?${queryString}` : ''
+    return serializeSearchParams(canonicalRoute, nextSearchParams)
   }
 
   return (
     <>
-      {!hasQueryParams ? (
+      {!hasFacetQuery ? (
         <ProductListJsonLd
           currentCategories={currentCategory}
+          rootCategory={rootCategory}
           locale={locale}
           canonicalUrl={canonicalUrl}
           productsData={productListData}
           categoriesParam={canonicalPath}
         />
       ) : null}
-      <main>
+      <section>
         <div className="mx-auto max-w-[1280px] px-5">
           <Breadcrumb className="my-2">
             <BreadcrumbList>
@@ -369,10 +410,10 @@ export default async function ProductsPage(props: {
                 <BreadcrumbLink
                   href={`/${locale}/products/${rootCategorySlug}`}
                 >
-                  {categoriesData.name}
+                  {categoryName}
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              {selectedCategories.length === 1 ? (
+              {categoryPath[1] ? (
                 <>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -398,8 +439,13 @@ export default async function ProductsPage(props: {
               activeCategorySlugs={selectedCategories}
             />
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
-              {flattenedProducts.map((product: IProduct & { key: string }) => (
-                <Product key={product.key} product={product} />
+              {productCards.map(({ product, initialVariant, key }, index) => (
+                <Product
+                  key={key}
+                  product={product}
+                  initialVariant={initialVariant}
+                  priority={index === 0}
+                />
               ))}
             </div>
           </div>
@@ -411,6 +457,7 @@ export default async function ProductsPage(props: {
                 <PaginationPrevious
                   className="text-[36px] md:text-[64px]"
                   label={tPagin('previous')}
+                  disabled={productListData.currentPage === 1}
                   href={
                     productListData.currentPage > 1
                       ? getPageUrl(productListData.currentPage - 1)
@@ -435,7 +482,7 @@ export default async function ProductsPage(props: {
                       label={
                         productListData.currentPage === item
                           ? tPagin('active-page', {
-                              page: productListData.currentPage + 1,
+                              page: productListData.currentPage,
                             })
                           : typeof item === 'number'
                             ? tPagin('go-to-page', {
@@ -456,7 +503,10 @@ export default async function ProductsPage(props: {
               <PaginationItem>
                 <PaginationNext
                   className="text-[36px] md:text-[64px]"
-                  label={tPagin('previous')}
+                  label={tPagin('next')}
+                  disabled={
+                    productListData.currentPage === productListData.totalPages
+                  }
                   href={
                     productListData.currentPage < productListData.totalPages
                       ? getPageUrl(productListData.currentPage + 1)
@@ -493,7 +543,7 @@ export default async function ProductsPage(props: {
         </div>
         <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />
-      </main>
+      </section>
     </>
   )
 }

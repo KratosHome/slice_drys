@@ -10,7 +10,8 @@ export async function increaseProductVisit(slug: string) {
     await Product.findOneAndUpdate(
       { slug },
       { $inc: { visited: 1 } },
-      { new: true },
+      // Analytics must not change the content freshness used by sitemap.xml.
+      { new: false, timestamps: false },
     )
 
     return { success: true, message: 'Visited product' }

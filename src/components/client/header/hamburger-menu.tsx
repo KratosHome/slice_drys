@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react'
 import { cn } from '@/utils/cn'
 
 interface IHamburgerMenuProps {
-  productLinks: ICategory[]
+  productLinks: IPublicCategoryLink[]
   hamburgerLinksOther: ILink[]
 }
 

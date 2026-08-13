@@ -1,83 +1,80 @@
-import { SITE_URL } from '@/data/contacts'
+import { getLocale } from 'next-intl/server'
+
+import {
+  buildOrganization,
+  buildProductNode,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  serializeJsonLd,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
 interface IMainJsonLdProps {
   products: IProduct[]
 }
-export default function MainJsonLd({ products }: IMainJsonLdProps) {
+
+export default async function MainJsonLd({ products }: IMainJsonLdProps) {
+  const locale = (await getLocale()) as ILocale
+  const canonicalUrl = localizedUrl(locale)
+  const pageId = `${canonicalUrl}#webpage`
+  const itemListId = `${canonicalUrl}#top-products`
+  const pageName =
+    locale === 'uk'
+      ? "Сушені снеки з м'яса, овочів і фруктів — Slice & Dry's"
+      : "Dried meat, vegetable and fruit snacks — Slice & Dry's"
+  const pageDescription =
+    locale === 'uk'
+      ? "Натуральні сушені снеки з м'яса, овочів і фруктів без консервантів."
+      : 'Natural dried meat, vegetable and fruit snacks without preservatives.'
+  const listName = locale === 'uk' ? 'Популярні сушеники' : 'Popular snacks'
+
+  const productNodes = products.flatMap((product) => {
+    if (!product.category || !product.slug) return []
+
+    const url = localizedUrl(
+      locale,
+      `products/${product.category}/product/${product.slug}`,
+    )
+
+    return [buildProductNode(product, url)]
+  })
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'WebSite',
-        '@id': `${SITE_URL}/#website`,
-        url: `${SITE_URL}`,
-        name: "Slice & Dry's",
-        publisher: {
-          '@id': `${SITE_URL}/#organization`,
-        },
-      },
-      {
-        '@type': 'Organization',
-        '@id': `${SITE_URL}/#organization`,
-        name: "Slice & Dry's",
-        url: `${SITE_URL}`,
-        logo: `${SITE_URL}/icons/logo.svg`,
-        contactPoint: [
-          {
-            '@type': 'ContactPoint',
-            telephone: '+380939797910',
-            contactType: 'customer service',
-            areaServed: 'UA',
-          },
-        ],
-      },
+      buildOrganization(locale),
+      buildWebsite(),
       {
         '@type': 'WebPage',
-        '@id': `${SITE_URL}/#webpage`,
-        url: `${SITE_URL}`,
-        name: "Головна сторінка Slice & Dry's",
-        inLanguage: 'uk',
-        isPartOf: {
-          '@id': `${SITE_URL}/#website`,
-        },
+        '@id': pageId,
+        url: canonicalUrl,
+        name: pageName,
+        description: pageDescription,
+        inLanguage: languageTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        mainEntity: { '@id': itemListId },
       },
-      ...products.map((product) => ({
-        '@type': 'Product',
-        '@id': `${SITE_URL}/products/${product.category}/product/${product.slug}`,
-        name: product.name,
-        image: product.img,
-        description: product.description,
-        brand: {
-          '@type': 'Brand',
-          name: "Slice & Dry's",
-        },
-        sku: product._id,
-        offers: product.variables.map((variable) => ({
-          '@type': 'Offer',
-          url: `${SITE_URL}/products/${product.category}/product/${product.slug}`,
-          priceCurrency: 'UAH',
-          price: variable.price,
-          itemCondition: 'https://schema.org/NewCondition',
-          availability: 'https://schema.org/InStock',
-        })),
-      })),
       {
         '@type': 'ItemList',
-        '@id': `${SITE_URL}/#top-products`,
-        name: 'Топові сушеники',
-        itemListElement: products.map((product, index) => ({
+        '@id': itemListId,
+        name: listName,
+        numberOfItems: productNodes.length,
+        itemListElement: productNodes.map((product, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          url: `${SITE_URL}/products/${product.category}/product/${product.slug}`,
+          item: { '@id': product['@id'] },
         })),
       },
+      ...productNodes,
     ],
   }
 
   return (
     <script
+      id="main-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }

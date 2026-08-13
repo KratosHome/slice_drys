@@ -24,33 +24,38 @@ export async function generateMetadata({ params }: { params: Params }) {
     : ['contacts', 'questions', 'orders', 'communication', 'slice&drys']
 
   const canonicalUrl = `${SITE_URL}/${locale}/contacts`
+  const title = isUk ? "Контакти Slice & Dry's" : "Contacts | Slice & Dry's"
+  const description = isUk
+    ? "Телефон, email та адреса Slice&Dry's у Черкасах. Звертайтеся щодо замовлень, доставки, оптової співпраці або запитань про натуральні сушені снеки."
+    : "Find the phone, email and address of Slice&Dry's in Cherkasy. Contact us about orders, delivery, wholesale partnerships or our natural dried snacks."
+  const socialImage = `${SITE_URL}/main.webp`
 
   return {
-    title: isUk ? 'Контакти Slice&Drys' : 'Contacts Slice&Drys',
-    description: isUk
-      ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
-      : 'Contact us for inquiries, orders, or cooperation.',
+    title,
+    description,
     keywords,
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/contacts`,
+        uk: `${SITE_URL}/uk/contacts`,
+        'x-default': `${SITE_URL}/uk/contacts`,
       },
     },
     openGraph: {
-      title: isUk ? 'Контакти' : 'Contacts',
-      description: isUk
-        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
-        : 'Contact us for inquiries, orders, or cooperation.',
-      url: `${canonicalUrl}`,
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: "Slice & Dry's",
+      locale: isUk ? 'uk_UA' : 'en_US',
+      images: [{ url: socialImage, width: 1005, height: 895, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isUk ? 'Контакти' : 'Contacts',
-      description: isUk
-        ? 'Звʼяжіться з нами для запитань, замовлень чи співпраці.'
-        : 'Contact us for inquiries, orders, or cooperation.',
+      title,
+      description,
+      images: [socialImage],
     },
   }
 }
@@ -70,7 +75,7 @@ export default async function ContactsPage(props: { params: Params }) {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              <BreadcrumbLink href={`/${locale}`}>{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

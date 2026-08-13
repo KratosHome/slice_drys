@@ -2,6 +2,8 @@
 
 import { Slot } from '@radix-ui/react-slot'
 import { MoreHorizontal } from 'lucide-react'
+import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 import {
   type ComponentProps,
@@ -54,13 +56,20 @@ const BreadcrumbLink = forwardRef<
   ComponentPropsWithoutRef<'a'> & {
     asChild?: boolean
   }
->(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'a'
+>(({ asChild, className, href: originalHref, ...props }, ref) => {
+  const locale = useLocale()
+  const href = originalHref === '/' ? `/${locale}` : originalHref
+  const classes = cn('hover:text-foreground transition-colors', className)
+
+  if (asChild) {
+    return <Slot ref={ref} className={classes} {...props} />
+  }
 
   return (
-    <Comp
+    <Link
+      href={href || `/${locale}`}
       ref={ref}
-      className={cn('hover:text-foreground transition-colors', className)}
+      className={classes}
       {...props}
     />
   )

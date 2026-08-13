@@ -7,7 +7,7 @@ export async function getCurrentCategory(slug: string) {
   try {
     await connectToDbServer()
 
-    const category = await Category.findOne({ slug }).lean()
+    const category = await Category.findOne({ slug: slug.toLowerCase() }).lean()
 
     if (!category) {
       return {
@@ -18,7 +18,7 @@ export async function getCurrentCategory(slug: string) {
     }
 
     return {
-      data: category,
+      data: JSON.parse(JSON.stringify(category)) as ICategory,
       success: true,
       message: 'Category retrieved successfully',
     }

@@ -18,7 +18,10 @@ export async function getProductWeights(categorySlug: string) {
       }
     }
 
-    const products = await Product.find({ categories: categoryDoc._id }).lean()
+    const products = await Product.find(
+      { categories: categoryDoc._id },
+      { 'variables.weight': 1 },
+    ).lean()
 
     const weights = products.flatMap(
       (product) =>

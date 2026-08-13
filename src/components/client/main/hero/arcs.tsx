@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import { cn } from '@/utils/cn'
 
 interface IArcsProps {
@@ -29,17 +27,33 @@ export default function Arcs({ color }: IArcsProps) {
           </linearGradient>
         </defs>
       </svg>
-      <Image
-        src="/icons/slider-line-down.svg"
-        className={cn('-z-20 mt-[16px] px-[32px] md:mt-[33px] md:px-[62px]')}
-        alt="Slider line down"
-        fill
-        priority
-        loading="eager"
-        quality={60}
-        sizes="(max-width: 550px) 100vw, 50vw"
-        role="img"
-      />
+      <svg
+        viewBox="0 0 981 491"
+        fill="none"
+        aria-hidden="true"
+        focusable="false"
+        className={cn(
+          'absolute inset-0 -z-20 mt-[16px] h-full w-full px-[32px] md:mt-[33px] md:px-[62px]',
+        )}
+      >
+        <path
+          d="M1 490.5C1.00001 426.218 13.6613 362.565 38.261 303.176C62.8607 243.788 98.917 189.825 144.371 144.371C189.826 98.9169 243.788 62.8606 303.177 38.2609C362.565 13.6613 426.218 0.999992 490.5 1C554.782 1.00001 618.435 13.6613 677.824 38.261C737.212 62.8607 791.175 98.917 836.629 144.371C882.083 189.826 918.139 243.788 942.739 303.177C967.339 362.565 980 426.218 980 490.5"
+          stroke="url(#slider-line-down-gradient)"
+        />
+        <defs>
+          <linearGradient
+            id="slider-line-down-gradient"
+            x1="264"
+            y1="947"
+            x2="464.5"
+            y2="23.4999"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#9B9B9B" stopOpacity="0.1" />
+            <stop offset="0.961123" stopColor="#535353" stopOpacity="0.6" />
+          </linearGradient>
+        </defs>
+      </svg>
     </>
   )
 }

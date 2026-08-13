@@ -21,7 +21,7 @@ import { useLocale, useTranslations } from 'next-intl'
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 interface IHeaderProps {
-  productLinks: ICategory[]
+  productLinks: IPublicCategoryLink[]
 }
 
 export default function Header({ productLinks }: IHeaderProps) {

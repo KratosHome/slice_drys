@@ -7,31 +7,39 @@ type Params = Promise<{ locale: ILocale }>
 export async function generateMetadata({ params }: { params: Params }) {
   const { locale } = await params
   const isUk = locale === 'uk'
+  const title = isUk
+    ? "Політика конфіденційності | Slice & Dry's"
+    : "Privacy Policy | Slice & Dry's"
+  const description = isUk
+    ? "Дізнайтеся, як Slice&Dry's збирає, використовує та захищає персональні дані користувачів під час оформлення замовлень і користування сайтом."
+    : "Learn how Slice&Dry's collects, uses, and protects personal data when you browse the website or place an order."
+  const canonicalUrl = `${SITE_URL}/${locale}/privacy-policy`
+  const socialImage = `${SITE_URL}/main.webp`
 
   return {
-    title: isUk ? 'Політика конфіденційності' : 'Privacy Policy',
-    description: isUk
-      ? 'Умови політики конфіденційності'
-      : 'Privacy policy details',
+    title,
+    description,
     openGraph: {
-      title: isUk ? 'Політика конфіденційності' : 'Privacy Policy',
-      description: isUk
-        ? 'Умови політики конфіденційності'
-        : 'Privacy policy details',
-      url: `${SITE_URL}/${locale}/privacy-policy`,
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: "Slice & Dry's",
+      locale: isUk ? 'uk_UA' : 'en_US',
+      images: [{ url: socialImage, width: 1005, height: 895, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isUk ? 'Політика конфіденційності' : 'Privacy Policy',
-      description: isUk
-        ? 'Умови політики конфіденційності'
-        : 'Privacy policy details',
+      title,
+      description,
+      images: [socialImage],
     },
     alternates: {
-      canonical: `${SITE_URL}/${locale}/privacy-policy`,
+      canonical: canonicalUrl,
       languages: {
-        en: `${SITE_URL}/${locale}/privacy-policy`,
-        uk: `${SITE_URL}/${locale}/privacy-policy`,
+        en: `${SITE_URL}/en/privacy-policy`,
+        uk: `${SITE_URL}/uk/privacy-policy`,
+        'x-default': `${SITE_URL}/uk/privacy-policy`,
       },
     },
   }
@@ -50,8 +58,9 @@ export default async function PrivacyPolicy({ params }: { params: Params }) {
       `@/data/privacy-policy/${locale}-privacy-policy.mdx`
     )
   } catch (error) {
-    console.error(`Cannot load privacy policy for locale: ${locale}`, error)
-    return <div>Error loading privacy policy content</div>
+    throw new Error(`Cannot load privacy policy for locale: ${locale}`, {
+      cause: error,
+    })
   }
 
   return (

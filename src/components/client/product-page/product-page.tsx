@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useSyncExternalStore } from 'react'
 import {
   Select,
   SelectContent,
@@ -22,6 +22,8 @@ import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import UnderlineWave from '@/components/ui/underline-wave'
 
+const subscribeToHydration = () => () => undefined
+
 export const ProductInfo = ({ product }: { product: IProduct }) => {
   const router = useRouter()
   const t = useTranslations('product')
@@ -36,7 +38,11 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
       (product.variant ?? variables[0])
     : (product.variant ?? variables[0])
 
-  const [mounted, setMounted] = useState(false)
+  const mounted = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  )
 
   const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
     (state) => state,
@@ -51,17 +57,24 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
   const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
 
   useEffect(() => {
-    const fetchData = async () => {
-      await increaseProductVisit(product.slug)
+    const visitKey = `product-visit:${product.slug}`
+    if (window.sessionStorage.getItem(visitKey)) return
+
+    const recordVisit = () => {
+      window.sessionStorage.setItem(visitKey, '1')
+      void increaseProductVisit(product.slug)
     }
 
-    fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    if (typeof window.requestIdleCallback === 'function') {
+      const idleCallbackId = window.requestIdleCallback(recordVisit, {
+        timeout: 2_000,
+      })
+      return () => window.cancelIdleCallback(idleCallbackId)
+    }
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+    const timeoutId = window.setTimeout(recordVisit, 1_500)
+    return () => window.clearTimeout(timeoutId)
+  }, [product.slug])
 
   const handleAddToCart = () => {
     if (product._id && product.img) {

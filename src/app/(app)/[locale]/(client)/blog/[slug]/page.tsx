@@ -1,15 +1,15 @@
 import { Metadata } from 'next'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/ui/share'
-import NotFoundPage from '@/components/not-found'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
-import { fetchTags } from '@/data/fetch-tags'
 import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
 import { SITE_URL } from '@/data/contacts'
+import { getPublicPost } from '@/server/public-data-cache.server'
 
 export const revalidate = 86400
 
@@ -20,32 +20,16 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
 
-  const data = await fetch(
-    `${SITE_URL}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=false`,
-    {
-      cache: 'no-store',
-      next: { tags: [`${fetchTags.post}`] },
-    },
-  ).then(async (res) => {
-    if (!res.ok) return null
-    const data = await res.json()
-    if (data?.success === false) return null
-    return data
-  })
+  const normalizedSlug = slug.toLowerCase()
+  const data = await getPublicPost(locale, normalizedSlug)
 
-  if (!data) {
-    return {
-      title: 'Post not found',
-      description: 'The requested post could not be found.',
-      robots: 'noindex, nofollow',
-    }
-  }
+  if (!data.success || !data.post?.[0]) notFound()
 
   const post = data.post[0]
   const metaKeywordsArray =
     post.keywords?.split(',').map((keyword: string) => keyword.trim()) || []
 
-  const url = `${SITE_URL}/${locale}/blog/${slug.toLowerCase()}`
+  const url = `${SITE_URL}/${locale}/blog/${normalizedSlug}`
 
   return {
     title: post.title,
@@ -59,14 +43,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? [
             {
               url: post.img,
-              width: 1200,
-              height: 630,
               alt: post.title,
             },
           ]
         : [],
       type: 'article',
-      publishedTime: post.createdAt,
+      publishedTime: new Date(post.createdAt).toISOString(),
       authors: post.author,
     },
     twitter: {
@@ -78,8 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: url,
       languages: {
-        en: `${SITE_URL}/en/blog/${slug}`,
-        uk: `${SITE_URL}/uk/blog/${slug}`,
+        en: `${SITE_URL}/en/blog/${normalizedSlug}`,
+        uk: `${SITE_URL}/uk/blog/${normalizedSlug}`,
+        'x-default': `${SITE_URL}/uk/blog/${normalizedSlug}`,
       },
     },
   }
@@ -97,24 +80,17 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
+  const normalizedSlug = slug.toLowerCase()
 
-  const data = await fetch(
-    `${SITE_URL}/api/posts/post?locale=${locale}&slug=${slug}&isVisited=true`,
-    {
-      cache: 'no-store',
-      next: { tags: [`${fetchTags.post}`] },
-    },
-  ).then(async (res) => {
-    if (!res.ok) return null
-    const data = await res.json()
-    if (data?.success === false) return null
-    return data
-  })
-
-  if (!data) {
-    return <NotFoundPage />
+  if (slug !== normalizedSlug) {
+    permanentRedirect(`/${locale}/blog/${normalizedSlug}`)
   }
-  const url = `${SITE_URL}/${locale}/blog/${slug}`
+
+  const data = await getPublicPost(locale, normalizedSlug)
+
+  if (!data.success || !data.post?.[0]) notFound()
+
+  const url = `${SITE_URL}/${locale}/blog/${normalizedSlug}`
 
   const content = JSON.parse(data.post[0].content)
   const title = data.post[0].title

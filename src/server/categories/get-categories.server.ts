@@ -53,7 +53,7 @@ export async function getCategories(
       )
 
       return {
-        data: filteredCategories,
+        data: JSON.parse(JSON.stringify(filteredCategories)) as ICategory[],
         success: true,
         message: 'Categories retrieved successfully for promotions/mixes',
       }
@@ -80,7 +80,9 @@ export async function getCategories(
 
       return {
         name: locale ? category.name?.[locale] : '',
-        data: category.children || [],
+        data: JSON.parse(
+          JSON.stringify(category.children || []),
+        ) as ICategory[],
         success: true,
         message: 'Category children retrieved successfully',
       }

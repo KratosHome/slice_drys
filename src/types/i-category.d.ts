@@ -9,10 +9,15 @@ interface ICategory {
   metaKeywords?: ILocalizedString
   image?: string
   children: ICategory[]
-  parentCategory?: string
+  parentCategory?: string | null
   order: number
 }
 
-type CategorySlug = Pick<ICategory, '_id' | 'slug'>
+interface IPublicCategoryLink {
+  slug: string
+  name: ILocalizedString
+}
+
+type CategorySlug = Pick<ICategory, '_id' | 'slug' | 'parentCategory'>
 
 type CategorySeed = Omit<ICategory, '_id' | 'children'>

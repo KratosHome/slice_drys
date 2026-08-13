@@ -10,9 +10,9 @@ interface IGetPostsOptions {
   limit: number
 }
 
-const getSelectedFields = (locale: ILocale) => ({
+const getSelectedFields = (locale: ILocale, includeContent = false) => ({
   [`title.${locale}`]: 1,
-  [`content.${locale}`]: 1,
+  ...(includeContent ? { [`content.${locale}`]: 1 } : {}),
   [`author.${locale}`]: 1,
   [`metaDescription.${locale}`]: 1,
   [`keywords.${locale}`]: 1,
@@ -28,13 +28,13 @@ const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
   slug: post.slug,
   img: post.img,
   title: post.title[locale],
-  content: post.content[locale],
+  content: post.content?.[locale] ?? '',
   author: post.author[locale],
   metaDescription: post.metaDescription[locale],
   keywords: post.keywords[locale],
   visited: post.visited,
-  updatedAt: post.updatedAt,
-  createdAt: post.createdAt,
+  updatedAt: new Date(post.updatedAt).toISOString(),
+  createdAt: new Date(post.createdAt).toISOString(),
 })
 
 export async function getPosts({ locale, page, limit }: IGetPostsOptions) {
@@ -109,25 +109,16 @@ export async function getAllPosts({
 interface IGetPostOptions {
   locale: ILocale
   slug: string
-  isVisited?: boolean
 }
 
-export async function getPost({ locale, slug, isVisited }: IGetPostOptions) {
+export async function getPost({ locale, slug }: IGetPostOptions) {
   try {
     await connectToDbServer()
 
-    const post: IPostLocal | null = isVisited
-      ? ((await Post.findOneAndUpdate(
-          { slug },
-          { $inc: { visited: 1 } },
-          { new: true, select: getSelectedFields(locale) },
-        )
-          .sort({ createdAt: -1 })
-          .lean()) as IPostLocal | null)
-      : ((await Post.findOne(
-          { slug },
-          getSelectedFields(locale),
-        ).lean()) as IPostLocal | null)
+    const post = (await Post.findOne(
+      { slug },
+      getSelectedFields(locale, true),
+    ).lean()) as IPostLocal | null
 
     if (!post) return { success: false, post: [], message: 'Post not found' }
 

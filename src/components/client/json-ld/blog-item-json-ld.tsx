@@ -1,75 +1,76 @@
-import { FC } from 'react'
-import Script from 'next/script'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { blogMetaData } from '@/data/blog/blog-meta-data'
-import { SITE_URL } from '@/data/contacts'
+import {
+  absoluteUrl,
+  buildBreadcrumbList,
+  buildOrganization,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  ORGANIZATION_ID,
+  serializeJsonLd,
+  toIsoDate,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
 type JsonLdProps = Readonly<{
   post: IPost
 }>
 
-const BlogItemJsonLd: FC<JsonLdProps> = async ({ post }) => {
+export default async function BlogItemJsonLd({ post }: JsonLdProps) {
   const locale = (await getLocale()) as ILocale
   const t = await getTranslations('breadcrumbs')
-
-  const canonicalUrl = `${SITE_URL}/${locale}/blog/${post.slug}`
+  const canonicalUrl = localizedUrl(locale, `blog/${post.slug}`)
+  const pageId = `${canonicalUrl}#webpage`
+  const articleId = `${canonicalUrl}#article`
+  const breadcrumbId = `${canonicalUrl}#breadcrumb`
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.content,
-    image: post.img,
-    datePublished: post.createdAt,
-    author: {
-      '@type': 'Person',
-      name: post.author,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: blogMetaData[locale].title,
-      logo: {
-        '@type': 'ImageObject',
-        url: `${SITE_URL}/logo.png`,
+    '@graph': [
+      buildOrganization(locale),
+      buildWebsite(),
+      buildBreadcrumbList(breadcrumbId, [
+        { name: t('home'), url: localizedUrl(locale) },
+        { name: t('blog'), url: localizedUrl(locale, 'blog') },
+        { name: post.title, url: canonicalUrl },
+      ]),
+      {
+        '@type': 'WebPage',
+        '@id': pageId,
+        url: canonicalUrl,
+        name: post.title,
+        description: post.metaDescription,
+        inLanguage: languageTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        breadcrumb: { '@id': breadcrumbId },
+        mainEntity: { '@id': articleId },
       },
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': canonicalUrl,
-    },
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: t('home'),
-          item: SITE_URL,
+      {
+        '@type': 'BlogPosting',
+        '@id': articleId,
+        url: canonicalUrl,
+        headline: post.title,
+        description: post.metaDescription,
+        image: absoluteUrl(post.img),
+        datePublished: toIsoDate(post.createdAt),
+        dateModified: toIsoDate(post.updatedAt) ?? toIsoDate(post.createdAt),
+        inLanguage: languageTag(locale),
+        author: {
+          '@type': 'Person',
+          name: post.author,
         },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: t('blog'),
-          item: `${SITE_URL}/${locale}/blog`,
-        },
-        {
-          '@type': 'ListItem',
-          position: 3,
-          name: post.title,
-          item: canonicalUrl,
-        },
-      ],
-    },
+        publisher: { '@id': ORGANIZATION_ID },
+        mainEntityOfPage: { '@id': pageId },
+      },
+    ],
   }
 
   return (
-    <Script
+    <script
       id="post-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
-
-export default BlogItemJsonLd

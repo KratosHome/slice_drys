@@ -1,30 +1,58 @@
-import React, { FC } from 'react'
-import { SITE_URL } from '@/data/contacts'
+import {
+  buildBreadcrumbList,
+  buildOrganization,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  ORGANIZATION_ID,
+  serializeJsonLd,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
 interface WholesaleJsonLdProps {
   locale: ILocale
 }
 
-const WholesaleJsonLd: FC<WholesaleJsonLdProps> = ({ locale }) => {
+export default function WholesaleJsonLd({ locale }: WholesaleJsonLdProps) {
   const isUk = locale === 'uk'
+  const canonicalUrl = localizedUrl(locale, 'wholesale')
+  const pageName = isUk ? 'Сушеники оптом' : 'Wholesale dried goods'
+  const breadcrumbId = `${canonicalUrl}#breadcrumb`
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: isUk ? 'Оптові Сушеники' : 'Wholesale Dried Goods',
-    description: isUk
-      ? 'Сторінка оптових закупівель наших сушеників'
-      : 'Our wholesale page for dried products',
-    url: `${SITE_URL}/${locale}/wholesale`,
-    brand: 'Slice&Drys',
+    '@graph': [
+      buildOrganization(locale),
+      buildWebsite(),
+      buildBreadcrumbList(breadcrumbId, [
+        { name: isUk ? 'Головна' : 'Home', url: localizedUrl(locale) },
+        { name: pageName, url: canonicalUrl },
+      ]),
+      {
+        '@type': 'WebPage',
+        '@id': `${canonicalUrl}#webpage`,
+        url: canonicalUrl,
+        name: pageName,
+        description: isUk
+          ? 'Оптові закупівлі натуральних сушених снеків'
+          : 'Wholesale purchasing of natural dried snacks',
+        inLanguage: languageTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        breadcrumb: { '@id': breadcrumbId },
+        about: { '@id': ORGANIZATION_ID },
+        audience: {
+          '@type': 'BusinessAudience',
+          audienceType: isUk ? 'Оптові покупці' : 'Wholesale buyers',
+        },
+      },
+    ],
   }
 
   return (
     <script
+      id="wholesale-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
-
-export default WholesaleJsonLd

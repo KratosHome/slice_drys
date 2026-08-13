@@ -1,92 +1,109 @@
-import { FC } from 'react'
-import Script from 'next/script'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { blogMetaData } from '@/data/blog/blog-meta-data'
-import { SITE_URL } from '@/data/contacts'
+import {
+  absoluteUrl,
+  buildBreadcrumbList,
+  buildOrganization,
+  buildWebsite,
+  languageTag,
+  localizedUrl,
+  ORGANIZATION_ID,
+  serializeJsonLd,
+  SITE_ORIGIN,
+  toIsoDate,
+  WEBSITE_ID,
+} from '@/utils/json-ld'
 
 type JsonLdProps = Readonly<{
   data: IGetPostsClient
 }>
 
-const BlogJsonLd: FC<JsonLdProps> = async ({ data }) => {
+export default async function BlogJsonLd({ data }: JsonLdProps) {
   const locale = (await getLocale()) as ILocale
   const t = await getTranslations('breadcrumbs')
-
-  const canonicalUrl = `${SITE_URL}/${locale}/blog`
-
-  const canonical =
+  const blogUrl = localizedUrl(locale, 'blog')
+  const canonicalUrl =
+    data.currentPage > 1 ? `${blogUrl}?page=${data.currentPage}` : blogUrl
+  const pageId = `${canonicalUrl}#webpage`
+  const itemListId = `${canonicalUrl}#itemlist`
+  const breadcrumbId = `${canonicalUrl}#breadcrumb`
+  const pageName =
     data.currentPage > 1
-      ? `${canonicalUrl}?page=${data.currentPage}`
-      : canonicalUrl
+      ? `${blogMetaData[locale].title} — ${t('page')} ${data.currentPage}`
+      : blogMetaData[locale].title
+
+  const posts = data.postsLocalized.map((post) => {
+    const url = localizedUrl(locale, `blog/${post.slug}`)
+
+    return {
+      post,
+      url,
+      id: `${url}#article`,
+    }
+  })
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: blogMetaData[locale].title,
-    description: blogMetaData[locale].description,
-    url: canonical,
-    image: `${SITE_URL}/blog-image.webp`,
-    alternates: {
-      canonical,
-      languages: {
-        uk: `${SITE_URL}/uk/blog`,
-        en: `${SITE_URL}/en/blog`,
-      },
-    },
-    pagination: {
-      '@type': 'Pagination',
-      prev:
-        data.currentPage > 1
-          ? `${SITE_URL}/blog?page=${data.currentPage - 1}`
-          : undefined,
-      next:
-        data.currentPage < data.totalPages
-          ? `${SITE_URL}/blog?page=${data.currentPage + 1}`
-          : undefined,
-    },
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: t('home'),
-          item: SITE_URL,
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: t('blog'),
-          item: canonicalUrl,
-        },
+    '@graph': [
+      buildOrganization(locale),
+      buildWebsite(),
+      buildBreadcrumbList(breadcrumbId, [
+        { name: t('home'), url: localizedUrl(locale) },
+        { name: t('blog'), url: blogUrl },
         ...(data.currentPage > 1
-          ? [
-              {
-                '@type': 'ListItem',
-                position: 3,
-                name: `${t('page')} ${data.currentPage}`,
-              },
-            ]
+          ? [{ name: `${t('page')} ${data.currentPage}`, url: canonicalUrl }]
           : []),
-      ],
-    },
-    hasPart: data.postsLocalized.map((post) => ({
-      '@type': 'BlogPosting',
-      headline: post.title,
-      image: post.img,
-      datePublished: post.createdAt,
-      url: `${canonicalUrl}/${post.slug}`,
-    })),
+      ]),
+      {
+        '@type': 'CollectionPage',
+        '@id': pageId,
+        url: canonicalUrl,
+        name: pageName,
+        description: blogMetaData[locale].description,
+        image: absoluteUrl(`${SITE_ORIGIN}/blog-image.webp`),
+        inLanguage: languageTag(locale),
+        isPartOf: { '@id': WEBSITE_ID },
+        breadcrumb: { '@id': breadcrumbId },
+        mainEntity: { '@id': itemListId },
+      },
+      {
+        '@type': 'ItemList',
+        '@id': itemListId,
+        name: pageName,
+        numberOfItems: posts.length,
+        itemListOrder: 'https://schema.org/ItemListOrderDescending',
+        itemListElement: posts.map(({ id }, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: { '@id': id },
+        })),
+      },
+      ...posts.map(({ post, url, id }) => ({
+        '@type': 'BlogPosting',
+        '@id': id,
+        url,
+        headline: post.title,
+        description: post.metaDescription,
+        image: absoluteUrl(post.img),
+        datePublished: toIsoDate(post.createdAt),
+        dateModified: toIsoDate(post.updatedAt) ?? toIsoDate(post.createdAt),
+        inLanguage: languageTag(locale),
+        author: {
+          '@type': 'Person',
+          name: post.author,
+        },
+        publisher: { '@id': ORGANIZATION_ID },
+        mainEntityOfPage: { '@id': `${url}#webpage` },
+      })),
+    ],
   }
 
   return (
-    <Script
+    <script
       id="blog-json-ld"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
     />
   )
 }
-
-export default BlogJsonLd

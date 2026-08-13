@@ -28,7 +28,7 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = async ({
     <Breadcrumb className="my-2">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+          <BreadcrumbLink href={`/${locale}`}>{t('home')}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

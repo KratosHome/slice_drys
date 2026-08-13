@@ -59,6 +59,7 @@ export default function InstaFeed({ data, title }: IInstaFeedProps) {
           </h2>
           <UnderlinedLink
             href={contacts.instagram}
+            target="_blank"
             className="order-1 hidden min-w-[220px]! md:order-0 md:flex"
           >
             @slicedrys

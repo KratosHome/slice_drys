@@ -27,33 +27,40 @@ export async function generateMetadata({ params }: { params: Params }) {
     : ['dried', 'wholesale', 'dried products', 'bulk', 'slice&drys']
 
   const canonicalUrl = `${SITE_URL}/${locale}/wholesale`
+  const title = isUk
+    ? "Сушеники оптом від виробника | Slice & Dry's"
+    : "Wholesale Dried Snacks | Slice & Dry's"
+  const description = isUk
+    ? "Замовляйте натуральні сушеники оптом для магазинів, закладів і партнерських проєктів. Обговоримо асортимент, обсяги та умови співпраці зі Slice&Dry's."
+    : "Order natural dried snacks wholesale for stores, venues, and partner projects. Discuss assortment, quantities, and partnership terms with Slice&Dry's."
+  const socialImage = `${SITE_URL}/wholesale/wholesale1.webp`
 
   return {
-    title: isUk ? 'Оптові закупівлі' : 'Wholesale',
-    description: isUk
-      ? 'Сторінка оптових закупівель наших сушеників'
-      : 'Our wholesale page for dried products',
+    title,
+    description,
     keywords,
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        en: `${canonicalUrl}`,
-        uk: `${canonicalUrl}`,
+        en: `${SITE_URL}/en/wholesale`,
+        uk: `${SITE_URL}/uk/wholesale`,
+        'x-default': `${SITE_URL}/uk/wholesale`,
       },
     },
     openGraph: {
-      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
-      description: isUk
-        ? 'Сторінка оптових закупівель наших сушеників'
-        : 'Our wholesale page for dried products',
-      url: `${canonicalUrl}`,
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: "Slice & Dry's",
+      locale: isUk ? 'uk_UA' : 'en_US',
+      images: [{ url: socialImage, width: 1209, height: 971, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: isUk ? 'Оптові закупівлі' : 'Wholesale',
-      description: isUk
-        ? 'Сторінка оптових закупівель наших сушеників'
-        : 'Our wholesale page for dried products',
+      title,
+      description,
+      images: [socialImage],
     },
   }
 }
@@ -73,7 +80,7 @@ export default async function Wholesale(props: { params: Params }) {
         <Breadcrumb className={'mt-5'}>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">{t('home')}</BreadcrumbLink>
+              <BreadcrumbLink href={`/${locale}`}>{t('home')}</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

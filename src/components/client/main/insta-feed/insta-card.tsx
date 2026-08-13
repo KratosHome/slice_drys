@@ -42,10 +42,10 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
             ('children' in post && post.children.data[0]?.media_url) ||
             'https://via.placeholder.com/500x400?text=No+Image'
           }
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          alt={`Travel ${post.id}`}
-          width={200}
-          height={200}
+          sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) 30vw, 400px"
+          alt={post.caption || `Instagram post ${post.id}`}
+          width={400}
+          height={400}
           className="aspect-square w-full object-cover"
         />
         <Dots number={'children' in post ? post.children.data.length : 0} />
