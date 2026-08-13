@@ -92,16 +92,15 @@ const UnderlinedLink = forwardRef<
     const { href, ...anchorProps } =
       restProps as AnchorHTMLAttributes<HTMLAnchorElement>
     return (
-      <Link href={href || '/public'} passHref legacyBehavior>
-        <a
-          ref={ref as Ref<HTMLAnchorElement>}
-          className={classes}
-          target={target}
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-          {...anchorProps}
-        >
-          {content}
-        </a>
+      <Link
+        href={href || '/public'}
+        ref={ref as Ref<HTMLAnchorElement>}
+        className={classes}
+        target={target}
+        rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+        {...anchorProps}
+      >
+        {content}
       </Link>
     )
   }

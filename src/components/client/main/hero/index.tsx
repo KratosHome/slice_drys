@@ -148,7 +148,7 @@ export default function Hero({ device, productLinks }: IHeroProps) {
             </div>
           ))}
 
-          <div className="relative -z-10 mx-auto w-full max-w-[1104px]">
+          <div className="relative z-0 mx-auto w-full max-w-[1104px]">
             <Arcs color={hoverHexColor} />
             <div className="absolute right-1/2 -bottom-2 z-20 h-4/5 w-2/3 translate-x-1/2 md:-bottom-16">
               <Image
