@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 
 import { fetchTags } from '@/data/fetch-tags'
 
@@ -21,6 +21,7 @@ import '../globals.css'
 import { revalidateDay } from '@/constants/revalidate'
 import { SITE_URL } from '@/data/contacts'
 import SaveReferral from '@/components/client/save-referral'
+import PageTransition from '@/components/client/page-transition'
 
 export const revalidate = 86400
 
@@ -53,6 +54,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
     return (
       <html>
         <body>
+          <Suspense fallback={null}>
+            <PageTransition locale={locale} />
+          </Suspense>
           <NotFoundPage />
         </body>
       </html>
@@ -78,6 +82,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
         <GoogleAnalytics />
       </head>
       <body className="flex min-h-svh flex-col">
+        <Suspense fallback={null}>
+          <PageTransition locale={locale} />
+        </Suspense>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

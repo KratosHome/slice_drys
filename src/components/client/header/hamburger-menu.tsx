@@ -101,7 +101,7 @@ export default function HamburgerMenu({
                     &times;
                   </button>
                   <TransitionLink
-                    href="/"
+                    href={`/${locale}`}
                     onClick={toggleMenu}
                     className="text-foreground col-span-3 col-start-3 self-center justify-self-center"
                   >
