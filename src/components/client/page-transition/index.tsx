@@ -40,9 +40,11 @@ export default function PageTransition({ locale }: IPageTransitionProps) {
         {loadingText}
       </span>
       <div className="page-transition-brand" aria-hidden="true">
-        <svg viewBox="0 0 119 138" focusable="false">
-          <use href="/icons/sprite.svg#logo" />
-        </svg>
+        <div className="page-transition-logo">
+          <svg viewBox="0 0 119 138" focusable="false">
+            <use href="/icons/sprite.svg#logo" />
+          </svg>
+        </div>
       </div>
     </>
   )
