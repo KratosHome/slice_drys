@@ -14,6 +14,8 @@ const userSchemaServer = new mongoose.Schema(
       required: true,
       unique: true,
       max: 150,
+      lowercase: true,
+      trim: true,
     },
     isEmailVerified: {
       redirect: true,
@@ -24,8 +26,8 @@ const userSchemaServer = new mongoose.Schema(
       type: String,
     },
     password: {
-      redirect: true,
       type: String,
+      select: false,
     },
     role: {
       required: true,

@@ -1,8 +1,19 @@
-import { NextResponse } from 'next/server'
+import { apiErrorResponse, noStoreJson } from '@/server/api-response.server'
 import { getOrderStatusCounts } from '@/server/orders/get-status-order.server'
+import type { AdminOrderStatusCountsResponse } from '@/types/admin-order'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const data = await getOrderStatusCounts()
+  try {
+    const data = await getOrderStatusCounts()
+    const response: AdminOrderStatusCountsResponse = {
+      success: true,
+      data,
+    }
 
-  return NextResponse.json(data)
+    return noStoreJson(response)
+  } catch (error) {
+    return apiErrorResponse(error)
+  }
 }

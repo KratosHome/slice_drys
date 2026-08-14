@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+import { ORDER_STATUSES } from '@/constants/order-status'
+
 interface DepartmentDelivery {
   city: string
   department: string
@@ -19,16 +21,7 @@ const orderSchemaServer = new mongoose.Schema(
   {
     status: {
       type: String,
-      enum: [
-        'new',
-        'awaitingPayment',
-        'awaitingShipment',
-        'shipped',
-        'completed',
-        'awaitingReturn',
-        'cancelled',
-        'failedDelivery',
-      ],
+      enum: [...ORDER_STATUSES],
       required: true,
     },
     products: {
@@ -127,6 +120,8 @@ const orderSchemaServer = new mongoose.Schema(
   },
   { timestamps: true },
 )
+
+orderSchemaServer.index({ status: 1, createdAt: -1, _id: -1 })
 
 export const Order =
   mongoose.models.Order || mongoose.model('Order', orderSchemaServer)

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 const LogOut = () => {
   return (
     <div>
-      <Button onClick={() => signOut()}>Вийтиt</Button>
+      <Button onClick={() => signOut()}>Вийти</Button>
     </div>
   )
 }

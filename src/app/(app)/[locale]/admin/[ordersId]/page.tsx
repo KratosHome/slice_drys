@@ -1,56 +1,72 @@
-import * as React from 'react'
-import OrdersList from '@/components/admin/orders/orders-list'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default async function ProductPage() {
-  const dataOrders: IOrder[] = [
-    {
-      id: '1',
-      status: 'new',
-      products: [
-        { id: '1', name: 'Product 1', count: 1, price: 100 },
-        { id: '2', name: 'Product 2', count: 2, price: 200 },
-      ],
-      total: 300,
-      user: {
-        id: '1',
-        name: 'Name',
-        surname: 'Surname',
-        phone: '+380939797910',
-        email: 'example@example.com',
-      },
-      delivery: {
-        city: 'Kyiv',
-        department: 'Department 1',
-        phone: '+380939797910',
-      },
-      payment: { method: 'cash' },
-      comment: 'Some comment',
-    },
-    {
-      id: '2',
-      status: 'awaitingPayment',
-      products: [{ id: '3', name: 'Product 3', count: 1, price: 150 }],
-      total: 150,
-      user: {
-        id: '2',
-        name: 'John',
-        surname: 'Doe',
-        phone: '380987654321',
-        email: 'john.doe@example.com',
-      },
-      delivery: {
-        city: 'Lviv',
-        department: 'Department 5',
-        phone: '380987654321',
-      },
-      payment: { method: 'card' },
-      comment: 'Urgent delivery',
-    },
-  ]
+import OrdersList from '@/components/admin/orders/orders-list'
+import { Skeleton } from '@/components/ui/skeleton'
+import { parseAdminOrdersQuery } from '@/constants/admin-orders-query'
+import { getOrderStatusFromSlug } from '@/constants/order-status'
+import { ApiError } from '@/server/api-error.server'
+import { getAdminOrders } from '@/server/orders/get-order.server'
+
+interface OrdersPageProps {
+  params: Promise<{ locale: string; ordersId: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+function OrdersListFallback() {
+  return (
+    <div className="border-border bg-card mt-6 space-y-3 rounded-xl border p-4">
+      <Skeleton className="h-9 w-full max-w-xl" />
+      <Skeleton className="h-10 w-full" />
+      {Array.from({ length: 6 }, (_, index) => (
+        <Skeleton key={index} className="h-14 w-full" />
+      ))}
+    </div>
+  )
+}
+
+export default async function OrdersPage({
+  params,
+  searchParams,
+}: OrdersPageProps) {
+  const { ordersId } = await params
+  const rawSearchParams = await searchParams
+  const status = getOrderStatusFromSlug(ordersId)
+  const query = parseAdminOrdersQuery((name) => {
+    const value = rawSearchParams[name]
+    return Array.isArray(value) ? value[0] : value
+  })
+
+  if (!status) notFound()
+
+  let result: Awaited<ReturnType<typeof getAdminOrders>>
+
+  try {
+    result = await getAdminOrders({
+      status,
+      ...query,
+    })
+  } catch (error) {
+    // The admin layout renders the login/access-denied state. Child Server
+    // Components can execute in parallel with it, so auth errors are expected.
+    if (
+      error instanceof ApiError &&
+      (error.statusCode === 401 || error.statusCode === 403)
+    ) {
+      return null
+    }
+
+    throw error
+  }
 
   return (
-    <div>
-      <OrdersList data={dataOrders} />
-    </div>
+    <Suspense fallback={<OrdersListFallback />}>
+      <OrdersList
+        key={status}
+        status={status}
+        initialData={{ success: true, ...result }}
+        initialQuery={query}
+      />
+    </Suspense>
   )
 }

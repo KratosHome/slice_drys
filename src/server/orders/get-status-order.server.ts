@@ -1,39 +1,41 @@
 'use server'
 
+import { ORDER_STATUSES, isOrderStatus } from '@/constants/order-status'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
-import { Order } from './order-schema.server'
+import { Order } from '@/server/orders/order-schema.server'
+import type { AdminOrderStatusCounts } from '@/types/admin-order'
 
-export const getOrderStatusCounts = async () => {
-  'use server'
-  try {
-    await connectToDbServer()
+interface StatusCountResult {
+  _id: unknown
+  count: number
+}
 
-    const statusCounts = await Order.aggregate([
-      {
-        $group: {
-          _id: '$status',
-          count: { $sum: 1 },
-        },
+export async function getOrderStatusCounts(): Promise<AdminOrderStatusCounts> {
+  await requireAdmin()
+  await connectToDbServer()
+
+  const statusCounts = await Order.aggregate<StatusCountResult>([
+    {
+      $match: {
+        status: { $in: ORDER_STATUSES },
       },
-    ])
-
-    const counts = statusCounts.reduce(
-      (acc, { _id, count }) => {
-        acc[_id] = count
-        return acc
+    },
+    {
+      $group: {
+        _id: '$status',
+        count: { $sum: 1 },
       },
-      {} as Record<string, number>,
-    )
+    },
+  ])
 
-    return {
-      success: true,
-      data: counts,
-    }
-  } catch (error) {
-    return {
-      success: false,
-      data: {},
-      error,
-    }
+  const counts = Object.fromEntries(
+    ORDER_STATUSES.map((status) => [status, 0]),
+  ) as AdminOrderStatusCounts
+
+  for (const { _id, count } of statusCounts) {
+    if (isOrderStatus(_id)) counts[_id] = count
   }
+
+  return counts
 }
