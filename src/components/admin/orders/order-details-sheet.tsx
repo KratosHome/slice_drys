@@ -73,7 +73,7 @@ const dateFormatter = new Intl.DateTimeFormat('uk-UA', {
   timeZone: 'Europe/Kyiv',
 })
 
-export interface OrderDetailsSheetProps {
+interface OrderDetailsSheetProps {
   orderId: string | null
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -467,7 +467,7 @@ function OrderDetails({
   )
 }
 
-export function OrderDetailsSheet({
+function OrderDetailsSheet({
   orderId,
   open,
   onOpenChange,

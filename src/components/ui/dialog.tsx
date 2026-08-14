@@ -27,8 +27,6 @@ const DialogTrigger = Trigger
 
 const DialogPortal = Portal
 
-const DialogClose = Close
-
 const DialogOverlay = forwardRef<
   ComponentRef<typeof Overlay>,
   ComponentPropsWithoutRef<typeof Overlay>
@@ -203,10 +201,7 @@ DialogDescription.displayName = Description.displayName
 
 export {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
   DialogTrigger,
-  DialogClose,
   DialogContent,
   DialogHeader,
   ClientDialogContent,

@@ -1,10 +1,6 @@
 export const ADMIN_ORDER_PAGE_SIZES = [10, 20, 50] as const
-export const ADMIN_ORDER_SORT_FIELDS = [
-  'createdAt',
-  'customer',
-  'total',
-] as const
-export const ADMIN_ORDER_SORT_DIRECTIONS = ['asc', 'desc'] as const
+const ADMIN_ORDER_SORT_FIELDS = ['createdAt', 'customer', 'total'] as const
+const ADMIN_ORDER_SORT_DIRECTIONS = ['asc', 'desc'] as const
 
 export type AdminOrderPageSize = (typeof ADMIN_ORDER_PAGE_SIZES)[number]
 export type AdminOrderSortField = (typeof ADMIN_ORDER_SORT_FIELDS)[number]

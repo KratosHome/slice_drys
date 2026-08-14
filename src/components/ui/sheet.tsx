@@ -3,7 +3,6 @@
 import { Cross2Icon } from '@radix-ui/react-icons'
 import {
   Root,
-  Trigger,
   Close,
   Portal,
   Overlay,
@@ -22,10 +21,6 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
 const Sheet = Root
-
-const SheetTrigger = Trigger
-
-const SheetClose = Close
 
 const SheetPortal = Portal
 
@@ -106,21 +101,6 @@ const SheetHeader = ({
 
 SheetHeader.displayName = 'SheetHeader'
 
-const SheetFooter = ({
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-      className,
-    )}
-    {...props}
-  />
-)
-
-SheetFooter.displayName = 'SheetFooter'
-
 const SheetTitle = forwardRef<
   ComponentRef<typeof Title>,
   ComponentPropsWithoutRef<typeof Title>
@@ -147,15 +127,4 @@ const SheetDescription = forwardRef<
 
 SheetDescription.displayName = Description.displayName
 
-export {
-  Sheet,
-  SheetPortal,
-  SheetOverlay,
-  SheetTrigger,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetDescription,
-}
+export { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription }

@@ -102,7 +102,7 @@ export const CardBody = ({
   )
 }
 
-export const useMouseEnter = () => {
+const useMouseEnter = () => {
   const context = useContext(MouseEnterContext)
 
   if (context === undefined) {

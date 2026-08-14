@@ -11,11 +11,9 @@ import {
   Content,
   Portal,
   Viewport,
-  Label,
   Item,
   ItemIndicator,
   ItemText,
-  Separator,
 } from '@radix-ui/react-select'
 import {
   CheckIcon,
@@ -126,19 +124,6 @@ const SelectContent = forwardRef<
 
 SelectContent.displayName = Content.displayName
 
-const SelectLabel = forwardRef<
-  ComponentRef<typeof Label>,
-  ComponentPropsWithoutRef<typeof Label>
->(({ className, ...props }, ref) => (
-  <Label
-    ref={ref}
-    className={cn('px-2 py-1.5 text-sm font-semibold', className)}
-    {...props}
-  />
-))
-
-SelectLabel.displayName = Label.displayName
-
 const SelectItem = forwardRef<
   ComponentRef<typeof Item>,
   ComponentPropsWithoutRef<typeof Item>
@@ -162,28 +147,11 @@ const SelectItem = forwardRef<
 
 SelectItem.displayName = Item.displayName
 
-const SelectSeparator = forwardRef<
-  ComponentRef<typeof Separator>,
-  ComponentPropsWithoutRef<typeof Separator>
->(({ className, ...props }, ref) => (
-  <Separator
-    ref={ref}
-    className={cn('bg-muted -mx-1 my-1 h-px', className)}
-    {...props}
-  />
-))
-
-SelectSeparator.displayName = Separator.displayName
-
 export {
   Select,
   SelectGroup,
   SelectValue,
   SelectTrigger,
   SelectContent,
-  SelectLabel,
   SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
 }

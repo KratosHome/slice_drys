@@ -335,7 +335,7 @@ function customGrain(days: number): AdminStatisticsGrain {
   return 'month'
 }
 
-export function resolveAdminStatisticsPeriod(
+function resolveAdminStatisticsPeriod(
   rawQuery: AdminStatisticsRawQuery = {},
   now: Date = new Date(),
 ): AdminStatisticsResolvedPeriod {

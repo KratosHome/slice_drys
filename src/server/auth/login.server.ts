@@ -6,9 +6,7 @@ import { ADMIN_ROLES, isAdminRole, type UserRole } from '@/constants/user-role'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { UserSlice } from '@/server/user/user-schema.server'
 
-export type { UserRole } from '@/constants/user-role'
-
-export interface AuthenticatedUser {
+interface AuthenticatedUser {
   id: string
   name: string
   email: string

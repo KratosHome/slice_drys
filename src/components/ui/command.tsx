@@ -1,15 +1,11 @@
 'use client'
 
-import type { DialogProps } from '@radix-ui/react-dialog'
-
 import { Command as CommandPrimitive } from 'cmdk'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
-  type HTMLAttributes,
   forwardRef,
 } from 'react'
 import { cn } from '@/utils/cn'
@@ -29,18 +25,6 @@ const Command = forwardRef<
 ))
 
 Command.displayName = CommandPrimitive.displayName
-
-const CommandDialog = ({ children, ...props }: DialogProps) => {
-  return (
-    <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0">
-        <Command className="[&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-          {children}
-        </Command>
-      </DialogContent>
-    </Dialog>
-  )
-}
 
 const CommandInput = forwardRef<
   ComponentRef<typeof CommandPrimitive.Input>,
@@ -103,19 +87,6 @@ const CommandGroup = forwardRef<
 
 CommandGroup.displayName = CommandPrimitive.Group.displayName
 
-const CommandSeparator = forwardRef<
-  ComponentRef<typeof CommandPrimitive.Separator>,
-  ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <CommandPrimitive.Separator
-    ref={ref}
-    className={cn('bg-border -mx-1 h-px', className)}
-    {...props}
-  />
-))
-
-CommandSeparator.displayName = CommandPrimitive.Separator.displayName
-
 const CommandItem = forwardRef<
   ComponentRef<typeof CommandPrimitive.Item>,
   ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
@@ -132,34 +103,11 @@ const CommandItem = forwardRef<
 
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
-const CommandShortcut = ({
-  className,
-  ...props
-}: HTMLAttributes<HTMLSpanElement>) => {
-  return (
-    <span
-      className={cn(
-        'text-muted-foreground ml-auto text-xs tracking-widest',
-        className,
-      )}
-      {...props}
-    />
-  )
-}
-
-CommandShortcut.displayName = 'CommandShortcut'
-
-const CommandLoading = CommandPrimitive.Loading
-
 export {
   Command,
-  CommandDialog,
   CommandInput,
   CommandList,
   CommandEmpty,
   CommandGroup,
   CommandItem,
-  CommandShortcut,
-  CommandSeparator,
-  CommandLoading,
 }

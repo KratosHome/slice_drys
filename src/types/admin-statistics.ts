@@ -66,13 +66,13 @@ export interface AdminStatisticsTopProduct {
 
 export type AdminStatisticsPaymentMethod = 'cash' | 'card' | 'COD' | 'unknown'
 
-export interface AdminStatisticsPaymentBucket {
+interface AdminStatisticsPaymentBucket {
   method: AdminStatisticsPaymentMethod
   orders: number
   grossOrderValue: number
 }
 
-export interface AdminStatisticsTopCity {
+interface AdminStatisticsTopCity {
   city: string
   orders: number
   grossOrderValue: number
@@ -107,7 +107,7 @@ export interface AdminStatisticsBloggerPayouts {
   items: AdminStatisticsBloggerPayout[]
 }
 
-export interface AdminStatisticsReconciliation {
+interface AdminStatisticsReconciliation {
   statusOrdersDelta: number
   statusGrossOrderValueDelta: number
   timeSeriesOrdersDelta: number
@@ -126,7 +126,7 @@ export interface AdminStatisticsDataQuality {
   reconciliation: AdminStatisticsReconciliation
 }
 
-export interface AdminStatisticsFreshness {
+interface AdminStatisticsFreshness {
   generatedAt: string
   oldestOrderAt: string | null
   newestOrderAt: string | null

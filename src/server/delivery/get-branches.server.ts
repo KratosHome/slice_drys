@@ -40,7 +40,7 @@ export async function getNPBranchesByCityRef(
   return branches
 }
 
-export async function getNPBranchesByCityRefOnline(cityRef: string): Promise<
+async function getNPBranchesByCityRefOnline(cityRef: string): Promise<
   | (IDirectoryBranch & {
       city: string
       cityRef: string
@@ -72,7 +72,7 @@ export async function getNPBranchesByCityRefOnline(cityRef: string): Promise<
   }
 }
 
-export async function getNPBranchesByCityRefFromDirectory(
+async function getNPBranchesByCityRefFromDirectory(
   cityRef: string,
 ): Promise<IDirectoryBranch[] | null> {
   try {

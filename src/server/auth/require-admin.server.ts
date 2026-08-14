@@ -13,9 +13,6 @@ import { authOptions } from '@/server/auth/auth-options.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { UserSlice } from '@/server/user/user-schema.server'
 
-export { ADMIN_ROLES }
-export type { AdminRole }
-
 export interface AdminIdentity {
   id: string
   name: string
@@ -23,7 +20,7 @@ export interface AdminIdentity {
   role: AdminRole
 }
 
-export interface SuperAdminIdentity extends Omit<AdminIdentity, 'role'> {
+interface SuperAdminIdentity extends Omit<AdminIdentity, 'role'> {
   role: 'super-admin'
 }
 

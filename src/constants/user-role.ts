@@ -11,7 +11,7 @@ export const ADMIN_ROLES = ['manager', 'super-admin'] as const
 
 export type AdminRole = (typeof ADMIN_ROLES)[number]
 
-export const ADMIN_PERMISSIONS = [
+const ADMIN_PERMISSIONS = [
   'orders:read',
   'orders:update-status',
   'statistics:read',
@@ -24,7 +24,7 @@ export const ADMIN_PERMISSIONS = [
 
 export type AdminPermission = (typeof ADMIN_PERMISSIONS)[number]
 
-export const ROLE_PERMISSIONS: Record<AdminRole, readonly AdminPermission[]> = {
+const ROLE_PERMISSIONS: Record<AdminRole, readonly AdminPermission[]> = {
   manager: ['orders:read', 'orders:update-status', 'statistics:read'],
   'super-admin': ADMIN_PERMISSIONS,
 }

@@ -44,22 +44,6 @@ const TableBody = forwardRef<
 
 TableBody.displayName = 'TableBody'
 
-const TableFooter = forwardRef<
-  HTMLTableSectionElement,
-  HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <tfoot
-    ref={ref}
-    className={cn(
-      'bg-muted/50 border-t font-medium last:[&>tr]:border-b-0',
-      className,
-    )}
-    {...props}
-  />
-))
-
-TableFooter.displayName = 'TableFooter'
-
 const TableRow = forwardRef<
   HTMLTableRowElement,
   HTMLAttributes<HTMLTableRowElement>
@@ -125,7 +109,6 @@ export {
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
   TableHead,
   TableRow,
   TableCell,

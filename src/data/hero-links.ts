@@ -1,4 +1,4 @@
-export const colorConstants = {
+const colorConstants = {
   white: '#FBFBFB',
   black: '#0F0F0F',
   red: '#A90909',

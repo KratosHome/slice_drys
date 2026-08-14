@@ -16,7 +16,6 @@ import {
   Item,
   ItemIndicator,
   ItemText,
-  Separator,
 } from '@radix-ui/react-select'
 
 import {
@@ -165,19 +164,6 @@ const SelectItem = forwardRef<
 
 SelectItem.displayName = Item.displayName
 
-const SelectSeparator = forwardRef<
-  ComponentRef<typeof Separator>,
-  ComponentPropsWithoutRef<typeof Separator>
->(({ className, ...props }, ref) => (
-  <Separator
-    ref={ref}
-    className={cn('bg-muted -mx-1 my-1 h-px', className)}
-    {...props}
-  />
-))
-
-SelectSeparator.displayName = Separator.displayName
-
 export {
   Select,
   SelectGroup,
@@ -186,7 +172,4 @@ export {
   SelectContent,
   SelectLabel,
   SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
 }

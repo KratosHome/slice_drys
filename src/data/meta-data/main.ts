@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/data/contacts'
 
-export const mainMetaDataUk: Metadata = {
+const mainMetaDataUk: Metadata = {
   title: "Сушені снеки з м'яса, фруктів та овочів | Slice & Dry's",
   description:
     "Натуральні сушені снеки з м'яса, фруктів та овочів без консервантів. Замовляйте корисні перекуси для подорожей, спорту й відпочинку зі швидкою доставкою.",
@@ -55,7 +55,7 @@ export const mainMetaDataUk: Metadata = {
   },
 }
 
-export const mainMetaDataEn: Metadata = {
+const mainMetaDataEn: Metadata = {
   title: "Dried Meat, Fruit & Vegetable Snacks | Slice & Dry's",
   description:
     'Natural dried meat, fruit and vegetable snacks without preservatives. Order healthy snacks for travel, sports and everyday breaks with delivery across Ukraine.',

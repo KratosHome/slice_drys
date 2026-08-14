@@ -72,7 +72,7 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
-export const reducer = (state: IToastsState, action: Action): IToastsState => {
+const reducer = (state: IToastsState, action: Action): IToastsState => {
   switch (action.type) {
     case 'ADD_TOAST':
       return {

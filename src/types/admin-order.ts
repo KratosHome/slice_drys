@@ -12,7 +12,7 @@ export interface AdminOrderProduct {
   weight?: number
 }
 
-export interface AdminOrderUser {
+interface AdminOrderUser {
   id: string
   name: string
   surname: string

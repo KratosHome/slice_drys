@@ -1,13 +1,13 @@
 import { contacts, SITE_URL } from '@/data/contacts'
 
-export type JsonLdNode = Record<string, unknown>
+type JsonLdNode = Record<string, unknown>
 
 export const SITE_ORIGIN = SITE_URL.replace(/\/+$/, '')
-export const BRAND_NAME = "Slice & Dry's"
+const BRAND_NAME = "Slice & Dry's"
 export const ORGANIZATION_ID = `${SITE_ORIGIN}/#organization`
 export const WEBSITE_ID = `${SITE_ORIGIN}/#website`
-export const LOGO_URL = `${SITE_ORIGIN}/icons/logo-square.svg`
-export const LOGO_ID = `${SITE_ORIGIN}/#logo`
+const LOGO_URL = `${SITE_ORIGIN}/icons/logo-square.svg`
+const LOGO_ID = `${SITE_ORIGIN}/#logo`
 
 export function serializeJsonLd(value: unknown): string {
   return JSON.stringify(value)

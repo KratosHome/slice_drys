@@ -44,7 +44,7 @@ type UserDataKeys = keyof IUserData<
   IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
 >
 
-export const legendStyle = 'text-xl font-bold md:text-2xl'
+const legendStyle = 'text-xl font-bold md:text-2xl'
 const radioItemStyle = 'h-5 w-5 cursor-pointer'
 const radioItemFilledStyle =
   'bg-border outline outline-[10px] outline-border focus:outline ml-[10px] focus:outline-[10px]'

@@ -1,7 +1,6 @@
 'use client'
 
 import { Slot } from '@radix-ui/react-slot'
-import { MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
@@ -110,23 +109,6 @@ const BreadcrumbSeparator = ({
 
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
 
-const BreadcrumbEllipsis = ({
-  className,
-  ...props
-}: ComponentProps<'span'>) => (
-  <span
-    role="presentation"
-    aria-hidden="true"
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
-    {...props}
-  >
-    <MoreHorizontal className="h-4 w-4" />
-    <span className="sr-only">More</span>
-  </span>
-)
-
-BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis'
-
 export {
   Breadcrumb,
   BreadcrumbList,
@@ -134,5 +116,4 @@ export {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 }
