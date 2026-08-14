@@ -1,15 +1,10 @@
 'use client'
 
-import { useRef, type ComponentProps, type ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
-import {
-  isPageTransitionInProgress,
-  setPageTransitionFallback,
-  startPageTransition,
-} from './transition-state'
+import { startPageTransition } from './transition-state'
 
 type LinkProps = ComponentProps<typeof Link>
 
@@ -60,45 +55,10 @@ function isCurrentPage(href: string): boolean {
 export const TransitionLink = ({
   children,
   href,
-  onClick,
-  onFocus,
-  onMouseEnter,
   onNavigate,
-  onPointerDown,
-  prefetch,
-  replace = false,
-  scroll,
   ...props
 }: ITransitionLinkProps) => {
-  const router = useRouter()
-  const prefetchedHrefRef = useRef<string | null>(null)
-
-  const prefetchDestination = (): void => {
-    if (prefetch === false || prefetchedHrefRef.current === href) return
-
-    const destination = getInternalDestination(href)
-
-    if (!destination) return
-
-    prefetchedHrefRef.current = href
-    router.prefetch(`${destination.pathname}${destination.search}`)
-  }
-
-  const handleClick: NonNullable<LinkProps['onClick']> = (event) => {
-    if (isPageTransitionInProgress()) {
-      event.preventDefault()
-      return
-    }
-
-    onClick?.(event)
-  }
-
   const handleNavigate: NonNullable<LinkProps['onNavigate']> = (event) => {
-    if (isPageTransitionInProgress()) {
-      event.preventDefault()
-      return
-    }
-
     let navigationPrevented = false
 
     onNavigate?.({
@@ -116,51 +76,11 @@ export const TransitionLink = ({
       return
     }
 
-    event.preventDefault()
-    prefetchDestination()
-
-    void startPageTransition().then((transitionStarted) => {
-      if (!transitionStarted) {
-        if (replace) {
-          window.location.replace(href)
-        } else {
-          window.location.assign(href)
-        }
-        return
-      }
-
-      setPageTransitionFallback(href, replace)
-
-      if (replace) {
-        router.replace(href, { scroll })
-      } else {
-        router.push(href, { scroll })
-      }
-    })
+    startPageTransition()
   }
 
   return (
-    <Link
-      {...props}
-      href={href}
-      prefetch={prefetch}
-      replace={replace}
-      scroll={scroll}
-      onClick={handleClick}
-      onFocus={(event) => {
-        onFocus?.(event)
-        prefetchDestination()
-      }}
-      onMouseEnter={(event) => {
-        onMouseEnter?.(event)
-        prefetchDestination()
-      }}
-      onNavigate={handleNavigate}
-      onPointerDown={(event) => {
-        onPointerDown?.(event)
-        prefetchDestination()
-      }}
-    >
+    <Link {...props} href={href} onNavigate={handleNavigate}>
       {children}
     </Link>
   )

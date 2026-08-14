@@ -1,10 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { usePathname, useSearchParams } from 'next/navigation'
 
-import { finishPageTransition } from '@/components/client/transition-link/transition-state'
+import {
+  finishPageTransition,
+  startPageTransition,
+} from '@/components/client/transition-link/transition-state'
 
 interface IPageTransitionProps {
   locale: string
@@ -14,16 +17,28 @@ export default function PageTransition({ locale }: IPageTransitionProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const routeKey = `${pathname}?${searchParams.toString()}`
+  const routeKeyRef = useRef(routeKey)
   const loadingText = locale === 'uk' ? 'Завантаження сторінки' : 'Loading page'
 
   useEffect(() => {
+    routeKeyRef.current = routeKey
     finishPageTransition()
   }, [routeKey])
 
   useEffect(() => {
+    const handlePopState = (): void => {
+      const nextRouteKey = `${window.location.pathname}?${new URLSearchParams(window.location.search).toString()}`
+
+      if (nextRouteKey !== routeKeyRef.current) {
+        startPageTransition()
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
     window.addEventListener('pageshow', finishPageTransition)
 
     return () => {
+      window.removeEventListener('popstate', handlePopState)
       window.removeEventListener('pageshow', finishPageTransition)
       finishPageTransition()
     }
@@ -36,15 +51,10 @@ export default function PageTransition({ locale }: IPageTransitionProps) {
         role="status"
         aria-live="polite"
         aria-atomic="true"
-      >
-        {loadingText}
-      </span>
-      <div className="page-transition-brand" aria-hidden="true">
-        <div className="page-transition-logo">
-          <svg viewBox="0 0 119 138" focusable="false">
-            <use href="/icons/sprite.svg#logo" />
-          </svg>
-        </div>
+        data-loading-text={loadingText}
+      />
+      <div className="page-transition-progress" aria-hidden="true">
+        <span className="page-transition-progress-bar" />
       </div>
     </>
   )

@@ -66,6 +66,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
     <html
       suppressHydrationWarning
       lang={locale}
+      data-scroll-behavior="smooth"
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
       <head>

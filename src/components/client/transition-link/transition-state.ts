@@ -1,108 +1,111 @@
-const PAGE_TRANSITION_CLASS = 'page-transition'
-const PAGE_TRANSITION_BRAND_CLASS = '.page-transition-brand'
-const PAGE_TRANSITION_BRAND_SELECTOR = `body > ${PAGE_TRANSITION_BRAND_CLASS}`
+const PAGE_TRANSITION_ACTIVE_CLASS = 'page-transition-active'
+const PAGE_TRANSITION_COMPLETE_CLASS = 'page-transition-complete'
+const PAGE_TRANSITION_PROGRESS_SELECTOR = '.page-transition-progress'
 const PAGE_TRANSITION_STATUS_SELECTOR = '.page-transition-status'
-const PAGE_TRANSITION_TIMEOUT = 280
-const TRANSITION_SAFETY_TIMEOUT = 8_000
+const PAGE_TRANSITION_START_DELAY = 100
+const PAGE_TRANSITION_COMPLETE_DURATION = 340
+const PAGE_TRANSITION_SAFETY_TIMEOUT = 12_000
 
+let startTimeoutId: number | undefined
+let completeTimeoutId: number | undefined
 let safetyTimeoutId: number | undefined
 let transitionInProgress = false
 
-function clearSafetyTimeout(): void {
-  if (safetyTimeoutId === undefined) return
+function clearTimeoutById(timeoutId: number | undefined): void {
+  if (timeoutId === undefined) return
 
-  window.clearTimeout(safetyTimeoutId)
+  window.clearTimeout(timeoutId)
+}
+
+function clearTransitionTimeouts(): void {
+  clearTimeoutById(startTimeoutId)
+  clearTimeoutById(completeTimeoutId)
+  clearTimeoutById(safetyTimeoutId)
+
+  startTimeoutId = undefined
+  completeTimeoutId = undefined
   safetyTimeoutId = undefined
 }
 
-function setPageContentInert(inert: boolean): void {
-  document
-    .querySelectorAll<HTMLElement>(
-      `body > :not(${PAGE_TRANSITION_BRAND_CLASS}):not(${PAGE_TRANSITION_STATUS_SELECTOR}):not(script):not(style)`,
-    )
-    .forEach((element) => {
-      element.inert = inert
-    })
-}
+function setLoadingStatus(loading: boolean): void {
+  const status = document.querySelector<HTMLElement>(
+    PAGE_TRANSITION_STATUS_SELECTOR,
+  )
 
-function waitForBrandToCoverPage(brand: HTMLElement): Promise<void> {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return Promise.resolve()
+  if (status) {
+    status.textContent = loading ? (status.dataset.loadingText ?? '') : ''
   }
 
-  return new Promise((resolve) => {
-    const finish = (): void => {
-      window.clearTimeout(timeoutId)
-      brand.removeEventListener('transitionend', handleTransitionEnd)
-      brand.removeEventListener('transitioncancel', handleTransitionEnd)
-      resolve()
-    }
+  if (loading) {
+    document.body.setAttribute('aria-busy', 'true')
+  } else {
+    document.body.removeAttribute('aria-busy')
+  }
+}
 
-    const handleTransitionEnd = (event: TransitionEvent): void => {
-      if (event.target === brand && event.propertyName === 'opacity') {
-        finish()
-      }
-    }
-
-    brand.addEventListener('transitionend', handleTransitionEnd)
-    brand.addEventListener('transitioncancel', handleTransitionEnd)
-    const timeoutId = window.setTimeout(finish, PAGE_TRANSITION_TIMEOUT)
-  })
+function resetPageTransition(): void {
+  document.body.classList.remove(
+    PAGE_TRANSITION_ACTIVE_CLASS,
+    PAGE_TRANSITION_COMPLETE_CLASS,
+  )
+  setLoadingStatus(false)
 }
 
 export function finishPageTransition(): void {
   if (typeof document === 'undefined') return
 
-  document.body.classList.remove(PAGE_TRANSITION_CLASS)
-  setPageContentInert(false)
+  clearTimeoutById(startTimeoutId)
+  clearTimeoutById(completeTimeoutId)
+  clearTimeoutById(safetyTimeoutId)
+  startTimeoutId = undefined
+  completeTimeoutId = undefined
+  safetyTimeoutId = undefined
   transitionInProgress = false
-  clearSafetyTimeout()
+  setLoadingStatus(false)
+
+  if (!document.body.classList.contains(PAGE_TRANSITION_ACTIVE_CLASS)) {
+    resetPageTransition()
+    return
+  }
+
+  document.body.classList.add(PAGE_TRANSITION_COMPLETE_CLASS)
+
+  completeTimeoutId = window.setTimeout(() => {
+    resetPageTransition()
+    completeTimeoutId = undefined
+  }, PAGE_TRANSITION_COMPLETE_DURATION)
 }
 
-export function isPageTransitionInProgress(): boolean {
-  return transitionInProgress
-}
+export function startPageTransition(): void {
+  if (typeof document === 'undefined') return
 
-export function setPageTransitionFallback(
-  href: string,
-  replace: boolean,
-): void {
-  clearSafetyTimeout()
-
-  safetyTimeoutId = window.setTimeout(() => {
-    if (!transitionInProgress) return
-
-    if (replace) {
-      window.location.replace(href)
-    } else {
-      window.location.assign(href)
-    }
-  }, TRANSITION_SAFETY_TIMEOUT)
-}
-
-export async function startPageTransition(): Promise<boolean> {
-  if (typeof document === 'undefined' || transitionInProgress) return false
+  clearTransitionTimeouts()
+  resetPageTransition()
 
   transitionInProgress = true
 
-  const brand = document.querySelector<HTMLElement>(
-    PAGE_TRANSITION_BRAND_SELECTOR,
-  )
+  startTimeoutId = window.setTimeout(() => {
+    if (!transitionInProgress) return
 
-  if (!brand) {
-    transitionInProgress = false
-    return false
-  }
+    const progress = document.querySelector<HTMLElement>(
+      PAGE_TRANSITION_PROGRESS_SELECTOR,
+    )
 
-  setPageContentInert(true)
+    if (!progress) {
+      transitionInProgress = false
+      setLoadingStatus(false)
+      return
+    }
 
-  // Commit the resting state before fading the brand layer in.
-  void brand.offsetHeight
+    // Restart the CSS animation when a new navigation supersedes another one.
+    void progress.offsetWidth
+    setLoadingStatus(true)
+    document.body.classList.add(PAGE_TRANSITION_ACTIVE_CLASS)
+    startTimeoutId = undefined
 
-  const brandCoveredPage = waitForBrandToCoverPage(brand)
-  document.body.classList.add(PAGE_TRANSITION_CLASS)
-
-  await brandCoveredPage
-
-  return transitionInProgress
+    safetyTimeoutId = window.setTimeout(
+      finishPageTransition,
+      PAGE_TRANSITION_SAFETY_TIMEOUT,
+    )
+  }, PAGE_TRANSITION_START_DELAY)
 }

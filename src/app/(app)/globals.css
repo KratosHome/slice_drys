@@ -29,7 +29,6 @@
   :root {
     scrollbar-gutter: stable;
     scroll-behavior: smooth;
-    --animate-bg: #eee1f3;
     --background: 0 0% 98%;
     --foreground: 0 0% 6%;
     --card: 0 0% 100%;
@@ -75,7 +74,6 @@
   .dark {
     --background: 0 0% 6%;
     --foreground: 0 0% 98%;
-    --animate-bg: #1a0303;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
@@ -124,122 +122,103 @@
 }
 
 html {
-  background: var(--animate-bg);
+  background: hsl(var(--background));
 }
 
-body {
-  transition: background-color 180ms ease-out;
-}
-
-body.page-transition {
-  overflow: hidden;
-  background-color: var(--animate-bg);
-}
-
-body
-  > :not(.page-transition-brand):not(.page-transition-status):not(script):not(
-    style
-  ) {
-  transform-origin: center top;
-  transition: opacity 160ms ease-out;
-}
-
-body.page-transition
-  > :not(.page-transition-brand):not(.page-transition-status):not(script):not(
-    style
-  ) {
-  opacity: 0;
-}
-
-.page-transition-brand {
+.page-transition-progress {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: grid;
-  visibility: hidden;
-  place-items: center;
-  pointer-events: auto;
-  touch-action: none;
-  color: hsl(var(--foreground));
-  background: var(--animate-bg);
+  inset: 0 0 auto;
+  z-index: 10000;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
   opacity: 0;
-  transition:
-    opacity 180ms ease-out,
-    visibility 0s linear 180ms;
-}
-
-.page-transition-brand svg {
-  width: clamp(112px, 10vw, 148px);
-  height: auto;
-  opacity: 0;
-  transform: translate3d(0, 16px, 0) scale(0.94);
+  transform: translate3d(0, -100%, 0);
   transition:
     opacity 160ms ease-out,
-    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform 160ms ease-out;
 }
 
-.page-transition-logo {
-  display: grid;
-  place-items: center;
-  transition:
-    transform 180ms ease-out,
-    filter 180ms ease-out;
+.page-transition-progress-bar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0.08);
+  transform-origin: left center;
+  background: hsl(var(--red-cust));
+  box-shadow: 0 0 10px hsl(var(--red-cust) / 0.45);
 }
 
-body.page-transition > .page-transition-brand {
-  visibility: visible;
+.page-transition-progress-bar::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(28px, 3vw, 40px);
+  height: 100%;
+  content: '';
+  background: hsl(var(--foreground) / 0.72);
+  transform: translateX(16%) skewX(-18deg);
+}
+
+body.page-transition-active > .page-transition-progress {
   opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+body.page-transition-active > .page-transition-progress > span {
+  animation: page-transition-progress 12s linear forwards;
+}
+
+body.page-transition-complete > .page-transition-progress {
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
   transition:
-    opacity 180ms ease-out,
-    visibility 0s linear;
+    opacity 160ms ease-out 160ms,
+    transform 0s linear 320ms;
 }
 
-body.page-transition > .page-transition-brand svg {
-  opacity: 0.9;
-  transform: translate3d(0, 0, 0) scale(1);
-  transition-delay: 40ms, 0ms;
+body.page-transition-complete > .page-transition-progress > span {
+  animation: none;
+  transform: scaleX(1);
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body.page-transition > .page-transition-brand .page-transition-logo {
-  will-change: transform, filter;
-  animation: page-transition-logo-breathe 1400ms ease-in-out 220ms infinite;
-}
-
-@keyframes page-transition-logo-breathe {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 0 hsl(var(--foreground) / 0));
-    transform: translate3d(0, 0, 0) scale(1);
+@keyframes page-transition-progress {
+  0% {
+    transform: scaleX(0.08);
   }
 
-  50% {
-    filter: drop-shadow(0 12px 22px hsl(var(--foreground) / 0.18));
-    transform: translate3d(0, -9px, 0) scale(1.045);
+  3% {
+    transform: scaleX(0.35);
+  }
+
+  14% {
+    transform: scaleX(0.68);
+  }
+
+  100% {
+    transform: scaleX(0.92);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body {
-    transition: none;
-  }
-
-  body
-    > :not(.page-transition-brand):not(.page-transition-status):not(script):not(
-      style
-    ),
-  .page-transition-brand,
-  .page-transition-brand svg,
-  .page-transition-logo {
+  .page-transition-progress,
+  .page-transition-progress-bar,
+  body.page-transition-complete > .page-transition-progress,
+  body.page-transition-complete > .page-transition-progress > span {
     animation: none;
     transition: none;
   }
 
-  body.page-transition
-    > :not(.page-transition-brand):not(.page-transition-status):not(script):not(
-      style
-    ) {
-    transform: none;
-    filter: none;
+  body.page-transition-active > .page-transition-progress > span {
+    animation: none;
+    transform: scaleX(0.72);
+    box-shadow: none;
+  }
+
+  .page-transition-progress-bar::after {
+    display: none;
   }
 }
 
