@@ -17,7 +17,6 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 
 const scriptOrigins = [
   'https://www.googletagmanager.com',
-  'https://www.google-analytics.com',
   'https://va.vercel-scripts.com',
 ]
 
@@ -44,8 +43,6 @@ const imageOrigins = [
 
 const fontOrigins = ["'self'", 'data:']
 
-const frameOrigins = ["'self'", 'https://www.googletagmanager.com']
-
 const styleOrigins = ["'self'", "'unsafe-inline'"]
 
 const createContentSecurityPolicy = () => {
@@ -64,13 +61,14 @@ const createContentSecurityPolicy = () => {
     `img-src ${imageOrigins.join(' ')}`,
     `connect-src 'self' ${connectOrigins.join(' ')}`,
     `font-src ${fontOrigins.join(' ')}`,
-    `frame-src ${frameOrigins.join(' ')}`,
-    "frame-ancestors 'self'",
+    "frame-src 'none'",
+    "frame-ancestors 'none'",
     "form-action 'self'",
     "object-src 'none'",
     "child-src 'self' blob:",
     "worker-src 'self' blob:",
     "media-src 'self' blob:",
+    ...(!isDevelopment ? ['upgrade-insecure-requests'] : []),
   ].join('; ')
 }
 
@@ -85,7 +83,7 @@ const securityHeaders = [
   },
   {
     key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
+    value: 'DENY',
   },
   {
     key: 'X-Content-Type-Options',
@@ -97,7 +95,7 @@ const securityHeaders = [
   },
   {
     key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=()',
+    value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
   },
   {
     key: 'Content-Security-Policy',
@@ -110,6 +108,7 @@ const securityHeaders = [
 // ---------------------------------------------------------------------------
 
 const nextConfig = {
+  poweredByHeader: false,
   serverExternalPackages: ['mongoose'],
   images: {
     formats: ['image/avif', 'image/webp'],
