@@ -9,6 +9,7 @@ export interface AdminOrderProduct {
   name: string
   count: number
   price: number
+  weight?: number
 }
 
 export interface AdminOrderUser {
@@ -28,6 +29,17 @@ export interface AdminOrderDelivery {
 
 export type AdminOrderPaymentMethod = 'cash' | 'card' | 'COD' | 'unknown'
 
+export interface AdminOrderAttribution {
+  version: 1
+  source: 'organic' | 'referral'
+  evaluatedAt: string
+  code?: string
+  bloggerName?: string
+  bloggerLink?: string
+  rateBps?: number
+  commissionAmount?: number
+}
+
 export interface AdminOrder {
   id: string
   status: OrderStatus
@@ -38,6 +50,7 @@ export interface AdminOrder {
   payment: {
     method: AdminOrderPaymentMethod
   }
+  attribution?: AdminOrderAttribution
   comment: string
   createdAt: string
   updatedAt: string

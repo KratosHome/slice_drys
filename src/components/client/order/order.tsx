@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-import { sendOrderNotification } from '@/server/info/order-notification.server'
 import OrderForm from '@/components/client/order/order-form'
 import OrderList from '@/components/client/order/order-list'
 import { useCartStore } from '@/store/cart-store'
@@ -12,11 +11,38 @@ import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import Loading from '@/components/ui/loading'
-import { referals } from '@/data/referals'
 
 type Props = {
   defaultCities: {
     novaPoshta: IDirectoryCity[]
+  }
+}
+
+function getStoredReferralCode(): string | undefined {
+  try {
+    const raw = window.localStorage.getItem('ref')
+    if (!raw) return undefined
+
+    const storedReferral = JSON.parse(raw) as {
+      code?: unknown
+      expiresAt?: unknown
+    }
+
+    if (
+      typeof storedReferral.code !== 'string' ||
+      !storedReferral.code.trim() ||
+      typeof storedReferral.expiresAt !== 'number' ||
+      !Number.isFinite(storedReferral.expiresAt) ||
+      Date.now() > storedReferral.expiresAt
+    ) {
+      window.localStorage.removeItem('ref')
+      return undefined
+    }
+
+    return storedReferral.code.trim()
+  } catch {
+    window.localStorage.removeItem('ref')
+    return undefined
   }
 }
 
@@ -39,7 +65,7 @@ export default function Order({ defaultCities }: Props) {
   const {
     totalPrice,
     minOrderAmount,
-    cart: { userData, itemList },
+    cart: { userData },
   } = useCartStore((state) => state)
 
   useEffect(() => {
@@ -61,58 +87,15 @@ export default function Order({ defaultCities }: Props) {
     if (!formRef.current) return
     setLoading(true)
 
-    const referral = (() => {
-      try {
-        const refRaw = window.localStorage.getItem('ref')
-        if (!refRaw) return undefined
+    const referralCode = getStoredReferralCode()
 
-        const { code } = JSON.parse(refRaw) as { code?: string }
-        return referals.find((item) => item.cod === code)
-      } catch {
-        window.localStorage.removeItem('ref')
-        return undefined
-      }
-    })()
-
-    const referralInterest = referral?.interest ?? 0
-
-    const messageData = {
-      totalPrice: `${totalPrice} ₴`,
-      paymentMethod:
-        userData?.paymentInfo === 'cash' ? 'післяоплата' : 'на картку',
-      name: `${userData?.name ?? ''} ${userData?.surname ?? ''}`.trim(),
-      phone: userData?.phoneNumber ?? '',
-      delivery: userData?.deliveryInfo?.courierInfo
-        ? `Кур'єром: ${userData.deliveryInfo.courierInfo}`
-        : `Новою поштою: ${userData?.deliveryInfo?.city?.label}, ${userData?.deliveryInfo?.branch?.label}`,
-      comment: userData?.comment ?? 'Немає коментарів',
-      products: (itemList ?? [])
-        .map(
-          (item, i) =>
-            `${i + 1}. ${item.name} (вага ${item.weight}) x ${item.quantity} од`,
-        )
-        .join('\n'),
-      callback: userData?.noCall ? 'НЕ ПОТРІБЕН' : 'ПОТРІБЕН',
-      blogger: referral
-        ? {
-            name: referral.name,
-            interest: referral.interest,
-            link: referral.link,
-            payment: (totalPrice * referralInterest) / 100,
-          }
-        : undefined,
-    }
-
-    const cb = async (resp: IOrderResponse) => {
+    const cb = (resp: IOrderResponse) => {
       if (resp.success) {
         toast({
           duration: 5000,
           title: tToast('success'),
           description: resp.message[locale],
         })
-
-        await sendOrderNotification(messageData)
-
         setLoading(false)
         formRef.current?.reset()
         replace(`/${locale}/`)
@@ -125,7 +108,7 @@ export default function Order({ defaultCities }: Props) {
         })
       }
     }
-    submitOrder(cb)
+    submitOrder(referralCode, cb)
   }
 
   return (

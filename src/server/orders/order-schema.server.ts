@@ -14,9 +14,52 @@ interface CourierDelivery {
 }
 
 type Delivery = DepartmentDelivery | CourierDelivery
-interface DeliveryValidationProps {
-  value: Delivery
-}
+
+const attributionSchema = new mongoose.Schema(
+  {
+    version: {
+      type: Number,
+      enum: [1],
+      required: true,
+    },
+    source: {
+      type: String,
+      enum: ['organic', 'referral'],
+      required: true,
+    },
+    evaluatedAt: {
+      type: Date,
+      required: true,
+    },
+    code: {
+      type: String,
+      required: false,
+    },
+    bloggerName: {
+      type: String,
+      required: false,
+    },
+    bloggerLink: {
+      type: String,
+      required: false,
+    },
+    rateBps: {
+      type: Number,
+      min: 0,
+      max: 10_000,
+      validate: Number.isInteger,
+      required: false,
+    },
+    commissionAmount: {
+      type: Number,
+      min: 0,
+      validate: Number.isFinite,
+      required: false,
+    },
+  },
+  { _id: false },
+)
+
 const orderSchemaServer = new mongoose.Schema(
   {
     status: {
@@ -43,6 +86,10 @@ const orderSchemaServer = new mongoose.Schema(
             type: Number,
             required: true,
           },
+          weight: {
+            type: Number,
+            required: false,
+          },
         },
       ],
       required: true,
@@ -50,6 +97,10 @@ const orderSchemaServer = new mongoose.Schema(
     total: {
       type: Number,
       required: true,
+    },
+    attribution: {
+      type: attributionSchema,
+      required: false,
     },
     user: {
       id: {
@@ -102,8 +153,8 @@ const orderSchemaServer = new mongoose.Schema(
           }
           return false
         },
-        message: (props: DeliveryValidationProps) =>
-          `Invalid delivery structure: ${JSON.stringify(props.value)}. Must be either {city, department, phone} or {courier, phone}`,
+        message:
+          'Invalid delivery structure. Must be either department or courier delivery.',
       },
     },
     payment: {
@@ -122,6 +173,7 @@ const orderSchemaServer = new mongoose.Schema(
 )
 
 orderSchemaServer.index({ status: 1, createdAt: -1, _id: -1 })
+orderSchemaServer.index({ createdAt: 1 })
 
 export const Order =
   mongoose.models.Order || mongoose.model('Order', orderSchemaServer)

@@ -1,41 +1,35 @@
-interface IOrderProduct {
+interface ICreateOrderProduct {
   id: string
-  name: string
   count: number
-  price: number
+  weight: number
 }
 
-interface IOrderUser {
-  id: string
+interface ICreateOrderUser {
   name: string
   surname: string
   phone: string
   email: string
 }
 
-interface IOrderDelivery {
-  city: string
-  department: string
-  phone: string
-}
+type ICreateOrderDelivery =
+  | {
+      city: string
+      department: string
+      phone: string
+    }
+  | {
+      courier: string
+      phone: string
+    }
 
-interface IOrder {
-  id: string
-  status:
-    | 'new'
-    | 'awaitingPayment'
-    | 'awaitingShipment'
-    | 'shipped'
-    | 'completed'
-    | 'awaitingReturn'
-    | 'cancelled'
-    | 'failedDelivery'
-  products: IOrderProduct[]
-  total: number
-  user: IOrderUser
-  delivery: IOrderDelivery
+interface ICreateOrderInput {
+  products: ICreateOrderProduct[]
+  user: ICreateOrderUser
+  delivery: ICreateOrderDelivery
   payment: {
     method: 'cash' | 'card'
   }
   comment: string
+  referralCode?: string
+  noCall?: boolean
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { createOrderServer } from '@/server/orders/create-order.server'
-import { generateId } from '@/utils/generate-id'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import { create } from 'zustand'
 
@@ -40,7 +39,10 @@ interface ICartActions {
   clearCart: (full?: boolean) => void
   removeItemFromCart: (id: string, weight: number) => void
   setOpenCart: (openCart: boolean) => void
-  submitOrder: (cb: (resp: IOrderResponse) => void) => void
+  submitOrder: (
+    referralCode: string | undefined,
+    cb: (resp: IOrderResponse) => void,
+  ) => void
 }
 
 const initialUserData = {
@@ -183,44 +185,45 @@ export const useCartStore = create<ICartState & ICartActions>()(
           setCartUserData: (data) => {
             set((state) => ({ cart: { ...state.cart, userData: data } }))
           },
-          submitOrder: async (cb: (response: IOrderResponse) => void) => {
-            const { cart, totalPrice, clearCart } = get()
+          submitOrder: async (
+            referralCode: string | undefined,
+            cb: (response: IOrderResponse) => void,
+          ) => {
+            const { cart, clearCart } = get()
 
             if (!cart.itemList || cart.itemList.length === 0) {
               return { success: false, message: 'Cart is empty' }
             }
 
-            const userId: string = generateId('user')
-            const orderId: string = generateId('order')
-
-            const productsToSubmit: IOrderProduct[] = cart.itemList.map(
+            const productsToSubmit: ICreateOrderProduct[] = cart.itemList.map(
               (item) => ({
                 id: item.id,
-                name: item.name,
                 count: item.quantity,
-                price: item.price,
+                weight: item.weight,
               }),
             )
 
-            const userToSubmit: IOrderUser = {
+            const userToSubmit: ICreateOrderUser = {
               name: cart.userData?.name || '',
               surname: cart.userData?.surname || '',
-              id: userId,
               phone: cart.userData?.phoneNumber || '',
               email: cart.userData?.email || '',
             }
 
-            const deliveryToSubmit: IOrderDelivery = {
-              city: cart.userData?.deliveryInfo?.city?.label || '',
-              department: cart.userData?.deliveryInfo?.branch?.label || '',
-              phone: cart.userData?.phoneNumber || '',
-            }
+            const courierInfo = cart.userData?.deliveryInfo?.courierInfo
+            const deliveryToSubmit: ICreateOrderDelivery = courierInfo
+              ? {
+                  courier: courierInfo,
+                  phone: cart.userData?.phoneNumber || '',
+                }
+              : {
+                  city: cart.userData?.deliveryInfo?.city?.label || '',
+                  department: cart.userData?.deliveryInfo?.branch?.label || '',
+                  phone: cart.userData?.phoneNumber || '',
+                }
 
-            const orderData: IOrder = {
-              id: orderId,
-              status: 'new' as const,
+            const orderData: ICreateOrderInput = {
               products: productsToSubmit,
-              total: totalPrice,
               delivery: deliveryToSubmit,
               user: userToSubmit,
               payment: {
@@ -228,6 +231,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
                   (cart.userData?.paymentInfo as 'cash' | 'card') || 'cash',
               },
               comment: cart.userData?.comment || '',
+              referralCode,
+              noCall: cart.userData?.noCall === true,
             }
 
             const response: IOrderResponse = await createOrderServer(orderData)

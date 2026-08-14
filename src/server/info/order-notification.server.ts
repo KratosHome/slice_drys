@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import TelegramBot from 'node-telegram-bot-api'
 import { formatDate } from '@/utils/format-date'
@@ -16,11 +16,13 @@ interface IOrderNotificationData {
     name: string
     interest: number
     link: string
-    payment: number
+    commissionAmount: number
   }
 }
 
-export async function sendOrderNotification(orderData: IOrderNotificationData) {
+export async function sendOrderNotification(
+  orderData: IOrderNotificationData,
+): Promise<void> {
   const {
     totalPrice,
     name,
@@ -37,7 +39,7 @@ export async function sendOrderNotification(orderData: IOrderNotificationData) {
     const formattedDate = formatDate(new Date())
 
     const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN as string, {
-      polling: true,
+      polling: false,
     })
 
     const chatId = process.env.TELEGRAM_BOT_CHAT_ID as string
@@ -47,7 +49,7 @@ export async function sendOrderNotification(orderData: IOrderNotificationData) {
 БЛОГЕР / РЕФЕРАЛ:
 ІМ'Я: ${blogger.name}
 ВІДСОТОК: ${blogger.interest}%
-ВИПЛАТА: ${blogger.payment} ₴
+ВИПЛАТА: ${blogger.commissionAmount} ₴
 ПОСИЛАННЯ: ${blogger.link}
 `
       : ''
@@ -76,9 +78,9 @@ ${products}
 ${bloggerBlock}
 `.trim(),
     )
-
-    return { success: true }
-  } catch (err) {
-    return { success: false, message: String(err) }
+  } catch (error) {
+    console.error('Order notification failed', {
+      name: error instanceof Error ? error.name : 'UnknownError',
+    })
   }
 }

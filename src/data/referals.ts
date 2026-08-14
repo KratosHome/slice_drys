@@ -1,20 +1,35 @@
-export const referals = [
+export interface ReferralDefinition {
+  code: string
+  name: string
+  rateBps: number
+  link: string
+}
+
+export const referrals = [
   {
     name: 'Oleg',
-    cod: 'x3fjUcj52Jf',
-    interest: 15,
+    code: 'x3fjUcj52Jf',
+    rateBps: 1_500,
     link: 'https://www.instagram.com/oleg.kus.kz/',
   },
   {
     name: 'кнопка',
-    cod: 'button',
-    interest: 10,
+    code: 'button',
+    rateBps: 1_000,
     link: 'https://www.instagram.com/oleg.kus.kz/',
   },
   {
     name: 'Олександре',
-    cod: 'keddr',
-    interest: 10,
+    code: 'keddr',
+    rateBps: 1_000,
     link: 'https://www.youtube.com/@keddr/featured',
   },
-]
+] as const satisfies readonly ReferralDefinition[]
+
+export function getReferralByCode(
+  code: string | undefined,
+): ReferralDefinition | undefined {
+  if (!code) return undefined
+
+  return referrals.find((referral) => referral.code === code)
+}

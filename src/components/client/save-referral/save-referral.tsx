@@ -9,7 +9,7 @@ const SaveReferral = () => {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    const ref = searchParams.get('ref')
+    const ref = searchParams.get('ref')?.trim()
     if (!ref) return
 
     localStorage.setItem(
@@ -25,8 +25,22 @@ const SaveReferral = () => {
     const raw = localStorage.getItem('ref')
     if (!raw) return
 
-    const { expiresAt } = JSON.parse(raw)
-    if (Date.now() > expiresAt) {
+    try {
+      const storedReferral = JSON.parse(raw) as {
+        code?: unknown
+        expiresAt?: unknown
+      }
+
+      if (
+        typeof storedReferral.code !== 'string' ||
+        !storedReferral.code.trim() ||
+        typeof storedReferral.expiresAt !== 'number' ||
+        !Number.isFinite(storedReferral.expiresAt) ||
+        Date.now() > storedReferral.expiresAt
+      ) {
+        localStorage.removeItem('ref')
+      }
+    } catch {
       localStorage.removeItem('ref')
     }
   }, [])

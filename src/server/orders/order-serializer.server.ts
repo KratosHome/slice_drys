@@ -1,5 +1,9 @@
 import { isOrderStatus } from '@/constants/order-status'
-import type { AdminOrder, AdminOrderPaymentMethod } from '@/types/admin-order'
+import type {
+  AdminOrder,
+  AdminOrderAttribution,
+  AdminOrderPaymentMethod,
+} from '@/types/admin-order'
 
 interface LeanOrderDocument {
   _id?: unknown
@@ -9,6 +13,7 @@ interface LeanOrderDocument {
     name?: unknown
     count?: unknown
     price?: unknown
+    weight?: unknown
   }>
   total?: unknown
   user?: {
@@ -26,6 +31,16 @@ interface LeanOrderDocument {
   }
   payment?: {
     method?: unknown
+  }
+  attribution?: {
+    version?: unknown
+    source?: unknown
+    evaluatedAt?: unknown
+    code?: unknown
+    bloggerName?: unknown
+    bloggerLink?: unknown
+    rateBps?: unknown
+    commissionAmount?: unknown
   }
   comment?: unknown
   createdAt?: unknown
@@ -59,12 +74,80 @@ function toPaymentMethod(value: unknown): AdminOrderPaymentMethod {
     : 'unknown'
 }
 
+function toOptionalNumber(value: unknown): number | undefined {
+  if (
+    value === null ||
+    value === undefined ||
+    (typeof value === 'string' && !value.trim())
+  ) {
+    return undefined
+  }
+
+  const numberValue = Number(value)
+  return Number.isFinite(numberValue) ? numberValue : undefined
+}
+
+function toOptionalNonNegativeNumber(value: unknown): number | undefined {
+  const numberValue = toOptionalNumber(value)
+
+  return numberValue !== undefined && numberValue >= 0 ? numberValue : undefined
+}
+
+function roundMoney(value: number): number {
+  return Math.round((value + Number.EPSILON) * 100) / 100
+}
+
+function toAttribution(
+  value: LeanOrderDocument['attribution'],
+  orderTotalValue: unknown,
+): AdminOrderAttribution | undefined {
+  if (
+    value?.version !== 1 ||
+    (value.source !== 'organic' && value.source !== 'referral')
+  ) {
+    return undefined
+  }
+
+  const rateBps = toOptionalNonNegativeNumber(value.rateBps)
+  const hasStoredCommissionAmount =
+    value.commissionAmount !== undefined && value.commissionAmount !== null
+  const storedCommissionAmount = toOptionalNonNegativeNumber(
+    value.commissionAmount,
+  )
+  const orderTotal = toOptionalNonNegativeNumber(orderTotalValue)
+  const commissionAmount =
+    value.source === 'referral'
+      ? hasStoredCommissionAmount
+        ? storedCommissionAmount
+        : rateBps !== undefined && orderTotal !== undefined
+          ? roundMoney((orderTotal * rateBps) / 10_000)
+          : undefined
+      : undefined
+
+  return {
+    version: 1,
+    source: value.source,
+    evaluatedAt: toIsoDate(value.evaluatedAt),
+    ...(value.code !== undefined && { code: toStringValue(value.code) }),
+    ...(value.bloggerName !== undefined && {
+      bloggerName: toStringValue(value.bloggerName),
+    }),
+    ...(value.bloggerLink !== undefined && {
+      bloggerLink: toStringValue(value.bloggerLink),
+    }),
+    ...(rateBps !== undefined && { rateBps }),
+    ...(commissionAmount !== undefined && { commissionAmount }),
+  }
+}
+
 export function serializeAdminOrder(value: unknown): AdminOrder {
   const order = value as LeanOrderDocument
 
   if (!isOrderStatus(order.status)) {
     throw new Error('Order contains an invalid status')
   }
+
+  const attribution = toAttribution(order.attribution, order.total)
 
   return {
     id: toStringValue(order._id),
@@ -75,6 +158,9 @@ export function serializeAdminOrder(value: unknown): AdminOrder {
           name: toStringValue(product.name),
           count: toNumberValue(product.count),
           price: toNumberValue(product.price),
+          ...(toOptionalNumber(product.weight) !== undefined && {
+            weight: toOptionalNumber(product.weight),
+          }),
         }))
       : [],
     total: toNumberValue(order.total),
@@ -100,6 +186,7 @@ export function serializeAdminOrder(value: unknown): AdminOrder {
     payment: {
       method: toPaymentMethod(order.payment?.method),
     },
+    ...(attribution && { attribution }),
     comment: toStringValue(order.comment),
     createdAt: toIsoDate(order.createdAt),
     updatedAt: toIsoDate(order.updatedAt),

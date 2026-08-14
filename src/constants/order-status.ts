@@ -6,7 +6,6 @@ export const ORDER_STATUSES = [
   'completed',
   'awaitingReturn',
   'cancelled',
-  'failedDelivery',
 ] as const
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number]
@@ -19,7 +18,6 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   completed: 'Виконано',
   awaitingReturn: 'Очікує повернення',
   cancelled: 'Скасовано',
-  failedDelivery: 'Не доставлено',
 }
 
 export const ORDER_STATUS_BY_SLUG = {
@@ -30,7 +28,6 @@ export const ORDER_STATUS_BY_SLUG = {
   completed: 'completed',
   'awaiting-return': 'awaitingReturn',
   cancelled: 'cancelled',
-  'failed-delivery': 'failedDelivery',
 } as const satisfies Record<string, OrderStatus>
 
 export type OrderStatusSlug = keyof typeof ORDER_STATUS_BY_SLUG

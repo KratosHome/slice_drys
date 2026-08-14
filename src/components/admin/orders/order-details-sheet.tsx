@@ -135,6 +135,19 @@ function phoneHref(phone: string) {
   return `tel:${phone.replace(/[^+\d]/g, '')}`
 }
 
+function safeExternalUrl(value?: string) {
+  if (!value) return null
+
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' || url.protocol === 'http:'
+      ? url.toString()
+      : null
+  } catch {
+    return null
+  }
+}
+
 function DetailItem({
   label,
   children,
@@ -258,6 +271,63 @@ function OrderDetails({
 
       <Separator />
 
+      <DetailsSection title="Атрибуція">
+        {order.attribution ? (
+          <dl className="grid gap-4 sm:grid-cols-2">
+            <DetailItem label="Джерело">
+              {order.attribution.source === 'referral'
+                ? 'Блогер / реферал'
+                : 'Органічне замовлення'}
+            </DetailItem>
+            <DetailItem label="Перевірено">
+              {formatDate(order.attribution.evaluatedAt)}
+            </DetailItem>
+            {order.attribution.source === 'referral' ? (
+              <>
+                <DetailItem label="Блогер">
+                  {formatValue(order.attribution.bloggerName)}
+                </DetailItem>
+                <DetailItem label="Referral-код">
+                  <span className="font-mono text-xs">
+                    {formatValue(order.attribution.code)}
+                  </span>
+                </DetailItem>
+                <DetailItem label="Зафіксована ставка">
+                  {order.attribution.rateBps === undefined
+                    ? '—'
+                    : `${currencyFormatter.format(order.attribution.rateBps / 100)}%`}
+                </DetailItem>
+                <DetailItem label="Зафіксована комісія після виконання">
+                  {order.attribution.commissionAmount === undefined
+                    ? '—'
+                    : formatCurrency(order.attribution.commissionAmount)}
+                </DetailItem>
+                {safeExternalUrl(order.attribution.bloggerLink) ? (
+                  <DetailItem label="Посилання" className="sm:col-span-2">
+                    <a
+                      href={
+                        safeExternalUrl(order.attribution.bloggerLink) ?? '#'
+                      }
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline underline-offset-4"
+                    >
+                      Відкрити сторінку блогера
+                    </a>
+                  </DetailItem>
+                ) : null}
+              </>
+            ) : null}
+          </dl>
+        ) : (
+          <p className="text-muted-foreground text-sm">
+            Історичне замовлення: attribution-дані не зберігалися.
+          </p>
+        )}
+      </DetailsSection>
+
+      <Separator />
+
       <DetailsSection title="Клієнт">
         <dl className="grid gap-4 sm:grid-cols-2">
           <DetailItem label="ПІБ">{formatValue(fullName)}</DetailItem>
@@ -360,6 +430,11 @@ function OrderDetails({
                   <TableRow key={`${product.id}-${index}`}>
                     <TableCell>
                       <div className="font-medium">{product.name}</div>
+                      {product.weight !== undefined ? (
+                        <div className="text-muted-foreground mt-0.5 text-xs">
+                          Вага: {product.weight} г
+                        </div>
+                      ) : null}
                       <div className="text-muted-foreground mt-1 font-mono text-xs break-all">
                         {product.id}
                       </div>
