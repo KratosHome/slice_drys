@@ -1,3 +1,7 @@
+.splide:not(.is-initialized):not(.is-rendered) {
+  visibility: visible;
+}
+
 .splide__arrows {
   position: absolute;
   inset: 0;

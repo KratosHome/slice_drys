@@ -28,6 +28,11 @@ export default function Faq({ data }: IFaqProps) {
   }, [])
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(faqRef.current, { autoAlpha: 1, y: 0 })
+      return
+    }
+
     ScrollTrigger.create({
       trigger: faqRef.current[0],
       start: 'top 80%',

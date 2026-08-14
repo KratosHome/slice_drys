@@ -1,0 +1,87 @@
+.popover {
+  transform-origin: var(--radix-popover-content-transform-origin);
+  will-change: transform, opacity, clip-path;
+}
+
+.popover[data-state='open'] {
+  animation: cart-panel-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.popover[data-state='closed'] {
+  animation: cart-panel-out 240ms cubic-bezier(0.7, 0, 0.84, 0) both;
+}
+
+.popover[data-state='open'] .header {
+  animation: cart-piece-in 360ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+}
+
+.popover[data-state='open'] .meta {
+  animation: cart-piece-in 340ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+.popover[data-state='open'] .body {
+  animation: cart-piece-in 380ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+}
+
+.popover[data-state='open'] .footer {
+  animation: cart-piece-in 360ms cubic-bezier(0.16, 1, 0.3, 1) 190ms both;
+}
+
+@keyframes cart-panel-in {
+  0% {
+    opacity: 0;
+    clip-path: polygon(88% 0, 100% 0, 100% 100%, 98% 100%);
+    transform: translate3d(26px, -12px, 0) skewX(-4deg);
+  }
+
+  62% {
+    opacity: 1;
+    clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%);
+    transform: translate3d(-3px, 0, 0) skewX(0.7deg);
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+@keyframes cart-panel-out {
+  0% {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    clip-path: polygon(96% 0, 100% 0, 100% 100%, 88% 100%);
+    transform: translate3d(24px, -8px, 0) skewX(-3deg);
+  }
+}
+
+@keyframes cart-piece-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0) skewX(-2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) skewX(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popover[data-state='open'],
+  .popover[data-state='closed'],
+  .popover[data-state='open'] .header,
+  .popover[data-state='open'] .meta,
+  .popover[data-state='open'] .body,
+  .popover[data-state='open'] .footer {
+    animation: none;
+    clip-path: none;
+    transform: none;
+  }
+}

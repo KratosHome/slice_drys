@@ -243,7 +243,7 @@ body.page-transition-complete > .page-transition-progress > span {
 }
 @utility underline-wave {
   position: absolute;
-  color: hsl(var(--foreground));
+  color: currentColor;
   bottom: -10px;
   left: 0;
   width: 100%;

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/utils/cn'
+import styles from './small-cart.module.css'
 
 export default function SmallCart() {
   const t = useTranslations('cart')
@@ -56,8 +57,18 @@ export default function SmallCart() {
             ) : null}
           </ResponsiveMotion>
         </PopoverTrigger>
-        <PopoverContent className="bg-background outline-foreground mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]">
-          <div className="bg-background absolute top-0 right-0 z-20 w-full rounded-t-lg px-5 pt-5">
+        <PopoverContent
+          className={cn(
+            styles.popover,
+            'bg-background outline-foreground mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]',
+          )}
+        >
+          <div
+            className={cn(
+              styles.header,
+              'bg-background absolute top-0 right-0 z-20 w-full rounded-t-lg px-5 pt-5',
+            )}
+          >
             <div className="bg-foreground text-background flex w-full items-center justify-between border-b p-[12px] md:px-[48px] md:py-[32px]">
               <div className="font-rubik p-0 text-[32px] leading-[0.9] uppercase md:text-[64px]">
                 {t('basket')}
@@ -82,12 +93,22 @@ export default function SmallCart() {
           </div>
 
           {cart.itemList?.length === 0 ? (
-            <div className="mt-4 h-[300px] pt-[150px] text-center text-[20px] md:pt-[190px]">
+            <div
+              className={cn(
+                styles.body,
+                'mt-4 h-[300px] pt-[150px] text-center text-[20px] md:pt-[190px]',
+              )}
+            >
               {t('cart-empty')}
             </div>
           ) : (
             <>
-              <div className="bg-background absolute top-[75px] left-0 w-full px-6 text-right text-[16px] md:top-[140px]">
+              <div
+                className={cn(
+                  styles.meta,
+                  'bg-background absolute top-[75px] left-0 w-full px-6 text-right text-[16px] md:top-[140px]',
+                )}
+              >
                 <span className="mr-[24px] font-semibold text-[#7D7D7D]">
                   {t('added')}
                 </span>
@@ -97,7 +118,12 @@ export default function SmallCart() {
                   })}
                 </span>
               </div>
-              <div className="space-y-4 overflow-x-hidden overflow-y-auto pt-[70px] pb-[150px] md:pt-[150px]">
+              <div
+                className={cn(
+                  styles.body,
+                  'space-y-4 overflow-x-hidden overflow-y-auto pt-[70px] pb-[150px] md:pt-[150px]',
+                )}
+              >
                 {cart.itemList?.map((item) => (
                   <CartProductCard
                     itemData={item}
@@ -105,7 +131,12 @@ export default function SmallCart() {
                   />
                 ))}
               </div>
-              <div className="bg-background absolute bottom-0 left-0 w-full rounded-b-lg px-5 pb-4">
+              <div
+                className={cn(
+                  styles.footer,
+                  'bg-background absolute bottom-0 left-0 w-full rounded-b-lg px-5 pb-4',
+                )}
+              >
                 <div className="flex items-center justify-between pt-2">
                   <p className="text-lg font-bold">{t('total')}:</p>
                   <div className="flex items-center gap-1">

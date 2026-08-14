@@ -18,7 +18,7 @@ export const ReviewsItem = forwardRef<HTMLLIElement, IReviewsItemProps>(
     return (
       <li
         id={id}
-        className="mx-auto my-10 w-[70%] max-w-[900px] scroll-m-20 lg:w-full"
+        className="mx-auto my-10 w-full max-w-[900px] scroll-m-20"
         ref={ref}
       >
         <div
@@ -32,13 +32,13 @@ export const ReviewsItem = forwardRef<HTMLLIElement, IReviewsItemProps>(
               `border-grey-review border-[clamp(8px,calc(8px+8*(100vw-375px)/1065),16px)] px-[clamp(8px,calc(8px+4*(100vw-375px)/1065),12px)] py-[clamp(4px,calc(4px+4*(100vw-375px)/1065),8px)] md:w-[89%] ${quotesStyle} before:-top-[clamp(12px,calc(12px+12*(100vw-375px)/1065),24px)] before:-ml-[clamp(12px,calc(12px+8*(100vw-375px)/1065),20px)] before:-translate-x-1/2 after:bottom-[clamp(2px,calc(2px+2*(100vw-375px)/1065),4px)] after:ml-[clamp(8px,calc(8px+4*(100vw-375px)/1065),12px)] after:-translate-x-1/2 after:translate-y-1/2`,
           )}
         >
-          <div>
+          <div className="min-w-0">
             <p className="mb-[10px] font-bold">{author}</p>
-            <p>{text}</p>
+            <p className="[overflow-wrap:anywhere]">{text}</p>
           </div>
           <span
             className={cn(
-              'font-rubik hidden translate-y-[50%] text-[clamp(64px,calc(64px+136*(100vw-375px)/1065),200px)] leading-[0.5]',
+              'font-rubik hidden shrink-0 translate-y-[50%] text-[clamp(64px,calc(64px+136*(100vw-375px)/1065),200px)] leading-[0.5]',
               variant === 'black' && 'block',
             )}
           >

@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import { cn } from '@/utils/cn'
 
 interface IFaqItemProps {
@@ -12,16 +12,19 @@ export const Item = forwardRef<HTMLDivElement, IFaqItemProps>(function Item(
   ref,
 ) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const questionId = useId()
+  const answerId = useId()
 
   return (
-    <div
-      className="mb-5 cursor-pointer"
-      onClick={() => setIsOpen(!isOpen)}
-      ref={ref}
-    >
-      <div
+    <div className="mb-5" ref={ref}>
+      <button
+        id={questionId}
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={answerId}
+        onClick={() => setIsOpen((open) => !open)}
         className={cn(
-          'mx-auto flex max-w-[800px] items-center border border-black p-1 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] transition-all duration-300 select-none dark:border-white',
+          'mx-auto flex w-full max-w-[800px] cursor-pointer items-center border border-current p-1 pl-4 text-left text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] transition-all duration-300 select-none',
           isOpen
             ? 'bg-foreground text-background'
             : 'bg-background text-foreground',
@@ -42,14 +45,18 @@ export const Item = forwardRef<HTMLDivElement, IFaqItemProps>(function Item(
             {'>'}
           </div>
         </div>
-      </div>
+      </button>
       <div
+        id={answerId}
+        role="region"
+        aria-labelledby={questionId}
+        aria-hidden={!isOpen}
         className={cn(
           'transition-max-height mx-auto flex max-w-[800px] overflow-hidden duration-300',
           isOpen ? 'max-h-[500px]' : 'max-h-0',
         )}
       >
-        <div className="w-full items-center border-2 border-t-0 border-dotted border-black p-2 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] backdrop-blur-[5px] dark:border-white">
+        <div className="w-full items-center border-2 border-t-0 border-dotted border-current p-2 pl-4 text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)] backdrop-blur-[5px]">
           {answer}
         </div>
       </div>

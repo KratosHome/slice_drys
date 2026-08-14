@@ -10,20 +10,32 @@ interface IFormData {
 
 export async function sendReviews(formData: IFormData): Promise<IResponse> {
   try {
-    const formattedDate: string = formatDate(new Date())
+    const name = formData.name.trim()
+    const text = formData.text.trim()
+    const botToken = process.env.TELEGRAM_BOT_TOKEN
+    const chatId = process.env.TELEGRAM_BOT_CHAT_ID
 
-    const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
-      polling: true,
-    })
-    const chatId: string = `${process.env.TELEGRAM_BOT_CHAT_ID}`
+    if (
+      !botToken ||
+      !chatId ||
+      name.length === 0 ||
+      name.length > 100 ||
+      text.length === 0 ||
+      text.length > 2_000
+    ) {
+      return { success: false, message: 'Не вдалося відправити відгук' }
+    }
+
+    const formattedDate: string = formatDate(new Date())
+    const bot = new TelegramBot(botToken)
 
     await bot.sendMessage(
       chatId,
       `
       Вітаю в нас новий відгук:
       Час відправки: ${formattedDate},
-      Ім'я: ${formData.name}, 
-      Відгук: ${formData.text},
+      Ім'я: ${name},
+      Відгук: ${text},
     `,
     )
     return { success: true, message: 'Відгук відправлений' }

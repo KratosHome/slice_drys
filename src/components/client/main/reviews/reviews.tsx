@@ -33,6 +33,7 @@ import { toast } from '@/hooks/useToast'
 import { sendReviews } from '@/server/info/send-reviews.server'
 import { cn } from '@/utils/cn'
 import { getPaginationRange } from '@/utils/get-pagination-range'
+import reviewDialogStyles from './review-dialog.module.css'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -41,8 +42,14 @@ interface IFormData {
   text: string
 }
 
+interface IReviewDisplay {
+  _id: number
+  author: string
+  text: string
+}
+
 interface IReviewsProps {
-  reviews: IReviewLocal[]
+  reviews: IReviewDisplay[]
   title?: string
   pagination?: boolean
 }
@@ -70,9 +77,14 @@ export default function Reviews({
   }, [])
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(reviewsRef.current, { autoAlpha: 1, x: 0 })
+      return
+    }
+
     reviewsRef.current.forEach((review, index) => {
       gsap.from(review, {
-        x: index % 2 ? 200 : -200,
+        x: index % 2 ? 40 : -40,
         autoAlpha: 0,
         duration: 1,
         delay: 0.2,
@@ -91,7 +103,7 @@ export default function Reviews({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<IFormData>({
     defaultValues: {
@@ -101,10 +113,18 @@ export default function Reviews({
   })
 
   const sendCall = async (data: IFormData): Promise<void> => {
-    await sendReviews({
-      name: data.name,
-      text: data.text,
+    const result = await sendReviews({
+      name: data.name.trim(),
+      text: data.text.trim(),
     })
+
+    if (!result.success) {
+      toast({
+        title: t('send-error'),
+        variant: 'destructive',
+      })
+      return
+    }
 
     toast({
       title: t('thanks-for-the-feedback'),
@@ -114,7 +134,7 @@ export default function Reviews({
     setIsReviewsOpen(false)
   }
 
-  const currentReviewsSet: IReviewLocal[] = reviews.slice(
+  const currentReviewsSet: IReviewDisplay[] = reviews.slice(
     (displayedReviewsSet - 1) * REVIEWS_PER_SET,
     displayedReviewsSet * REVIEWS_PER_SET,
   )
@@ -128,7 +148,7 @@ export default function Reviews({
   return (
     <section
       aria-labelledby="reviews"
-      className="section 1440:overflow-visible relative w-full max-w-[1280px] overflow-x-clip before:absolute before:top-[50px] before:-left-14 before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:top-[-10px] after:-right-20 after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat md:before:bg-[url('/images/jerky.webp')] md:after:top-[40%] md:after:-right-4 lg:before:left-0"
+      className="section 1440:overflow-visible relative w-full max-w-[1280px] overflow-x-clip pb-[72px] before:absolute before:top-[50px] before:-left-14 before:z-[-1] before:h-[208px] before:w-[149px] before:rotate-[73deg] before:bg-no-repeat after:absolute after:top-[-10px] after:-right-20 after:z-[-1] after:h-[208px] after:w-[149px] after:rotate-[-27deg] after:bg-[url('/images/jerky.webp')] after:bg-no-repeat md:before:bg-[url('/images/jerky.webp')] md:after:top-[40%] md:after:-right-4 lg:pb-[96px] lg:before:left-0"
     >
       <span className="absolute inset-0 z-[-1] before:absolute before:bottom-[210px] before:-left-24 before:z-[-1] before:h-[195px] before:w-[243px] before:rotate-[0deg] before:bg-no-repeat md:before:bg-[url('/images/jerky1.webp')]" />
       <div className="mx-auto w-full max-w-[910px] px-[20px] pb-[50px] lg:px-0">
@@ -139,7 +159,7 @@ export default function Reviews({
           {t('say-those')}
           <UnderlineWave />
         </p>
-        <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)]">
+        <ul className="mt-[clamp(23px,calc(23px+87*(100vw-375px)/1065),100px)] px-6 md:px-12 lg:px-0">
           {currentReviewsSet.map((review, index) => (
             <ReviewsItem
               id={`review-${review._id}`}
@@ -231,7 +251,15 @@ export default function Reviews({
             {t('add-new-review')}
           </UnderlinedLink>
         </DialogTrigger>
-        <ClientDialogContent className="overflow-hidden border-none bg-transparent p-0 sm:max-w-[500px]">
+        <ClientDialogContent
+          aria-describedby={undefined}
+          disableDefaultMotion
+          overlayClassName={reviewDialogStyles.overlay}
+          className={cn(
+            reviewDialogStyles.content,
+            'w-[calc(100%_-_32px)] overflow-hidden rounded-none border-none bg-transparent p-0 sm:max-w-[500px]',
+          )}
+        >
           <ClientDialogHeader className="bg-foreground text-background p-6">
             <DialogTitle className="font-rubik text-center text-[32px]">
               {t('add-new-review')}
@@ -268,13 +296,20 @@ export default function Reviews({
 
             <div className="flex justify-between gap-3">
               <Button
+                type="button"
                 variant="button"
                 className="bg-background text-foreground border-foreground hover:bg-background! hover:text-accent-foreground w-full border-1 shadow-xs"
+                disabled={isSubmitting}
                 onClick={() => setIsReviewsOpen(false)}
               >
                 {t('back')}
               </Button>
-              <Button type="submit" variant="button" className="w-full">
+              <Button
+                type="submit"
+                variant="button"
+                className="w-full"
+                disabled={isSubmitting}
+              >
                 {t('send')}
               </Button>
             </div>

@@ -15,11 +15,6 @@ const faqDataUk: IFaq[] = [
       'Наш асортимент створений так, щоб ви могли насолоджуватися різними смаками щодня. Ми пропонуємо класичні фруктові сушеники, ароматні овочеві варіанти та навіть сушеники для м’ясоїдів. Завдяки такому вибору вам точно не набридне.',
   },
   {
-    title: 'Чому ваші сушеники такі популярні?',
-    description:
-      'Секрет популярності наших сушеників – це якість. Ми використовуємо лише натуральні інгредієнти без додавання консервантів, штучних барвників чи підсилювачів смаку. Кожен сушеник проходить ретельний контроль, щоб ви отримували лише найкраще.',
-  },
-  {
     title: 'Що краще: сушене яблуко чи груша?',
     description:
       'Це залежить від ваших смакових вподобань. Яблуко має кисло-солодкий смак і приємну текстуру, яка підходить для освіжаючого перекусу. Груша – більш ніжна та солодка, ідеальна для тих, хто любить солодкі фруктові смаки. Спробуйте обидва варіанти, щоб знайти свого фаворита!',
@@ -46,11 +41,6 @@ const faqDataEn: IFaq[] = [
     title: 'Won’t eating only dried snacks get boring?',
     description:
       'Our assortment is designed so you can enjoy different flavors every day. We offer classic fruit snacks, aromatic vegetable options, and even meat-based dried snacks. With such variety, you’ll never get bored.',
-  },
-  {
-    title: 'Why are your dried snacks so popular?',
-    description:
-      'The secret to our dried snacks’ popularity lies in their quality. We use only natural ingredients with no preservatives, artificial colors, or flavor enhancers. Every snack undergoes thorough quality control to ensure you get only the best.',
   },
   {
     title: 'Which is better: dried apple or pear?',

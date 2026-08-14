@@ -2,10 +2,14 @@ import type { Metadata } from 'next'
 
 import { mainMetaData } from '@/data/meta-data/main'
 import { locales } from '@/data/locales'
+import { faqData } from '@/data/main/faq'
 import { instaData } from '@/data/main/insta-data'
+import { reviewsData } from '@/data/main/reviews'
 
 import Hero from '@/components/client/main/hero'
+import Faq from '@/components/client/main/faq'
 import BlogSection from '@/components/client/main/blog'
+import Reviews from '@/components/client/main/reviews'
 import InstaFeed from '@/components/client/main/insta-feed'
 import MainJsonLd from '@/components/client/json-ld/main-json-ld'
 import ToTheTop from '@/components/ui/to-the-top'
@@ -53,6 +57,11 @@ export default async function HomePage(props: {
     ({ slug, name }) => ({ slug, name }),
   )
   const posts = toPlainObject(blogData.postsLocalized ?? [])
+  const reviews = reviewsData.slice(0, 3).map(({ _id, author, text }) => ({
+    _id,
+    author: author[locale],
+    text: text[locale],
+  }))
 
   return (
     <>
@@ -64,6 +73,10 @@ export default async function HomePage(props: {
         message={t('products-slider.message')}
       />
       <BlogSection data={posts} />
+      <Reviews reviews={reviews} />
+      <div className="bg-foreground text-background isolate flow-root pb-[60px] lg:pb-[96px]">
+        <Faq data={faqData[locale]} />
+      </div>
       <InstaFeed title={t('instafeed.title')} data={instaData[locale]} />
       <ToTheTop />
     </>

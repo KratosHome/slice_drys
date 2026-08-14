@@ -72,7 +72,7 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       <head>
         <GoogleAnalytics />
       </head>
-      <body className="flex min-h-svh flex-col">
+      <body suppressHydrationWarning className="flex min-h-svh flex-col">
         <Suspense fallback={null}>
           <PageTransition locale={locale} />
         </Suspense>
