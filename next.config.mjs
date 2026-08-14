@@ -9,6 +9,106 @@ const withMDX = NextMdx.default({
   extension: /\.mdx?$/,
 })
 
+// ---------------------------------------------------------------------------
+// Content Security Policy — explicit origin whitelists
+// ---------------------------------------------------------------------------
+
+const isDevelopment = process.env.NODE_ENV === 'development'
+
+const scriptOrigins = [
+  'https://www.googletagmanager.com',
+  'https://www.google-analytics.com',
+  'https://va.vercel-scripts.com',
+]
+
+const connectOrigins = [
+  'https://www.google-analytics.com',
+  'https://*.google-analytics.com',
+  'https://*.analytics.google.com',
+  'https://www.googletagmanager.com',
+  'https://res.cloudinary.com',
+  'https://*.vercel-insights.com',
+  'https://va.vercel-scripts.com',
+  'https://vitals.vercel-insights.com',
+]
+
+const imageOrigins = [
+  "'self'",
+  'data:',
+  'blob:',
+  'https://res.cloudinary.com',
+  'https://*.fbcdn.net',
+  'https://*.instagram.com',
+  'https://via.placeholder.com',
+]
+
+const fontOrigins = ["'self'", 'data:']
+
+const frameOrigins = ["'self'", 'https://www.googletagmanager.com']
+
+const styleOrigins = ["'self'", "'unsafe-inline'"]
+
+const createContentSecurityPolicy = () => {
+  const scriptSources = [
+    "'self'",
+    "'unsafe-inline'",
+    ...(isDevelopment ? ["'unsafe-eval'"] : []),
+    ...scriptOrigins,
+  ]
+
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    `script-src ${scriptSources.join(' ')}`,
+    `style-src ${styleOrigins.join(' ')}`,
+    `img-src ${imageOrigins.join(' ')}`,
+    `connect-src 'self' ${connectOrigins.join(' ')}`,
+    `font-src ${fontOrigins.join(' ')}`,
+    `frame-src ${frameOrigins.join(' ')}`,
+    "frame-ancestors 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+    "child-src 'self' blob:",
+    "worker-src 'self' blob:",
+    "media-src 'self' blob:",
+  ].join('; ')
+}
+
+// ---------------------------------------------------------------------------
+// Security headers
+// ---------------------------------------------------------------------------
+
+const securityHeaders = [
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'SAMEORIGIN',
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'strict-origin-when-cross-origin',
+  },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=()',
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: createContentSecurityPolicy(),
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Next.js config
+// ---------------------------------------------------------------------------
+
 const nextConfig = {
   serverExternalPackages: ['mongoose'],
   images: {
@@ -38,33 +138,7 @@ const nextConfig = {
     return [
       {
         source: '/(.*)',
-        headers: [
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.vercel.app www.googletagmanager.com www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src * blob: data:; connect-src * www.google-analytics.com; font-src 'self'; frame-src 'self' www.googletagmanager.com",
-          },
-        ],
+        headers: securityHeaders,
       },
     ]
   },
