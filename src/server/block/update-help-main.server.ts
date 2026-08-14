@@ -4,14 +4,14 @@ import Block from '@/server/block/blocks-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function updateHelpData(
   formData: Omit<IHelp, 'images'>,
   images: string[],
 ) {
   'use server'
-  await requireAdmin()
+  await requirePermission('blocks:manage')
 
   try {
     await connectToDbServer()
@@ -51,9 +51,11 @@ export async function updateHelpData(
       message: 'Дані успішно оновлено',
     }
   } catch (error) {
+    console.error('Admin help block update failed', error)
+
     return {
       success: false,
-      message: `Помилка: ${error}`,
+      message: 'Не вдалося оновити блок',
     }
   }
 }

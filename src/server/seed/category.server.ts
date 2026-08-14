@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { Category } from '@/server/categories/categories-schema.server'
 

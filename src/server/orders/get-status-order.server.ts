@@ -1,7 +1,7 @@
-'use server'
+import 'server-only'
 
 import { ORDER_STATUSES, isOrderStatus } from '@/constants/order-status'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Order } from '@/server/orders/order-schema.server'
 import type { AdminOrderStatusCounts } from '@/types/admin-order'
@@ -12,7 +12,7 @@ interface StatusCountResult {
 }
 
 export async function getOrderStatusCounts(): Promise<AdminOrderStatusCounts> {
-  await requireAdmin()
+  await requirePermission('orders:read')
   await connectToDbServer()
 
   const statusCounts = await Order.aggregate<StatusCountResult>([

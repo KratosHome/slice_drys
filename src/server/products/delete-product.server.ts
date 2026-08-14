@@ -4,10 +4,10 @@ import { Product } from '@/server/products/product-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function deleteProduct(id?: string): Promise<IResponse> {
-  await requireAdmin()
+  await requirePermission('products:manage')
 
   try {
     await connectToDbServer()
@@ -34,6 +34,8 @@ export async function deleteProduct(id?: string): Promise<IResponse> {
 
     return { success: true, message: 'Product was deleted' }
   } catch (error) {
-    return { success: false, message: `Can't delete product ${error}` }
+    console.error('Admin product deletion failed', error)
+
+    return { success: false, message: 'Не вдалося видалити товар' }
   }
 }

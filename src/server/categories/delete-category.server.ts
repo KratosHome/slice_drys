@@ -2,13 +2,13 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 import { revalidateTag } from 'next/cache'
 
 export async function deleteCategory(categoryId: string): Promise<IResponse> {
   'use server'
-  await requireAdmin()
+  await requirePermission('categories:manage')
 
   try {
     await connectToDbServer()
@@ -38,9 +38,11 @@ export async function deleteCategory(categoryId: string): Promise<IResponse> {
       message: 'Категорію видалено успішно',
     }
   } catch (error) {
+    console.error('Admin category deletion failed', error)
+
     return {
       success: false,
-      message: `Помилка при видаленні категорії: ${error}`,
+      message: 'Не вдалося видалити категорію',
     }
   }
 }

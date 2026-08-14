@@ -4,11 +4,11 @@ import { Post } from '@/server/posts/post-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function deletePost(id: string): Promise<IResponse> {
   'use server'
-  await requireAdmin()
+  await requirePermission('blog:manage')
 
   try {
     await connectToDbServer()
@@ -35,6 +35,8 @@ export async function deletePost(id: string): Promise<IResponse> {
 
     return { success: true, message: 'Post was deleted' }
   } catch (error) {
-    return { success: false, message: "Can't delete post" + error }
+    console.error('Admin post deletion failed', error)
+
+    return { success: false, message: 'Не вдалося видалити пост' }
   }
 }

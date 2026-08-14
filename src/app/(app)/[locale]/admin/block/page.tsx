@@ -1,11 +1,15 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import HelpMainPage from '@/components/admin/block/help-main-page'
 import { getHelpMain } from '@/server/block/get-help-main.server'
+import { requireAdminPagePermission } from '@/server/auth/require-admin-page.server'
 
 type Params = Promise<{ locale: ILocale }>
 
 export default async function MenuPage(props: { params: Params }) {
   const { locale } = await props.params
+  const identity = await requireAdminPagePermission(locale, 'blocks:manage')
+
+  if (!identity) return null
 
   const helpData = await getHelpMain(locale, false)
 

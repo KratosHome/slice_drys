@@ -8,11 +8,7 @@ import {
   USER_ROLE_LABELS,
 } from '@/constants/user-role'
 import { getUserSort } from '@/constants/user-sort'
-import { ApiError } from '@/server/api-error.server'
-import {
-  requireAdmin,
-  type AdminIdentity,
-} from '@/server/auth/require-admin.server'
+import { requireAdminPagePermission } from '@/server/auth/require-admin-page.server'
 import { getActiveAdminUsers } from '@/server/user/get-admin-users.server'
 
 export const metadata: Metadata = {
@@ -20,46 +16,23 @@ export const metadata: Metadata = {
 }
 
 interface UsersPageProps {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{ userSort?: string | string[] }>
 }
 
-async function getAdminIdentity(): Promise<AdminIdentity | null> {
-  try {
-    return await requireAdmin()
-  } catch (error) {
-    if (
-      error instanceof ApiError &&
-      (error.statusCode === 401 || error.statusCode === 403)
-    ) {
-      return null
-    }
-
-    throw error
-  }
-}
-
-export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const identity = await getAdminIdentity()
+export default async function UsersPage({
+  params,
+  searchParams,
+}: UsersPageProps) {
+  const [{ locale }, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ])
+  const identity = await requireAdminPagePermission(locale, 'users:manage')
 
   if (!identity) return null
 
-  if (identity.role !== 'super-admin') {
-    return (
-      <section className="px-5 py-6">
-        <div className="border-border bg-card max-w-xl rounded-xl border p-6 shadow-sm">
-          <h1 className="text-2xl font-semibold">Користувачі</h1>
-          <p className="text-muted-foreground mt-3 text-sm leading-6">
-            Створювати нові облікові записи може лише суперадміністратор.
-          </p>
-        </div>
-      </section>
-    )
-  }
-
-  const [users, resolvedSearchParams] = await Promise.all([
-    getActiveAdminUsers(),
-    searchParams,
-  ])
+  const users = await getActiveAdminUsers()
   const userSort = getUserSort(resolvedSearchParams.userSort)
 
   return (

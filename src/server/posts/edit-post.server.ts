@@ -4,7 +4,7 @@ import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Post } from '@/server/posts/post-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function editPostServer(
   id: string,
@@ -12,7 +12,7 @@ export async function editPostServer(
   image?: string,
 ): Promise<IResponse> {
   'use server'
-  await requireAdmin()
+  await requirePermission('blog:manage')
 
   try {
     await connectToDbServer()

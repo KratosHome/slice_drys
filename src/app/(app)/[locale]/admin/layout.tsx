@@ -59,8 +59,7 @@ export default async function AdminLayout(props: IAdminLayoutProps) {
               <div className="border-border bg-card max-w-md rounded-xl border p-6 text-center shadow-sm">
                 <h1 className="text-xl font-semibold">Доступ заборонено</h1>
                 <p className="text-muted-foreground mt-2 text-sm">
-                  Цей розділ доступний лише менеджерам, розробникам та
-                  адміністраторам.
+                  Цей розділ доступний лише менеджерам і суперадміністраторам.
                 </p>
                 <div className="mt-5 flex justify-center">
                   <LogOut />
@@ -69,11 +68,9 @@ export default async function AdminLayout(props: IAdminLayoutProps) {
             </main>
           ) : (
             <AdminQueryProvider>
-              <AppSidebar
-                canManageUsers={adminIdentity.role === 'super-admin'}
-              />
+              <AppSidebar role={adminIdentity.role} />
               <main className="w-full min-w-0 pb-8">
-                <SidebarTrigger />
+                <SidebarTrigger aria-label="Відкрити або закрити меню" />
                 {children}
               </main>
             </AdminQueryProvider>

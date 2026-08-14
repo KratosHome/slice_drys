@@ -5,14 +5,14 @@ import { fetchTags } from '@/data/fetch-tags'
 
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function createProduct(
   formData: IProductLocal,
   image: string,
 ): Promise<IResponse> {
   'use server'
-  await requireAdmin()
+  await requirePermission('products:manage')
 
   try {
     await connectToDbServer()
@@ -31,6 +31,8 @@ export async function createProduct(
 
     return { success: true, message: 'Product created' }
   } catch (error) {
-    return { success: false, message: `Can't create product ${error}` }
+    console.error('Admin product creation failed', error)
+
+    return { success: false, message: 'Не вдалося створити товар' }
   }
 }

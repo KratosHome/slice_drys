@@ -1,10 +1,10 @@
-'use server'
+import 'server-only'
 
 import mongoose from 'mongoose'
 
 import { isOrderStatus } from '@/constants/order-status'
 import { ApiError } from '@/server/api-error.server'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Order } from '@/server/orders/order-schema.server'
 import { serializeAdminOrder } from '@/server/orders/order-serializer.server'
@@ -17,7 +17,7 @@ export async function updateAdminOrderStatus({
   orderId,
   status,
 }: UpdateAdminOrderStatusInput): Promise<AdminOrder> {
-  await requireAdmin()
+  await requirePermission('orders:update-status')
 
   if (!mongoose.isValidObjectId(orderId)) {
     throw new ApiError(400, 'Invalid order id')

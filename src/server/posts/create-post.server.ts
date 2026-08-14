@@ -4,13 +4,13 @@ import { Post } from './post-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function createPost(
   formData: IPostLocal,
   image: string,
 ): Promise<IResponse> {
-  await requireAdmin()
+  await requirePermission('blog:manage')
 
   try {
     await connectToDbServer()
@@ -42,9 +42,11 @@ export async function createPost(
 
     return { success: true, message: 'Post created' }
   } catch (error) {
+    console.error('Admin post creation failed', error)
+
     return {
       success: false,
-      message: `Can't create post:  ${error}`,
+      message: 'Не вдалося створити пост',
     }
   }
 }

@@ -2,7 +2,9 @@ import { getServerSession } from 'next-auth'
 
 import {
   ADMIN_ROLES,
+  hasAdminPermission,
   isAdminRole,
+  type AdminPermission,
   type AdminRole,
   type UserRole,
 } from '@/constants/user-role'
@@ -70,4 +72,16 @@ export async function requireSuperAdmin(): Promise<SuperAdminIdentity> {
   }
 
   return { ...identity, role: 'super-admin' }
+}
+
+export async function requirePermission(
+  permission: AdminPermission,
+): Promise<AdminIdentity> {
+  const identity = await requireAdmin()
+
+  if (!hasAdminPermission(identity.role, permission)) {
+    throw new ApiError(403, 'Insufficient administrator permissions')
+  }
+
+  return identity
 }

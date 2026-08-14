@@ -4,7 +4,7 @@ import { Product } from '@/server/products/product-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
 import { revalidateTag } from 'next/cache'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function editProduct(
   id: string,
@@ -12,7 +12,7 @@ export async function editProduct(
   image?: string,
 ): Promise<IResponse> {
   'use server'
-  await requireAdmin()
+  await requirePermission('products:manage')
 
   try {
     await connectToDbServer()

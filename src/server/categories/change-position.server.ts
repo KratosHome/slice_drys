@@ -1,11 +1,11 @@
 'use server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 export async function changePosition(categoriesOrder: ICategory[]) {
   'use server'
-  await requireAdmin()
+  await requirePermission('categories:manage')
 
   try {
     await connectToDbServer()
@@ -24,9 +24,11 @@ export async function changePosition(categoriesOrder: ICategory[]) {
       message: 'Категорію створено успішно',
     }
   } catch (error) {
+    console.error('Admin category reorder failed', error)
+
     return {
       success: false,
-      message: `Помилка при створенні категорії: ${error}`,
+      message: 'Не вдалося змінити порядок категорій',
     }
   }
 }

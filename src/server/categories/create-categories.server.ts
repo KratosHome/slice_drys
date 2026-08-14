@@ -3,13 +3,13 @@ import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 
 export async function createCategory(categoryData: CreateCategoryDTO) {
   'use server'
-  await requireAdmin()
+  await requirePermission('categories:manage')
 
   try {
     await connectToDbServer()
@@ -31,9 +31,11 @@ export async function createCategory(categoryData: CreateCategoryDTO) {
       message: 'Категорію створено успішно',
     }
   } catch (error) {
+    console.error('Admin category creation failed', error)
+
     return {
       success: false,
-      message: `Помилка при створенні категорії: ${error}`,
+      message: 'Не вдалося створити категорію',
     }
   }
 }

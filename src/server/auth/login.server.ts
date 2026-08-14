@@ -1,7 +1,8 @@
-'use server'
+import 'server-only'
+
 import bcrypt from 'bcrypt'
 
-import type { UserRole } from '@/constants/user-role'
+import { ADMIN_ROLES, isAdminRole, type UserRole } from '@/constants/user-role'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { UserSlice } from '@/server/user/user-schema.server'
 
@@ -27,20 +28,21 @@ interface UserCredentialsDocument {
 }
 
 const INVALID_CREDENTIALS_MESSAGE = 'Invalid email or password'
+const MAX_PASSWORD_BYTES = 72
+const DUMMY_PASSWORD_HASH =
+  '$2b$12$6MxfjML3cj29Ik8Fy13mS.a7pUs/k.O9zKaPeCs2GXmxqzRsAt73S'
 
 export const loginUser = async (
   email: string,
   password: string,
 ): Promise<LoginResult> => {
-  'use server'
-
   const normalizedEmail = email.trim().toLowerCase()
 
   if (
     !normalizedEmail ||
     normalizedEmail.length > 150 ||
     !password ||
-    password.length > 256
+    Buffer.byteLength(password, 'utf8') > MAX_PASSWORD_BYTES
   ) {
     return {
       success: false,
@@ -53,22 +55,23 @@ export const loginUser = async (
     await connectToDbServer()
     const user = await UserSlice.findOne({
       email: normalizedEmail,
+      role: { $in: ADMIN_ROLES },
       archivedAt: null,
     })
       .select('_id username email role +password')
       .lean<UserCredentialsDocument | null>()
 
-    if (!user || typeof user.password !== 'string') {
-      return {
-        success: false,
-        message: INVALID_CREDENTIALS_MESSAGE,
-        user: null,
-      }
-    }
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user?.password ?? DUMMY_PASSWORD_HASH,
+    )
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
-
-    if (!isPasswordCorrect) {
+    if (
+      !user ||
+      typeof user.password !== 'string' ||
+      !isAdminRole(user.role) ||
+      !isPasswordCorrect
+    ) {
       return {
         success: false,
         message: INVALID_CREDENTIALS_MESSAGE,

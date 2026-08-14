@@ -1,4 +1,5 @@
-'use server'
+import 'server-only'
+
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
 import fs from 'fs'
@@ -28,7 +29,6 @@ function formatPrice(price: number, currency: string = 'UAH'): string {
 }
 
 export async function createXmlProduct(locale: string = 'uk') {
-  'use server'
   try {
     await connectToDbServer()
     const products = await Product.find({})

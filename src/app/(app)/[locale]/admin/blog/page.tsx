@@ -2,6 +2,7 @@ import EditorPost from '@/components/admin/editor-post/editor-post'
 import { PostList } from '@/components/admin/post-list/post-list'
 
 import { getAllPosts } from '@/server/posts/get-posts.server'
+import { requireAdminPagePermission } from '@/server/auth/require-admin-page.server'
 
 export default async function Blog({
   params,
@@ -9,6 +10,9 @@ export default async function Blog({
   params: Promise<{ locale: ILocale }>
 }) {
   const { locale } = await params
+  const identity = await requireAdminPagePermission(locale, 'blog:manage')
+
+  if (!identity) return null
 
   const posts = await getAllPosts({ locale })
 

@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { loginUser } from '@/server/auth/login.server'
 
+const ADMIN_SESSION_MAX_AGE_SECONDS = 8 * 60 * 60
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -20,5 +22,12 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+    maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
+  },
+  jwt: {
+    maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
+  },
   secret: process.env.NEXTAUTH_SECRET,
 }

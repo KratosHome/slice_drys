@@ -1,7 +1,9 @@
 import { Suspense, type ReactNode } from 'react'
+import { notFound } from 'next/navigation'
 
 import OrdersStatusTabs from '@/components/admin/orders/orders-status-tabs'
 import { Skeleton } from '@/components/ui/skeleton'
+import { isOrderStatusSlug } from '@/constants/order-status'
 
 function OrdersStatusTabsFallback() {
   return (
@@ -22,11 +24,17 @@ function OrdersStatusTabsFallback() {
   )
 }
 
-export default function OrdersStatusLayout({
+export default async function OrdersStatusLayout({
   children,
+  params,
 }: {
   children: ReactNode
+  params: Promise<{ ordersId: string }>
 }) {
+  const { ordersId } = await params
+
+  if (!isOrderStatusSlug(ordersId)) notFound()
+
   return (
     <section className="px-4 pt-1 pb-8 sm:px-5">
       <Suspense fallback={<OrdersStatusTabsFallback />}>

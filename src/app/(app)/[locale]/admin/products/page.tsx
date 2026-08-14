@@ -4,6 +4,7 @@ import { ProductList } from '@/components/admin/product-list/product-list'
 import { findProductInfoItems } from '@/server/products/find-product-info-items.server'
 import { getProducts } from '@/server/products/get-products.server'
 import { getCategories } from '@/server/categories/get-categories.server'
+import { requireAdminPagePermission } from '@/server/auth/require-admin-page.server'
 
 export default async function ProductsPage({
   params,
@@ -11,6 +12,9 @@ export default async function ProductsPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const identity = await requireAdminPagePermission(locale, 'products:manage')
+
+  if (!identity) return null
 
   const products: IGetProduct = await getProducts(
     1,

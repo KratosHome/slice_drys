@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import mongoose from 'mongoose'
 
@@ -9,7 +9,7 @@ import {
 } from '@/constants/admin-orders-query'
 import { isOrderStatus } from '@/constants/order-status'
 import { ApiError } from '@/server/api-error.server'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Order } from '@/server/orders/order-schema.server'
 import { serializeAdminOrder } from '@/server/orders/order-serializer.server'
@@ -51,7 +51,7 @@ export async function getAdminOrders({
   sort,
   order,
 }: GetAdminOrdersParams): Promise<GetAdminOrdersResult> {
-  await requireAdmin()
+  await requirePermission('orders:read')
 
   if (!isOrderStatus(status)) {
     throw new ApiError(400, 'Invalid order status')
@@ -132,7 +132,7 @@ export async function getAdminOrders({
 }
 
 export async function getAdminOrderById(orderId: string): Promise<AdminOrder> {
-  await requireAdmin()
+  await requirePermission('orders:read')
 
   if (!mongoose.isValidObjectId(orderId)) {
     throw new ApiError(400, 'Invalid order id')

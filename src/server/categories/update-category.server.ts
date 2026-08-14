@@ -4,7 +4,7 @@ import { Category } from '@/server/categories/categories-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
-import { requireAdmin } from '@/server/auth/require-admin.server'
+import { requirePermission } from '@/server/auth/require-admin.server'
 
 type UpdateCategoryDTO = Partial<Omit<ICategory, '_id' | 'children'>>
 
@@ -14,7 +14,7 @@ export async function updateCategory(
   image?: string,
 ) {
   'use server'
-  await requireAdmin()
+  await requirePermission('categories:manage')
 
   try {
     await connectToDbServer()
@@ -69,9 +69,11 @@ export async function updateCategory(
       message: 'Категорію оновлено успішно',
     }
   } catch (error) {
+    console.error('Admin category update failed', error)
+
     return {
       success: false,
-      message: `Помилка при оновленні категорії: ${error}`,
+      message: 'Не вдалося оновити категорію',
     }
   }
 }

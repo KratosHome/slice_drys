@@ -1,4 +1,5 @@
-'use server'
+import 'server-only'
+
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import {
   NovaPoshtaCities,
@@ -7,7 +8,6 @@ import {
 import { getNPCityOnline } from '../delivery/get-cities.server'
 
 export const seedNovaPoshtaDefaultCities = async () => {
-  'use server'
   try {
     await connectToDbServer()
 
