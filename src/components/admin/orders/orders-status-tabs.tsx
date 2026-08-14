@@ -82,7 +82,7 @@ export default function OrdersStatusTabs() {
 
       <nav
         aria-label="Статуси замовлень"
-        className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8"
+        className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7"
       >
         {tabsOrder.map((tab) => {
           const statusSlug = tab.value as OrderStatusSlug

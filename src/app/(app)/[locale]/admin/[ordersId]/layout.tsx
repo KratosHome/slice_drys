@@ -13,9 +13,9 @@ function OrdersStatusTabsFallback() {
         </div>
         <Skeleton className="size-9 rounded-md" />
       </div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
-        {Array.from({ length: 8 }, (_, index) => (
-          <Skeleton key={index} className="h-20 rounded-lg" />
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-7">
+        {Array.from({ length: 7 }, (_, index) => (
+          <Skeleton key={index} className="h-24 rounded-lg" />
         ))}
       </div>
     </div>

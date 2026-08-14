@@ -8,7 +8,11 @@ import {
 } from '@tanstack/react-query'
 import { Loader2, RefreshCw } from 'lucide-react'
 
-import { ORDER_STATUSES, type OrderStatus } from '@/constants/order-status'
+import {
+  ORDER_STATUSES,
+  ORDER_STATUS_LABELS,
+  type OrderStatus,
+} from '@/constants/order-status'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -50,17 +54,6 @@ export const adminOrdersQueryKeys = {
   all: ADMIN_ORDERS_QUERY_KEY,
   detail: (orderId: string) =>
     [...ADMIN_ORDERS_QUERY_KEY, 'detail', orderId] as const,
-}
-
-const orderStatusLabels: Record<OrderStatus, string> = {
-  new: 'Нове',
-  awaitingPayment: 'Очікує оплати',
-  awaitingShipment: 'Очікує відправки',
-  shipped: 'Відправлено',
-  completed: 'Виконано',
-  awaitingReturn: 'Очікує повернення',
-  cancelled: 'Скасовано',
-  failedDelivery: 'Не доставлено',
 }
 
 const paymentMethodLabels: Record<AdminOrderPaymentMethod, string> = {
@@ -248,7 +241,7 @@ function OrderDetails({
               <SelectContent>
                 {ORDER_STATUSES.map((status) => (
                   <SelectItem key={status} value={status}>
-                    {orderStatusLabels[status]}
+                    {ORDER_STATUS_LABELS[status]}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -441,7 +434,7 @@ export function OrderDetailsSheet({
       })
       toast({
         title: 'Статус оновлено',
-        description: `Новий статус: ${orderStatusLabels[status]}`,
+        description: `Новий статус: ${ORDER_STATUS_LABELS[status]}`,
       })
     },
     onError: (error) => {

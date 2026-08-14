@@ -11,6 +11,17 @@ export const ORDER_STATUSES = [
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number]
 
+export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
+  new: 'Нове',
+  awaitingPayment: 'Очікує оплати',
+  awaitingShipment: 'Очікує відправки',
+  shipped: 'Відправлено',
+  completed: 'Виконано',
+  awaitingReturn: 'Очікує повернення',
+  cancelled: 'Скасовано',
+  failedDelivery: 'Не доставлено',
+}
+
 export const ORDER_STATUS_BY_SLUG = {
   new: 'new',
   'awaiting-payment': 'awaitingPayment',

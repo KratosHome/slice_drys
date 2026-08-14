@@ -15,10 +15,10 @@ import {
 } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useDebounce } from 'use-debounce'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import OrderDetailsSheet from '@/components/admin/orders/order-details-sheet'
-import OrderStatusMenu from '@/components/admin/orders/order-status-menu'
+import OrderStatusSelect from '@/components/admin/orders/order-status-select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -229,6 +229,8 @@ export default function OrdersList({
 }: OrdersListProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const ordersListRef = useRef<HTMLDivElement>(null)
+  const pendingScrollPageRef = useRef<number | null>(null)
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
   const query = useMemo(
     () => parseAdminOrdersQuery((name) => searchParams.get(name)),
@@ -290,6 +292,30 @@ export default function OrdersList({
 
   const result = ordersQuery.data
 
+  const scrollToOrdersList = useCallback(() => {
+    ordersListRef.current?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'start',
+    })
+  }, [])
+
+  useEffect(() => {
+    const pendingPage = pendingScrollPageRef.current
+
+    if (
+      pendingPage === null ||
+      ordersQuery.isFetching ||
+      result?.pagination.page !== pendingPage
+    ) {
+      return
+    }
+
+    pendingScrollPageRef.current = null
+    requestAnimationFrame(scrollToOrdersList)
+  }, [ordersQuery.isFetching, result?.pagination.page, scrollToOrdersList])
+
   useEffect(() => {
     if (
       !result ||
@@ -317,9 +343,21 @@ export default function OrdersList({
   const firstItem = totalItems ? (resultPage - 1) * resultPageSize + 1 : 0
   const lastItem = Math.min(resultPage * resultPageSize, totalItems)
   const selectedSortValue = `${query.sort}:${query.order}`
+  const changePage = useCallback(
+    (page: number) => {
+      if (page === query.page) return
+
+      pendingScrollPageRef.current = page
+      updateQuery({ page })
+    },
+    [query.page, updateQuery],
+  )
 
   return (
-    <div className="border-border bg-card mt-6 w-full rounded-xl border p-3 shadow-sm sm:p-4">
+    <div
+      ref={ordersListRef}
+      className="border-border bg-card mt-6 w-full scroll-mt-24 rounded-xl border p-3 shadow-sm sm:p-4"
+    >
       <div className="flex flex-col gap-3 pb-3 xl:flex-row xl:items-end">
         <label className="flex min-w-0 flex-1 flex-col gap-1.5">
           <span className="text-muted-foreground text-xs font-medium">
@@ -448,9 +486,9 @@ export default function OrdersList({
         ) : null}
 
         {result ? (
-          <Table className="min-w-[1248px] table-fixed">
+          <Table className="min-w-[1300px] table-fixed">
             <colgroup>
-              <col style={{ width: 148 }} />
+              <col style={{ width: 200 }} />
               <col style={{ width: 128 }} />
               <col style={{ width: 144 }} />
               <col style={{ width: 212 }} />
@@ -480,7 +518,7 @@ export default function OrdersList({
                 result.data.map((order: AdminOrder) => (
                   <TableRow key={order.id}>
                     <TableCell className="px-2.5 py-2.5 align-top">
-                      <OrderStatusMenu order={order} />
+                      <OrderStatusSelect order={order} />
                     </TableCell>
                     <TableCell className="px-2.5 py-2.5 align-top font-medium break-words">
                       {order.user.name} {order.user.surname}
@@ -563,9 +601,7 @@ export default function OrdersList({
               variant="outline"
               size="sm"
               onClick={() =>
-                updateQuery({
-                  page: Math.max(1, result.pagination.page - 1),
-                })
+                changePage(Math.max(1, result.pagination.page - 1))
               }
               disabled={!result.pagination.hasPreviousPage}
             >
@@ -591,7 +627,7 @@ export default function OrdersList({
                   }
                   size="icon"
                   className="size-9"
-                  onClick={() => updateQuery({ page: item })}
+                  onClick={() => changePage(item)}
                   disabled={item === result.pagination.page}
                   aria-label={`Сторінка ${item}`}
                   aria-current={
@@ -607,7 +643,7 @@ export default function OrdersList({
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => updateQuery({ page: result.pagination.page + 1 })}
+              onClick={() => changePage(result.pagination.page + 1)}
               disabled={!result.pagination.hasNextPage}
             >
               Наступна

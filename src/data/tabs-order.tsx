@@ -44,9 +44,4 @@ export const tabsOrder = [
     icon: <XCircle className="size-5" />,
     label: 'Скасовано',
   },
-  {
-    value: 'failed-delivery',
-    icon: <AlertCircle className="size-5" />,
-    label: 'Не доставлено',
-  },
 ]
