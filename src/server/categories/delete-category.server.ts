@@ -2,11 +2,14 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
 import { fetchTags } from '@/data/fetch-tags'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 import { revalidateTag } from 'next/cache'
 
 export async function deleteCategory(categoryId: string): Promise<IResponse> {
   'use server'
+  await requireAdmin()
+
   try {
     await connectToDbServer()
 

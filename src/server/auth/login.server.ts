@@ -1,9 +1,11 @@
 'use server'
 import bcrypt from 'bcrypt'
+
+import type { UserRole } from '@/constants/user-role'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { UserSlice } from '@/server/user/user-schema.server'
 
-export type UserRole = 'client' | 'super-admin' | 'manager'
+export type { UserRole } from '@/constants/user-role'
 
 export interface AuthenticatedUser {
   id: string
@@ -49,7 +51,10 @@ export const loginUser = async (
 
   try {
     await connectToDbServer()
-    const user = await UserSlice.findOne({ email: normalizedEmail })
+    const user = await UserSlice.findOne({
+      email: normalizedEmail,
+      archivedAt: null,
+    })
       .select('_id username email role +password')
       .lean<UserCredentialsDocument | null>()
 

@@ -5,12 +5,15 @@ import { fetchTags } from '@/data/fetch-tags'
 
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 export async function createProduct(
   formData: IProductLocal,
   image: string,
 ): Promise<IResponse> {
   'use server'
+  await requireAdmin()
+
   try {
     await connectToDbServer()
 

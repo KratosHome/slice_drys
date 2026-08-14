@@ -4,9 +4,12 @@ import { Post } from '@/server/posts/post-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 export async function deletePost(id: string): Promise<IResponse> {
   'use server'
+  await requireAdmin()
+
   try {
     await connectToDbServer()
 

@@ -3,11 +3,13 @@ import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Category } from '@/server/categories/categories-schema.server'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 type CreateCategoryDTO = Omit<ICategory, '_id' | 'children'>
 
 export async function createCategory(categoryData: CreateCategoryDTO) {
   'use server'
+  await requireAdmin()
 
   try {
     await connectToDbServer()

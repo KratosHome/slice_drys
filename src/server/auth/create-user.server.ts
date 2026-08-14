@@ -1,37 +1,98 @@
-'use server'
-import { connectToDbServer } from '@/server/connect-to-db.server'
-import { UserSlice } from '@/server/user/user-schema.server'
 import bcrypt from 'bcrypt'
 
-interface ICreateUser {
-  name: string
-  email: string
+import { isUserRole, type UserRole } from '@/constants/user-role'
+import { ApiError } from '@/server/api-error.server'
+import { requireSuperAdmin } from '@/server/auth/require-admin.server'
+import { connectToDbServer } from '@/server/connect-to-db.server'
+import { UserSlice } from '@/server/user/user-schema.server'
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MIN_PASSWORD_LENGTH = 8
+const MAX_PASSWORD_BYTES = 72
+const MAX_LOGIN_LENGTH = 120
+
+export interface CreateUserInput {
+  login: string
   password: string
+  role: UserRole
 }
 
-export const createUsers = async (user: ICreateUser) => {
-  'use server'
+export interface CreatedUser {
+  id: string
+  login: string
+  role: UserRole
+}
+
+interface CreatedUserDocument {
+  _id: { toString(): string }
+  email: string
+  role: UserRole
+}
+
+function isDuplicateKeyError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    error.code === 11000
+  )
+}
+
+export async function createUserBySuperAdmin(
+  input: CreateUserInput,
+): Promise<CreatedUser> {
+  await requireSuperAdmin()
+
+  const login = input.login.trim().toLowerCase()
+
+  if (!login || login.length > MAX_LOGIN_LENGTH || !EMAIL_PATTERN.test(login)) {
+    throw new ApiError(400, 'Вкажіть коректний email для логіна')
+  }
+
+  if (
+    typeof input.password !== 'string' ||
+    input.password.length < MIN_PASSWORD_LENGTH ||
+    Buffer.byteLength(input.password, 'utf8') > MAX_PASSWORD_BYTES
+  ) {
+    throw new ApiError(
+      400,
+      `Пароль повинен містити щонайменше ${MIN_PASSWORD_LENGTH} символів і не перевищувати ${MAX_PASSWORD_BYTES} байти`,
+    )
+  }
+
+  if (!isUserRole(input.role)) {
+    throw new ApiError(400, 'Недопустима роль користувача')
+  }
+
+  await connectToDbServer()
+
+  const existingUser = await UserSlice.exists({ email: login })
+
+  if (existingUser) {
+    throw new ApiError(409, 'Користувач із таким логіном уже існує')
+  }
+
+  const passwordHash = await bcrypt.hash(input.password, 12)
+
   try {
-    await connectToDbServer()
-    const isUser = await UserSlice.findOne({
-      email: user.email.toLowerCase(),
+    const user = await UserSlice.create({
+      username: login,
+      email: login,
+      password: passwordHash,
+      role: input.role,
     })
+    const safeUser = user.toObject() as CreatedUserDocument
 
-    if (!isUser) {
-      const salt = await bcrypt.genSalt(10)
-      const hashedPassword = await bcrypt.hash(user.password, salt)
-
-      const newUser = new UserSlice({
-        username: user.name,
-        email: user.email.toLowerCase(),
-        password: hashedPassword,
-        role: 'client',
-      })
-
-      await newUser.save()
-      return { success: true }
+    return {
+      id: safeUser._id.toString(),
+      login: safeUser.email,
+      role: safeUser.role,
     }
-  } catch (err) {
-    return { success: false, message: err }
+  } catch (error) {
+    if (isDuplicateKeyError(error)) {
+      throw new ApiError(409, 'Користувач із таким логіном уже існує')
+    }
+
+    throw error
   }
 }

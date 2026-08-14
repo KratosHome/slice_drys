@@ -4,8 +4,11 @@ import { Product } from '@/server/products/product-schema.server'
 import cloudinary from '../cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 export async function deleteProduct(id?: string): Promise<IResponse> {
+  await requireAdmin()
+
   try {
     await connectToDbServer()
 

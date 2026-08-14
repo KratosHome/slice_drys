@@ -14,8 +14,15 @@ import {
 import { useLocale } from 'next-intl'
 import { TransitionLink } from '@/components/client/transition-link'
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  canManageUsers: boolean
+}
+
+export function AppSidebar({ canManageUsers }: AppSidebarProps) {
   const locale: string = useLocale()
+  const visibleItems = appSidebarData.filter(
+    (item) => !item.superAdminOnly || canManageUsers,
+  )
 
   return (
     <Sidebar>
@@ -23,7 +30,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="mt-[200px]">
-              {appSidebarData.map((item) => (
+              {visibleItems.map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild>
                     <TransitionLink href={`/${locale}/${item.link}`}>

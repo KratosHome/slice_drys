@@ -4,12 +4,15 @@ import Block from '@/server/block/blocks-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 export async function updateHelpData(
   formData: Omit<IHelp, 'images'>,
   images: string[],
 ) {
   'use server'
+  await requireAdmin()
+
   try {
     await connectToDbServer()
     const block = await Block.findOne()

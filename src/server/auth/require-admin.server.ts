@@ -1,20 +1,28 @@
 import { getServerSession } from 'next-auth'
 
+import {
+  ADMIN_ROLES,
+  isAdminRole,
+  type AdminRole,
+  type UserRole,
+} from '@/constants/user-role'
 import { ApiError } from '@/server/api-error.server'
 import { authOptions } from '@/server/auth/auth-options.server'
-import type { UserRole } from '@/server/auth/login.server'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { UserSlice } from '@/server/user/user-schema.server'
 
-export const ADMIN_ROLES = ['super-admin', 'manager'] as const
-
-export type AdminRole = (typeof ADMIN_ROLES)[number]
+export { ADMIN_ROLES }
+export type { AdminRole }
 
 export interface AdminIdentity {
   id: string
   name: string
   email: string
   role: AdminRole
+}
+
+export interface SuperAdminIdentity extends Omit<AdminIdentity, 'role'> {
+  role: 'super-admin'
 }
 
 interface AdminDocument {
@@ -37,11 +45,12 @@ export async function requireAdmin(): Promise<AdminIdentity> {
   const user = await UserSlice.findOne({
     email,
     role: { $in: ADMIN_ROLES },
+    archivedAt: null,
   })
     .select('_id username email role')
     .lean<AdminDocument | null>()
 
-  if (!user || !ADMIN_ROLES.includes(user.role as AdminRole)) {
+  if (!user || !isAdminRole(user.role)) {
     throw new ApiError(403, 'Administrator access required')
   }
 
@@ -49,6 +58,16 @@ export async function requireAdmin(): Promise<AdminIdentity> {
     id: user._id.toString(),
     name: user.username,
     email: user.email,
-    role: user.role as AdminRole,
+    role: user.role,
   }
+}
+
+export async function requireSuperAdmin(): Promise<SuperAdminIdentity> {
+  const identity = await requireAdmin()
+
+  if (identity.role !== 'super-admin') {
+    throw new ApiError(403, 'Super administrator access required')
+  }
+
+  return { ...identity, role: 'super-admin' }
 }

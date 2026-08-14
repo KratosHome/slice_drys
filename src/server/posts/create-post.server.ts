@@ -4,11 +4,14 @@ import { Post } from './post-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
+import { requireAdmin } from '@/server/auth/require-admin.server'
 
 export async function createPost(
   formData: IPostLocal,
   image: string,
 ): Promise<IResponse> {
+  await requireAdmin()
+
   try {
     await connectToDbServer()
 

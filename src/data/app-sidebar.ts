@@ -7,8 +7,17 @@ import {
   FolderKanban,
   TrendingUp,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-export const appSidebarData = [
+export interface AppSidebarItem {
+  id: number
+  name: string
+  icon: LucideIcon
+  link: string
+  superAdminOnly?: boolean
+}
+
+export const appSidebarData: AppSidebarItem[] = [
   {
     id: 1,
     name: 'Замовлення',
@@ -41,9 +50,10 @@ export const appSidebarData = [
   },
   {
     id: 6,
-    name: 'Клієнти',
+    name: 'Користувачі',
     icon: CircleUser,
     link: 'admin/clients',
+    superAdminOnly: true,
   },
   {
     id: 7,

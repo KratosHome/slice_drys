@@ -25,7 +25,7 @@ export function apiErrorResponse(error: unknown): NextResponse<{
     )
   }
 
-  console.error('Orders API request failed', error)
+  console.error('API request failed', error)
 
   return noStoreJson(
     { success: false, message: 'Internal server error' },
