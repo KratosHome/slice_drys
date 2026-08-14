@@ -1,10 +1,8 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { tabsOrder } from '@/data/tabs-order'
-import { useEffect } from 'react'
-import { SITE_URL } from '@/data/contacts'
 
 interface StatusCountResponse {
   success: boolean
@@ -30,9 +28,16 @@ export default function LocaleLayout({
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${SITE_URL}/api/orders/get-status-count`)
-      const json = await res.json()
-      setStatus(json)
+      try {
+        const res = await fetch('/api/orders/get-status-count')
+
+        if (!res.ok) return
+
+        const json = await res.json()
+        setStatus(json)
+      } catch {
+        setStatus(null)
+      }
     }
 
     fetchData()
@@ -40,9 +45,9 @@ export default function LocaleLayout({
 
   const statusStyles: Record<string, string> = {
     new: 'bg-red-500 text-white',
-    'awaiting-payment': 'bg-amber-400! text-white',
+    'awaiting-payment': 'bg-amber-400 text-slate-950',
     'awaiting-shipment': 'bg-blue-500 text-white',
-    shipped: 'bg-green-500 text-whit e',
+    shipped: 'bg-green-600 text-white',
     'awaiting-return': 'bg-orange-500 text-white',
   }
 
@@ -55,8 +60,11 @@ export default function LocaleLayout({
   }
 
   return (
-    <>
-      <div className="flex flex-wrap justify-between gap-1 border-gray-300 bg-transparent">
+    <section className="px-4 pt-1 pb-8 sm:px-5">
+      <nav
+        aria-label="Статуси замовлень"
+        className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8"
+      >
         {tabsOrder.map((tab) => {
           const isActive = pathname.includes(tab.value)
           const count = orderCountByStatus[tab.value] || 0
@@ -69,7 +77,7 @@ export default function LocaleLayout({
             >
               {count > 0 && (
                 <div
-                  className={`absolute -top-2 -right-2 flex size-6 items-center justify-center overflow-hidden rounded-full ${badgeStyles}`}
+                  className={`border-background absolute -top-2 -right-2 z-10 flex size-6 items-center justify-center overflow-hidden rounded-full border-2 text-xs font-semibold ${badgeStyles}`}
                 >
                   {count}
                 </div>
@@ -77,8 +85,11 @@ export default function LocaleLayout({
 
               <Link
                 href={`/uk/admin/${tab.value}`}
-                className={`flex flex-col items-center gap-2 rounded-md border-[1px] border-black/30 px-2 py-1 ${
-                  isActive ? 'border-black' : 'bg-transparent text-black'
+                aria-current={isActive ? 'page' : undefined}
+                className={`focus-visible:ring-ring flex min-h-20 w-full flex-col items-center justify-center gap-2 rounded-lg border px-2 py-2 text-center text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none ${
+                  isActive
+                    ? 'border-foreground bg-foreground text-background shadow-sm'
+                    : 'border-border bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground'
                 }`}
               >
                 <div className="flex h-full w-full items-center justify-center">
@@ -89,8 +100,8 @@ export default function LocaleLayout({
             </div>
           )
         })}
-      </div>
-      <div>{children}</div>
-    </>
+      </nav>
+      <div className="min-w-0">{children}</div>
+    </section>
   )
 }

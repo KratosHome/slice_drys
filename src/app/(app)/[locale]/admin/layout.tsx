@@ -25,7 +25,7 @@ export default async function AdminLayout(props: IAdminLayoutProps) {
   const session = await getServerSession()
 
   return (
-    <div className="mx-auto max-w-[1248px]">
+    <div className="mx-auto w-full max-w-[1248px]">
       <SessionProvider session={session}>
         <SidebarProvider>
           {!session || !session.user ? (
@@ -35,7 +35,7 @@ export default async function AdminLayout(props: IAdminLayoutProps) {
           ) : (
             <>
               <AppSidebar />
-              <main className="w-full">
+              <main className="w-full min-w-0">
                 <SidebarTrigger />
                 {children}
               </main>

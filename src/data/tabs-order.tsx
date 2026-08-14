@@ -31,7 +31,9 @@ export const tabsOrder = [
   },
   {
     value: 'completed',
-    icon: <CheckCircle className="h-5 w-5 text-gray-700" />,
+    icon: (
+      <CheckCircle className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+    ),
     label: 'Виконано',
   },
   {
@@ -46,7 +48,7 @@ export const tabsOrder = [
   },
   {
     value: 'failed-delivery',
-    icon: <AlertCircle className="h-5 w-5 text-red-700" />,
+    icon: <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />,
     label: 'Не доставлено',
   },
 ]

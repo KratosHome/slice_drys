@@ -39,6 +39,7 @@ import {
   Truck,
   XCircle,
   RefreshCw,
+  ChevronDown,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -54,6 +55,17 @@ const statusIcons = {
   failedDelivery: <AlertCircle className="text-red-500" />,
 }
 
+const statusLabels: Record<keyof typeof statusIcons, string> = {
+  new: 'Нове',
+  awaitingPayment: 'Очікує оплати',
+  awaitingShipment: 'Очікує відправки',
+  shipped: 'Відправлено',
+  completed: 'Виконано',
+  awaitingReturn: 'Очікує повернення',
+  cancelled: 'Скасовано',
+  failedDelivery: 'Не доставлено',
+}
+
 function DataTable<TData>({
   columns,
   data,
@@ -66,7 +78,7 @@ function DataTable<TData>({
     [],
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({ email: false })
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
@@ -89,20 +101,21 @@ function DataTable<TData>({
   })
 
   return (
-    <div className="mt-6 w-full">
-      <div className="flex items-center gap-2 py-4">
+    <div className="border-border bg-card mt-6 w-full rounded-xl border p-3 shadow-sm sm:p-5">
+      <div className="flex flex-col gap-3 pb-4 sm:flex-row sm:items-center">
         <Input
           placeholder="Фільтр по email..."
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('email')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="bg-background sm:max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
+            <Button variant="outline" className="w-full sm:ml-auto sm:w-auto">
+              Стовпці
+              <ChevronDown className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -127,15 +140,15 @@ function DataTable<TData>({
         </DropdownMenu>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-gray-200">
-        <Table className="w-full border-collapse">
-          <TableHeader className="bg-gray-50">
+      <div className="border-border overflow-hidden rounded-lg border">
+        <Table className="min-w-[900px] border-collapse">
+          <TableHeader className="bg-muted/60">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-b">
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="px-4 py-2 text-left text-sm font-medium text-gray-700"
+                    className="text-foreground px-4 py-3 text-left text-sm font-semibold"
                   >
                     {header.isPlaceholder
                       ? null
@@ -148,18 +161,17 @@ function DataTable<TData>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="divide-y divide-gray-100">
+          <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="hover:bg-gray-50"
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="px-4 py-2 text-sm text-gray-900"
+                      className="text-card-foreground px-4 py-3 text-sm"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -172,8 +184,8 @@ function DataTable<TData>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
+                  colSpan={table.getVisibleLeafColumns().length}
+                  className="text-muted-foreground h-24 text-center"
                 >
                   Немає замовлень
                 </TableCell>
@@ -183,15 +195,16 @@ function DataTable<TData>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} з{' '}
-          {table.getFilteredRowModel().rows.length} сторінки
+          Вибрано {table.getFilteredSelectedRowModel().rows.length} з{' '}
+          {table.getFilteredRowModel().rows.length}
         </div>
-        <div className="space-x-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="sm"
+            className="flex-1 sm:flex-none"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -200,6 +213,7 @@ function DataTable<TData>({
           <Button
             variant="outline"
             size="sm"
+            className="flex-1 sm:flex-none"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -219,6 +233,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
+          aria-label="Вибрати всі замовлення"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
@@ -228,6 +243,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
       ),
       cell: ({ row }) => (
         <Checkbox
+          aria-label={`Вибрати замовлення ${row.original.id}`}
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
         />
@@ -249,6 +265,7 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
         return (
           <div className="flex items-center gap-2 capitalize">
             {statusIcons[status] || <AlertCircle className="text-gray-500" />}
+            <span className="sr-only">{statusLabels[status] || status}</span>
           </div>
         )
       },
@@ -262,6 +279,12 @@ export default function OrdersList({ data }: { data: IOrder[] }) {
           {row.original.user.name} {row.original.user.surname}
         </div>
       ),
+    },
+    {
+      id: 'email',
+      header: 'Email',
+      accessorFn: (row) => row.user.email,
+      cell: ({ row }) => <div>{row.original.user.email}</div>,
     },
     {
       id: 'phone',
