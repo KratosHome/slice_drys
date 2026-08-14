@@ -7,9 +7,9 @@ import {
 } from '@/components/ui/popover'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import { Button } from '@/components/ui/button'
+import { TransitionLink } from '@/components/client/transition-link'
 import CartProductCard from '@/components/client/cart-product-card'
 
-import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/utils/cn'
@@ -19,8 +19,6 @@ export default function SmallCart() {
   const t = useTranslations('cart')
   const local = useLocale() as ILocale
 
-  const router = useRouter()
-
   const {
     openCart,
     setOpenCart,
@@ -29,11 +27,6 @@ export default function SmallCart() {
     totalProducts,
     minOrderAmount,
   } = useCartStore((state) => state)
-
-  const handleOpenCart = (): void => {
-    router.push(`/${local}/order`)
-    setOpenCart(false)
-  }
 
   return (
     <div
@@ -171,17 +164,16 @@ export default function SmallCart() {
                     disabled={totalPrice < minOrderAmount}
                     className={cn(
                       'bg-foreground text-background flex w-full items-center justify-center',
-                      totalPrice < minOrderAmount && 'bg-gray-500',
+                      totalPrice < minOrderAmount && 'bg-gray-500 pointer-events-none',
                     )}
                   >
-                    <Button
-                      variant={'none'}
-                      disabled={totalPrice < minOrderAmount}
-                      onClick={handleOpenCart}
-                      className={'text-base md:text-xl'}
+                    <TransitionLink
+                      href={`/${local}/order`}
+                      onClick={() => setOpenCart(false)}
+                      className={'text-base md:text-xl flex items-center justify-center w-full h-full'}
                     >
                       {t('order')}
-                    </Button>
+                    </TransitionLink>
                   </ResponsiveMotion>
                 </div>
               </div>
