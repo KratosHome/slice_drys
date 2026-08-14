@@ -1,8 +1,8 @@
 'use client'
 
 import {
+  AnimatedDialogContent,
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
@@ -87,7 +87,7 @@ export default function CallMe() {
           {t('call-back')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <AnimatedDialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{t('call-back')}</DialogTitle>
           <DialogDescription>
@@ -160,7 +160,7 @@ export default function CallMe() {
             {t('call-back')}
           </Button>
         </form>
-      </DialogContent>
+      </AnimatedDialogContent>
     </Dialog>
   )
 }

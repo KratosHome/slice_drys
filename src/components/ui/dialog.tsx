@@ -12,6 +12,7 @@ import {
   Description,
 } from '@radix-ui/react-dialog'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
+import dialogMotionStyles from './dialog-motion.module.css'
 
 import {
   type ComponentPropsWithoutRef,
@@ -83,48 +84,51 @@ const DialogHeader = ({
 
 DialogHeader.displayName = 'DialogHeader'
 
-const ClientDialogContent = forwardRef<
+const AnimatedDialogContent = forwardRef<
   ComponentRef<typeof Content>,
   ComponentPropsWithoutRef<typeof Content> & {
-    disableDefaultMotion?: boolean
     overlayClassName?: string
+    showCloseButton?: boolean
   }
 >(
   (
-    {
-      className,
-      children,
-      disableDefaultMotion = false,
-      overlayClassName,
-      ...props
-    },
+    { className, children, overlayClassName, showCloseButton = true, ...props },
     ref,
   ) => (
     <DialogPortal>
-      {disableDefaultMotion ? (
-        <Overlay
-          className={cn('fixed inset-0 z-50 bg-black/80', overlayClassName)}
-        />
-      ) : (
-        <DialogOverlay className={overlayClassName} />
-      )}
+      <Overlay
+        className={cn(
+          'fixed inset-0 z-50 bg-black/80',
+          dialogMotionStyles.overlay,
+          overlayClassName,
+        )}
+      />
       <Content
         ref={ref}
         className={cn(
-          'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg sm:rounded-lg',
-          !disableDefaultMotion &&
-            'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] duration-200',
+          'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg border p-6 shadow-lg sm:rounded-lg',
+          dialogMotionStyles.content,
           className,
         )}
         {...props}
       >
-        {children}
+        <div className={dialogMotionStyles.reveal}>
+          <div className={dialogMotionStyles.surface}>
+            {children}
+            {showCloseButton ? (
+              <Close className="ring-offset-background focus:ring-ring data-[state=open]:text-red-cust absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent">
+                <Cross2Icon className="text-red-cust h-8 w-8" />
+                <span className="sr-only">Close</span>
+              </Close>
+            ) : null}
+          </div>
+        </div>
       </Content>
     </DialogPortal>
   ),
 )
 
-ClientDialogContent.displayName = 'ClientDialogContent'
+AnimatedDialogContent.displayName = 'AnimatedDialogContent'
 
 const ClientDialogHeader = ({
   className,
@@ -136,7 +140,10 @@ const ClientDialogHeader = ({
     {...props}
   >
     {children}
-    <Close className="ring-offset-background focus:ring-ring data-[state=open]:text-red-custcursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent">
+    <Close
+      aria-label="Close"
+      className="ring-offset-background focus:ring-ring data-[state=open]:text-red-cust cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent"
+    >
       <ResponsiveMotion
         initial={{ rotate: 0, scale: 1 }}
         whileHover={{ scale: 1.2 }}
@@ -204,7 +211,7 @@ export {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  ClientDialogContent,
+  AnimatedDialogContent,
   ClientDialogHeader,
   DialogFooter,
   DialogTitle,

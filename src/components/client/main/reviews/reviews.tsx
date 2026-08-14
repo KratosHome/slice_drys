@@ -3,7 +3,7 @@
 import { ReviewsItem } from './reviews-item'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import {
-  ClientDialogContent,
+  AnimatedDialogContent,
   ClientDialogHeader,
   Dialog,
   DialogTitle,
@@ -251,10 +251,10 @@ export default function Reviews({
             {t('add-new-review')}
           </UnderlinedLink>
         </DialogTrigger>
-        <ClientDialogContent
+        <AnimatedDialogContent
           aria-describedby={undefined}
-          disableDefaultMotion
-          overlayClassName={reviewDialogStyles.overlay}
+          showCloseButton={false}
+          overlayClassName="bg-black/45 backdrop-blur-[2px]"
           className={cn(
             reviewDialogStyles.content,
             'w-[calc(100%_-_32px)] overflow-hidden rounded-none border-none bg-transparent p-0 sm:max-w-[500px]',
@@ -314,7 +314,7 @@ export default function Reviews({
               </Button>
             </div>
           </form>
-        </ClientDialogContent>
+        </AnimatedDialogContent>
       </Dialog>
     </section>
   )
