@@ -1,6 +1,5 @@
 import { getTranslations } from 'next-intl/server'
 import Order from '@/components/client/order/order'
-import Delivery from '@/components/client/promo-banner/delivery'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -117,7 +116,6 @@ export default async function OrderPage({ params }: { params: Params }) {
           }}
         />
       </div>
-      <Delivery className="my-[150px] mb-[100px] md:mt-[250px]" />
       <ToTheTop />
     </>
   )

@@ -1,7 +1,6 @@
 {
   "main": {
     "header": {
-      "free-delivery-from": "Free delivery from 1000 UAH.",
       "blog": "Blog",
       "wholesale": "Wholesale",
       "contacts": "Contacts",
@@ -190,13 +189,6 @@
     "success": "Success!",
     "error": "Error!",
     "info": "Info"
-  },
-  "promo-banner": {
-    "free-delivery": "Free delivery!",
-    "when-ordering-from": "When ordering from <bold>{amount} UAH</bold>",
-    "get-free-delivery": "Get free delivery",
-    "icon-cart": "icon cart",
-    "icon-instagram": "icon instagram"
   },
   "promo-banner-join-community": {
     "title": "Join our community!",

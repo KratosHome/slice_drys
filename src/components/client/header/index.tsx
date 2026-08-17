@@ -2,7 +2,6 @@
 
 import { pageLinks, routs } from '@/data/main/routs'
 
-import HeaderInfo from '@/components/client/header/header-info'
 import HamburgerMenu from '@/components/client/header/hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change'
 import SmallCart from '@/components/client/header/small-cart'
@@ -139,10 +138,9 @@ export default function Header({ productLinks }: IHeaderProps) {
 
   return (
     <>
-      <HeaderInfo title={t('free-delivery-from')} />
       <header
         ref={headerRef}
-        className="bg-background sticky top-0 z-50 mx-auto mt-8 w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
+        className="bg-background sticky top-0 z-50 mx-auto w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
         aria-labelledby="header"
       >
         <div

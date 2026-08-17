@@ -1,7 +1,6 @@
 {
   "main": {
     "header": {
-      "free-delivery-from": "Безкоштовна доставка від 1000 грн.",
       "blog": "Блог",
       "wholesale": "Опт",
       "contacts": "Контакти",
@@ -190,13 +189,6 @@
     "success": "Вітання!",
     "error": "Помилка!",
     "info": "Інформація"
-  },
-  "promo-banner": {
-    "free-delivery": "Безкоштовна доставка!",
-    "when-ordering-from": "При замовленні від <bold>{amount} грн</bold>",
-    "get-free-delivery": "Отримати безкоштовну доставку",
-    "icon-cart": "іконка кошика",
-    "icon-instagram": "іконка Instagram"
   },
   "promo-banner-join-community": {
     "title": "Приєднуйся до нашої спільноти !",

@@ -25,7 +25,6 @@ import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
-import Delivery from '@/components/client/promo-banner/delivery'
 import { getPaginationRange } from '@/utils/get-pagination-range'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
@@ -550,7 +549,6 @@ export default async function ProductsPage(props: {
             </div>
           </div>
         </div>
-        <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />
       </section>
     </>

@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic'
 import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
@@ -7,7 +6,6 @@ import { ProductInfo } from '@/components/client/product-page/product-page'
 import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
-import { Loader } from 'lucide-react'
 import ProductSlider from '@/components/client/product-slider'
 import { SITE_URL } from '@/data/contacts'
 import {
@@ -17,13 +15,6 @@ import {
 import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 
 export const revalidate = 86400
-
-const Delivery = dynamic(
-  () => import('@/components/client/promo-banner/delivery'),
-  {
-    loading: () => <Loader />,
-  },
-)
 
 type Props = {
   params: Promise<{ locale: ILocale; category: string; slug: string }>
@@ -204,7 +195,6 @@ export default async function ProductPage({ params, searchParams }: Props) {
           title={t('also-buy')}
           message={t('something-that-will-come-handy-along-with-your-choice')}
         />
-        <Delivery className="mt-[330px] mb-[200px]" />
         <ToTheTop />
       </div>
     </>

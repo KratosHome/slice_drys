@@ -9,7 +9,7 @@ const faqDataUk: IFaq[] = [
   {
     title: 'Як і коли доставляєте замовлення?',
     description:
-      'Передаємо замовлення Новій пошті протягом 1–2 робочих днів після оформлення. Доставляємо по всій Україні у відділення, поштомат або кур’єром; дорога зазвичай займає 1–3 дні залежно від населеного пункту та роботи перевізника. Для замовлень від 1000 грн доставка безкоштовна.',
+      'Передаємо замовлення Новій пошті протягом 1–2 робочих днів після оформлення. Доставляємо по всій Україні у відділення, поштомат або кур’єром; дорога зазвичай займає 1–3 дні залежно від населеного пункту та роботи перевізника.',
   },
   {
     title: 'Що входить до складу сушеників?',
@@ -46,7 +46,7 @@ const faqDataEn: IFaq[] = [
   {
     title: 'How and when do you deliver orders?',
     description:
-      'We hand orders over to Nova Poshta within 1–2 business days after they are placed. We deliver across Ukraine to a branch, parcel locker, or by courier; transit usually takes 1–3 days depending on the destination and the carrier’s operations. Delivery is free for orders of UAH 1,000 or more.',
+      'We hand orders over to Nova Poshta within 1–2 business days after they are placed. We deliver across Ukraine to a branch, parcel locker, or by courier; transit usually takes 1–3 days depending on the destination and the carrier’s operations.',
   },
   {
     title: 'What are the dried snacks made from?',
