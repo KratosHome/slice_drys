@@ -216,11 +216,23 @@ export async function generateMetadata({
     resolvedSearchParams.categories !== undefined ||
     resolvedSearchParams.minWeight !== undefined ||
     resolvedSearchParams.maxWeight !== undefined
-  const pageSuffix = !hasFacetQuery && page > 1 ? `?page=${page}` : ''
+  const isIndexablePaginatedPage = !hasFacetQuery && page > 1
+  const pageLabel = locale === 'uk' ? 'Сторінка' : 'Page'
+  const pageSuffix = isIndexablePaginatedPage ? `?page=${page}` : ''
   const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}${pageSuffix}`
   const description = currentCategory.metaDescription?.[locale] || ''
   const socialTitle =
     currentCategory.metaTitle?.[locale] ?? currentCategory.name[locale]
+  const pageTitle = isIndexablePaginatedPage
+    ? `${socialTitle} — ${pageLabel} ${page}`
+    : currentCategory.metaTitle?.[locale]
+  const pageSocialTitle = isIndexablePaginatedPage
+    ? `${socialTitle} — ${pageLabel} ${page}`
+    : socialTitle
+  const pageDescription =
+    isIndexablePaginatedPage && description
+      ? `${description} ${pageLabel} ${page}.`
+      : description
   const socialImage = currentCategory.image
   const metaKeywordsArray =
     currentCategory.metaKeywords?.[locale]
@@ -228,11 +240,8 @@ export async function generateMetadata({
       .map((keyword: string) => keyword.trim()) || []
 
   return {
-    title:
-      page > 1 && !hasFacetQuery
-        ? `${currentCategory.metaTitle?.[locale] ?? currentCategory.name[locale]} — ${locale === 'uk' ? 'Сторінка' : 'Page'} ${page}`
-        : currentCategory.metaTitle?.[locale],
-    description,
+    title: pageTitle,
+    description: pageDescription,
     keywords: metaKeywordsArray,
     robots: hasFacetQuery
       ? { index: false, follow: true }
@@ -246,8 +255,8 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: socialTitle,
-      description,
+      title: pageSocialTitle,
+      description: pageDescription,
       url: canonicalUrl,
       type: 'website',
       locale: locale === 'uk' ? 'uk_UA' : 'en_US',
@@ -255,8 +264,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: socialTitle,
-      description,
+      title: pageSocialTitle,
+      description: pageDescription,
       images: socialImage ? [socialImage] : [],
     },
   }

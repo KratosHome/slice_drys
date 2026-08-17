@@ -1,56 +1,76 @@
+import { contacts } from '@/data/contacts'
+
 const faqDataUk: IFaq[] = [
   {
-    title: 'Чи можна сушениками наїстися?',
+    title: 'Як ви виготовляєте сушеники?',
     description:
-      'Сушеники – це повноцінний перекус, який підходить як для легкого підкріплення, так і для довшого насичення. Вони містять корисні мікроелементи та клітковину, що робить їх чудовим вибором для перекусу на роботі, у подорожах чи вдома.',
+      'Ми контролюємо кожен етап — від вибору інгредієнтів до фінального пакування. Так можемо стежити за якістю продукції впродовж усього процесу виготовлення.',
   },
   {
-    title: 'Як обрати перший "кусь"?',
+    title: 'Як і коли доставляєте замовлення?',
     description:
-      'Якщо ви тільки знайомитеся із сушениками, обирайте класичні смаки – сушене яблуко або грушу. Вони мають збалансований смак, який подобається більшості. Для тих, хто хоче спробувати щось нове, є варіанти з м’ясними, ягідними або екзотичними смаками.',
+      'Передаємо замовлення Новій пошті протягом 1–2 робочих днів після оформлення. Доставляємо по всій Україні у відділення, поштомат або кур’єром; дорога зазвичай займає 1–3 дні залежно від населеного пункту та роботи перевізника. Для замовлень від 1000 грн доставка безкоштовна.',
   },
   {
-    title: 'Чи не набридне їсти одні сушеники?',
+    title: 'Що входить до складу сушеників?',
     description:
-      'Наш асортимент створений так, щоб ви могли насолоджуватися різними смаками щодня. Ми пропонуємо класичні фруктові сушеники, ароматні овочеві варіанти та навіть сушеники для м’ясоїдів. Завдяки такому вибору вам точно не набридне.',
+      'Кожен смак має власну рецептуру з ретельно підібраних інгредієнтів — без штучних добавок, консервантів і ГМО. Повний склад завжди зазначаємо в картці товару.',
   },
   {
-    title: 'Що краще: сушене яблуко чи груша?',
+    title: 'Як правильно зберігати сушеники?',
     description:
-      'Це залежить від ваших смакових вподобань. Яблуко має кисло-солодкий смак і приємну текстуру, яка підходить для освіжаючого перекусу. Груша – більш ніжна та солодка, ідеальна для тих, хто любить солодкі фруктові смаки. Спробуйте обидва варіанти, щоб знайти свого фаворита!',
+      'Зберігайте продукцію за температури від +3 °C до +25 °C і відносної вологості 70%. Строк придатності — 12 місяців від дати виготовлення; точну дату зазначено на упаковці.',
   },
   {
-    title: 'А якщо сушеники закінчаться?',
+    title: 'Як можна оплатити замовлення?',
     description:
-      'Ми завжди готові поповнити ваші запаси. Зручна система замовлення та швидка доставка гарантують, що ви не залишитеся без улюблених смаколиків навіть у найнеочікуваніший момент.',
+      'Під час оформлення можна обрати оплату карткою через платіжну систему або післяплату. Комісія за післяплату Нової пошти становить 20 грн + 2% від суми замовлення.',
+  },
+  {
+    title: 'Чи можна замовити сушеники гуртом?',
+    description:
+      'Так, ми працюємо з магазинами, закладами та партнерськими проєктами. Залиште заявку в розділі «Опт» — підберемо асортимент, обсяг і умови співпраці під ваш бізнес.',
+  },
+  {
+    title: 'Які умови повернення та обміну?',
+    description: `Повернення та обмін здійснюємо відповідно до законодавства України й умов Публічної оферти. Товар належної якості має залишатися невикористаним, зі збереженими товарним виглядом, споживчими властивостями та пломбами, якщо вони були. Якщо товар пошкоджений або неналежної якості, зв’яжіться з нами: ${contacts.phone} або ${contacts.mail}.`,
   },
 ]
 
 const faqDataEn: IFaq[] = [
   {
-    title: 'Can you satisfy your hunger with dried snacks?',
+    title: 'How do you make your dried snacks?',
     description:
-      'Dried snacks are a complete snack option suitable for light refreshment or longer-lasting satiety. They contain beneficial micronutrients and fiber, making them an excellent choice for snacking at work, during travel, or at home.',
+      'We oversee every stage, from selecting the ingredients to final packaging. This allows us to monitor product quality throughout the entire production process.',
   },
   {
-    title: 'How to choose your first "bite"?',
+    title: 'How and when do you deliver orders?',
     description:
-      'If you’re new to dried snacks, start with classic flavors like dried apple or pear. They offer a balanced taste that most people enjoy. For those looking to try something different, we also offer meat, berry, or exotic flavors.',
+      'We hand orders over to Nova Poshta within 1–2 business days after they are placed. We deliver across Ukraine to a branch, parcel locker, or by courier; transit usually takes 1–3 days depending on the destination and the carrier’s operations. Delivery is free for orders of UAH 1,000 or more.',
   },
   {
-    title: 'Won’t eating only dried snacks get boring?',
+    title: 'What are the dried snacks made from?',
     description:
-      'Our assortment is designed so you can enjoy different flavors every day. We offer classic fruit snacks, aromatic vegetable options, and even meat-based dried snacks. With such variety, you’ll never get bored.',
+      'Each flavour has its own recipe made with carefully selected ingredients — free from artificial additives, preservatives, and GMOs. The full list of ingredients is always provided on the product page.',
   },
   {
-    title: 'Which is better: dried apple or pear?',
+    title: 'How should I store the dried snacks?',
     description:
-      'It depends on your taste preferences. Apples have a sweet and tangy flavor with a pleasant texture, perfect for a refreshing snack. Pears are softer and sweeter, ideal for those who love sugary fruit flavors. Try both to find your favorite!',
+      'Store the products at temperatures from +3 °C to +25 °C and relative humidity of 70%. Shelf life is 12 months from the date of manufacture; the exact date is shown on the packaging.',
   },
   {
-    title: 'What if the dried snacks run out?',
+    title: 'How can I pay for my order?',
     description:
-      'We’re always ready to restock your supply. Our convenient ordering system and fast delivery ensure you won’t be left without your favorite treats, even at the most unexpected moment.',
+      'At checkout, you can pay by card through the payment system or choose cash on delivery. Nova Poshta charges UAH 20 + 2% of the order total for cash on delivery.',
+  },
+  {
+    title: 'Can I order dried snacks wholesale?',
+    description:
+      'Yes. We work with retailers, food-service businesses, and other partners. Submit the form on our Wholesale page, and we will recommend an assortment, order volume, and terms that fit your business.',
+  },
+  {
+    title: 'What are the return and exchange terms?',
+    description: `Returns and exchanges are handled in accordance with Ukrainian law and our Public Offer. Goods of adequate quality must remain unused, with their presentation, consumer properties, and seals (if any) intact. If an item is damaged or of inadequate quality, contact us at ${contacts.phone} or ${contacts.mail}.`,
   },
 ]
 

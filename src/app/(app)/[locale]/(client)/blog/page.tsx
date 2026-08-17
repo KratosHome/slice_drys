@@ -59,14 +59,16 @@ export async function generateMetadata({
 
   const pageSuffix = page && page > 1 ? `?page=${page}` : ''
   const canonicalUrl = `${SITE_URL}/${locale}/blog${pageSuffix}`
-  const pageTitle =
-    page && page > 1
-      ? `${blogMetaData[locale].title} — ${locale === 'uk' ? 'Сторінка' : 'Page'} ${page}`
-      : blogMetaData[locale].title
+  const pageLabel = locale === 'uk' ? 'Сторінка' : 'Page'
+  const titleSuffix = page && page > 1 ? ` — ${pageLabel} ${page}` : ''
+  const descriptionSuffix = page && page > 1 ? ` ${pageLabel} ${page}.` : ''
+  const pageTitle = `${blogMetaData[locale].title}${titleSuffix}`
+  const pageDescription = `${blogMetaData[locale].description}${descriptionSuffix}`
+  const pageOpenGraphDescription = `${blogMetaData[locale].openGraphDescription}${descriptionSuffix}`
 
   return {
     title: pageTitle,
-    description: blogMetaData[locale].description,
+    description: pageDescription,
     keywords: blogMetaData[locale].keywords,
     robots: 'index, follow',
     alternates: {
@@ -79,7 +81,7 @@ export async function generateMetadata({
     },
     openGraph: {
       title: pageTitle,
-      description: blogMetaData[locale].openGraphDescription,
+      description: pageOpenGraphDescription,
       url: canonicalUrl,
       type: 'website',
       locale: locale === 'uk' ? 'uk_UA' : 'en_US',
@@ -95,7 +97,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title: pageTitle,
-      description: blogMetaData[locale].description,
+      description: pageDescription,
       images: [ogImage],
     },
   }
