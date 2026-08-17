@@ -31,29 +31,9 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
   return (
     <Accordion
       type="multiple"
-      defaultValue={['info', 'about', 'nutrition']}
+      defaultValue={['info', 'nutrition']}
       className="mx-auto mb-[230px] grid max-w-[988px] gap-6"
     >
-      <AccordionItem value="about">
-        <ResponsiveMotion
-          whileHover={{ scale: 1.009 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <AccordionTrigger className="py-6">
-            <h2>{t('about-product')}</h2>
-          </AccordionTrigger>
-        </ResponsiveMotion>
-        <AccordionContent className="border border-t-0">
-          <section className="flex flex-wrap gap-5 sm:flex-nowrap">
-            <article
-              id="editor"
-              className="ql-editor prose lg:prose-xl"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-          </section>
-        </AccordionContent>
-      </AccordionItem>
-
       <AccordionItem value={'nutrition'}>
         <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
@@ -174,6 +154,26 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
               </ul>
             </dd>
           </div>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="about">
+        <ResponsiveMotion
+          whileHover={{ scale: 1.009 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+        >
+          <AccordionTrigger className="py-6">
+            <h2>{t('about-product')}</h2>
+          </AccordionTrigger>
+        </ResponsiveMotion>
+        <AccordionContent className="border border-t-0">
+          <section className="flex flex-wrap gap-5 sm:flex-nowrap">
+            <article
+              id="editor"
+              className="ql-editor prose lg:prose-xl"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          </section>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
