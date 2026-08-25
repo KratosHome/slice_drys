@@ -39,6 +39,8 @@ interface INovaPoshtaApiResponse<T> {
   success: boolean
   data: T
   info?: { totalCount: number }
+  errors?: string[]
+  warnings?: string[]
 }
 
 type IDeliveryMethods = 'branch' | 'postomat' | 'courier'

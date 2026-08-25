@@ -19,7 +19,13 @@ import {
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 
-import { type InputHTMLAttributes, useEffect, useMemo, useState } from 'react'
+import {
+  type InputHTMLAttributes,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useTranslations } from 'next-intl'
 import { type UseControllerProps, useController } from 'react-hook-form'
 import { useDebounce } from 'use-debounce'
@@ -97,9 +103,7 @@ const handleBranchSearch = async (
 ): Promise<IDirectoryBranch[]> => {
   if (!cityRef) return []
 
-  const branches = await getNPBranchesByCityRef(cityRef)
-
-  return branches ?? []
+  return getNPBranchesByCityRef(cityRef)
 }
 
 const Loading = () => {
@@ -143,6 +147,8 @@ export function Combobox({
   >([])
 
   const [loading, setLoading] = useState<boolean>(false)
+  const [loadError, setLoadError] = useState<boolean>(false)
+  const requestIdRef = useRef(0)
 
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
@@ -151,73 +157,81 @@ export function Combobox({
     (state) => state.cart.userData?.deliveryInfo?.deliveryMethod,
   )
 
-  const handleUpdateDataList = useMemo(() => {
-    if (name === 'deliveryInfo.city') {
-      return handleCitySearch
-    } else {
-      return () => handleBranchSearch(deliveryInfo?.city?.value)
-    }
-  }, [name, deliveryInfo])
+  const cityRef = deliveryInfo?.city?.value
 
-  useEffect(() => {
-    if (name === 'deliveryInfo.branch') setElements([])
+  const handleUpdateDataList = useCallback(
+    (searchValue?: string) =>
+      name === 'deliveryInfo.city'
+        ? handleCitySearch(searchValue)
+        : handleBranchSearch(cityRef),
+    [cityRef, name],
+  )
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deliveryInfo?.city?.value])
+  const loadData = useCallback(
+    async (searchValue?: string) => {
+      const requestId = ++requestIdRef.current
+      setLoading(true)
+      setLoadError(false)
 
-  useEffect(() => {
-    if (name === 'deliveryInfo.city') {
-      ;(async () => {
-        setLoading(true)
+      try {
+        const data = await handleUpdateDataList(searchValue)
 
-        try {
-          const data = (await handleUpdateDataList(
-            debouncedSearchValue,
-          )) as IComboboxData[]
+        if (requestId === requestIdRef.current) setElements(data)
+      } catch (error) {
+        console.error(`Error fetching data (${name.split('.')[1]}): `, error)
 
-          setElements(data)
-        } catch (error) {
-          console.error(
-            `Error fetching data with (${name.split('.')[1]}): `,
-            error,
-          )
+        if (requestId === requestIdRef.current) {
           setElements([])
-        } finally {
-          setLoading(false)
+          setLoadError(true)
         }
-      })()
-    }
+      } finally {
+        if (requestId === requestIdRef.current) setLoading(false)
+      }
+    },
+    [handleUpdateDataList, name],
+  )
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchValue, handleUpdateDataList])
+  useEffect(
+    () => () => {
+      requestIdRef.current += 1
+    },
+    [],
+  )
+
+  // Load branches as soon as a city is selected, before the dropdown opens.
+  useEffect(() => {
+    if (name !== 'deliveryInfo.branch') return
+
+    requestIdRef.current += 1
+    setSearch('')
+    setElements([])
+    setLoadError(false)
+
+    if (cityRef) void loadData()
+  }, [cityRef, loadData, name])
+
+  useEffect(() => {
+    if (name === 'deliveryInfo.city') void loadData(debouncedSearchValue)
+  }, [debouncedSearchValue, loadData, name])
 
   // Початкове завантаження даних
   useEffect(() => {
-    if (open && elements.length === 0 && !debouncedSearchValue) {
+    if (open && elements.length === 0 && !debouncedSearchValue && !loading) {
       if (defaultValues) {
         setElements(defaultValues)
         return
       }
 
-      ;(async () => {
-        setLoading(true)
-
-        try {
-          const data = await handleUpdateDataList(undefined)
-          setElements(data)
-        } catch (error) {
-          console.error(
-            `Error fetching initial data (${name.split('.')[1]}): `,
-            error,
-          )
-          setElements([])
-        } finally {
-          setLoading(false)
-        }
-      })()
+      void loadData()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, handleUpdateDataList, debouncedSearchValue, elements.length])
+  }, [
+    debouncedSearchValue,
+    defaultValues,
+    elements.length,
+    loadData,
+    loading,
+    open,
+  ])
 
   const selectedValue: IComboboxData =
     name === 'deliveryInfo.city'
@@ -247,6 +261,7 @@ export function Combobox({
           <Button
             role="combobox"
             aria-expanded={open}
+            aria-busy={loading}
             className="border-input placeholder:text-muted-foreground focus-visible:ring-ring text-foreground hover:bg-foreground/10 grid h-16 w-full grid-cols-[1fr_auto] rounded-md border bg-transparent px-4 py-[15px] text-left text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="truncate">
@@ -274,6 +289,27 @@ export function Combobox({
             <CommandList>
               {loading ? (
                 <Loading />
+              ) : loadError ? (
+                <div
+                  role="alert"
+                  className="flex flex-col items-center gap-3 p-4 text-center text-sm"
+                >
+                  <p>{t('directory-load-error')}</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      void loadData(
+                        name === 'deliveryInfo.city'
+                          ? debouncedSearchValue
+                          : undefined,
+                      )
+                    }
+                  >
+                    {t('btn-retry')}
+                  </Button>
+                </div>
               ) : (
                 <>
                   <CommandEmpty>

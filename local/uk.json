@@ -211,6 +211,8 @@
     "city-search-placeholder": "Спробуй змінити запит",
     "branch-placeholder": "Вибери {type, select, branch {відділення} postomat {поштомат} other {}}",
     "branch-search-placeholder": "Відсутні {type, select, branch {відділення} postomat {поштомати} other {}} або спробуй змінити запит",
+    "directory-load-error": "Не вдалося завантажити дані Нової пошти. Спробуй ще раз.",
+    "btn-retry": "Спробувати ще раз",
     "courier-placeholder": "Вкажіть адресу доставки (місто, вулиця, будинок)",
     "payment-title": "Спосіб оплати",
     "card": "Оплата через платіжну систему",

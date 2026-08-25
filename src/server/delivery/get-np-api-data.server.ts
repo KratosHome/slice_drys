@@ -1,5 +1,15 @@
 'use server'
 
+const NOVA_POSHTA_REQUEST_TIMEOUT_MS = 8_000
+const NOVA_POSHTA_REQUEST_ATTEMPTS = 2
+const NOVA_POSHTA_RETRY_DELAY_MS = 300
+
+const wait = (delay: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, delay))
+
+const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error)
+
 export async function getNovaPoshtaApiData<T>(
   calledMethod: 'getCities' | 'getWarehouses',
   methodProperties?: Record<string, unknown>,
@@ -17,25 +27,57 @@ export async function getNovaPoshtaApiData<T>(
     throw new Error('Missing object with Page number for getWarehouses method')
   }
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        apiKey: API_KEY,
-        modelName: 'Address',
-        calledMethod,
-        methodProperties,
-      }),
-    })
+  let lastError: unknown
 
-    if (!response.ok) throw new Error(`Failed to fetch ${calledMethod}`)
+  for (let attempt = 1; attempt <= NOVA_POSHTA_REQUEST_ATTEMPTS; attempt++) {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          apiKey: API_KEY,
+          modelName: 'Address',
+          calledMethod,
+          methodProperties,
+        }),
+        cache: 'no-store',
+        signal: AbortSignal.timeout(NOVA_POSHTA_REQUEST_TIMEOUT_MS),
+      })
 
-    const result: INovaPoshtaApiResponse<T> = await response.json()
+      if (!response.ok) {
+        throw new Error(
+          `Nova Poshta ${calledMethod} returned HTTP ${response.status}`,
+        )
+      }
 
-    return result
-  } catch (error) {
-    console.error(`Error fetching ${calledMethod}:`, error)
-    throw error
+      const result: INovaPoshtaApiResponse<T> = await response.json()
+
+      if (!result.success) {
+        const details = result.errors?.filter(Boolean).join(', ')
+        throw new Error(
+          details
+            ? `Nova Poshta ${calledMethod} failed: ${details}`
+            : `Nova Poshta ${calledMethod} failed`,
+        )
+      }
+
+      if (!Array.isArray(result.data)) {
+        throw new Error(`Nova Poshta ${calledMethod} returned invalid data`)
+      }
+
+      return result
+    } catch (error) {
+      lastError = error
+
+      if (attempt < NOVA_POSHTA_REQUEST_ATTEMPTS) {
+        await wait(NOVA_POSHTA_RETRY_DELAY_MS * attempt)
+      }
+    }
   }
+
+  console.error(
+    `Error fetching ${calledMethod} after ${NOVA_POSHTA_REQUEST_ATTEMPTS} attempts: ${getErrorMessage(lastError)}`,
+  )
+
+  throw new Error(`Unable to load Nova Poshta ${calledMethod} data`)
 }

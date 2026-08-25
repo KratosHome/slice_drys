@@ -1,89 +1,164 @@
 'use server'
 
+import { after } from 'next/server'
 import { NovaPoshtaBranches } from './nova-poshta-schema.server'
 
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { getNovaPoshtaApiData } from './get-np-api-data.server'
 
+const BRANCH_CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1_000
+const BRANCH_CACHE_READ_TIMEOUT_MS = 5_000
+const CITY_REF_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+interface ICachedDirectoryBranches extends IDirectoryBranches {
+  updatedAt?: Date
+}
+
+const pendingBranchRequests = new Map<string, Promise<IDirectoryBranch[]>>()
+
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  message: string,
+): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timeoutId = setTimeout(() => reject(new Error(message)), timeoutMs)
+
+    promise.then(
+      (value) => {
+        clearTimeout(timeoutId)
+        resolve(value)
+      },
+      (error: unknown) => {
+        clearTimeout(timeoutId)
+        reject(error)
+      },
+    )
+  })
+}
+
 export async function getNPBranchesByCityRef(
   cityRef: string,
-): Promise<IDirectoryBranch[] | null> {
-  const branches: IDirectoryBranch[] | null =
-    await getNPBranchesByCityRefFromDirectory(cityRef)
+): Promise<IDirectoryBranch[]> {
+  if (!CITY_REF_PATTERN.test(cityRef)) {
+    throw new Error('Invalid Nova Poshta city reference')
+  }
 
-  if (!branches) {
-    const resp = await getNPBranchesByCityRefOnline(cityRef)
+  const pendingRequest = pendingBranchRequests.get(cityRef)
+  if (pendingRequest) return pendingRequest
 
-    if (!resp?.length) return null
+  const request = loadNPBranchesByCityRef(cityRef).finally(() => {
+    pendingBranchRequests.delete(cityRef)
+  })
 
-    const newBranches = {
-      cityRef: resp[0].cityRef,
-      city: resp[0].city,
-      branches: resp.map(({ branchRef, branchName, branchType }) => ({
+  pendingBranchRequests.set(cityRef, request)
+  return request
+}
+
+async function loadNPBranchesByCityRef(
+  cityRef: string,
+): Promise<IDirectoryBranch[]> {
+  const cachedDirectory = await getNPBranchesByCityRefFromDirectory(cityRef)
+  const cachedBranches = cachedDirectory?.branches ?? []
+  const cacheUpdatedAt = cachedDirectory?.updatedAt?.getTime() ?? 0
+  const isCacheFresh =
+    cachedBranches.length > 0 &&
+    Date.now() - cacheUpdatedAt < BRANCH_CACHE_MAX_AGE_MS
+
+  if (isCacheFresh) return cachedBranches
+
+  try {
+    const onlineBranches = await getNPBranchesByCityRefOnline(cityRef)
+
+    if (!onlineBranches.length) return cachedBranches
+
+    const directory = {
+      cityRef: onlineBranches[0].cityRef,
+      city: onlineBranches[0].city,
+      branches: onlineBranches.map(({ branchRef, branchName, branchType }) => ({
         branchRef,
         branchName,
         branchType,
       })),
     }
 
-    try {
-      connectToDbServer()
+    // The customer must not wait for a cache write, and a cache failure must
+    // never discard valid data received from Nova Poshta.
+    after(() => saveNPBranchesToDirectory(directory))
 
-      const res = (await NovaPoshtaBranches.create(newBranches)).toObject()
-      return res.branches
-    } catch (error) {
-      console.error('Помилка при доданні відділень Нова Пошта:', error)
-      return null
+    return directory.branches
+  } catch (error) {
+    if (cachedBranches.length) {
+      console.warn(
+        'Не вдалося оновити відділення Нова Пошта; використано кеш:',
+        error,
+      )
+      return cachedBranches
     }
-  }
 
-  return branches
+    throw error
+  }
 }
 
 async function getNPBranchesByCityRefOnline(cityRef: string): Promise<
-  | (IDirectoryBranch & {
-      city: string
-      cityRef: string
-    })[]
-  | null
+  (IDirectoryBranch & {
+    city: string
+    cityRef: string
+  })[]
 > {
-  try {
-    const branches = await getNovaPoshtaApiData<INovaPoshtaApiBranch[]>(
-      'getWarehouses',
-      {
-        CityRef: cityRef,
-      },
-    )
+  const branches = await getNovaPoshtaApiData<INovaPoshtaApiBranch[]>(
+    'getWarehouses',
+    {
+      CityRef: cityRef,
+    },
+  )
 
-    if (!branches.success) return []
-
-    return branches.data.map((branch) => ({
-      cityRef: branch.CityRef,
-      city: branch.CityDescription,
-      branchRef: branch.Ref,
-      branchName: branch.Description,
-      branchType: !branch.CategoryOfWarehouse.toLowerCase().includes('postomat')
-        ? 'Branch'
-        : branch.CategoryOfWarehouse,
-    }))
-  } catch (error) {
-    console.error('Помилка при отриманні відділень Нова Пошта з API:', error)
-    return null
-  }
+  return branches.data.map((branch) => ({
+    cityRef: branch.CityRef,
+    city: branch.CityDescription,
+    branchRef: branch.Ref,
+    branchName: branch.Description,
+    branchType: !branch.CategoryOfWarehouse.toLowerCase().includes('postomat')
+      ? 'Branch'
+      : branch.CategoryOfWarehouse,
+  }))
 }
 
 async function getNPBranchesByCityRefFromDirectory(
   cityRef: string,
-): Promise<IDirectoryBranch[] | null> {
+): Promise<ICachedDirectoryBranches | null> {
   try {
-    await connectToDbServer()
+    const data = await withTimeout(
+      (async () => {
+        await connectToDbServer()
 
-    const data = await NovaPoshtaBranches.findOne({
-      cityRef,
-    }).lean<IDirectoryBranches>()
-    return data ? data?.branches : null
+        return NovaPoshtaBranches.findOne({
+          cityRef,
+        }).lean<ICachedDirectoryBranches>()
+      })(),
+      BRANCH_CACHE_READ_TIMEOUT_MS,
+      'Nova Poshta branch cache read timed out',
+    )
+
+    return data ?? null
   } catch (error) {
     console.error(`Помилка при отриманні відділень для міста:`, error)
     return null
+  }
+}
+
+async function saveNPBranchesToDirectory(
+  directory: IDirectoryBranches,
+): Promise<void> {
+  try {
+    await connectToDbServer()
+    await NovaPoshtaBranches.findOneAndUpdate(
+      { cityRef: directory.cityRef },
+      { $set: directory },
+      { upsert: true, setDefaultsOnInsert: true },
+    )
+  } catch (error) {
+    console.error('Помилка при оновленні відділень Нова Пошта:', error)
   }
 }

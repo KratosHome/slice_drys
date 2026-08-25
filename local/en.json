@@ -211,6 +211,8 @@
     "city-search-placeholder": "Try changing your query",
     "branch-placeholder": "Select {type, select, branch {branch} postomat {postomat} other {}}",
     "branch-search-placeholder": "No {type, select, branch {branches} postomat {postomat}  other {}} available or try changing your query",
+    "directory-load-error": "Could not load Nova Poshta data. Please try again.",
+    "btn-retry": "Try again",
     "courier-placeholder": "Enter delivery address (city, street, house number)",
     "payment-title": "Payment method",
     "card": "Payment via payment system",
