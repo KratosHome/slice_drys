@@ -41,5 +41,8 @@ next-env.d.ts
 # package
 package-lock.json
 
+# generated knowledge graph
+/graphify-out/
+
 # github
 .github
