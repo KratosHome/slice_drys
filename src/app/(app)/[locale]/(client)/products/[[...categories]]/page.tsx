@@ -25,6 +25,8 @@ import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
+import ProductListTracking from '@/components/google-analytics/product-list-tracking'
+import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 import { getPaginationRange } from '@/utils/get-pagination-range'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
@@ -396,6 +398,15 @@ export default async function ProductsPage(props: {
 
   return (
     <>
+      <ProductListTracking
+        listId={canonicalPath}
+        listName={currentCategory.name[locale]}
+        items={productCards
+          .map(({ product, initialVariant }) =>
+            getProductAnalyticsItem(product, initialVariant),
+          )
+          .filter((item): item is AnalyticsItem => item !== undefined)}
+      />
       {!hasFacetQuery ? (
         <ProductListJsonLd
           currentCategories={currentCategory}
@@ -453,6 +464,11 @@ export default async function ProductsPage(props: {
                   product={product}
                   initialVariant={initialVariant}
                   priority={index === 0}
+                  analyticsList={{
+                    id: canonicalPath,
+                    name: currentCategory.name[locale],
+                    index,
+                  }}
                 />
               ))}
             </div>

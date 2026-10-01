@@ -23,7 +23,7 @@ import { getPublicCategories } from '@/server/public-data-cache.server'
 export const revalidate = 86400
 
 const montserrat = Montserrat({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
   variable: '--font-montserrat',
   weight: ['400', '500', '600', '700', '800'],

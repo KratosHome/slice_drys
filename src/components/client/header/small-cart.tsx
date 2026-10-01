@@ -27,6 +27,8 @@ export default function SmallCart() {
     totalProducts,
     minOrderAmount,
   } = useCartStore((state) => state)
+  const belowMinimum = totalPrice < minOrderAmount
+  const missingAmount = Math.max(0, minOrderAmount - totalPrice)
 
   return (
     <div
@@ -138,9 +140,10 @@ export default function SmallCart() {
                   </div>
                 </div>
 
-                {totalPrice < minOrderAmount ? (
-                  <div className="mt-2 text-sm text-red-500">
-                    {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.
+                {belowMinimum ? (
+                  <div className="mt-2 text-sm text-red-500" aria-live="polite">
+                    {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.{' '}
+                    {t('minimum-order-shortfall', { amount: missingAmount })}
                   </div>
                 ) : null}
 
@@ -161,19 +164,30 @@ export default function SmallCart() {
                   <ResponsiveMotion
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    disabled={totalPrice < minOrderAmount}
+                    disabled={belowMinimum}
                     className={cn(
                       'bg-foreground text-background flex w-full items-center justify-center',
-                      totalPrice < minOrderAmount && 'bg-gray-500 pointer-events-none',
+                      belowMinimum && 'bg-gray-500',
                     )}
                   >
-                    <TransitionLink
-                      href={`/${local}/order`}
-                      onClick={() => setOpenCart(false)}
-                      className={'text-base md:text-xl flex items-center justify-center w-full h-full'}
-                    >
-                      {t('order')}
-                    </TransitionLink>
+                    {belowMinimum ? (
+                      <Button
+                        type="button"
+                        variant="none"
+                        disabled
+                        className="h-full w-full text-base md:text-xl"
+                      >
+                        {t('order')}
+                      </Button>
+                    ) : (
+                      <TransitionLink
+                        href={`/${local}/order`}
+                        onClick={() => setOpenCart(false)}
+                        className="flex h-full w-full items-center justify-center text-base md:text-xl"
+                      >
+                        {t('order')}
+                      </TransitionLink>
+                    )}
                   </ResponsiveMotion>
                 </div>
               </div>

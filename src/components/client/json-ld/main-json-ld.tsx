@@ -9,6 +9,7 @@ import {
   serializeJsonLd,
   WEBSITE_ID,
 } from '@/utils/json-ld'
+import { normalizeProductSlug } from '@/utils/product-slug'
 
 interface IMainJsonLdProps {
   products: IProduct[]
@@ -34,7 +35,7 @@ export default async function MainJsonLd({ products }: IMainJsonLdProps) {
 
     const url = localizedUrl(
       locale,
-      `products/${product.category}/product/${product.slug}`,
+      `products/${product.category}/product/${normalizeProductSlug(product.slug)}`,
     )
 
     return [buildProductNode(product, url)]

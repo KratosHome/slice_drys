@@ -11,9 +11,11 @@ import { connectToDbServer } from '@/server/connect-to-db.server'
 import { sendOrderNotification } from '@/server/info/order-notification.server'
 import { Order } from '@/server/orders/order-schema.server'
 import { Product } from '@/server/products/product-schema.server'
+import { getProductPrice } from '@/utils/product-price'
+import { MIN_ORDER_AMOUNT } from '@/constants/order'
+import { normalizeOrderPhone } from '@/utils/order-contact'
 
 const MAX_ORDER_LINES = 50
-const MIN_ORDER_TOTAL = 300
 const MAX_COMMENT_LENGTH = 2_000
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -140,7 +142,8 @@ function roundMoney(value: number): number {
 function normalizeDelivery(
   deliveryData: Record<string, unknown>,
 ): ICreateOrderDelivery {
-  const phone = getRequiredString(deliveryData.phone, 50)
+  const phone = normalizeOrderPhone(deliveryData.phone)
+  if (!phone) throw new InvalidOrderError()
   const courier =
     typeof deliveryData.courier === 'string' ? deliveryData.courier.trim() : ''
 
@@ -226,12 +229,7 @@ async function getTrustedProducts(
       throw new InvalidOrderError()
     }
 
-    const price =
-      typeof variant.newPrice === 'number' &&
-      Number.isFinite(variant.newPrice) &&
-      variant.newPrice > 0
-        ? variant.newPrice
-        : variant.price
+    const price = getProductPrice(variant)
 
     if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) {
       throw new InvalidOrderError()
@@ -255,7 +253,7 @@ async function getTrustedProducts(
     }
   })
 
-  if (!Number.isFinite(total) || total < MIN_ORDER_TOTAL) {
+  if (!Number.isFinite(total) || total < MIN_ORDER_AMOUNT) {
     throw new InvalidOrderError()
   }
 
@@ -284,8 +282,9 @@ export async function createOrderServer(
     }
 
     const email = getRequiredString(userData.email, 150).toLowerCase()
+    const phone = normalizeOrderPhone(userData.phone)
 
-    if (!EMAIL_PATTERN.test(email)) throw new InvalidOrderError()
+    if (!EMAIL_PATTERN.test(email) || !phone) throw new InvalidOrderError()
 
     const paymentMethod = paymentData.method
 
@@ -311,7 +310,7 @@ export async function createOrderServer(
       id: `user-${randomUUID()}`,
       name: getRequiredString(userData.name, 120),
       surname: getRequiredString(userData.surname, 120),
-      phone: getRequiredString(userData.phone, 50),
+      phone,
       email,
     }
 
@@ -364,6 +363,18 @@ export async function createOrderServer(
       success: true,
       message: {
         [locale]: t('success'),
+      },
+      receipt: {
+        transactionId: order._id.toString(),
+        currency: 'UAH',
+        value: trustedOrder.total,
+        items: trustedOrder.products.map((product) => ({
+          id: product.id,
+          name: product.name,
+          weight: product.weight,
+          price: product.price,
+          quantity: product.count,
+        })),
       },
     }
   } catch (error) {

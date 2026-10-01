@@ -2,32 +2,29 @@
 
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { cn } from '@/utils/cn'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { useLocale } from 'next-intl'
-import { useSyncExternalStore } from 'react'
+import { Suspense } from 'react'
 
 interface ILocaleChangeProps {
   className?: string
 }
 
-const subscribeToLocation = (onStoreChange: () => void) => {
-  window.addEventListener('popstate', onStoreChange)
-  return () => window.removeEventListener('popstate', onStoreChange)
+export default function LocaleChange({ className }: ILocaleChangeProps) {
+  return (
+    <Suspense fallback={null}>
+      <LocaleChangeLinks className={className} />
+    </Suspense>
+  )
 }
 
-const getLocationSearch = () => window.location.search
-const getServerLocationSearch = () => ''
-
-export default function LocaleChange({ className }: ILocaleChangeProps) {
+function LocaleChangeLinks({ className }: ILocaleChangeProps) {
   const locale: string = useLocale()
   const path: string = usePathname()
-  const search = useSyncExternalStore(
-    subscribeToLocation,
-    getLocationSearch,
-    getServerLocationSearch,
-  )
+  const query = useSearchParams().toString()
+  const search = query ? `?${query}` : ''
 
   return (
     <div

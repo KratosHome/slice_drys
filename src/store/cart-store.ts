@@ -1,6 +1,12 @@
 'use client'
 
 import { createOrderServer } from '@/server/orders/create-order.server'
+import { MIN_ORDER_AMOUNT } from '@/constants/order'
+import {
+  getCartAnalyticsItems,
+  trackEcommerceEvent,
+  trackPurchase,
+} from '@/utils/analytics'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import { create } from 'zustand'
 
@@ -57,6 +63,8 @@ export const useCartStore = create<ICartState & ICartActions>()(
   subscribeWithSelector(
     persist(
       (set, get) => {
+        let submitting = false
+
         const recalculateCart = (cart: ICart) => {
           const totalPrice: number =
             cart.itemList?.reduce(
@@ -77,8 +85,17 @@ export const useCartStore = create<ICartState & ICartActions>()(
           openCart: false,
           totalPrice: 0,
           totalProducts: 0,
-          minOrderAmount: 300,
-          setOpenCart: (openCart: boolean) => set({ openCart }),
+          minOrderAmount: MIN_ORDER_AMOUNT,
+          setOpenCart: (openCart: boolean) => {
+            const state = get()
+            if (openCart && !state.openCart) {
+              trackEcommerceEvent(
+                'view_cart',
+                getCartAnalyticsItems(state.cart.itemList ?? []),
+              )
+            }
+            set({ openCart })
+          },
           addItemToCart: (props) => {
             const {
               id,
@@ -90,35 +107,53 @@ export const useCartStore = create<ICartState & ICartActions>()(
               maxQuantity = 0,
             } = props
 
-            set((state) => {
-              const existingItem: ICartItem | undefined =
-                state.cart.itemList?.find(
-                  (item) => item.id === id && item.weight === weight,
+            if (
+              !id ||
+              !Number.isSafeInteger(quantity) ||
+              quantity <= 0 ||
+              !Number.isSafeInteger(maxQuantity) ||
+              maxQuantity <= 0 ||
+              !Number.isFinite(price) ||
+              price <= 0 ||
+              !Number.isFinite(weight) ||
+              weight <= 0
+            )
+              return
+
+            const { cart } = get()
+            const existingItem = cart.itemList?.find(
+              (item) => item.id === id && item.weight === weight,
+            )
+            const previousQuantity = existingItem?.quantity ?? 0
+            const nextQuantity = Math.min(
+              previousQuantity + quantity,
+              maxQuantity,
+            )
+            const addedQuantity = nextQuantity - previousQuantity
+            if (addedQuantity <= 0) return
+
+            const updatedItem = {
+              id,
+              quantity: nextQuantity,
+              image,
+              name,
+              price,
+              weight,
+              maxQuantity,
+            }
+            const itemList = existingItem
+              ? cart.itemList?.map((item) =>
+                  item.id === id && item.weight === weight ? updatedItem : item,
                 )
-
-              let updatedItemList: ICartItem[] | undefined
-
-              if (existingItem) {
-                updatedItemList = state.cart.itemList?.map((item) =>
-                  item.id === id
-                    ? {
-                        ...item,
-                        quantity: item.quantity + quantity,
-                        maxQuantity,
-                      }
-                    : item,
-                )
-              } else {
-                updatedItemList = [
-                  ...(state.cart.itemList ?? []),
-                  { id, quantity, image, name, price, weight, maxQuantity },
-                ]
-              }
-
-              const updatedCart = { ...state.cart, itemList: updatedItemList }
-
-              return { cart: updatedCart, ...recalculateCart(updatedCart) }
-            })
+              : [...(cart.itemList ?? []), updatedItem]
+            const updatedCart = { ...cart, itemList }
+            set({ cart: updatedCart, ...recalculateCart(updatedCart) })
+            trackEcommerceEvent(
+              'add_to_cart',
+              getCartAnalyticsItems([
+                { ...updatedItem, quantity: addedQuantity },
+              ]),
+            )
           },
           hasItemInCart: (id, weight) => {
             return (
@@ -133,25 +168,42 @@ export const useCartStore = create<ICartState & ICartActions>()(
             maxQuantity: number,
             weight: number,
           ) => {
-            set((state) => {
-              const newQuantity: number = Math.min(
-                Math.max(quantity, 1),
-                maxQuantity,
-              )
+            if (
+              !Number.isSafeInteger(quantity) ||
+              !Number.isSafeInteger(maxQuantity) ||
+              maxQuantity <= 0
+            )
+              return
 
-              const updatedItemList: ICartItem[] | undefined =
-                state.cart.itemList?.map((item) =>
-                  item.id === id && item.weight === weight
-                    ? { ...item, quantity: newQuantity }
-                    : item,
-                )
+            const { cart } = get()
+            const existingItem = cart.itemList?.find(
+              (item) => item.id === id && item.weight === weight,
+            )
+            if (!existingItem) return
+            const newQuantity = Math.min(Math.max(quantity, 1), maxQuantity)
+            const delta = newQuantity - existingItem.quantity
+            if (delta === 0) return
 
-              const updatedCart = { ...state.cart, itemList: updatedItemList }
-
-              return { cart: updatedCart, ...recalculateCart(updatedCart) }
-            })
+            const updatedCart = {
+              ...cart,
+              itemList: cart.itemList?.map((item) =>
+                item.id === id && item.weight === weight
+                  ? { ...item, quantity: newQuantity, maxQuantity }
+                  : item,
+              ),
+            }
+            set({ cart: updatedCart, ...recalculateCart(updatedCart) })
+            trackEcommerceEvent(
+              delta > 0 ? 'add_to_cart' : 'remove_from_cart',
+              getCartAnalyticsItems([
+                { ...existingItem, quantity: Math.abs(delta) },
+              ]),
+            )
           },
           removeItemFromCart: (id: string, weight: number) => {
+            const removedItem = get().cart.itemList?.find(
+              (item) => item.id === id && item.weight === weight,
+            )
             set((state) => {
               const updatedItemList: ICartItem[] =
                 state.cart.itemList?.filter(
@@ -162,10 +214,26 @@ export const useCartStore = create<ICartState & ICartActions>()(
 
               return { cart: updatedCart, ...recalculateCart(updatedCart) }
             })
+            if (removedItem) {
+              trackEcommerceEvent(
+                'remove_from_cart',
+                getCartAnalyticsItems([removedItem]),
+              )
+            }
           },
           clearCart: (full: boolean = false) => {
+            if (!full) {
+              trackEcommerceEvent(
+                'remove_from_cart',
+                getCartAnalyticsItems(get().cart.itemList ?? []),
+              )
+            }
             set(() => {
-              localStorage.removeItem('slice-drys-cart')
+              try {
+                localStorage.removeItem('slice-drys-cart')
+              } catch {
+                // The in-memory cart still clears when browser storage is disabled.
+              }
 
               return {
                 cart: full
@@ -189,10 +257,15 @@ export const useCartStore = create<ICartState & ICartActions>()(
             referralCode: string | undefined,
             cb: (response: IOrderResponse) => void,
           ) => {
+            if (submitting) return
             const { cart, clearCart } = get()
 
             if (!cart.itemList || cart.itemList.length === 0) {
-              return { success: false, message: 'Cart is empty' }
+              cb({
+                success: false,
+                message: { uk: 'Кошик порожній', en: 'Cart is empty' },
+              })
+              return
             }
 
             const productsToSubmit: ICreateOrderProduct[] = cart.itemList.map(
@@ -235,11 +308,26 @@ export const useCartStore = create<ICartState & ICartActions>()(
               noCall: cart.userData?.noCall === true,
             }
 
-            const response: IOrderResponse = await createOrderServer(orderData)
-
-            if (response.success) clearCart(true)
-
-            cb(response)
+            submitting = true
+            try {
+              const response: IOrderResponse =
+                await createOrderServer(orderData)
+              if (response.success) {
+                if (response.receipt) trackPurchase(response.receipt)
+                clearCart(true)
+              }
+              cb(response)
+            } catch {
+              cb({
+                success: false,
+                message: {
+                  uk: 'Не вдалося оформити замовлення. Спробуйте ще раз.',
+                  en: 'Unable to place the order. Please try again.',
+                },
+              })
+            } finally {
+              submitting = false
+            }
           },
         }
       },

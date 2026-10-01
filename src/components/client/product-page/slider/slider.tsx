@@ -1,23 +1,16 @@
 import Image from 'next/image'
-import React from 'react'
-
-const SliderWithThumbnails = ({ img }: { img: string }) => {
+const SliderWithThumbnails = ({ img, alt }: { img: string; alt: string }) => {
   return (
     <div className="flex w-full justify-center lg:w-1/2">
       <div className="relative aspect-12/9 w-full max-w-[344px] lg:aspect-auto">
         <Image
           className="object-contain"
           src={img}
-          alt={`Slider ${img}`}
+          alt={alt}
           fill
-          fetchPriority="high"
-          priority={true}
-          loading="eager"
-          sizes="(min-width: 1024px) 344px, 100vw"
+          preload
+          sizes="(max-width: 375px) calc(100vw - 32px), 344px"
           quality={70}
-          style={{
-            objectFit: 'contain',
-          }}
         />
       </div>
     </div>

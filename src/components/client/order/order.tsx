@@ -4,13 +4,14 @@ import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-import OrderForm from '@/components/client/order/order-form'
+import OrderForm, { ORDER_FORM_ID } from '@/components/client/order/order-form'
 import OrderList from '@/components/client/order/order-list'
 import { useCartStore } from '@/store/cart-store'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import Loading from '@/components/ui/loading'
+import { getCartAnalyticsItems, trackEcommerceEvent } from '@/utils/analytics'
 
 type Props = {
   defaultCities: {
@@ -56,6 +57,8 @@ export default function Order({ defaultCities }: Props) {
   const { replace } = useRouter()
 
   const [loading, setLoading] = useState(false)
+  const [formValid, setFormValid] = useState(false)
+  const checkoutTracked = useRef(false)
 
   const formRef = useRef<{
     reset: () => void
@@ -65,8 +68,16 @@ export default function Order({ defaultCities }: Props) {
   const {
     totalPrice,
     minOrderAmount,
-    cart: { userData },
+    cart: { userData, itemList },
   } = useCartStore((state) => state)
+
+  useEffect(() => {
+    if (checkoutTracked.current || !itemList?.length) return
+    checkoutTracked.current = trackEcommerceEvent(
+      'begin_checkout',
+      getCartAnalyticsItems(itemList),
+    )
+  }, [itemList])
 
   useEffect(() => {
     if (userData?.formStep === 4) {
@@ -84,7 +95,13 @@ export default function Order({ defaultCities }: Props) {
   }, [minOrderAmount, totalPrice, userData?.formStep])
 
   const handleSubmit = async () => {
-    if (!formRef.current) return
+    if (
+      !formRef.current ||
+      loading ||
+      totalPrice < minOrderAmount ||
+      userData?.formStep !== 3
+    )
+      return
     setLoading(true)
 
     const referralCode = getStoredReferralCode()
@@ -118,6 +135,8 @@ export default function Order({ defaultCities }: Props) {
         ref={formRef}
         defaultCities={defaultCities}
         onFinalSubmit={handleSubmit}
+        onValidityChange={setFormValid}
+        submitting={loading}
       />
 
       <div
@@ -136,10 +155,15 @@ export default function Order({ defaultCities }: Props) {
           <Button
             ref={submitBtnRef}
             type="submit"
+            form={ORDER_FORM_ID}
             variant={'none'}
             className="mt-5 h-[auto] w-full self-center text-base text-nowrap lg:w-min lg:text-xl"
-            disabled={totalPrice < minOrderAmount || userData?.formStep !== 3}
-            onClick={handleSubmit}
+            disabled={
+              loading ||
+              !formValid ||
+              totalPrice < minOrderAmount ||
+              userData?.formStep !== 3
+            }
           >
             <ResponsiveMotion
               whileHover={{ scale: 1.05 }}

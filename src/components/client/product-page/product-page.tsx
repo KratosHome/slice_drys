@@ -10,33 +10,41 @@ import {
   SelectValue,
 } from '@/components/ui/doodle-select'
 import ChangeQuantityIcon from '@/components/icons/change-quantity-icon'
-import SliderWithThumbnails from './slider/slider'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import { useCartStore } from '@/store/cart-store'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { useTranslations } from 'next-intl'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import UnderlineWave from '@/components/ui/underline-wave'
+import { MIN_ORDER_AMOUNT } from '@/constants/order'
+import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
+import { getProductVariant, productVariantUrl } from '@/utils/product-variant'
+import { useProductView } from '@/hooks/useProductView'
 
 const subscribeToHydration = () => () => undefined
 
-export const ProductInfo = ({ product }: { product: IProduct }) => {
-  const router = useRouter()
+export const ProductInfo = ({
+  product,
+  imageGallery,
+}: {
+  product: IProduct
+  imageGallery: React.ReactNode
+}) => {
   const t = useTranslations('product')
+  const tCart = useTranslations('cart')
   const searchParams = useSearchParams()
 
   const weightParam = searchParams.get('weight')
 
-  const { name, img, composition, variables } = product
+  const { name, composition, variables } = product
 
-  const initialSelectedVariable = weightParam
-    ? variables.find((variable) => String(variable.weight) === weightParam) ||
-      (product.variant ?? variables[0])
-    : (product.variant ?? variables[0])
+  const selectedVariable = getProductVariant(product, weightParam)
+  const price = getProductPrice(selectedVariable)
+  useProductView(product, selectedVariable)
 
   const mounted = useSyncExternalStore(
     subscribeToHydration,
@@ -48,13 +56,10 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
     (state) => state,
   )
 
-  const [selectedVariable, setSelectedVariable] = useState(
-    initialSelectedVariable,
-  )
-
   const [quantity, setQuantity] = useState(1)
 
-  const isInCart = hasItemInCart(product._id as string, selectedVariable.weight)
+  const isInCart =
+    mounted && hasItemInCart(product._id as string, selectedVariable.weight)
 
   useEffect(() => {
     const visitKey = `product-visit:${product.slug}`
@@ -77,13 +82,18 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
   }, [product.slug])
 
   const handleAddToCart = () => {
-    if (product._id && product.img) {
+    if (
+      product._id &&
+      product.img &&
+      price !== undefined &&
+      selectedVariable.count > 0
+    ) {
       addItemToCart({
         id: product._id,
         quantity: quantity,
         image: product.img,
         name: product.name,
-        price: selectedVariable.newPrice || selectedVariable.price,
+        price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })
@@ -94,10 +104,14 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
   const handleWeightChange = (value: string) => {
     const newVariable = variables.find((v) => String(v.weight) === value)
     if (newVariable) {
-      setSelectedVariable(newVariable)
       setQuantity(1)
-      const currentPath = window.location.pathname
-      router.replace(`${currentPath}?weight=${newVariable.weight}`)
+      const currentUrl = `${window.location.pathname}${window.location.search}`
+      window.history.replaceState(
+        null,
+        '',
+        productVariantUrl(currentUrl, newVariable.weight) +
+          window.location.hash,
+      )
     }
   }
 
@@ -105,11 +119,10 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
     <section className="lg:border-light_gray mb-20 flex flex-col gap-10 pb-10 lg:flex-row lg:border">
       <div className="absolute grid gap-0.5">
         {product.statusLabel?.includes('top') && <TopLabel />}
-        <NewLabel />
         {product.statusLabel?.includes('new') && <NewLabel />}
         {product.statusLabel?.includes('sale') && <SaleLabel />}
       </div>
-      <SliderWithThumbnails img={img!} />
+      {imageGallery}
       <div className="lg:w-1/2">
         <h1 className="bg-foreground text-background relative py-2 pl-3 text-[40px] font-bold">
           {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
@@ -130,14 +143,16 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             value={String(selectedVariable.weight)}
             onValueChange={handleWeightChange}
           >
-            <SelectTrigger className="relative">
+            <SelectTrigger id="weight" className="relative">
               <label
                 htmlFor="weight"
                 className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
               >
                 {t('choose-weight')}
               </label>
-              <SelectValue placeholder={t('weight')} />
+              <SelectValue placeholder={t('weight')}>
+                {selectedVariable.weight} {t('g')}.
+              </SelectValue>
             </SelectTrigger>
             <SelectContent className="bg-grey-select">
               <SelectGroup>
@@ -159,7 +174,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
         </div>
         <div className="flex flex-col items-end justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
           <div className="w-full text-center whitespace-nowrap md:w-max">
-            {selectedVariable.newPrice ? (
+            {isProductPriceReduced(selectedVariable) ? (
               <>
                 {selectedVariable.price && (
                   <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
@@ -167,13 +182,13 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
                   </p>
                 )}
                 <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                  {selectedVariable.newPrice} {selectedVariable.currency}
+                  {price} {selectedVariable.currency}
                 </p>
               </>
             ) : (
-              selectedVariable.price && (
+              price !== undefined && (
                 <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                  {selectedVariable.price} {selectedVariable.currency}
+                  {price} {selectedVariable.currency}
                 </p>
               )
             )}
@@ -214,7 +229,7 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
               className="h-[50px] min-w-[190px] rounded-none"
               type="button"
               variant="danger"
-              disabled={selectedVariable.count === 0}
+              disabled={selectedVariable.count <= 0 || price === undefined}
               onClick={handleAddToCart}
             >
               {mounted
@@ -225,6 +240,9 @@ export const ProductInfo = ({ product }: { product: IProduct }) => {
             </Button>
           </div>
         </div>
+        <p className="text-sm text-[#7D7D7D]">
+          {tCart('minimum-order-amount')} {MIN_ORDER_AMOUNT} {tCart('uah')}.
+        </p>
         <div className="relative ml-auto flex w-fit items-stretch justify-end gap-2 pt-5 pr-5 pb-4">
           <svg className="-mt-2.5 h-[65px] w-[65px]">
             <use href="/icons/sprite-sertif.svg#haccp_certified" />

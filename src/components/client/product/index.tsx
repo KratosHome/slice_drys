@@ -19,11 +19,15 @@ import { TransitionLink } from '@/components/client/transition-link'
 import { useState, useSyncExternalStore } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
+import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
+import { getProductVariant, productVariantUrl } from '@/utils/product-variant'
+import { trackProductSelection } from '@/utils/analytics'
 
 interface IProductProps {
   product: IProduct
   priority?: boolean
   initialVariant?: IVariableProduct
+  analyticsList?: { id: string; name: string; index?: number }
 }
 
 const subscribeToHydration = () => () => undefined
@@ -32,6 +36,7 @@ export default function Product({
   product,
   priority = false,
   initialVariant,
+  analyticsList,
 }: IProductProps) {
   const locale = useLocale() as ILocale
   const t = useTranslations('product')
@@ -47,8 +52,9 @@ export default function Product({
   )
 
   const [selectedVariable, setSelectedVariable] = useState(
-    initialVariant ?? product.variant ?? product.variables[0],
+    getProductVariant(product, String(initialVariant?.weight ?? '')),
   )
+  const price = getProductPrice(selectedVariable)
 
   const isInCart: boolean = hasItemInCart(
     product._id as string,
@@ -56,13 +62,18 @@ export default function Product({
   )
 
   const handleAddToCart = (): void => {
-    if (product._id && product.img)
+    if (
+      product._id &&
+      product.img &&
+      price !== undefined &&
+      selectedVariable.count > 0
+    )
       addItemToCart({
         id: product._id,
         quantity: 1,
         image: product.img,
         name: product.name,
-        price: selectedVariable.newPrice || selectedVariable.price,
+        price,
         weight: selectedVariable.weight,
         maxQuantity: selectedVariable.count,
       })
@@ -71,14 +82,20 @@ export default function Product({
 
   const handleVariableChange = (value: number | string): void => {
     const selected: IVariableProduct | undefined = product.variables.find(
-      (variable) => variable._id === value,
+      (variable) => String(variable.weight) === String(value),
     )
     if (selected) setSelectedVariable(selected)
   }
 
   return (
     <TransitionLink
-      href={`/${locale}/products/${product.category}/product/${product.slug.toLowerCase()}`}
+      href={productVariantUrl(
+        `/${locale}/products/${product.category}/product/${product.slug.toLowerCase()}`,
+        selectedVariable.weight,
+      )}
+      onClick={() =>
+        trackProductSelection(product, selectedVariable, analyticsList)
+      }
       className="block px-2 py-8 sm:px-3 md:px-4"
     >
       <CardContainer className="relative h-full w-full rounded-sm">
@@ -136,24 +153,24 @@ export default function Product({
               >
                 <Select
                   onValueChange={handleVariableChange}
-                  value={String(selectedVariable._id)}
+                  value={String(selectedVariable.weight)}
                 >
                   <SelectTrigger
                     className="w-fit border-none shadow-none outline-hidden"
                     aria-label={t('choose-weight')}
                   >
-                    <SelectValue
-                      placeholder={selectedVariable.weight.toString()}
-                    />
+                    <SelectValue>
+                      {selectedVariable.weight} {t('g')}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       {product.variables.map((variable) => (
                         <SelectItem
                           key={variable._id}
-                          value={String(variable._id)}
+                          value={String(variable.weight)}
                         >
-                          {variable.weight} г
+                          {variable.weight} {t('g')}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -164,7 +181,7 @@ export default function Product({
           </div>
           <div className="flex w-full items-end justify-between">
             <CardItem translateZ={30}>
-              {selectedVariable.newPrice ? (
+              {isProductPriceReduced(selectedVariable) ? (
                 <>
                   {selectedVariable.price ? (
                     <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
@@ -172,12 +189,12 @@ export default function Product({
                     </p>
                   ) : null}
                   <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                    {selectedVariable.newPrice} {selectedVariable.currency}
+                    {price} {selectedVariable.currency}
                   </p>
                 </>
-              ) : selectedVariable.price ? (
+              ) : price !== undefined ? (
                 <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                  {selectedVariable.price} {selectedVariable.currency}
+                  {price} {selectedVariable.currency}
                 </p>
               ) : null}
             </CardItem>
@@ -192,6 +209,7 @@ export default function Product({
                   className="z-50!"
                   type="button"
                   variant="button"
+                  disabled={selectedVariable.count <= 0 || price === undefined}
                   onClick={handleAddToCart}
                 >
                   {mounted

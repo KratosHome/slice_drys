@@ -151,7 +151,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })
 
-    const childEntries = (category.children ?? []).flatMap((child) => {
+    // These roots expose cross-category facets in the catalog rather than
+    // child routes. Such paths return 404 and must not be offered to crawlers.
+    const childCategories =
+      category.slug === 'mixes' || category.slug === 'promotions'
+        ? []
+        : (category.children ?? [])
+    const childEntries = childCategories.flatMap((child) => {
       const childProductsLastModified = latestDate(
         products
           .filter((product) =>

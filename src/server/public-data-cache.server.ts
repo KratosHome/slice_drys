@@ -63,7 +63,7 @@ const getCachedMainProducts = unstable_cache(
 const getCachedProduct = unstable_cache(
   async (slug: string, locale: ILocale) =>
     throwOnInfrastructureFailure(await getProductBySlug({ slug, locale })),
-  ['public-product-v1'],
+  ['public-product-v2'],
   {
     revalidate: revalidateDay,
     tags: [fetchTags.products, fetchTags.product, fetchTags.menu],
@@ -75,7 +75,7 @@ const getCachedProductRecommendations = unstable_cache(
     throwOnInfrastructureFailure(
       await getProductsSliderProduct(locale, productSlug),
     ),
-  ['public-product-recommendations-v2'],
+  ['public-product-recommendations-v3'],
   {
     revalidate: revalidateDay,
     tags: [fetchTags.products, fetchTags.product, fetchTags.menu],

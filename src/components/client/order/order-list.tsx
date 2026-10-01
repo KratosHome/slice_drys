@@ -56,8 +56,11 @@ export default function CartList() {
             </div>
 
             {totalPrice < minOrderAmount && (
-              <div className="mt-2 text-sm text-red-500">
-                {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.
+              <div className="mt-2 text-sm text-red-500" aria-live="polite">
+                {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.{' '}
+                {t('minimum-order-shortfall', {
+                  amount: minOrderAmount - totalPrice,
+                })}
               </div>
             )}
           </div>

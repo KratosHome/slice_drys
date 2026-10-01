@@ -1,4 +1,3 @@
-'use client'
 import {
   Accordion,
   AccordionContent,
@@ -6,14 +5,13 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import 'quill/dist/quill.snow.css'
-import { FC } from 'react'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import {
   CardIcon,
   ChequeIcon,
   PaperIcon,
 } from '@/components/client/product-page/icons'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 interface AccordionsProps {
@@ -21,8 +19,11 @@ interface AccordionsProps {
   description: string
 }
 
-export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
-  const t = useTranslations('product')
+export const Accordions = async ({
+  nutrition,
+  description,
+}: AccordionsProps) => {
+  const t = await getTranslations('product')
 
   const content = JSON.parse(description)
   const converter = new QuillDeltaToHtmlConverter(content.ops)
@@ -66,7 +67,10 @@ export const Accordions: FC<AccordionsProps> = ({ nutrition, description }) => {
             <div className="flex w-full max-w-[290px] justify-between">
               <h3 className="font-bold">{t('energy-value')}</h3>
               <span>
-                {nutrition.energyValue} {t('g')}
+                {nutrition.energyUnit === 'kcal' ||
+                nutrition.energyUnit === 'kJ'
+                  ? `${nutrition.energyValue} ${t(nutrition.energyUnit)}`
+                  : t('energy-unit-unverified')}
               </span>
             </div>
           </section>

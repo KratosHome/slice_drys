@@ -2,6 +2,7 @@
 import cloudinary from '../cloudinary-config.server'
 import { connectToDbServer } from '../connect-to-db.server'
 import { Product } from './product-schema.server'
+import { findByProductSlug, normalizeProductSlug } from '@/utils/product-slug'
 
 export async function getProductBySlug({
   slug,
@@ -14,27 +15,29 @@ export async function getProductBySlug({
   try {
     await connectToDbServer()
 
-    const product = await Product.findOne(
-      { slug: slug.toLowerCase() },
-      {
-        [`name.${locale}`]: 1,
-        [`description.${locale}`]: 1,
-        [`menu.${locale}`]: 1,
-        [`composition.${locale}`]: 1,
-        img: 1,
-        variables: 1,
-        nutritionalValue: 1,
-        statusLabel: 1,
-        visited: 1,
-        categories: 1,
-        title: 1,
-        metaDescription: 1,
-        keywords: 1,
-        slug: 1,
-      },
-    ).populate(
-      'categories',
-      'name description metaTitle metaDescription metaKeywords slug children parentCategory',
+    const product = await findByProductSlug(slug, (matchedSlug) =>
+      Product.findOne(
+        { slug: matchedSlug },
+        {
+          [`name.${locale}`]: 1,
+          [`description.${locale}`]: 1,
+          [`menu.${locale}`]: 1,
+          [`composition.${locale}`]: 1,
+          img: 1,
+          variables: 1,
+          nutritionalValue: 1,
+          statusLabel: 1,
+          visited: 1,
+          categories: 1,
+          title: 1,
+          metaDescription: 1,
+          keywords: 1,
+          slug: 1,
+        },
+      ).populate(
+        'categories',
+        'name description metaTitle metaDescription metaKeywords slug children parentCategory',
+      ),
     )
 
     if (!product) {
@@ -79,7 +82,7 @@ export async function getProductBySlug({
       nutritionalValue: JSON.parse(JSON.stringify(product.nutritionalValue)),
       statusLabel: product.statusLabel,
       visited: product.visited,
-      slug: product.slug,
+      slug: normalizeProductSlug(product.slug),
       categories,
     }
 

@@ -143,6 +143,10 @@ const productSchemaServer = new mongoose.Schema(
         minlength: 1,
         maxlength: 10,
       },
+      energyUnit: {
+        type: String,
+        enum: ['kcal', 'kJ'],
+      },
     },
     statusLabel: {
       type: [String],

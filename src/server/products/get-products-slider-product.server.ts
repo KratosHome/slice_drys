@@ -3,6 +3,7 @@
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { Product } from '@/server/products/product-schema.server'
 import { getCanonicalProductCategorySlug } from '@/utils/product-category'
+import { productSlugPattern } from '@/utils/product-slug'
 
 export async function getProductsSliderProduct(
   locale: ILocale,
@@ -11,7 +12,9 @@ export async function getProductsSliderProduct(
   try {
     await connectToDbServer()
 
-    const products = await Product.find({ slug: { $ne: productSlug } })
+    const products = await Product.find({
+      slug: { $not: productSlugPattern(productSlug) },
+    })
       .sort({ visited: -1, _id: 1 })
       .limit(7)
       .populate('categories', 'slug parentCategory')

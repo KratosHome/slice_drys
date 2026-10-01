@@ -487,6 +487,10 @@ const EditorProduct = ({
 
                 <div>
                   <h2 className="text-lg font-semibold">Харчова цінність</h2>
+                  <p className="text-muted-foreground mb-3 text-sm">
+                    Звірте значення, одиниці та базу розрахунку з етикеткою
+                    виробника. Не визначайте одиницю енергії за самим числом.
+                  </p>
 
                   <div className="space-y-2">
                     <div>
@@ -587,6 +591,31 @@ const EditorProduct = ({
                       {errors.nutritionalValue?.energyValue && (
                         <span className="text-red-700">
                           {errors.nutritionalValue.energyValue.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="nutritionalValue.energyUnit">
+                        Одиниця енергії за етикеткою
+                      </Label>
+                      <select
+                        id="nutritionalValue.energyUnit"
+                        className="border-input bg-background flex h-10 w-full rounded-md border px-3 py-2 text-sm"
+                        defaultValue=""
+                        {...register('nutritionalValue.energyUnit', {
+                          required: 'Звірте та оберіть одиницю за етикеткою',
+                        })}
+                      >
+                        <option value="">
+                          Оберіть після перевірки етикетки
+                        </option>
+                        <option value="kcal">ккал</option>
+                        <option value="kJ">кДж</option>
+                      </select>
+                      {errors.nutritionalValue?.energyUnit && (
+                        <span className="text-red-700">
+                          {errors.nutritionalValue.energyUnit.message}
                         </span>
                       )}
                     </div>

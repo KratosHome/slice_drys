@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { notFound, permanentRedirect } from 'next/navigation'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
 import { Breadcrumbs } from '@/components/client/product-page/breadcrumbs'
 import { ProductInfo } from '@/components/client/product-page/product-page'
+import SliderWithThumbnails from '@/components/client/product-page/slider/slider'
 import { Accordions } from '@/components/client/product-page/accordions'
 import ToTheTop from '@/components/ui/to-the-top'
 import { getTranslations } from 'next-intl/server'
@@ -127,12 +129,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+async function ProductRecommendations({
+  locale,
+  productSlug,
+}: {
+  locale: ILocale
+  productSlug: string
+}) {
+  const [recommendations, t] = await Promise.all([
+    getPublicProductRecommendations(locale, productSlug),
+    getTranslations({ locale, namespace: 'product' }),
+  ])
+
+  if (!recommendations.data?.length) return null
+
+  return (
+    <ProductSlider
+      products={recommendations.data}
+      title={t('also-buy')}
+      message={t('something-that-will-come-handy-along-with-your-choice')}
+    />
+  )
+}
+
 export default async function ProductPage({ params, searchParams }: Props) {
   const { slug, locale, category } = await params
   const resolvedSearchParams = searchParams ? await searchParams : {}
   const normalizedSlug = slug.toLowerCase()
   const normalizedCategory = category.toLowerCase()
-  const t = await getTranslations('product')
   const productData = await getProductData(normalizedSlug, locale)
 
   if (!productData) notFound()
@@ -159,10 +183,6 @@ export default async function ProductPage({ params, searchParams }: Props) {
     permanentRedirect(appendSearchParams(canonicalPath, resolvedSearchParams))
   }
 
-  const productSliderData = await getPublicProductRecommendations(
-    locale,
-    normalizedSlug,
-  )
   const canonicalUrl = `${SITE_URL}${canonicalPath}`
   const canonicalCategory =
     productData.categories.find(
@@ -185,16 +205,25 @@ export default async function ProductPage({ params, searchParams }: Props) {
           product={productData.name}
           categoryLink={`products/${canonicalCategorySlug}`}
         />
-        <ProductInfo product={productData as unknown as IProduct} />
+        <ProductInfo
+          product={productData as unknown as IProduct}
+          imageGallery={
+            <SliderWithThumbnails
+              img={productData.img}
+              alt={productData.name}
+            />
+          }
+        />
         <Accordions
           nutrition={productData.nutritionalValue}
           description={productData.description}
         />
-        <ProductSlider
-          products={productSliderData?.data}
-          title={t('also-buy')}
-          message={t('something-that-will-come-handy-along-with-your-choice')}
-        />
+        <Suspense fallback={null}>
+          <ProductRecommendations
+            locale={locale}
+            productSlug={normalizedSlug}
+          />
+        </Suspense>
         <ToTheTop />
       </div>
     </>

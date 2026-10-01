@@ -43,6 +43,7 @@ interface INutritionalValue {
   fats: string
   carbohydrates: string
   energyValue: string
+  energyUnit?: 'kcal' | 'kJ'
 }
 
 interface IVariableProduct {

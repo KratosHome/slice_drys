@@ -4,6 +4,8 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
+import ProductListTracking from '@/components/google-analytics/product-list-tracking'
+import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 
 import { useSplideConfig } from '@/hooks/useSplideConfig'
 
@@ -56,6 +58,18 @@ export default function ProductSlider({
       aria-labelledby="popular-products"
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
+      <ProductListTracking
+        listId="popular_products"
+        listName={title}
+        items={products
+          .map((product) =>
+            getProductAnalyticsItem(
+              product,
+              product.variant ?? product.variables[0],
+            ),
+          )
+          .filter((item): item is AnalyticsItem => item !== undefined)}
+      />
       <div className="md:px-[20px] md:pb-16">
         <h2
           id="popular-products"
@@ -73,9 +87,12 @@ export default function ProductSlider({
         options={splideOptions}
         className="products-slider text-foreground bg-background mb-14 h-full w-full lg:mb-20"
       >
-        {products.map((product) => (
+        {products.map((product, index) => (
           <SplideSlide key={product._id} className="px-2 py-8 sm:px-3 md:px-4">
-            <Product product={product} />
+            <Product
+              product={product}
+              analyticsList={{ id: 'popular_products', name: title, index }}
+            />
           </SplideSlide>
         ))}
       </Splide>

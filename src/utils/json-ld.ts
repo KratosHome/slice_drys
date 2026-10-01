@@ -1,4 +1,6 @@
 import { contacts, SITE_URL } from '@/data/contacts'
+import { getProductPrice } from '@/utils/product-price'
+import { productVariantUrl } from '@/utils/product-variant'
 
 type JsonLdNode = Record<string, unknown>
 
@@ -111,23 +113,6 @@ export function buildBreadcrumbList(
   }
 }
 
-function validPrice(value: unknown): number | undefined {
-  const price = Number(value)
-
-  return Number.isFinite(price) && price > 0 ? price : undefined
-}
-
-function effectivePrice(variable: IVariableProduct): number | undefined {
-  const price = validPrice(variable.price)
-  const salePrice = validPrice(variable.newPrice)
-
-  if (salePrice !== undefined && (price === undefined || salePrice < price)) {
-    return salePrice
-  }
-
-  return price
-}
-
 function currencyCode(value: string): string {
   const normalized = value.trim().toUpperCase()
 
@@ -148,7 +133,7 @@ export function buildProductNode(
   )
 
   const offers = product.variables.flatMap((variable, index) => {
-    const price = effectivePrice(variable)
+    const price = getProductPrice(variable)
     if (price === undefined) return []
 
     const variantId = String(variable._id ?? variable.weight ?? index + 1)
@@ -158,7 +143,10 @@ export function buildProductNode(
       {
         '@type': 'Offer',
         '@id': `${canonicalUrl}#offer-${encodeURIComponent(variantId)}`,
-        url: canonicalUrl,
+        url:
+          variable.weight > 0
+            ? productVariantUrl(canonicalUrl, variable.weight)
+            : canonicalUrl,
         name:
           variable.weight > 0
             ? `${product.name} — ${variable.weight} g`

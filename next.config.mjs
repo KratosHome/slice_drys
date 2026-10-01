@@ -2,6 +2,7 @@
 
 import createNextIntlPlugin from 'next-intl/plugin'
 import * as NextMdx from '@next/mdx'
+import { LEGACY_PUBLIC_PATHS } from './src/data/legacy-public-paths.mjs'
 
 const withNextIntl = createNextIntlPlugin()
 
@@ -110,6 +111,30 @@ const securityHeaders = [
 const nextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ['mongoose'],
+  // Resolve historical URLs before removing their trailing slash, so they
+  // reach the final page in one redirect. Keep slash removal for other URLs.
+  skipTrailingSlashRedirect: true,
+  async redirects() {
+    const legacyRedirects = Object.entries(LEGACY_PUBLIC_PATHS).flatMap(
+      ([slug, destination]) => [
+        {
+          source: `/${slug}`,
+          destination: `/uk${destination}`,
+          permanent: true,
+        },
+        ...['uk', 'en'].map((locale) => ({
+          source: `/${locale}/${slug}`,
+          destination: `/${locale}${destination}`,
+          permanent: true,
+        })),
+      ],
+    )
+
+    return [
+      ...legacyRedirects,
+      { source: '/:path+/', destination: '/:path+', permanent: true },
+    ]
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     qualities: [50, 60, 70, 75],

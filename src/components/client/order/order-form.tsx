@@ -23,6 +23,10 @@ import { Input } from '@/components/ui/input-RHF'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion'
+import { getCartAnalyticsItems, trackEcommerceEvent } from '@/utils/analytics'
+import { formatOrderPhoneInput, isValidOrderPhone } from '@/utils/order-contact'
+
+export const ORDER_FORM_ID = 'checkout-form'
 
 interface OrderFormRef {
   reset: () => void
@@ -38,6 +42,8 @@ type Props = {
       IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
     >,
   ) => void
+  onValidityChange: (valid: boolean) => void
+  submitting: boolean
 }
 
 type UserDataKeys = keyof IUserData<
@@ -83,7 +89,7 @@ const deliveryProviderLabels = {
 }
 
 const OrderForm = forwardRef<OrderFormRef, Props>(
-  ({ defaultCities, onFinalSubmit }, ref) => {
+  ({ defaultCities, onFinalSubmit, onValidityChange, submitting }, ref) => {
     const locale = useLocale() as ILocale
     const t = useTranslations('order')
     const [showFieldset, setShowFieldset] = useState({
@@ -96,6 +102,9 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
 
     const setUserData = useCartStore((state) => state.setCartUserData)
     const userData = useCartStore((state) => state.cart.userData)
+    const { totalPrice, minOrderAmount } = useCartStore((state) => state)
+    const trackedShipping = useRef<string | undefined>(undefined)
+    const trackedPayment = useRef<string | undefined>(undefined)
 
     const {
       register,
@@ -103,7 +112,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
       setValue,
       control,
       unregister,
-      formState: { errors },
+      formState: { errors, isValid },
       clearErrors,
       trigger,
       reset,
@@ -111,9 +120,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
       IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', string>>
     >({
       criteriaMode: 'all',
-      mode: 'onSubmit',
-      reValidateMode: 'onSubmit',
+      mode: 'onChange',
+      reValidateMode: 'onChange',
     })
+
+    useEffect(() => {
+      onValidityChange(isValid)
+    }, [isValid, onValidityChange])
 
     const noCall = useWatch({
       control,
@@ -149,13 +162,16 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
           setValue('acceptTerms', userData.acceptTerms)
           setValue('noCall', userData.noCall)
           firstRenderRef.current++
+          // Restoring values does not recompute isValid. All active controllers
+          // are mounted by this effect, so validate the complete restored form.
+          if ((userData.formStep ?? 0) >= 1) void trigger()
         }
 
         const { name, surname, phoneNumber, email, formStep } = userData
         if (!formStep || formStep < 1) {
-          const isNameValid = !!name
-          const isSurnameValid = !!surname
-          const isPhoneValid = phoneNumber && phoneNumber.length >= 19
+          const isNameValid = !!name?.trim()
+          const isSurnameValid = !!surname?.trim()
+          const isPhoneValid = isValidOrderPhone(phoneNumber)
           const isEmailValid =
             email &&
             /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
@@ -165,7 +181,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
           }
         }
       }
-    }, [userData, setValue, setUserData])
+    }, [userData, setValue, setUserData, trigger])
 
     const handleDeliveryProviderChange = (value: string): void => {
       setValue('deliveryInfo.deliveryProvider', value)
@@ -262,34 +278,68 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
     const onSubmit = (
       data: IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', string>>,
     ): void => {
-      if (!userData?.formStep || userData.formStep < 3) {
-        const deliveryInfo: IDeliveryInfo<
-          'branch' | 'postomat' | 'courier',
-          IComboboxData
-        > = {
-          deliveryProvider: data.deliveryInfo?.deliveryProvider,
-          deliveryMethod: data.deliveryInfo?.deliveryMethod,
+      if (
+        submitting ||
+        ((userData?.formStep ?? 0) >= 3 && totalPrice < minOrderAmount)
+      )
+        return
+      const items = getCartAnalyticsItems(
+        useCartStore.getState().cart.itemList ?? [],
+      )
+      // These events run only after the active form fields pass validation.
+      if ((userData?.formStep ?? 0) >= 1) {
+        const shippingTier = `${userData?.deliveryInfo?.deliveryProvider ?? 'novaPoshta'}:${userData?.deliveryInfo?.deliveryMethod ?? 'branch'}`
+        if (trackedShipping.current !== shippingTier) {
+          if (
+            trackEcommerceEvent('add_shipping_info', items, {
+              shipping_tier: shippingTier,
+            })
+          ) {
+            trackedShipping.current = shippingTier
+          }
         }
-        if (data.deliveryInfo?.branch)
-          deliveryInfo.branch = userData?.deliveryInfo?.branch
-        if (data.deliveryInfo?.city)
-          deliveryInfo.city = userData?.deliveryInfo?.city
-        if (data.deliveryInfo?.courierInfo)
-          deliveryInfo.courierInfo = data.deliveryInfo?.courierInfo
+      }
+      if ((userData?.formStep ?? 0) >= 2) {
+        const paymentType = userData?.paymentInfo ?? 'card'
+        if (trackedPayment.current !== paymentType) {
+          if (
+            trackEcommerceEvent('add_payment_info', items, {
+              payment_type: paymentType,
+            })
+          ) {
+            trackedPayment.current = paymentType
+          }
+        }
+      }
+      const deliveryInfo: IDeliveryInfo<
+        'branch' | 'postomat' | 'courier',
+        IComboboxData
+      > = {
+        deliveryProvider: data.deliveryInfo?.deliveryProvider,
+        deliveryMethod: data.deliveryInfo?.deliveryMethod,
+      }
+      if (data.deliveryInfo?.branch)
+        deliveryInfo.branch = userData?.deliveryInfo?.branch
+      if (data.deliveryInfo?.city)
+        deliveryInfo.city = userData?.deliveryInfo?.city
+      if (data.deliveryInfo?.courierInfo)
+        deliveryInfo.courierInfo = data.deliveryInfo?.courierInfo
 
-        const partialData: IUserData<
-          IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
-        > = {
-          ...data,
-          deliveryInfo,
-          formStep:
-            userData?.formStep && userData.formStep !== null
-              ? userData.formStep + 1
-              : 1,
-        }
-        setUserData(partialData)
+      const partialData: IUserData<
+        IDeliveryInfo<'branch' | 'postomat' | 'courier', IComboboxData>
+      > = {
+        ...data,
+        deliveryInfo,
+        formStep:
+          (userData?.formStep ?? 0) < 3
+            ? (userData?.formStep ?? 0) + 1
+            : userData?.formStep,
+      }
+      setUserData(partialData)
+      if ((userData?.formStep ?? 0) < 3) {
+        return
       } else {
-        onFinalSubmit(userData)
+        onFinalSubmit(partialData)
       }
     }
 
@@ -299,7 +349,11 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
 
     return (
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        id={ORDER_FORM_ID}
+        noValidate
+        onSubmit={(event) => {
+          void handleSubmit(onSubmit)(event)
+        }}
         className="flex w-full max-w-[550px] flex-col gap-10 md:gap-[50px] lg:max-w-none"
       >
         <fieldset
@@ -325,16 +379,24 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   style={{ overflow: 'hidden' }}
                   className="p-0.5"
                 >
+                  <Label htmlFor="surname" className="sr-only">
+                    {t('surname-placeholder')}
+                  </Label>
                   <Input
                     placeholder={t('surname-placeholder')}
                     name="surname"
                     id="surname"
+                    autoComplete="family-name"
+                    maxLength={120}
                     control={control}
                     rules={{
                       required: {
                         value: true,
                         message: t('validation-required'),
                       },
+                      validate: (value) =>
+                        !!String(value ?? '').trim() ||
+                        t('validation-required'),
                     }}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       const surname = event.target.value
@@ -348,16 +410,24 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     className="h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
                   />
 
+                  <Label htmlFor="name" className="sr-only">
+                    {t('name-placeholder')}
+                  </Label>
                   <Input
                     placeholder={t('name-placeholder')}
                     name="name"
                     id="name"
+                    autoComplete="given-name"
+                    maxLength={120}
                     control={control}
                     rules={{
                       required: {
                         value: true,
                         message: t('validation-required'),
                       },
+                      validate: (value) =>
+                        !!String(value ?? '').trim() ||
+                        t('validation-required'),
                     }}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       const name = event.target.value
@@ -371,10 +441,16 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
                   />
 
+                  <Label htmlFor="phoneNumber" className="sr-only">
+                    {t('phone-placeholder')}
+                  </Label>
                   <Input
                     placeholder={t('phone-placeholder')}
                     name="phoneNumber"
                     id="phoneNumber"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
                     control={control}
                     helpText={t('phone-field-description')}
                     rules={{
@@ -382,10 +458,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         value: true,
                         message: t('validation-required'),
                       },
-                      minLength: {
-                        value: 19,
-                        message: t('validation-length'),
-                      },
+                      validate: (value) =>
+                        isValidOrderPhone(value) || t('validation-phone'),
                     }}
                     onClick={(event) => {
                       const target = event.target as HTMLInputElement
@@ -397,19 +471,12 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                       )
                     }}
                     onChange={(event) => {
-                      const target = (
-                        event.target as HTMLInputElement
-                      ).value.replace(/\D/g, '')
-                      const phoneNumber =
-                        '+38 (0' +
-                        target.substring(3, 5) +
-                        (target.length > 5 ? ') ' : '') +
-                        target.substring(5, 8) +
-                        (target.length > 8 ? ' ' : '') +
-                        target.substring(8, 10) +
-                        (target.length > 10 ? ' ' : '') +
-                        target.substring(10, 12)
-                      setValue('phoneNumber', phoneNumber)
+                      const phoneNumber = formatOrderPhoneInput(
+                        (event.target as HTMLInputElement).value,
+                      )
+                      setValue('phoneNumber', phoneNumber, {
+                        shouldValidate: true,
+                      })
                       clearErrors('phoneNumber')
                       setUserData({
                         ...useCartStore.getState().cart.userData,
@@ -419,10 +486,17 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
                   />
 
+                  <Label htmlFor="email" className="sr-only">
+                    E-mail
+                  </Label>
                   <Input
                     placeholder="E-mail"
                     name="email"
                     id="email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    maxLength={150}
                     control={control}
                     rules={{
                       required: {
@@ -1036,6 +1110,11 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
         {(!userData || (userData.formStep ?? 0) <= 3) && (
           <button
             type="submit"
+            disabled={
+              submitting ||
+              ((userData?.formStep ?? 0) >= 3 &&
+                (totalPrice < minOrderAmount || !isValid))
+            }
             className="bg-foreground text-background max-w-[180px] cursor-pointer self-center px-5 py-2"
           >
             {(userData?.formStep ?? 0) < 3 ? t('btn-continue') : t('order')}

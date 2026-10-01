@@ -9,6 +9,7 @@ import {
   serializeJsonLd,
   WEBSITE_ID,
 } from '@/utils/json-ld'
+import { normalizeProductSlug } from '@/utils/product-slug'
 
 interface JsonLdProps {
   currentCategories: ICategory
@@ -58,7 +59,7 @@ export default function ProductListJsonLd({
 
     const productUrl = localizedUrl(
       pageLocale,
-      `products/${categorySlug}/product/${product.slug}`,
+      `products/${categorySlug}/product/${normalizeProductSlug(product.slug)}`,
     )
 
     return [
