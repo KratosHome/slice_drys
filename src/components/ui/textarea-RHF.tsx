@@ -5,15 +5,29 @@ import { type ChangeEvent, type TextareaHTMLAttributes } from 'react'
 import { Textarea as BaseTextarea } from '@/components/ui/textarea'
 import { ErrorMessage } from '@hookform/error-message'
 
-import { useController, UseControllerProps } from 'react-hook-form'
+import {
+  useController,
+  type FieldErrors,
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+} from 'react-hook-form'
 import { cn } from '@/utils/cn'
 
-type TextAreaProps = {
+type TextAreaProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues,
+> = {
   helpText?: string
-} & UseControllerProps &
-  TextareaHTMLAttributes<HTMLTextAreaElement>
+} & UseControllerProps<TFieldValues, TName, TTransformedValues> &
+  Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'name' | 'defaultValue'>
 
-export default function Textarea(props: TextAreaProps) {
+export default function Textarea<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues = TFieldValues,
+>(props: TextAreaProps<TFieldValues, TName, TTransformedValues>) {
   const {
     name,
     rules,
@@ -54,7 +68,7 @@ export default function Textarea(props: TextAreaProps) {
           if (props.onChange) props.onChange(event)
         }}
       />
-      <ErrorMessage
+      <ErrorMessage<FieldErrors>
         errors={errors}
         name={field.name}
         render={({ messages }) =>

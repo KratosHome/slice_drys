@@ -51,7 +51,7 @@ export async function updateCategory(
       categoryId,
       updatedData,
       {
-        new: true,
+        returnDocument: 'after',
         runValidators: true,
       },
     )

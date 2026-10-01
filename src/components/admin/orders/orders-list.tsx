@@ -156,8 +156,7 @@ async function fetchOrders({
     cache: 'no-store',
   })
   const payload = (await response.json()) as
-    | AdminOrdersListResponse
-    | AdminOrdersErrorResponse
+    AdminOrdersListResponse | AdminOrdersErrorResponse
 
   if (!response.ok || !payload.success) {
     throw new Error(
@@ -375,6 +374,7 @@ export default function OrdersList({
               Сортування
             </span>
             <Select
+              items={sortOptions}
               value={selectedSortValue}
               onValueChange={(value) => {
                 const option = sortOptions.find((item) => item.value === value)
@@ -405,8 +405,13 @@ export default function OrdersList({
               На сторінці
             </span>
             <Select
+              items={ADMIN_ORDER_PAGE_SIZES.map((size) => ({
+                value: String(size),
+                label: String(size),
+              }))}
               value={String(query.pageSize)}
               onValueChange={(value) => {
+                if (value === null) return
                 updateQuery({
                   page: 1,
                   pageSize: Number(value) as AdminOrderPageSize,

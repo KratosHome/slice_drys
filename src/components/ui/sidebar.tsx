@@ -8,7 +8,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
-import { Slot } from '@radix-ui/react-slot'
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
 import { PanelLeft } from 'lucide-react'
 
 import { cn } from '@/utils/cn'
@@ -148,7 +149,7 @@ const SidebarProvider = forwardRef<
 
     return (
       <SidebarContext.Provider value={contextValue}>
-        <TooltipProvider delayDuration={0}>
+        <TooltipProvider delay={0}>
           <div
             style={
               {
@@ -212,7 +213,7 @@ const Sidebar = forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
+        <Sheet open={openMobile} onOpenChange={setOpenMobile}>
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
@@ -223,6 +224,8 @@ const Sidebar = forwardRef<
               } as CSSProperties
             }
             side={side}
+            aria-label="Навігація адмінпанелі"
+            {...props}
           >
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
@@ -393,7 +396,7 @@ const SidebarMenuItem = forwardRef<HTMLLIElement, ComponentProps<'li'>>(
 SidebarMenuItem.displayName = 'SidebarMenuItem'
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -416,15 +419,14 @@ const sidebarMenuButtonVariants = cva(
 
 const SidebarMenuButton = forwardRef<
   HTMLButtonElement,
-  ComponentProps<'button'> & {
-    asChild?: boolean
+  useRender.ComponentProps<'button'> & {
     isActive?: boolean
     tooltip?: string | ComponentProps<typeof TooltipContent>
   } & VariantProps<typeof sidebarMenuButtonVariants>
 >(
   (
     {
-      asChild = false,
+      render,
       isActive = false,
       variant = 'default',
       size = 'default',
@@ -434,19 +436,21 @@ const SidebarMenuButton = forwardRef<
     },
     ref,
   ) => {
-    const Comp = asChild ? Slot : 'button'
     const { isMobile, state } = useSidebar()
 
-    const button = (
-      <Comp
-        ref={ref}
-        data-sidebar="menu-button"
-        data-size={size}
-        data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
-        {...props}
-      />
-    )
+    const menuButtonProps = {
+      'data-sidebar': 'menu-button',
+      'data-size': size,
+      'data-active': isActive,
+      className: cn(sidebarMenuButtonVariants({ variant, size }), className),
+      ...(!render && { type: 'button' as const }),
+    }
+    const button = useRender({
+      defaultTagName: 'button',
+      render,
+      ref,
+      props: mergeProps<'button'>(menuButtonProps, props),
+    })
 
     if (!tooltip) return button
 
@@ -458,7 +462,7 @@ const SidebarMenuButton = forwardRef<
 
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger render={button} />
         <TooltipContent
           side="right"
           align="center"

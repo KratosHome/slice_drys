@@ -45,7 +45,9 @@ export async function editProduct(
       img: imageUrl,
     }
 
-    await Product.findByIdAndUpdate(id, updatedData, { new: true })
+    await Product.findByIdAndUpdate(id, updatedData, {
+      returnDocument: 'after',
+    })
 
     revalidateTag(fetchTags.products, 'max')
     revalidateTag(fetchTags.product, 'max')

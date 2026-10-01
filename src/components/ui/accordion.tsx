@@ -1,34 +1,26 @@
 'use client'
 
-import { Root, Item, Trigger, Content } from '@radix-ui/react-accordion'
-
-import {
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-  forwardRef,
-} from 'react'
+import { Accordion as AccordionPrimitive } from '@base-ui/react/accordion'
+import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
 
-const Accordion = Root
-
+const Accordion = AccordionPrimitive.Root
 const AccordionItem = forwardRef<
-  ComponentRef<typeof Item>,
-  ComponentPropsWithoutRef<typeof Item>
+  HTMLDivElement,
+  Omit<AccordionPrimitive.Item.Props, 'className'> & { className?: string }
 >(({ className, ...props }, ref) => (
-  <Item ref={ref} className={cn(className)} {...props} />
+  <AccordionPrimitive.Item ref={ref} className={cn(className)} {...props} />
 ))
-
 AccordionItem.displayName = 'AccordionItem'
-
 const AccordionTrigger = forwardRef<
-  ComponentRef<typeof Trigger>,
-  ComponentPropsWithoutRef<typeof Trigger>
+  HTMLButtonElement,
+  Omit<AccordionPrimitive.Trigger.Props, 'className'> & { className?: string }
 >(({ className, children, ...props }, ref) => (
-  <div className="flex">
-    <Trigger
+  <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'flex flex-1 cursor-pointer items-center justify-between rounded-[0.125rem] px-6 py-2 text-left text-sm font-medium transition-all [&[data-state=open]>span]:rotate-270',
+        'flex flex-1 cursor-pointer items-center justify-between rounded-[0.125rem] px-6 py-2 text-left text-sm font-medium transition-all [&[data-panel-open]>span]:rotate-270',
         'text-background bg-foreground text-base font-normal sm:text-xl md:text-2xl',
         className,
       )}
@@ -38,19 +30,17 @@ const AccordionTrigger = forwardRef<
       <span className="font-rubik text-background flex h-6 w-6 shrink-0 rotate-90 items-center justify-center text-xl transition-transform duration-200 sm:text-2xl md:text-4xl">
         {'>'}
       </span>
-    </Trigger>
-  </div>
+    </AccordionPrimitive.Trigger>
+  </AccordionPrimitive.Header>
 ))
-
-AccordionTrigger.displayName = Trigger.displayName
-
+AccordionTrigger.displayName = 'AccordionTrigger'
 const AccordionContent = forwardRef<
-  ComponentRef<typeof Content>,
-  ComponentPropsWithoutRef<typeof Content>
+  HTMLDivElement,
+  Omit<AccordionPrimitive.Panel.Props, 'className'> & { className?: string }
 >(({ className, children, ...props }, ref) => (
-  <Content
+  <AccordionPrimitive.Panel
     ref={ref}
-    className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down -ml-8 overflow-hidden pl-8 text-sm"
+    className="-ml-8 h-[var(--accordion-panel-height)] overflow-hidden pl-8 text-sm transition-[height] duration-200 data-[ending-style]:h-0 data-[starting-style]:h-0"
     {...props}
   >
     <div
@@ -61,9 +51,7 @@ const AccordionContent = forwardRef<
     >
       {children}
     </div>
-  </Content>
+  </AccordionPrimitive.Panel>
 ))
-
-AccordionContent.displayName = Content.displayName
-
+AccordionContent.displayName = 'AccordionContent'
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

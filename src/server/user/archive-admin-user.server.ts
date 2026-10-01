@@ -33,7 +33,7 @@ export async function archiveAdminUser(
           archivedBy: identity.id,
         },
       },
-      { new: true, runValidators: true },
+      { returnDocument: 'after', runValidators: true },
     )
       .select('_id')
       .lean<{ _id: { toString(): string } } | null>()

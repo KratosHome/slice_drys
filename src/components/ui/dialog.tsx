@@ -1,16 +1,8 @@
 'use client'
 
-import { Cross2Icon } from '@radix-ui/react-icons'
-import {
-  Root,
-  Trigger,
-  Portal,
-  Close,
-  Overlay,
-  Content,
-  Title,
-  Description,
-} from '@radix-ui/react-dialog'
+import { X } from 'lucide-react'
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
+
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import dialogMotionStyles from './dialog-motion.module.css'
 
@@ -22,6 +14,17 @@ import {
 } from 'react'
 import { cn } from '@/utils/cn'
 
+const {
+  Root,
+  Trigger,
+  Portal,
+  Close,
+  Backdrop: Overlay,
+  Popup: Content,
+  Title,
+  Description,
+} = DialogPrimitive
+
 const Dialog = Root
 
 const DialogTrigger = Trigger
@@ -30,44 +33,48 @@ const DialogPortal = Portal
 
 const DialogOverlay = forwardRef<
   ComponentRef<typeof Overlay>,
-  ComponentPropsWithoutRef<typeof Overlay>
+  Omit<ComponentPropsWithoutRef<typeof Overlay>, 'className'> & {
+    className?: string
+  }
 >(({ className, ...props }, ref) => (
   <Overlay
     ref={ref}
     className={cn(
-      'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80',
+      'data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 z-50 bg-black/80',
       className,
     )}
     {...props}
   />
 ))
 
-DialogOverlay.displayName = Overlay.displayName
+DialogOverlay.displayName = 'DialogOverlay'
 
 const DialogContent = forwardRef<
   ComponentRef<typeof Content>,
-  ComponentPropsWithoutRef<typeof Content>
+  Omit<ComponentPropsWithoutRef<typeof Content>, 'className'> & {
+    className?: string
+  }
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <Content
       ref={ref}
       className={cn(
-        'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg',
+        'bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-closed:slide-out-to-left-1/2 data-closed:slide-out-to-top-[48%] data-open:slide-in-from-left-1/2 data-open:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] border p-6 shadow-lg duration-200 sm:rounded-lg',
         className,
       )}
       {...props}
     >
       {children}
-      <Close className="ring-offset-background focus:ring-ring data-[state=open]:text-red-cust absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent">
-        <Cross2Icon className="text-red-cust h-8 w-8" />
+      <Close className="ring-offset-background focus:ring-ring data-open:text-red-cust absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-open:bg-transparent">
+        <X className="text-red-cust h-8 w-8" />
         <span className="sr-only">Close</span>
       </Close>
     </Content>
   </DialogPortal>
 ))
 
-DialogContent.displayName = Content.displayName
+DialogContent.displayName = 'DialogContent'
 
 const DialogHeader = ({
   className,
@@ -86,7 +93,9 @@ DialogHeader.displayName = 'DialogHeader'
 
 const AnimatedDialogContent = forwardRef<
   ComponentRef<typeof Content>,
-  ComponentPropsWithoutRef<typeof Content> & {
+  Omit<ComponentPropsWithoutRef<typeof Content>, 'className'> & {
+    className?: string
+  } & {
     overlayClassName?: string
     showCloseButton?: boolean
   }
@@ -116,8 +125,8 @@ const AnimatedDialogContent = forwardRef<
           <div className={dialogMotionStyles.surface}>
             {children}
             {showCloseButton ? (
-              <Close className="ring-offset-background focus:ring-ring data-[state=open]:text-red-cust absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent">
-                <Cross2Icon className="text-red-cust h-8 w-8" />
+              <Close className="ring-offset-background focus:ring-ring data-open:text-red-cust absolute top-3 right-3 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-open:bg-transparent">
+                <X className="text-red-cust h-8 w-8" />
                 <span className="sr-only">Close</span>
               </Close>
             ) : null}
@@ -142,7 +151,7 @@ const ClientDialogHeader = ({
     {children}
     <Close
       aria-label="Close"
-      className="ring-offset-background focus:ring-ring data-[state=open]:text-red-cust cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-transparent"
+      className="ring-offset-background focus:ring-ring data-open:text-red-cust cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-open:bg-transparent"
     >
       <ResponsiveMotion
         initial={{ rotate: 0, scale: 1 }}
@@ -179,7 +188,9 @@ DialogFooter.displayName = 'DialogFooter'
 
 const DialogTitle = forwardRef<
   ComponentRef<typeof Title>,
-  ComponentPropsWithoutRef<typeof Title>
+  Omit<ComponentPropsWithoutRef<typeof Title>, 'className'> & {
+    className?: string
+  }
 >(({ className, ...props }, ref) => (
   <Title
     ref={ref}
@@ -191,11 +202,13 @@ const DialogTitle = forwardRef<
   />
 ))
 
-DialogTitle.displayName = Title.displayName
+DialogTitle.displayName = 'DialogTitle'
 
 const DialogDescription = forwardRef<
   ComponentRef<typeof Description>,
-  ComponentPropsWithoutRef<typeof Description>
+  Omit<ComponentPropsWithoutRef<typeof Description>, 'className'> & {
+    className?: string
+  }
 >(({ className, ...props }, ref) => (
   <Description
     ref={ref}
@@ -204,7 +217,7 @@ const DialogDescription = forwardRef<
   />
 ))
 
-DialogDescription.displayName = Description.displayName
+DialogDescription.displayName = 'DialogDescription'
 
 export {
   Dialog,

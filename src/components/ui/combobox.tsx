@@ -1,22 +1,9 @@
 'use client'
 
-import { Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { Combobox as ComboboxPrimitive } from '@base-ui/react/combobox'
+import { Check, ChevronDown, ChevronUp, Search } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@hookform/error-message'
-import { CommandLoading } from 'cmdk'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 
 import {
@@ -27,7 +14,13 @@ import {
   useState,
 } from 'react'
 import { useTranslations } from 'next-intl'
-import { type UseControllerProps, useController } from 'react-hook-form'
+import {
+  type FieldErrors,
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+  useController,
+} from 'react-hook-form'
 import { useDebounce } from 'use-debounce'
 import { useCartStore } from '@/store/cart-store'
 import { getNPBranchesByCityRef } from '@/server/delivery/get-branches.server'
@@ -35,11 +28,14 @@ import {
   getDefaultNPCitiesFromDictionary,
   getNPCitiesFromDictionary,
 } from '@/server/delivery/get-cities.server'
-import { cn } from '@/utils/cn'
 
-interface IComboboxProps
+interface IComboboxProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues,
+>
   extends
-    UseControllerProps,
+    UseControllerProps<TFieldValues, TName, TTransformedValues>,
     Omit<
       InputHTMLAttributes<HTMLInputElement>,
       'onSelect' | 'defaultValue' | 'name'
@@ -108,24 +104,28 @@ const handleBranchSearch = async (
 
 const Loading = () => {
   return (
-    <CommandLoading>
+    <ComboboxPrimitive.Status>
       <div className="flex flex-col items-center gap-2 p-3">
         {Array.from({ length: 3 }).map((_, index) => (
           <Skeleton key={index} className="h-4 w-full bg-gray-200" />
         ))}
       </div>
-    </CommandLoading>
+    </ComboboxPrimitive.Status>
   )
 }
 
-export function Combobox({
+export function Combobox<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues = TFieldValues,
+>({
   defaultValues,
   name,
   rules,
   control,
   onSelect,
   placeholder,
-}: IComboboxProps) {
+}: IComboboxProps<TFieldValues, TName, TTransformedValues>) {
   const {
     field,
     formState: { errors },
@@ -144,11 +144,12 @@ export function Combobox({
 
   const [elements, setElements] = useState<
     IComboboxData[] | IDirectoryBranch[]
-  >([])
+  >(defaultValues ?? [])
 
   const [loading, setLoading] = useState<boolean>(false)
   const [loadError, setLoadError] = useState<boolean>(false)
   const requestIdRef = useRef(0)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   const deliveryInfo = useCartStore(
     (state) => state.cart.userData?.deliveryInfo,
@@ -214,31 +215,17 @@ export function Combobox({
     if (name === 'deliveryInfo.city') void loadData(debouncedSearchValue)
   }, [debouncedSearchValue, loadData, name])
 
-  // Початкове завантаження даних
-  useEffect(() => {
-    if (open && elements.length === 0 && !debouncedSearchValue && !loading) {
-      if (defaultValues) {
-        setElements(defaultValues)
-        return
-      }
-
-      void loadData()
-    }
-  }, [
-    debouncedSearchValue,
-    defaultValues,
-    elements.length,
-    loadData,
-    loading,
-    open,
-  ])
-
   const selectedValue: IComboboxData =
     name === 'deliveryInfo.city'
       ? deliveryInfo?.city || { value: '', label: '' }
       : deliveryInfo?.branch || { value: '', label: '' }
 
-  // Фільтруємо елементи по debouncedSearchValue тільки для відділень
+  // Hide results for the previous city query while its replacement is debounced.
+  const isLoading =
+    loading ||
+    (name === 'deliveryInfo.city' && search !== debouncedSearchValue)
+
+  // Branches are already loaded for the city, so filter them immediately.
   const filteredElements = elements.every(
     (el): el is IDirectoryBranch => 'branchType' in el,
   )
@@ -246,113 +233,172 @@ export function Combobox({
         .filter((el) => el.branchType.toLowerCase() === deliveryMethod)
         .map((el) => transformToCombo<IDirectoryBranch>(el))
         .filter((element) =>
-          debouncedSearchValue
+          search
             ? element.label
                 .toLowerCase()
-                .includes(debouncedSearchValue.toLowerCase())
+                .includes(search.toLowerCase())
             : true,
         )
     : elements
 
+  // Keep the selected record available even when async search returns a
+  // different result window. Match by its stable directory ID after refetches.
+  const knownElements =
+    selectedValue.value &&
+    !filteredElements.some((element) => element.value === selectedValue.value)
+      ? [selectedValue, ...filteredElements]
+      : filteredElements
+
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            role="combobox"
-            aria-expanded={open}
-            aria-busy={loading}
-            className="border-input placeholder:text-muted-foreground focus-visible:ring-ring text-foreground hover:bg-foreground/10 grid h-16 w-full grid-cols-[1fr_auto] rounded-md border bg-transparent px-4 py-[15px] text-left text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <span className="truncate">
-              {selectedValue.label || placeholder}
-            </span>
-
-            {open ? (
-              <ChevronUp className="opacity-50" />
-            ) : (
-              <ChevronDown className="opacity-50" />
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-[calc(100vw-40px)] max-w-[575px] p-0 lg:w-[45vw]"
-          asChild
-        >
-          <Command>
-            <CommandInput
-              placeholder={placeholder}
-              className="h-9"
-              value={search}
-              onValueChange={setSearch}
+      <ComboboxPrimitive.Root<IComboboxData>
+        items={knownElements}
+        filteredItems={isLoading || loadError ? [] : filteredElements}
+        filter={null}
+        autoHighlight
+        value={selectedValue.value ? selectedValue : null}
+        isItemEqualToValue={(item, value) => item.value === value.value}
+        open={open}
+        onOpenChange={setOpen}
+        inputValue={search}
+        onInputValueChange={setSearch}
+        onValueChange={(element) => {
+          if (element && element.value !== selectedValue.value) {
+            void onSelect(element)
+          }
+        }}
+      >
+        <ComboboxPrimitive.Trigger
+          ref={field.ref}
+          onBlur={field.onBlur}
+          aria-label={placeholder}
+          aria-busy={isLoading}
+          render={
+            <Button
+              type="button"
+              aria-busy={isLoading}
+              className="border-input placeholder:text-muted-foreground focus-visible:ring-ring text-foreground hover:bg-foreground/10 grid h-16 w-full grid-cols-[1fr_auto] rounded-md border bg-transparent px-4 py-[15px] text-left text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] font-normal shadow-xs transition-colors focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
             />
-            <CommandList>
-              {loading ? (
-                <Loading />
-              ) : loadError ? (
-                <div
-                  role="alert"
-                  className="flex flex-col items-center gap-3 p-4 text-center text-sm"
-                >
-                  <p>{t('directory-load-error')}</p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      void loadData(
-                        name === 'deliveryInfo.city'
-                          ? debouncedSearchValue
-                          : undefined,
-                      )
+          }
+        >
+          <span className="truncate">{selectedValue.label || placeholder}</span>
+
+          {open ? (
+            <ChevronUp className="opacity-50" />
+          ) : (
+            <ChevronDown className="opacity-50" />
+          )}
+        </ComboboxPrimitive.Trigger>
+        <ComboboxPrimitive.Portal>
+          <ComboboxPrimitive.Positioner
+            align="start"
+            sideOffset={4}
+            className="z-50"
+          >
+            <ComboboxPrimitive.Popup
+              initialFocus={searchInputRef}
+              aria-label={placeholder}
+              aria-busy={isLoading}
+              className="bg-popover text-popover-foreground w-[calc(100vw-40px)] max-w-[575px] overflow-hidden rounded-md border p-0 shadow-md outline-hidden lg:w-[45vw]"
+            >
+              <div className="flex items-center border-b px-3">
+                <Search className="mr-2 size-4 shrink-0 opacity-50" />
+                <ComboboxPrimitive.Input
+                  ref={searchInputRef}
+                  aria-label={placeholder}
+                  placeholder={placeholder}
+                  className="placeholder:text-muted-foreground h-9 w-full bg-transparent py-3 text-sm outline-hidden"
+                  onKeyDown={(event) => {
+                    // Async loading clears Base UI's automatic highlight. Keep
+                    // Enter selecting the first result once that request finishes.
+                    if (
+                      event.key !== 'Enter' ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey ||
+                      event.metaKey ||
+                      event.nativeEvent.isComposing ||
+                      event.nativeEvent.keyCode === 229 ||
+                      !open ||
+                      isLoading ||
+                      loadError ||
+                      event.currentTarget.getAttribute('aria-activedescendant')
+                    ) {
+                      return
                     }
+
+                    const firstElement = filteredElements[0]
+                    if (!firstElement) return
+
+                    event.preventBaseUIHandler()
+                    event.preventDefault()
+                    event.stopPropagation()
+                    if (firstElement.value !== selectedValue.value) {
+                      void onSelect(firstElement)
+                    }
+                    setOpen(false)
+                    setSearch('')
+                  }}
+                />
+              </div>
+              <div className="max-h-[300px] overflow-x-hidden overflow-y-auto">
+                {isLoading ? (
+                  <Loading />
+                ) : loadError ? (
+                  <div
+                    role="alert"
+                    className="flex flex-col items-center gap-3 p-4 text-center text-sm"
                   >
-                    {t('btn-retry')}
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <CommandEmpty>
-                    {name === 'deliveryInfo.city'
-                      ? t('city-search-placeholder')
-                      : t('branch-search-placeholder', {
-                          type: deliveryInfo?.deliveryMethod || '',
-                        })}
-                  </CommandEmpty>
-                  <CommandGroup>
-                    {filteredElements.map((element) => (
-                      <CommandItem
-                        key={element.label}
-                        value={element.label}
-                        onSelect={(currentValue) => {
-                          if (currentValue !== selectedValue.label) {
-                            const selectedElement = filteredElements.find(
-                              (el) => el.label === currentValue,
-                            )
-                            if (selectedElement) onSelect(selectedElement)
-                          }
-                          setOpen(false)
-                        }}
-                      >
-                        {element.label}
-                        <Check
-                          className={cn(
-                            'ml-auto',
-                            selectedValue.label === element.label
-                              ? 'opacity-100'
-                              : 'opacity-0',
-                          )}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </>
-              )}
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-      <ErrorMessage
+                    <p>{t('directory-load-error')}</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        void loadData(
+                          name === 'deliveryInfo.city'
+                            ? debouncedSearchValue
+                            : undefined,
+                        )
+                      }
+                    >
+                      {t('btn-retry')}
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <ComboboxPrimitive.Empty className="py-6 text-center text-sm">
+                      {name === 'deliveryInfo.city'
+                        ? t('city-search-placeholder')
+                        : t('branch-search-placeholder', {
+                            type: deliveryInfo?.deliveryMethod || '',
+                          })}
+                    </ComboboxPrimitive.Empty>
+                    <ComboboxPrimitive.List
+                      className="p-1"
+                      aria-label={placeholder}
+                    >
+                      {(element: IComboboxData) => (
+                        <ComboboxPrimitive.Item
+                          key={element.value}
+                          value={element}
+                          className="data-highlighted:bg-accent data-highlighted:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50"
+                        >
+                          {element.label}
+                          <ComboboxPrimitive.ItemIndicator className="ml-auto">
+                            <Check className="size-4" />
+                          </ComboboxPrimitive.ItemIndicator>
+                        </ComboboxPrimitive.Item>
+                      )}
+                    </ComboboxPrimitive.List>
+                  </>
+                )}
+              </div>
+            </ComboboxPrimitive.Popup>
+          </ComboboxPrimitive.Positioner>
+        </ComboboxPrimitive.Portal>
+      </ComboboxPrimitive.Root>
+      <ErrorMessage<FieldErrors>
         errors={errors}
         name={field.name}
         render={({ messages }) =>

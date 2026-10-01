@@ -1,5 +1,5 @@
 'use server'
-import TelegramBot from 'node-telegram-bot-api'
+import { Api } from 'node-telegram-bot-api'
 import { formatDate } from '@/utils/format-date'
 
 interface FormData {
@@ -15,14 +15,14 @@ export async function sendWholesale(formData: FormData) {
   'use server'
   try {
     const formattedDate = formatDate(new Date())
-    const bot = new TelegramBot(`${process.env.TELEGRAM_BOT_TOKEN}`, {
-      polling: true,
+    const bot = new Api(`${process.env.TELEGRAM_BOT_TOKEN}`, {
+      maxRetries: 0,
     })
     const chatId = `${process.env.TELEGRAM_BOT_CHAT_ID}`
 
-    await bot.sendMessage(
-      chatId,
-      `
+    await bot.sendMessage({
+      chat_id: chatId,
+      text: `
       Хтось хочу співпраці:
       Час відправки: ${formattedDate},
       Імя: ${formData.name}, 
@@ -33,7 +33,7 @@ export async function sendWholesale(formData: FormData) {
       Будьте обережні переходячі на підозрілі посилання - спочатку пошукайте інформацію про компанію в інтернеті.
       Як нас знайшли: ${formData.howYouFindUs || 'не вказано'},
     `,
-    )
+    })
     return { success: true }
   } catch (err) {
     return { success: false, message: `${err}` }

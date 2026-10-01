@@ -1,6 +1,7 @@
 'use client'
 
-import { Slot } from '@radix-ui/react-slot'
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 
@@ -52,26 +53,21 @@ BreadcrumbItem.displayName = 'BreadcrumbItem'
 
 const BreadcrumbLink = forwardRef<
   HTMLAnchorElement,
-  ComponentPropsWithoutRef<'a'> & {
-    asChild?: boolean
-  }
->(({ asChild, className, href: originalHref, ...props }, ref) => {
+  useRender.ComponentProps<'a'>
+>(({ render, className, href: originalHref, ...props }, ref) => {
   const locale = useLocale()
   const href = originalHref === '/' ? `/${locale}` : originalHref
   const classes = cn('hover:text-foreground transition-colors', className)
 
-  if (asChild) {
-    return <Slot ref={ref} className={classes} {...props} />
-  }
-
-  return (
-    <Link
-      href={href || `/${locale}`}
-      ref={ref}
-      className={classes}
-      {...props}
-    />
-  )
+  return useRender({
+    defaultTagName: 'a',
+    render: render ?? <Link href={href || `/${locale}`} />,
+    ref,
+    props: mergeProps<'a'>(
+      { className: classes, ...(originalHref && { href }) },
+      props,
+    ),
+  })
 })
 
 BreadcrumbLink.displayName = 'BreadcrumbLink'

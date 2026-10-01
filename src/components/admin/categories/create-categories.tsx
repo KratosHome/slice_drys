@@ -113,8 +113,8 @@ const CreateCategories = ({ categories }: ICategoriesTreeProps) => {
   return (
     <div className="ml-6">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Create</Button>
+        <DialogTrigger render={<Button variant="outline" />}>
+          Create
         </DialogTrigger>
 
         <DialogContent className="max-h-screen overflow-auto">

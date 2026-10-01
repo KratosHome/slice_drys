@@ -3,10 +3,12 @@
 import { Combobox, transformToCombo } from '@/components/ui/combobox'
 import { useCartStore } from '@/store/cart-store'
 import { useTranslations } from 'next-intl'
-import { UseControllerProps } from 'react-hook-form'
+import type { Control } from 'react-hook-form'
 
 interface DeliveryProviderProps {
-  control: UseControllerProps['control']
+  control: Control<
+    IUserData<IDeliveryInfo<'branch' | 'postomat' | 'courier', string>>
+  >
   onCityChange: (city: IComboboxData) => void
   onBranchChange: (branch: IComboboxData) => void
   defaultValues?: IDirectoryCity[]

@@ -107,6 +107,7 @@ export function PeriodControls({
       <div className="sm:hidden">
         <Label htmlFor="statistics-period">Період</Label>
         <Select
+          items={PERIOD_LABELS}
           value={selectedPeriod}
           onValueChange={(value) => {
             if (isAdminStatisticsPeriod(value)) selectPeriod(value)

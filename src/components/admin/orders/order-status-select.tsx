@@ -37,9 +37,7 @@ async function updateOrderStatus(
     body: JSON.stringify(body),
   })
   const payload = (await response.json().catch(() => null)) as
-    | AdminOrderResponse
-    | AdminOrdersErrorResponse
-    | null
+    AdminOrderResponse | AdminOrdersErrorResponse | null
 
   if (!response.ok || !payload?.success) {
     throw new Error(
@@ -85,8 +83,11 @@ export default function OrderStatusSelect({ order }: { order: AdminOrder }) {
   return (
     <div className="flex min-w-0 items-center gap-2">
       <Select
+        items={ORDER_STATUS_LABELS}
         value={selectedStatus}
-        onValueChange={(value) => mutation.mutate(value as OrderStatus)}
+        onValueChange={(value) => {
+          if (value !== null) mutation.mutate(value)
+        }}
         disabled={mutation.isPending}
       >
         <SelectTrigger
@@ -96,7 +97,7 @@ export default function OrderStatusSelect({ order }: { order: AdminOrder }) {
         >
           <SelectValue />
         </SelectTrigger>
-        <SelectContent className="z-[70]">
+        <SelectContent className="z-[70]" positionerClassName="z-[70]">
           {ORDER_STATUSES.map((status) => (
             <SelectItem key={status} value={status}>
               {ORDER_STATUS_LABELS[status]}

@@ -201,16 +201,18 @@ export default function UsersTable({ users, initialSort }: UsersTableProps) {
                       </Button>
                     ) : (
                       <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            disabled={isPending}
-                          >
-                            <Archive className="size-3.5" aria-hidden="true" />
-                            {isArchiving ? 'Архівація…' : 'Архівувати'}
-                          </Button>
+                        <AlertDialogTrigger
+                          render={
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              disabled={isPending}
+                            />
+                          }
+                        >
+                          <Archive className="size-3.5" aria-hidden="true" />
+                          {isArchiving ? 'Архівація…' : 'Архівувати'}
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>

@@ -60,23 +60,23 @@ export function AppSidebar({ role }: AppSidebarProps) {
                 {visibleItems.map((item) => (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton
-                      asChild
                       isActive={isItemActive(item, pathname, locale)}
                       tooltip={item.name}
-                    >
-                      <TransitionLink
-                        href={`/${locale}/${item.link}`}
-                        aria-current={
-                          isItemActive(item, pathname, locale)
-                            ? 'page'
-                            : undefined
-                        }
-                        onNavigate={closeMobileSidebar}
-                      >
-                        <item.icon />
-                        <span>{item.name}</span>
-                      </TransitionLink>
-                    </SidebarMenuButton>
+                      render={
+                        <TransitionLink
+                          href={`/${locale}/${item.link}`}
+                          aria-current={
+                            isItemActive(item, pathname, locale)
+                              ? 'page'
+                              : undefined
+                          }
+                          onNavigate={closeMobileSidebar}
+                        >
+                          <item.icon />
+                          <span>{item.name}</span>
+                        </TransitionLink>
+                      }
+                    />
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>

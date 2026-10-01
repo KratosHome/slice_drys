@@ -1,6 +1,9 @@
 # Slice Drys
 
-# Node.js >= v18.18
+# Node.js 24 LTS
+
+Use Node.js 24 locally and on Vercel. If you use nvm, run `nvm install` and
+`nvm use` in the project directory; `.nvmrc` selects the supported major version.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -28,19 +31,19 @@ The project uses the `Cloudinary` platform to work with images. Go to the site [
 ## 4. Run the development server:
 
 ```bash
-bun --bun next dev
+bun run dev
 ```
 
 ## 5. Build and run project:
 
 ```bash
-bun --bun next build
+bun run build
 ```
 
 and
 
 ```bash
-bun --bun next star
+bun run start
 ```
 
 ### Additionally:

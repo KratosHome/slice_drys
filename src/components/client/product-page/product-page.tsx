@@ -141,7 +141,9 @@ export const ProductInfo = ({
         <div className="relative flex items-stretch justify-center gap-6 pb-[3.75rem] sm:justify-start">
           <Select
             value={String(selectedVariable.weight)}
-            onValueChange={handleWeightChange}
+            onValueChange={(value) => {
+              if (value !== null) handleWeightChange(value)
+            }}
           >
             <SelectTrigger id="weight" className="relative">
               <label

@@ -1,6 +1,6 @@
 'use server'
 
-import TelegramBot from 'node-telegram-bot-api'
+import { Api } from 'node-telegram-bot-api'
 import { formatDate } from '@/utils/format-date'
 
 interface IFormData {
@@ -27,17 +27,17 @@ export async function sendReviews(formData: IFormData): Promise<IResponse> {
     }
 
     const formattedDate: string = formatDate(new Date())
-    const bot = new TelegramBot(botToken)
+    const bot = new Api(botToken, { maxRetries: 0 })
 
-    await bot.sendMessage(
-      chatId,
-      `
+    await bot.sendMessage({
+      chat_id: chatId,
+      text: `
       Вітаю в нас новий відгук:
       Час відправки: ${formattedDate},
       Ім'я: ${name},
       Відгук: ${text},
     `,
-    )
+    })
     return { success: true, message: 'Відгук відправлений' }
   } catch (err) {
     return { success: false, message: `${err}` }

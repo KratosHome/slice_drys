@@ -31,7 +31,7 @@ export const Accordions = async ({
 
   return (
     <Accordion
-      type="multiple"
+      multiple
       defaultValue={['info', 'nutrition']}
       className="mx-auto mb-[230px] grid max-w-[988px] gap-6"
     >

@@ -152,7 +152,9 @@ export default function Product({
                 }}
               >
                 <Select
-                  onValueChange={handleVariableChange}
+                  onValueChange={(value) => {
+                    if (value !== null) handleVariableChange(value)
+                  }}
                   value={String(selectedVariable.weight)}
                 >
                   <SelectTrigger

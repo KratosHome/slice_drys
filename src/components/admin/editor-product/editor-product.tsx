@@ -285,8 +285,8 @@ const EditorProduct = ({
       <ConfirmDeletePopup />
 
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogTrigger asChild>
-          <Button>{buttonTitle}</Button>
+        <AlertDialogTrigger render={<Button />}>
+          {buttonTitle}
         </AlertDialogTrigger>
 
         <AlertDialogContent>

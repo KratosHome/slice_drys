@@ -32,7 +32,7 @@ export async function updateAdminOrderStatus({
   const order = await Order.findOneAndUpdate(
     { _id: orderId },
     { $set: { status } },
-    { new: true, runValidators: true },
+    { returnDocument: 'after', runValidators: true },
   ).lean()
 
   if (!order) {

@@ -18,7 +18,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
+import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
 import CheckboxRoot from '@/components/ui/checkbox-root'
 import CheckboxIndicator from '@/components/ui/checkbox-indicator'
 import { Slider } from '@/components/ui/slider'
@@ -199,12 +199,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     <div className="relative min-w-[259px] lg:min-w-[319px]">
       <div className="flex items-center gap-2 py-[16px]">
         <div className="hidden w-full max-w-80 grow md:block">
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="item-1"
-            className="mb-2"
-          >
+          <Accordion defaultValue={['item-1']} className="mb-2">
             <AccordionItem value="item-1">
               <LazyMotion features={domAnimation}>
                 <m.div
@@ -252,7 +247,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             </AccordionItem>
           </Accordion>
 
-          <Accordion type="single" collapsible defaultValue="item-2">
+          <Accordion defaultValue={['item-2']}>
             <AccordionItem value="item-2">
               <LazyMotion features={domAnimation}>
                 <m.div
@@ -331,12 +326,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                       {t('show')}
                     </Button>
                   </div>
-                  <Accordion
-                    type="single"
-                    collapsible
-                    defaultValue="item-1"
-                    className="mb-2"
-                  >
+                  <Accordion defaultValue={['item-1']} className="mb-2">
                     <AccordionItem value="item-1">
                       <AccordionTrigger className="font-rubik">
                         {t('type')}
@@ -376,7 +366,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </AccordionItem>
                   </Accordion>
 
-                  <Accordion type="single" collapsible defaultValue="item-2">
+                  <Accordion defaultValue={['item-2']}>
                     <AccordionItem value="item-2">
                       <AccordionTrigger className="font-rubik">
                         {t('weight')}

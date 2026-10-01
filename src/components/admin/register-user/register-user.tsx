@@ -121,9 +121,12 @@ export default function RegisterForm() {
       <div className="space-y-2">
         <Label htmlFor="user-role">Роль</Label>
         <Select
+          items={USER_ROLE_LABELS}
           value={role}
           disabled={isSubmitting}
-          onValueChange={(value) => setRole(value as UserRole)}
+          onValueChange={(value) => {
+            if (value !== null) setRole(value)
+          }}
         >
           <SelectTrigger id="user-role" className="h-10">
             <SelectValue placeholder="Оберіть роль" />

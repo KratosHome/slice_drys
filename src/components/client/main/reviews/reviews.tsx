@@ -243,13 +243,15 @@ export default function Reviews({
         ) : null}
       </div>
       <Dialog open={isReviewsOpen} onOpenChange={setIsReviewsOpen}>
-        <DialogTrigger asChild>
-          <UnderlinedLink
-            as="button"
-            className="order-1 max-w-max cursor-pointer md:order-0"
-          >
-            {t('add-new-review')}
-          </UnderlinedLink>
+        <DialogTrigger
+          render={
+            <UnderlinedLink
+              as="button"
+              className="order-1 max-w-max cursor-pointer md:order-0"
+            />
+          }
+        >
+          {t('add-new-review')}
         </DialogTrigger>
         <AnimatedDialogContent
           aria-describedby={undefined}

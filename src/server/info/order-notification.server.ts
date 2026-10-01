@@ -1,6 +1,6 @@
 import 'server-only'
 
-import TelegramBot from 'node-telegram-bot-api'
+import { Api } from 'node-telegram-bot-api'
 import { formatDate } from '@/utils/format-date'
 
 interface IOrderNotificationData {
@@ -38,8 +38,8 @@ export async function sendOrderNotification(
   try {
     const formattedDate = formatDate(new Date())
 
-    const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN as string, {
-      polling: false,
+    const bot = new Api(process.env.TELEGRAM_BOT_TOKEN as string, {
+      maxRetries: 0,
     })
 
     const chatId = process.env.TELEGRAM_BOT_CHAT_ID as string
@@ -54,9 +54,9 @@ export async function sendOrderNotification(
 `
       : ''
 
-    await bot.sendMessage(
-      chatId,
-      `
+    await bot.sendMessage({
+      chat_id: chatId,
+      text: `
 Вітаю, нове замовлення 🛒
 ЧАС ЗАМОВЛЕННЯ: ${formattedDate}
 СУМА: ${totalPrice}
@@ -77,7 +77,7 @@ ${products}
 ДЗВІНОК КЛІЄНТУ: ${callback}
 ${bloggerBlock}
 `.trim(),
-    )
+    })
   } catch (error) {
     console.error('Order notification failed', {
       name: error instanceof Error ? error.name : 'UnknownError',

@@ -1,33 +1,31 @@
 'use client'
 
-import { CheckIcon } from '@radix-ui/react-icons'
-import { Root, Indicator } from '@radix-ui/react-checkbox'
-
+import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
+import { CheckIcon, MinusIcon } from 'lucide-react'
+import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
-import {
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-  forwardRef,
-} from 'react'
 
 const Checkbox = forwardRef<
-  ComponentRef<typeof Root>,
-  ComponentPropsWithoutRef<typeof Root>
->(({ className, ...props }, ref) => (
-  <Root
+  HTMLSpanElement,
+  Omit<CheckboxPrimitive.Root.Props, 'className'> & { className?: string }
+>(({ className, indeterminate, ...props }, ref) => (
+  <CheckboxPrimitive.Root
     ref={ref}
+    indeterminate={indeterminate}
     className={cn(
-      'peer border-primary focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground h-4 w-4 shrink-0 rounded-sm border shadow-sm focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+      'peer border-primary focus-visible:ring-ring data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[indeterminate]:bg-primary data-[indeterminate]:text-primary-foreground relative inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border shadow-sm focus-visible:ring-1 focus-visible:outline-hidden data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
       className,
     )}
     {...props}
   >
-    <Indicator className={cn('flex items-center justify-center text-current')}>
-      <CheckIcon className="h-4 w-4" />
-    </Indicator>
-  </Root>
+    <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
+      {indeterminate ? (
+        <MinusIcon className="h-4 w-4" />
+      ) : (
+        <CheckIcon className="h-4 w-4" />
+      )}
+    </CheckboxPrimitive.Indicator>
+  </CheckboxPrimitive.Root>
 ))
-
-Checkbox.displayName = Root.displayName
-
+Checkbox.displayName = 'Checkbox'
 export { Checkbox }

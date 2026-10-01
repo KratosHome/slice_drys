@@ -1,7 +1,6 @@
 'use client'
 
-import * as React from 'react'
-import { FC } from 'react'
+import { type FC, useMemo } from 'react'
 import {
   Table,
   TableBody,
@@ -10,98 +9,91 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
+import { type ColumnDef, flexRender, useTable } from '@tanstack/react-table'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import EditorPost from '@/components/admin/editor-post/editor-post'
+import { adminTableFeatures } from '@/components/admin/table-features'
 
 interface IPostList {
   data: IGetPostsAdmin
 }
 
 export const PostList: FC<IPostList> = ({ data }) => {
-  const columns: ColumnDef<IPost>[] = [
-    {
-      id: 'зображення',
-      header: 'зображення',
-      accessorKey: 'img',
-      cell: ({ row }) => {
-        const post = row.original
-        return (
-          <div className="flex items-center justify-center">
-            {post.img && (
-              <Image
-                width={50}
-                height={50}
-                src={post.img}
-                alt={post.title}
-                className="h-10 w-10 rounded object-cover"
-              />
-            )}
-          </div>
-        )
+  const columns = useMemo<ColumnDef<typeof adminTableFeatures, IPost>[]>(
+    () => [
+      {
+        id: 'зображення',
+        header: 'зображення',
+        accessorKey: 'img',
+        cell: ({ row }) => {
+          const post = row.original
+          return (
+            <div className="flex items-center justify-center">
+              {post.img && (
+                <Image
+                  width={50}
+                  height={50}
+                  src={post.img}
+                  alt={post.title}
+                  className="h-10 w-10 rounded object-cover"
+                />
+              )}
+            </div>
+          )
+        },
       },
-    },
-    {
-      id: 'автор',
-      header: 'автор',
-      accessorKey: 'author',
-      cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.author}</div>
+      {
+        id: 'автор',
+        header: 'автор',
+        accessorKey: 'author',
+        cell: ({ row }) => {
+          const post = row.original
+          return <div>{post.author}</div>
+        },
       },
-    },
-    {
-      id: 'заголовок',
-      header: 'заголовок',
-      accessorKey: 'title',
-      cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.title}</div>
+      {
+        id: 'заголовок',
+        header: 'заголовок',
+        accessorKey: 'title',
+        cell: ({ row }) => {
+          const post = row.original
+          return <div>{post.title}</div>
+        },
       },
-    },
-    {
-      id: 'відвідувань',
-      header: 'відвідувань',
-      accessorKey: 'visited',
-      cell: ({ row }) => {
-        const post = row.original
-        return <div>{post.visited}</div>
+      {
+        id: 'відвідувань',
+        header: 'відвідувань',
+        accessorKey: 'visited',
+        cell: ({ row }) => {
+          const post = row.original
+          return <div>{post.visited}</div>
+        },
       },
-    },
-    {
-      id: 'actions',
-      enableHiding: false,
-      header: '',
-      cell: ({ row }) => {
-        const post = row.original as IPost
-        const id = post._id
-        const findPost = data.postsAll?.find((item) => item._id === id)
-        return (
-          <>
-            <EditorPost buttonTitle="редагувати" post={findPost} />
-          </>
-        )
+      {
+        id: 'actions',
+        enableHiding: false,
+        header: '',
+        cell: ({ row }) => {
+          const post = row.original as IPost
+          const id = post._id
+          const findPost = data.postsAll?.find((item) => item._id === id)
+          return (
+            <>
+              <EditorPost buttonTitle="редагувати" post={findPost} />
+            </>
+          )
+        },
       },
-    },
-  ]
+    ],
+    [data.postsAll],
+  )
 
-  const table = useReactTable({
+  const table = useTable({
+    features: adminTableFeatures,
     data: data.postsLocalized,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    initialState: { pagination: { pageSize: 10 } },
+    initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
   })
 
   return (
@@ -161,8 +153,7 @@ export const PostList: FC<IPostList> = ({ data }) => {
           <span>
             Сторінка
             <strong>
-              {table.getState().pagination.pageIndex + 1} з{' '}
-              {table.getPageCount()}
+              {table.state.pagination.pageIndex + 1} з {table.getPageCount()}
             </strong>
           </span>
           <Button

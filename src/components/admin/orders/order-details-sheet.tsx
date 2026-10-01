@@ -104,9 +104,7 @@ async function requestOrder(
   })
 
   const payload = (await response.json().catch(() => null)) as
-    | AdminOrderResponse
-    | AdminOrdersErrorResponse
-    | null
+    AdminOrderResponse | AdminOrdersErrorResponse | null
 
   if (!response.ok || !payload?.success) {
     throw new Error(
@@ -235,13 +233,15 @@ function OrderDetails({
           <Label htmlFor={`order-status-${order.id}`}>Статус</Label>
           <div className="flex items-center gap-2">
             <Select
+              items={ORDER_STATUS_LABELS}
               value={selectedStatus}
-              onValueChange={(value) =>
+              onValueChange={(value) => {
+                if (value === null) return
                 statusMutation.mutate({
                   orderId: order.id,
-                  status: value as OrderStatus,
+                  status: value,
                 })
-              }
+              }}
               disabled={statusMutation.isPending}
             >
               <SelectTrigger

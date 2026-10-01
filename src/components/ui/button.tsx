@@ -1,8 +1,8 @@
 'use client'
 
-import { Slot } from '@radix-ui/react-slot'
+import { Button as ButtonPrimitive } from '@base-ui/react/button'
 
-import { type ButtonHTMLAttributes, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/utils/cn'
 
@@ -49,17 +49,15 @@ const buttonVariants = cva(
 
 export interface IButtonProps
   extends
-    ButtonHTMLAttributes<HTMLButtonElement>,
+    Omit<ButtonPrimitive.Props, 'className'>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  className?: string
 }
 
 const Button = forwardRef<HTMLButtonElement, IButtonProps>(
-  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-
+  ({ className, variant, size, children, ...props }, ref) => {
     return (
-      <Comp
+      <ButtonPrimitive
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
@@ -69,7 +67,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         ) : (
           children
         )}
-      </Comp>
+      </ButtonPrimitive>
     )
   },
 )

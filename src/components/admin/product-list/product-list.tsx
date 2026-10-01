@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { ChevronDown } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
@@ -19,19 +19,16 @@ import {
 } from '@/components/ui/table'
 import Image from 'next/image'
 import EditorProduct from '@/components/admin/editor-product/editor-product'
+import { adminTableFeatures } from '@/components/admin/table-features'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+  useTable,
 } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 
@@ -46,160 +43,164 @@ export const ProductList = ({
   recommendations,
   categories,
 }: IProductList) => {
-  const columns: ColumnDef<IProduct>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      id: 'зображення',
-      header: 'зображення',
-      accessorKey: 'img',
-      cell: ({ row }) => {
-        const product = row.original
-        return (
-          <div className="flex items-center justify-center">
-            {product.img && (
-              <Image
-                width={50}
-                height={50}
-                src={product.img}
-                alt={product.name}
-                className="h-10 w-10 rounded object-cover"
-              />
-            )}
-          </div>
-        )
-      },
-    },
-    {
-      id: 'назва',
-      header: 'назва',
-      accessorKey: 'name',
-      cell: ({ row }) => {
-        const product = row.original
-        return <div>{product.name}</div>
-      },
-    },
-    {
-      id: 'лейбла',
-      header: 'лейбла',
-      accessorKey: 'label',
-      cell: ({ row }) => {
-        const product = row.original
-        return (
-          <div className="flex flex-col">
-            {product.statusLabel.map((label) => (
-              <div key={label}>{label}</div>
-            ))}
-          </div>
-        )
-      },
-    },
-    {
-      id: 'ціна',
-      header: 'ціна',
-      accessorKey: 'price',
-      cell: ({ row }) => {
-        const product = row.original as IProduct
-        const variables = product.variables as IVariableProduct[]
-        return (
-          <div>
-            {variables?.map((item: IVariableProduct) => (
-              <div key={item._id}>
-                {item.newPrice ? (
-                  <div>
-                    <span className="line-through">{item.price} грн</span>{' '}
-                    <span>{item.newPrice} грн</span>
-                  </div>
-                ) : (
-                  <span>{item.price} грн</span>
-                )}
-              </div>
-            ))}
-          </div>
-        )
-      },
-    },
-    {
-      id: 'залишки',
-      header: 'залишки',
-      accessorKey: 'count',
-      cell: ({ row }) => {
-        const product = row.original as IProduct
-        const variables = product.variables as IVariableProduct[]
-        return (
-          <div>
-            {variables?.map((variable) => (
-              <div key={variable._id}>
-                {variable.count} шт. / {variable.weight} г
-              </div>
-            ))}
-          </div>
-        )
-      },
-    },
-    {
-      id: 'відвідувачі',
-      header: 'відвідувачі',
-      accessorKey: 'visited',
-      cell: ({ row }) => {
-        const product = row.original as IProduct
-        return <div>{`${product.visited} користувачів`}</div>
-      },
-    },
-    {
-      id: 'actions',
-      enableHiding: false,
-      header: '',
-      cell: ({ row }) => {
-        const product = row.original as IProduct
-        const id = product._id
-        const fineProduct = data.productAll?.find((item) => item._id === id)
-        return (
-          <EditorProduct
-            buttonTitle="редагувати"
-            product={fineProduct}
-            recommendations={recommendations}
-            categories={categories}
+  const columns = useMemo<ColumnDef<typeof adminTableFeatures, IProduct>[]>(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected()}
+            indeterminate={
+              table.getIsSomePageRowsSelected() &&
+              !table.getIsAllPageRowsSelected()
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
           />
-        )
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
       },
-    },
-  ]
+      {
+        id: 'зображення',
+        header: 'зображення',
+        accessorKey: 'img',
+        cell: ({ row }) => {
+          const product = row.original
+          return (
+            <div className="flex items-center justify-center">
+              {product.img && (
+                <Image
+                  width={50}
+                  height={50}
+                  src={product.img}
+                  alt={product.name}
+                  className="h-10 w-10 rounded object-cover"
+                />
+              )}
+            </div>
+          )
+        },
+      },
+      {
+        id: 'назва',
+        header: 'назва',
+        accessorKey: 'name',
+        cell: ({ row }) => {
+          const product = row.original
+          return <div>{product.name}</div>
+        },
+      },
+      {
+        id: 'лейбла',
+        header: 'лейбла',
+        accessorKey: 'label',
+        cell: ({ row }) => {
+          const product = row.original
+          return (
+            <div className="flex flex-col">
+              {product.statusLabel.map((label) => (
+                <div key={label}>{label}</div>
+              ))}
+            </div>
+          )
+        },
+      },
+      {
+        id: 'ціна',
+        header: 'ціна',
+        accessorKey: 'price',
+        cell: ({ row }) => {
+          const product = row.original as IProduct
+          const variables = product.variables as IVariableProduct[]
+          return (
+            <div>
+              {variables?.map((item: IVariableProduct) => (
+                <div key={item._id}>
+                  {item.newPrice ? (
+                    <div>
+                      <span className="line-through">{item.price} грн</span>{' '}
+                      <span>{item.newPrice} грн</span>
+                    </div>
+                  ) : (
+                    <span>{item.price} грн</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )
+        },
+      },
+      {
+        id: 'залишки',
+        header: 'залишки',
+        accessorKey: 'count',
+        cell: ({ row }) => {
+          const product = row.original as IProduct
+          const variables = product.variables as IVariableProduct[]
+          return (
+            <div>
+              {variables?.map((variable) => (
+                <div key={variable._id}>
+                  {variable.count} шт. / {variable.weight} г
+                </div>
+              ))}
+            </div>
+          )
+        },
+      },
+      {
+        id: 'відвідувачі',
+        header: 'відвідувачі',
+        accessorKey: 'visited',
+        cell: ({ row }) => {
+          const product = row.original as IProduct
+          return <div>{`${product.visited} користувачів`}</div>
+        },
+      },
+      {
+        id: 'actions',
+        enableHiding: false,
+        header: '',
+        cell: ({ row }) => {
+          const product = row.original as IProduct
+          const id = product._id
+          const fineProduct = data.productAll?.find((item) => item._id === id)
+          return (
+            <EditorProduct
+              buttonTitle="редагувати"
+              product={fineProduct}
+              recommendations={recommendations}
+              categories={categories}
+            />
+          )
+        },
+      },
+    ],
+    [data.productAll, recommendations, categories],
+  )
 
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({})
 
   const [rowSelection, setRowSelection] = useState({})
 
-  const table = useReactTable({
+  const table = useTable({
+    features: adminTableFeatures,
     data: data.product,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -223,10 +224,10 @@ export const ProductList = ({
         />
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Колонки <ChevronDownIcon className="ml-2 h-4 w-4" />
-            </Button>
+          <DropdownMenuTrigger
+            render={<Button variant="outline" className="ml-auto" />}
+          >
+            Колонки <ChevronDown className="ml-2 h-4 w-4" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">

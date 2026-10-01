@@ -4,15 +4,29 @@ import type { ChangeEvent, InputHTMLAttributes } from 'react'
 
 import { ErrorMessage } from '@hookform/error-message'
 
-import { useController, type UseControllerProps } from 'react-hook-form'
+import {
+  useController,
+  type FieldErrors,
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+} from 'react-hook-form'
 import { cn } from '@/utils/cn'
 
-type InputProps = {
+type InputProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues,
+> = {
   helpText?: string
-} & UseControllerProps &
-  InputHTMLAttributes<HTMLInputElement>
+} & UseControllerProps<TFieldValues, TName, TTransformedValues> &
+  Omit<InputHTMLAttributes<HTMLInputElement>, 'name' | 'defaultValue'>
 
-function Input(props: InputProps) {
+function Input<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TTransformedValues = TFieldValues,
+>(props: InputProps<TFieldValues, TName, TTransformedValues>) {
   const {
     name,
     rules,
@@ -68,7 +82,7 @@ function Input(props: InputProps) {
         )}
       />
       <div id={errorId} aria-live="polite">
-        <ErrorMessage
+        <ErrorMessage<FieldErrors>
           errors={errors}
           name={field.name}
           render={({ messages }) =>

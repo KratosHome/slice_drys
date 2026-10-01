@@ -73,19 +73,17 @@ export default function CallMe() {
   }
 
   return (
-    <Dialog
-      open={isCallOpen}
-      onOpenChange={setIsCallOpen}
-      aria-labelledby="call-me"
-    >
-      <DialogTrigger asChild>
-        <Button
-          type="button"
-          variant="button"
-          className="max-w-24 sm:max-w-fit"
-        >
-          {t('call-back')}
-        </Button>
+    <Dialog open={isCallOpen} onOpenChange={setIsCallOpen}>
+      <DialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="button"
+            className="max-w-24 sm:max-w-fit"
+          />
+        }
+      >
+        {t('call-back')}
       </DialogTrigger>
       <AnimatedDialogContent className="sm:max-w-[425px]">
         <DialogHeader>

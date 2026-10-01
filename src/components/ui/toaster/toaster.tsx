@@ -1,38 +1,56 @@
 'use client'
 
+import { Toast as ToastPrimitive } from '@base-ui/react/toast'
+import { useEffect } from 'react'
 import {
   Toast,
   ToastClose,
+  ToastContent,
   ToastDescription,
+  ToastPortal,
   ToastProvider,
   ToastTitle,
   ToastViewport,
 } from '@/components/ui/toast'
+import {
+  mountToastRenderer,
+  toastManager,
+  type ToastData,
+} from '@/hooks/useToast'
 
-import { useToast } from '@/hooks/useToast'
-
-export default function Toaster() {
-  const { toasts } = useToast()
+function ToastList() {
+  const { toasts } = ToastPrimitive.useToastManager<ToastData>()
 
   return (
-    <ToastProvider>
-      {toasts.map(({ id, title, description, action, ...props }) => {
-        return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-1">
-              {title ? <ToastTitle>{title}</ToastTitle> : null}
-
-              {description ? (
-                <ToastDescription>{description}</ToastDescription>
-              ) : null}
-            </div>
-            {action}
-            <ToastClose />
+    <ToastPortal>
+      <ToastViewport>
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            toast={toast}
+            variant={toast.type === 'destructive' ? 'destructive' : 'default'}
+          >
+            <ToastContent className="flex items-center justify-between gap-2">
+              <div className="grid gap-1">
+                <ToastTitle />
+                <ToastDescription />
+              </div>
+              {toast.data?.action}
+              <ToastClose />
+            </ToastContent>
           </Toast>
-        )
-      })}
+        ))}
+      </ToastViewport>
+    </ToastPortal>
+  )
+}
 
-      <ToastViewport />
+export default function Toaster() {
+  useEffect(mountToastRenderer, [])
+
+  return (
+    <ToastProvider toastManager={toastManager} limit={1} timeout={5000}>
+      <ToastList />
     </ToastProvider>
   )
 }

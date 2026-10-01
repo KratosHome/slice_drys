@@ -1,21 +1,15 @@
 'use client'
 
-import { Root, List, Trigger, Content } from '@radix-ui/react-tabs'
-
-import {
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-  forwardRef,
-} from 'react'
+import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
+import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
 
-const Tabs = Root
-
+const Tabs = TabsPrimitive.Root
 const TabsList = forwardRef<
-  ComponentRef<typeof List>,
-  ComponentPropsWithoutRef<typeof List>
+  HTMLDivElement,
+  Omit<TabsPrimitive.List.Props, 'className'> & { className?: string }
 >(({ className, ...props }, ref) => (
-  <List
+  <TabsPrimitive.List
     ref={ref}
     className={cn(
       'bg-muted text-muted-foreground inline-flex h-9 items-center justify-center rounded-lg p-1',
@@ -24,30 +18,26 @@ const TabsList = forwardRef<
     {...props}
   />
 ))
-
-TabsList.displayName = List.displayName
-
+TabsList.displayName = 'TabsList'
 const TabsTrigger = forwardRef<
-  ComponentRef<typeof Trigger>,
-  ComponentPropsWithoutRef<typeof Trigger>
+  HTMLButtonElement,
+  Omit<TabsPrimitive.Tab.Props, 'className'> & { className?: string }
 >(({ className, ...props }, ref) => (
-  <Trigger
+  <TabsPrimitive.Tab
     ref={ref}
     className={cn(
-      'ring-offset-background focus-visible:ring-ring data-[state=active]:bg-background data-[state=active]:text-foreground inline-flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm',
+      'ring-offset-background focus-visible:ring-ring data-[active]:bg-background data-[active]:text-foreground inline-flex items-center justify-center rounded-md px-3 py-1 text-sm font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[active]:shadow-sm',
       className,
     )}
     {...props}
   />
 ))
-
-TabsTrigger.displayName = Trigger.displayName
-
+TabsTrigger.displayName = 'TabsTrigger'
 const TabsContent = forwardRef<
-  ComponentRef<typeof Content>,
-  ComponentPropsWithoutRef<typeof Content>
+  HTMLDivElement,
+  Omit<TabsPrimitive.Panel.Props, 'className'> & { className?: string }
 >(({ className, ...props }, ref) => (
-  <Content
+  <TabsPrimitive.Panel
     ref={ref}
     className={cn(
       'ring-offset-background focus-visible:ring-ring mt-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
@@ -56,7 +46,5 @@ const TabsContent = forwardRef<
     {...props}
   />
 ))
-
-TabsContent.displayName = Content.displayName
-
+TabsContent.displayName = 'TabsContent'
 export { Tabs, TabsList, TabsTrigger, TabsContent }

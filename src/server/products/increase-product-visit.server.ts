@@ -13,7 +13,7 @@ export async function increaseProductVisit(slug: string) {
         { slug: matchedSlug },
         { $inc: { visited: 1 } },
         // Analytics must not change the content freshness used by sitemap.xml.
-        { new: false, timestamps: false },
+        { returnDocument: 'before', timestamps: false },
       ),
     )
 

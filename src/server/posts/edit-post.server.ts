@@ -43,7 +43,7 @@ export async function editPostServer(
       img: imageUrl,
     }
 
-    await Post.findByIdAndUpdate(id, updatedData, { new: true })
+    await Post.findByIdAndUpdate(id, updatedData, { returnDocument: 'after' })
 
     revalidateTag(fetchTags.posts, 'max')
     revalidateTag(fetchTags.post, 'max')

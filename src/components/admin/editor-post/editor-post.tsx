@@ -151,13 +151,13 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
     router.refresh()
   }
 
-  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (event.target.value === 'en' && event.target.checked) {
-      setQuillEditorLanguage(event.target.value)
+  const handleRadioChange = (value: string): void => {
+    if (value === 'en') {
+      setQuillEditorLanguage(value)
       setPostContent({ ...postContent, uk: quillEditorContent })
       setQuillEditorContent(postContent.en)
-    } else if (event.target.value === 'uk' && event.target.checked) {
-      setQuillEditorLanguage(event.target.value)
+    } else if (value === 'uk') {
+      setQuillEditorLanguage(value)
       setPostContent({ ...postContent, en: quillEditorContent })
       setQuillEditorContent(postContent.uk)
     }
@@ -222,8 +222,8 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
       <ConfirmDeletePopup />
 
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogTrigger asChild>
-          <Button>{buttonTitle}</Button>
+        <AlertDialogTrigger render={<Button />}>
+          {buttonTitle}
         </AlertDialogTrigger>
 
         <AlertDialogContent>
@@ -327,7 +327,7 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                   </div>
                 </div>
 
-                <RadioGroup defaultValue="en" onChange={handleRadioChange}>
+                <RadioGroup defaultValue="en" onValueChange={handleRadioChange}>
                   <div className="start flex gap-4">
                     <div className="flex gap-1">
                       <Label>Контент</Label>

@@ -6,7 +6,7 @@ import { type IButtonProps, buttonVariants } from '@/components/ui/button'
 
 import { type ComponentProps, forwardRef } from 'react'
 import { cn } from '@/utils/cn'
-import { m, LazyMotion, domAnimation } from 'framer-motion'
+import { m, LazyMotion, domAnimation, type Variants } from 'framer-motion'
 
 const Pagination = ({ className, ...props }: ComponentProps<'nav'>) => (
   <nav
@@ -60,7 +60,7 @@ const PaginationLink = ({
   label,
   ...props
 }: PaginationLinkProps) => {
-  const variants = {
+  const variants: Variants = {
     initial: { scale: 1, rotate: 0 },
     hover: {
       scale: 1.2,
