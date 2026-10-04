@@ -25,7 +25,7 @@ export default function GoogleAnalytics() {
       </Script>
       <Script
         async
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
       />
     </>

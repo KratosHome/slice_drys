@@ -1,0 +1,7 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import '../../theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+
+/* This stylesheet can remain loaded after navigating back to the storefront.
+   Include its utilities too, preserving Tailwind's base/variant ordering. */
+@source '../../../../';

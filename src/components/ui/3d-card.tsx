@@ -28,11 +28,28 @@ export const CardContainer = ({
   containerClassName?: string
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const supportsHover = useRef(false)
 
   const [isMouseEntered, setIsMouseEntered] = useState<boolean>(false)
 
+  useEffect(() => {
+    const media = window.matchMedia(
+      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    )
+    const update = () => {
+      supportsHover.current = media.matches
+      if (!media.matches) {
+        setIsMouseEntered(false)
+        if (containerRef.current) containerRef.current.style.transform = 'none'
+      }
+    }
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
+
   const handleMouseMove = (event: MouseEvent<HTMLDivElement>): void => {
-    if (!containerRef.current) return
+    if (!containerRef.current || !supportsHover.current) return
 
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect()
@@ -44,6 +61,7 @@ export const CardContainer = ({
   }
 
   const handleMouseEnter = (): void => {
+    if (!supportsHover.current) return
     setIsMouseEntered(true)
     if (!containerRef.current) return
   }

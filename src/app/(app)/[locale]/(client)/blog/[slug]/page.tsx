@@ -3,6 +3,7 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 import Share from '@/components/ui/share'
+import ClientMessages from '@/i18n/client-messages'
 import { locales } from '@/data/locales'
 import { getPostsUrls } from '@/server/posts/get-posts-urls.server'
 import BlogItemJsonLd from '@/components/client/json-ld/blog-item-json-ld'
@@ -122,7 +123,9 @@ export default async function PostPage({ params }: Props) {
             <div className="text-gray-500">{author}</div>
           </div>
         </div>
-        <Share title={title} url={url} />
+        <ClientMessages namespaces={['share']}>
+          <Share title={title} url={url} />
+        </ClientMessages>
         <JoinCommunity className="my-[70px] mb-[100px] md:mt-[120px]" />
       </div>
       <ToTheTop />

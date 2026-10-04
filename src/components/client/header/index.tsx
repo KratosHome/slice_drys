@@ -12,12 +12,8 @@ import Socials from '@/components/ui/socials'
 import { TransitionLink } from '@/components/client/transition-link'
 
 import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { useLocale, useTranslations } from 'next-intl'
-
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+import { cn } from '@/utils/cn'
 
 interface IHeaderProps {
   productLinks: IPublicCategoryLink[]
@@ -28,125 +24,52 @@ export default function Header({ productLinks }: IHeaderProps) {
 
   const locale = useLocale() as ILocale
 
-  const headerRef = useRef<HTMLDivElement>(null)
-  const logoRef = useRef<HTMLAnchorElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const socialRef = useRef<HTMLDivElement>(null)
-  const callRef = useRef<HTMLDivElement>(null)
-  const cartRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    const timeoutID = setTimeout(() => {
-      ScrollTrigger.refresh(true)
-    }, 1)
+    const header = headerRef.current
+    if (!header) return
+    const desktop = window.matchMedia('(min-width: 1024px)')
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let frame: number | undefined
 
-    return () => clearTimeout(timeoutID)
+    const update = () => {
+      frame = undefined
+      const progress = Math.min(
+        1,
+        Math.max(0, window.scrollY) / (desktop.matches ? 100 : 200),
+      )
+      const eased = reducedMotion.matches ? 0 : 1 - (1 - progress) ** 2
+      header.style.setProperty('--header-progress', String(eased))
+      header.dataset.compact = String(eased === 1)
+      header.dataset.scrolled = String(eased > 0)
+    }
+    const scheduleUpdate = () => {
+      if (frame === undefined) frame = window.requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    desktop.addEventListener('change', scheduleUpdate)
+    reducedMotion.addEventListener('change', scheduleUpdate)
+    return () => {
+      if (frame !== undefined) window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', scheduleUpdate)
+      desktop.removeEventListener('change', scheduleUpdate)
+      reducedMotion.removeEventListener('change', scheduleUpdate)
+    }
   }, [])
-
-  useGSAP(() => {
-    const mm = gsap.matchMedia()
-
-    mm.add('(min-width: 1024px)', () => {
-      const tl = gsap.timeline({
-        defaults: { duration: 0.5, ease: 'power1.out' },
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: 'top top',
-          end: '+=100px',
-          scrub: true,
-          toggleActions: 'play none none reverse',
-        },
-      })
-
-      tl.to(
-        headerRef.current,
-        {
-          opacity: 0.9,
-          backdropFilter: 'blur(10px)',
-          height: '80px',
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-          duration: 0.5,
-          ease: 'power1.out',
-        },
-        0,
-      )
-
-      tl.to(logoRef.current, { height: 55 }, '<')
-      tl.to(
-        socialRef.current,
-        {
-          autoAlpha: 0,
-          display: 'none',
-          marginTop: -30,
-          scale: 0.5,
-          pointerEvents: 'none',
-        },
-        '<',
-      )
-      tl.to(
-        callRef.current,
-        {
-          autoAlpha: 0,
-          display: 'none',
-          marginTop: -30,
-          scale: 0.5,
-          pointerEvents: 'none',
-        },
-        '<',
-      )
-    })
-
-    mm.add('(max-width: 1023px)', () => {
-      const tl = gsap.timeline({
-        defaults: { duration: 0.4, ease: 'power1.out' },
-        scrollTrigger: {
-          trigger: headerRef.current,
-          start: 'top top',
-          end: '+=200px',
-          scrub: true,
-          toggleActions: 'play none none reverse',
-        },
-      })
-
-      tl.to(
-        headerRef.current,
-        {
-          opacity: 0.95,
-          backdropFilter: 'blur(5px)',
-          marginTop: '0px',
-          boxShadow: '0px 3px 8px rgba(0, 0, 0, 0.08)',
-          duration: 0.5,
-          ease: 'power1.out',
-        },
-        0,
-      )
-
-      tl.to(logoRef.current, { height: 55 }, '<')
-      tl.to(
-        callRef.current,
-        {
-          opacity: 0,
-          display: 'none',
-          marginTop: -30,
-          scale: 0.5,
-          pointerEvents: 'none',
-        },
-        '<',
-      )
-    })
-  })
 
   return (
     <>
       <header
         ref={headerRef}
-        className="bg-background sticky top-0 z-50 mx-auto w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5"
-        aria-labelledby="header"
+        className={cn(
+          'site-header',
+          'bg-background sticky top-0 z-50 mx-auto w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5',
+        )}
       >
-        <div
-          ref={menuRef}
-          className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3"
-        >
+        <div className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3">
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
               {productLinks.slice(0, 4)?.map((link) => (
@@ -163,14 +86,13 @@ export default function Header({ productLinks }: IHeaderProps) {
               productLinks={productLinks}
               hamburgerLinksOther={pageLinks[locale].slice(1, 5)}
             />
-            <div ref={socialRef} className="mt-5 hidden justify-end lg:flex">
+            <div className="site-header-social mt-5 hidden justify-end lg:flex">
               <Socials size={33} />
             </div>
           </div>
           <TransitionLink
-            ref={logoRef}
             href={`/${locale}`}
-            className="text-foreground h-full self-start"
+            className="site-header-logo text-foreground h-full self-start"
           >
             <svg
               width="86px"
@@ -195,18 +117,17 @@ export default function Header({ productLinks }: IHeaderProps) {
                   </TransitionLink>
                 ))}
               </nav>
-              <div
-                ref={cartRef}
-                className="flex items-center justify-center gap-x-4 lg:justify-between"
-              >
+              <div className="flex items-center justify-center gap-x-4 lg:justify-between">
                 <LocaleChange className="hidden lg:block" />
                 <ThemeToggle />
                 <SmallCart />
               </div>
             </div>
             <div
-              ref={callRef}
-              className="flex origin-top-right justify-between"
+              className={cn(
+                'site-header-call',
+                'flex origin-top-right justify-between',
+              )}
             >
               <NumberCall className="hidden lg:flex" />
               <CallMe />

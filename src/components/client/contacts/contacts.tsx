@@ -4,6 +4,7 @@ import Image from 'next/image'
 import ContactInfo from './contact-info'
 import ContactForm from './contact-form'
 import UnderlineWave from '@/components/ui/underline-wave'
+import ClientMessages from '@/i18n/client-messages'
 
 const Contacts = async () => {
   const t = await getTranslations('contacts')
@@ -36,12 +37,14 @@ const Contacts = async () => {
           <ContactInfo block_title={t('information-title')} />
         </div>
       </div>
-      <ContactForm
-        button={t('button')}
-        phone_field_description={t('phone-field-description')}
-        placeholder={t('placeholder')}
-        form_description={t('form-description')}
-      />
+      <ClientMessages namespaces={['contacts']}>
+        <ContactForm
+          button={t('button')}
+          phone_field_description={t('phone-field-description')}
+          placeholder={t('placeholder')}
+          form_description={t('form-description')}
+        />
+      </ClientMessages>
     </section>
   )
 }

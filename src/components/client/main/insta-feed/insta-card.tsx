@@ -1,21 +1,19 @@
-import Image from 'next/image'
+import ViewportImage from '@/components/client/viewport-image'
 import Link from 'next/link'
-import { ResponsiveMotion } from '@/components/client/responsive-motion'
 
 interface IInstaFeedCardProps {
   post: InstaFeed
+  imagesEnabled: boolean
+  imagePriority: 'auto' | 'low'
 }
 
-export default function InstaCard({ post }: IInstaFeedCardProps) {
+export default function InstaCard({
+  post,
+  imagesEnabled,
+  imagePriority,
+}: IInstaFeedCardProps) {
   return (
-    <ResponsiveMotion
-      className="bg-background relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl will-change-transform md:max-w-none"
-      whileHover={{
-        y: -5,
-        boxShadow: '0px 10px 20px hsla(var(--popover-foreground) / 0.2)',
-      }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="insta-card bg-background relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl md:max-w-none">
       <div className="font-dmsans grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px]">
         <span className="row-span-2 block aspect-[1] w-[42px] rounded-full bg-black p-[6px] text-white dark:bg-transparent">
           <svg className="h-full w-full">
@@ -34,8 +32,9 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
         aria-label="To the instagram post"
         className="z-10 before:absolute before:inset-0 before:cursor-pointer"
       />
-      <div className="relative">
-        <Image
+      <div className="relative aspect-square w-full">
+        <ViewportImage
+          enabled={imagesEnabled}
           src={
             ('thumbnail_url' in post && post?.thumbnail_url) ||
             ('media_url' in post && post?.media_url) ||
@@ -44,9 +43,9 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
           }
           sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1279px) 30vw, 400px"
           alt={post.caption || `Instagram post ${post.id}`}
-          width={400}
-          height={400}
-          className="aspect-square w-full object-cover"
+          fill
+          fetchPriority={imagePriority}
+          className="object-cover"
         />
         <Dots number={'children' in post ? post.children.data.length : 0} />
       </div>
@@ -56,7 +55,7 @@ export default function InstaCard({ post }: IInstaFeedCardProps) {
           : post.caption}
       </p>
       <CardFooter />
-    </ResponsiveMotion>
+    </div>
   )
 }
 

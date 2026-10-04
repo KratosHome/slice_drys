@@ -1,15 +1,7 @@
-'use client'
-
-import { Item } from './item'
+import FaqItems from './faq-items'
 import UnderlineWave from '@/components/ui/underline-wave'
 
-import { useEffect, useRef } from 'react'
 import { useTranslations } from 'next-intl'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 interface IFaqProps {
   data: IFaq[]
@@ -17,60 +9,6 @@ interface IFaqProps {
 
 export default function Faq({ data }: IFaqProps) {
   const t = useTranslations('main.faq')
-  const faqRef = useRef<HTMLDivElement[]>([])
-
-  useEffect(() => {
-    const timeoutID = setTimeout(() => {
-      ScrollTrigger.refresh(true)
-    }, 1)
-
-    return () => clearTimeout(timeoutID)
-  }, [])
-
-  useGSAP(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set(faqRef.current, { autoAlpha: 1, y: 0 })
-      return
-    }
-
-    ScrollTrigger.create({
-      trigger: faqRef.current[0],
-      start: 'top 80%',
-      end: '400px 10%',
-      toggleActions: 'play reset play reset',
-      preventOverlaps: true,
-      onToggle: (self) => {
-        if (!self.isActive) {
-          gsap.to(faqRef.current, {
-            autoAlpha: 0,
-            y: self.direction === -1 ? 50 : -50,
-            duration: 0.6,
-            stagger: {
-              each: 0.2,
-              from: self.direction === -1 ? 'start' : 'end',
-            },
-            ease: 'power1.out',
-          })
-        } else {
-          gsap.fromTo(
-            faqRef.current,
-            { autoAlpha: 0, y: self.direction === -1 ? -50 : 50 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.6,
-              stagger: {
-                each: 0.2,
-                from: self.direction === -1 ? 'end' : 'start',
-              },
-              ease: 'power1.out',
-            },
-          )
-        }
-      },
-    })
-    ScrollTrigger.refresh(true)
-  })
 
   return (
     <section
@@ -85,20 +23,7 @@ export default function Faq({ data }: IFaqProps) {
           {t('even-what-did-not-ask')}
           <UnderlineWave />
         </p>
-        <div className="mt-[clamp(32px,calc(32px+84*(100vw-375px)/1065),116px)]">
-          {data?.map((item: IFaq, index) => (
-            <Item
-              ref={(el) => {
-                if (el) {
-                  if (el) faqRef.current[index] = el
-                }
-              }}
-              key={item.title}
-              question={item.title}
-              answer={item.description}
-            />
-          ))}
-        </div>
+        <FaqItems data={data} />
       </div>
     </section>
   )

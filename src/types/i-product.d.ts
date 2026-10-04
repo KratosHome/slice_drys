@@ -19,6 +19,18 @@ interface IProduct {
   category?: string
 }
 
+type IProductCard = Pick<
+  IProduct,
+  | '_id'
+  | 'name'
+  | 'img'
+  | 'slug'
+  | 'category'
+  | 'statusLabel'
+  | 'variables'
+  | 'variant'
+>
+
 interface IProductLocal {
   _id?: string
   name: ILocalizedString

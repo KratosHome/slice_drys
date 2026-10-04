@@ -1,21 +1,23 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source('../../');
+@import './theme.css';
+@import '../../fonts/rubik-doodle-shadow.css';
+@import '../../components/client/header/header-scroll.css';
+@import '../../components/ui/pagination.css';
+@import '@splidejs/react-splide/css';
+@import '../../components/client/styles/slider.css';
+@import '../../components/client/product-slider/product-slider.css';
+@import '../../components/client/main/blog/blog.css';
+@import '../../components/client/main/insta-feed/Insta-feed.css';
 
-@config '../../../tailwind.config.ts';
-
-@plugin 'tailwind-hamburgers';
-@plugin 'tailwindcss-animate';
-@plugin '@tailwindcss/typography';
-
-@theme {
-  --breakpoint-xs: 24rem;
-  --color-order-text: hsl(var(--order-text));
-  --color-order-background: hsl(var(--order-background));
-  --color-grey-review: hsl(var(--grey-review));
-  --color-black-review: hsl(var(--black-review));
-  --color-product-article-background: hsla(var(--product-article-background));
-  --color-grey-select: hsl(var(--grey-select));
-  --color-red-cust: hsl(var(--red-cust));
-}
+/* Admin utilities are generated separately by the admin route layout. */
+@source not '../../components/admin';
+@source not './[locale]/admin';
+/* These shared UI primitives currently belong exclusively to the admin UI. */
+@source not '../../components/ui/sidebar.tsx';
+@source not '../../components/ui/sheet.tsx';
+@source not '../../components/ui/table.tsx';
+@source not '../../components/ui/tabs.tsx';
+@source not '../../components/ui/tooltip.tsx';
 
 @layer base {
   *,
@@ -221,42 +223,6 @@ body.page-transition-complete > .page-transition-progress > span {
     display: none;
   }
 }
-
-@utility font-rubik {
-  font-family: var(--font-rubik-doodle-shadow), sans-serif;
-}
-
-@utility font-dmsans {
-  font-family: var(--font-dm-sans), sans-serif;
-}
-
-@utility title-rubik {
-  @apply font-rubik leading-[1.2] font-normal;
-}
-
-@utility title-section {
-  @apply title-rubik text-[clamp(48px,calc(48px+16*(100vw-375px)/1065),64px)] uppercase;
-}
-
-@utility section {
-  @apply mx-auto mt-[80px] lg:mt-[133px];
-}
-@utility underline-wave {
-  position: absolute;
-  color: currentColor;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: clamp(15px, calc(15px + 10 * (100vw - 375px) / 1065), 25px);
-  @media (min-width: 768px) {
-    bottom: -15px;
-  }
-  @media (min-width: 1024px) {
-    bottom: -20px;
-  }
-}
-
-@custom-variant dark (&:where(.dark, .dark *));
 
 @layer utilities {
   .prose {

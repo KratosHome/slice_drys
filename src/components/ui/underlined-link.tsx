@@ -21,8 +21,7 @@ interface IUnderlinedLinkAnchorProps extends AnchorHTMLAttributes<HTMLAnchorElem
 }
 
 type UnderlinedLinkProps = (
-  | IUnderlinedLinkButtonProps
-  | IUnderlinedLinkAnchorProps
+  IUnderlinedLinkButtonProps | IUnderlinedLinkAnchorProps
 ) & {
   target?: '_blank' | '_self' | '_parent' | '_top'
   className?: string
@@ -94,6 +93,7 @@ const UnderlinedLink = forwardRef<
     return (
       <Link
         href={href || `/${locale}`}
+        prefetch={false}
         ref={ref as Ref<HTMLAnchorElement>}
         className={classes}
         target={target}

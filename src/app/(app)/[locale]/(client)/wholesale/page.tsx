@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/breadcrumbs'
 import { getTranslations } from 'next-intl/server'
 import WholesaleForm from '@/components/client/wholesale/wholesale-form'
+import ClientMessages from '@/i18n/client-messages'
 import { helpData } from '@/data/wholesale-about'
 import { whyWe } from '@/data/wholesale-why-wr'
 import WholesaleJsonLd from '@/components/client/json-ld/wholesale-json-ld'
@@ -114,7 +115,9 @@ export default async function Wholesale(props: { params: Params }) {
       </div>
       <Help data={helpData[locale]} />
       <div className="relative mx-auto max-w-[1280px] px-4">
-        <WholesaleForm />
+        <ClientMessages namespaces={['wholesale']}>
+          <WholesaleForm />
+        </ClientMessages>
         <InstaFeed title={t('join-us')} data={instaData[locale]} />
         <ToTheTop />
       </div>

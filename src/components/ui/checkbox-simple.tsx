@@ -33,7 +33,7 @@ export default function CheckboxSimple({
           width={27}
           className="text-foreground absolute inset-0 origin-center"
         >
-          <use href="/icons/sprite.svg#o" />
+          <use href="/icons/selection-sprite.svg#o" />
         </svg>
         <input
           type="checkbox"

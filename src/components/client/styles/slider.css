@@ -2,6 +2,33 @@
   visibility: visible;
 }
 
+.viewport-carousel:not(.is-initialized) .splide__track {
+  overflow-x: auto;
+}
+
+.viewport-carousel.is-initialized .splide__track {
+  /* Splide positions slides with transforms; focus must not scroll its track. */
+  overflow: clip;
+}
+
+.viewport-carousel:not(.is-initialized) .splide__list {
+  gap: var(--carousel-gap);
+}
+
+.viewport-carousel:not(.is-initialized) .splide__slide {
+  flex: 0 0
+    calc(
+      (100% - (var(--carousel-per-page) - 1) * var(--carousel-gap)) /
+        var(--carousel-per-page)
+    );
+}
+
+@media (max-width: 768px) {
+  .viewport-carousel:not(.is-initialized) .splide__slide {
+    flex-basis: 100%;
+  }
+}
+
 .splide__arrows {
   position: absolute;
   inset: 0;

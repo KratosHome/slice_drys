@@ -1,0 +1,78 @@
+{
+  "source": "https://github.com/google/fonts/tree/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikdoodleshadow",
+  "sourceVersion": "2.201",
+  "sourceSha256": "cb8b89235d7a7e1eb3658ef42daaadc7c0c2e5ed41a92cf76211ee6987531358",
+  "fontToolsVersion": "4.66.1",
+  "unicodeRanges": "U+0020-007E,U+00A0-00BF,U+00D7,U+00F7,U+0401,U+0404,U+0406-0407,U+0410-044F,U+0451,U+0454,U+0456-0457,U+0490-0491,U+2000-206F,U+20AC,U+20B4,U+2116,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD,U+0301,U+0308,U+02BB-02BC",
+  "subsetOptions": [
+    "--flavor=woff2",
+    "--no-hinting",
+    "--layout-features=*",
+    "--name-IDs=*",
+    "--name-languages=*"
+  ],
+  "coverage": "The same 227 mapped characters as the previous combined UK/English font. CSS unicode ranges are disjoint; punctuation and digits stay available when needed. Latin retains the extra space glyph used to derive the unchanged Arial fallback metrics.",
+  "originalInitialFontBytes": 333448,
+  "subsetBytes": 315328,
+  "renderingVerification": {
+    "decomposedOutlineChanges": 0,
+    "advanceWidthChanges": 0,
+    "verticalMetricsChanged": false,
+    "checkedCharacters": 227,
+    "cssRangesOverlap": false,
+    "missingPreviousCharacters": []
+  },
+  "sourceDownloadUrl": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikdoodleshadow/RubikDoodleShadow-Regular.ttf",
+  "rebuildCommand": "python scripts/fonts/rubik-doodle-shadow/subset-font.py /path/to/RubikDoodleShadow-Regular.ttf",
+  "formatVersion": 3,
+  "previousCombinedSubsetBytes": 281528,
+  "faces": [
+    {
+      "name": "ui",
+      "file": "RubikDoodleShadow-ui.dd0fafe01a05.woff2",
+      "unicodeRanges": "U+0020-0022,U+0027,U+002D,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
+      "characters": 16,
+      "bytes": 12904,
+      "sha256": "dd0fafe01a05ae275689fa8eddc44e5fa7251d6e18629053798041af0375505d",
+      "preloadLocales": ["uk", "en"],
+      "assetExtraCharacters": []
+    },
+    {
+      "name": "cyrillic",
+      "file": "RubikDoodleShadow-cyrillic.d68fdb71d065.woff2",
+      "unicodeRanges": "U+0401,U+0404,U+0406-0407,U+0410-044F,U+0451,U+0454,U+0456-0457,U+0490-0491",
+      "characters": 74,
+      "bytes": 93464,
+      "sha256": "d68fdb71d0656c05ed4f1c71fabc1679da69e6712d3fbf6878cd66365b74d107",
+      "preloadLocales": ["uk"],
+      "assetExtraCharacters": []
+    },
+    {
+      "name": "latin",
+      "file": "RubikDoodleShadow-latin.51f7b0ddf5d0.woff2",
+      "unicodeRanges": "U+0041-005A,U+0061-007A",
+      "characters": 52,
+      "bytes": 79676,
+      "sha256": "51f7b0ddf5d005a31189e87b707c5c2847234118366bee5eb908eac914b8e638",
+      "preloadLocales": ["en"],
+      "assetExtraCharacters": ["U+0020"]
+    },
+    {
+      "name": "punctuation",
+      "file": "RubikDoodleShadow-punctuation.853eee59ca84.woff2",
+      "unicodeRanges": "U+0023-0026,U+0028-002C,U+002E-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
+      "characters": 85,
+      "bytes": 129284,
+      "sha256": "853eee59ca84da0ad3bd4c49b923100d6a5de6169d51ae7c7f121a41f2e1c2cf",
+      "preloadLocales": [],
+      "assetExtraCharacters": []
+    }
+  ],
+  "fallbackMetrics": {
+    "font": "Arial",
+    "ascentOverride": "78.34%",
+    "descentOverride": "20.95%",
+    "lineGapOverride": "0.00%",
+    "sizeAdjust": "119.36%"
+  }
+}

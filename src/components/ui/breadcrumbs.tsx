@@ -61,7 +61,7 @@ const BreadcrumbLink = forwardRef<
 
   return useRender({
     defaultTagName: 'a',
-    render: render ?? <Link href={href || `/${locale}`} />,
+    render: render ?? <Link href={href || `/${locale}`} prefetch={false} />,
     ref,
     props: mergeProps<'a'>(
       { className: classes, ...(originalHref && { href }) },

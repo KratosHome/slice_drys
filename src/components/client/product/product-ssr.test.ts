@@ -17,6 +17,7 @@ test('catalogue and detail SSR include selected weight and price before hydratio
     mock.module('@/store/cart-store', () => ({
       useCartStore: (select) => select({
         addItemToCart() {}, setOpenCart() {}, hasItemInCart() { return true },
+        cart: { itemList: [{ id: 'fixture', weight: 150 }] },
       }),
     }))
     mock.module('next/navigation', () => ({
@@ -47,6 +48,10 @@ test('catalogue and detail SSR include selected weight and price before hydratio
       assert.ok(trigger.includes('150 ' + messages.product.g), 'selected weight must be visible before hydration')
       assert.match(html, /<p[^>]*>457 UAH<\\/p>/)
       assert.ok(html.includes('?weight=150'), 'detail URL must preserve selected weight')
+      const links = html.match(/<a\\b[^>]*>.*?<\\/a>/g) ?? []
+      assert.equal(links.length, 2, 'product image and title have independent navigation links')
+      assert.ok(links[0].includes('aria-label="Test beef, 150 ' + messages.product.g + '"'), 'product link has an accessible name')
+      assert.ok(links.every(link => !/<(?:button|input|select)\\b/.test(link)), 'weight and cart controls are outside both navigation links')
       assert.ok(html.includes(messages.product['add-to-cart']), 'cart-dependent label keeps stable server fallback')
       assert.ok(!html.includes(messages.product['in-cart']), 'persisted cart state must wait for hydration')
 

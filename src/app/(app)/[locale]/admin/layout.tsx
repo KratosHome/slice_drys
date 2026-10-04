@@ -14,6 +14,8 @@ import {
 } from '@/server/auth/require-admin.server'
 import { getServerSession } from 'next-auth'
 
+import './admin.css'
+
 interface IAdminLayoutProps {
   children: ReactNode
   params: Promise<{ locale: string }>

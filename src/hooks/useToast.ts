@@ -1,6 +1,6 @@
 'use client'
 
-import { Toast as ToastPrimitive } from '@base-ui/react/toast'
+import type { ToastManager } from '@base-ui/react/toast'
 import type { ReactNode } from 'react'
 import type { ToastActionElement } from '@/components/ui/toast'
 
@@ -17,18 +17,41 @@ export interface ToastData {
   action?: ToastActionElement
 }
 
-const toastManager = ToastPrimitive.createToastManager<ToastData>()
+interface AppToast {
+  id: string
+  options: ToastOptions
+}
+
+let toastManager: ToastManager<ToastData> | undefined
 let rendererCount = 0
 let nextId = 0
-let pendingToast: { id: string; options: ToastOptions } | undefined
+let pendingToast: AppToast | undefined
+let activeToast: AppToast | undefined
+let rendererRequested = false
+const rendererListeners = new Set<() => void>()
 
-function toManagerOptions(options: ToastOptions) {
+function subscribeToastRenderer(listener: () => void) {
+  rendererListeners.add(listener)
+  return () => {
+    rendererListeners.delete(listener)
+  }
+}
+
+function isToastRendererRequested() {
+  return rendererRequested
+}
+
+function toManagerOptions(notification: AppToast) {
+  const { options } = notification
   return {
     title: options.title,
     description: options.description,
     type: options.variant ?? 'default',
     timeout: options.duration === Infinity ? 0 : options.duration,
-    onClose: () => options.onOpenChange?.(false),
+    onClose: () => {
+      if (activeToast?.id === notification.id) activeToast = undefined
+      notification.options.onOpenChange?.(false)
+    },
     data: { action: options.action },
   }
 }
@@ -39,18 +62,27 @@ function dismiss(toastId?: string) {
     pendingToast = undefined
     dismissedToast.options.onOpenChange?.(false)
   }
-  toastManager.close(toastId)
+  if (activeToast && (!toastId || activeToast.id === toastId))
+    activeToast = undefined
+  toastManager?.close(toastId)
 }
 
 function toast(options: ToastOptions) {
   const id = `app-toast-${++nextId}`
+  const notification = { id, options }
 
   // The existing interface displays the latest notification only.
   dismiss()
-  if (rendererCount > 0) {
-    toastManager.add({ id, ...toManagerOptions(options) })
+  if (rendererCount > 0 && toastManager) {
+    activeToast = notification
+    toastManager.add({ id, ...toManagerOptions(notification) })
   } else {
-    pendingToast = { id, options }
+    pendingToast = notification
+  }
+
+  if (!rendererRequested) {
+    rendererRequested = true
+    rendererListeners.forEach((listener) => listener())
   }
 
   return {
@@ -61,7 +93,10 @@ function toast(options: ToastOptions) {
         pendingToast.options = { ...pendingToast.options, ...updates }
         return
       }
-      toastManager.update(id, (current) => {
+      if (activeToast?.id === id) {
+        activeToast.options = { ...activeToast.options, ...updates }
+      }
+      toastManager?.update(id, (current) => {
         return {
           ...('title' in updates && { title: updates.title }),
           ...('description' in updates && { description: updates.description }),
@@ -72,9 +107,6 @@ function toast(options: ToastOptions) {
           ...('action' in updates && {
             data: { ...current.data, action: updates.action },
           }),
-          ...('onOpenChange' in updates && {
-            onClose: () => updates.onOpenChange?.(false),
-          }),
         }
       })
     },
@@ -83,17 +115,25 @@ function toast(options: ToastOptions) {
 
 // Register after the provider subscribes, so notifications created while the
 // lazily loaded renderer is mounting are retained.
-function mountToastRenderer() {
+function mountToastRenderer(manager: ToastManager<ToastData>) {
+  toastManager = manager
   rendererCount += 1
   if (pendingToast) {
-    toastManager.add({
-      id: pendingToast.id,
-      ...toManagerOptions(pendingToast.options),
-    })
+    activeToast = pendingToast
     pendingToast = undefined
+    toastManager.add({
+      id: activeToast.id,
+      ...toManagerOptions(activeToast),
+    })
   }
   return () => {
     rendererCount -= 1
+    if (rendererCount === 0) {
+      toastManager = undefined
+      // Replaying the same ID also restores its timer after Strict Mode cleanup.
+      pendingToast = activeToast
+      activeToast = undefined
+    }
   }
 }
 
@@ -101,4 +141,10 @@ function useToast() {
   return { toast, dismiss }
 }
 
-export { useToast, toast, toastManager, mountToastRenderer }
+export {
+  useToast,
+  toast,
+  mountToastRenderer,
+  subscribeToastRenderer,
+  isToastRendererRequested,
+}

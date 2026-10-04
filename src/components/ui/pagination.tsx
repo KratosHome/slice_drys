@@ -6,7 +6,6 @@ import { type IButtonProps, buttonVariants } from '@/components/ui/button'
 
 import { type ComponentProps, forwardRef } from 'react'
 import { cn } from '@/utils/cn'
-import { m, LazyMotion, domAnimation, type Variants } from 'framer-motion'
 
 const Pagination = ({ className, ...props }: ComponentProps<'nav'>) => (
   <nav
@@ -50,60 +49,56 @@ type PaginationLinkProps = {
   ComponentProps<'a'> &
   LinkProps
 
-const MotionLink = m.create(Link)
-
 const PaginationLink = ({
   className,
   isActive,
   href,
   onClick,
   label,
+  prefetch = false,
+  disabled,
+  size,
   ...props
 }: PaginationLinkProps) => {
-  const variants: Variants = {
-    initial: { scale: 1, rotate: 0 },
-    hover: {
-      scale: 1.2,
-      rotate: 5,
-      transition: { type: 'spring', stiffness: 500, damping: 20 },
-    },
-    tap: {
-      scale: 0.95,
-      rotate: -5,
-      transition: { type: 'spring', stiffness: 500, damping: 20 },
-    },
-  }
-
+  const isDisabled =
+    disabled ||
+    props['aria-disabled'] === true ||
+    props['aria-disabled'] === 'true'
   return (
-    <LazyMotion features={domAnimation}>
-      <MotionLink
-        variants={variants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        className={cn(
-          buttonVariants({ variant: isActive ? 'none' : 'none' }),
-          'font-rubik relative flex h-[50px] w-[50px] items-center justify-center sm:h-[70px] sm:w-[70px]',
-          className,
-        )}
-        href={href}
-        onClick={onClick}
-        aria-label={label}
-        aria-current={isActive ? 'page' : undefined}
-      >
-        {props.children}
+    <Link
+      {...props}
+      className={cn(
+        buttonVariants({ variant: 'none', size }),
+        'pagination-link',
+        'font-rubik relative flex h-[50px] w-[50px] items-center justify-center sm:h-[70px] sm:w-[70px]',
+        className,
+      )}
+      href={href}
+      prefetch={prefetch}
+      onClick={(event) => {
+        if (isDisabled) {
+          event.preventDefault()
+          return
+        }
+        onClick?.(event)
+      }}
+      tabIndex={isDisabled ? -1 : props.tabIndex}
+      aria-disabled={isDisabled || undefined}
+      aria-label={label ?? props['aria-label']}
+      aria-current={isActive ? 'page' : undefined}
+    >
+      {props.children}
 
-        {isActive ? (
-          <svg
-            role="img"
-            aria-label={'active page'}
-            className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
-          >
-            <use href="/icons/sprite.svg#o" />
-          </svg>
-        ) : null}
-      </MotionLink>
-    </LazyMotion>
+      {isActive ? (
+        <svg
+          role="img"
+          aria-label={'active page'}
+          className="absolute h-[50px] w-[50px] origin-center sm:h-[70px] sm:w-[70px]"
+        >
+          <use href="/icons/selection-sprite.svg#o" />
+        </svg>
+      ) : null}
+    </Link>
   )
 }
 
@@ -117,6 +112,7 @@ const PaginationPrevious = ({
 }: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     label={label}
+    disabled={disabled}
     aria-disabled={disabled}
     size="default"
     className={cn(
@@ -140,6 +136,7 @@ const PaginationNext = ({
 }: ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     label={label}
+    disabled={disabled}
     aria-disabled={disabled}
     size="default"
     className={cn(

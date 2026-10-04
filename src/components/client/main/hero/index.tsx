@@ -8,13 +8,9 @@ import Arcs from './arcs'
 import SubImages from './sub-images'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
-import { gsap } from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { cn } from '@/utils/cn'
-
-gsap.registerPlugin(useGSAP)
 
 interface IHeroProps {
   productLinks: IPublicCategoryLink[]
@@ -42,106 +38,59 @@ export default function Hero({ productLinks }: IHeroProps) {
   const imgRef = useRef<HTMLImageElement>(null)
   const subImagesRefs = useRef<HTMLImageElement[]>([])
 
-  const isMounted = useRef(false)
+  const previousIndex = useRef(hoveredIndex)
 
-  useGSAP(
-    () => {
-      const currentSubImages = slidersLocale[hoveredIndex].subImages ?? []
-      const currentSubImageElements = subImagesRefs.current
-        .slice(0, currentSubImages.length)
-        .filter((element) => element?.isConnected)
+  useEffect(() => {
+    const categoryChanged = previousIndex.current !== hoveredIndex
+    previousIndex.current = hoveredIndex
+    const currentSubImages = slidersLocale[hoveredIndex].subImages ?? []
 
-      const placeSubImages = (): void => {
-        currentSubImageElements.forEach((element, index) => {
-          const position = currentSubImages[index]?.position.desktop
+    // A previous animation's cleanup can restore the old category's positions.
+    // Apply the current layout before loading any optional animation code.
+    subImagesRefs.current.forEach((element, index) => {
+      const item = currentSubImages[index]
+      if (!item || !element.isConnected) return
+      element.style.opacity = '1'
+      element.style.transform = `translate3d(${item.position.desktop.x}px, ${item.position.desktop.y}px, 0) rotate(${item.rotate ?? 0}deg)`
+    })
 
-          if (!position) return
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (!categoryChanged || reducedMotion.matches) return
 
-          gsap.set(element, {
-            opacity: 1,
-            x: position.x,
-            y: position.y,
-          })
-        })
-      }
+    let disposed = false
+    let cleanupAnimation: (() => void) | undefined
+    const stopForReducedMotion = () => {
+      if (!reducedMotion.matches) return
+      disposed = true
+      cleanupAnimation?.()
+    }
+    reducedMotion.addEventListener('change', stopForReducedMotion)
+    void import('./hero-animation')
+      .then(({ animateHero }) => {
+        if (
+          disposed ||
+          reducedMotion.matches ||
+          !imgRef.current ||
+          !titleRef.current
+        )
+          return
+        cleanupAnimation = animateHero(
+          imgRef.current,
+          titleRef.current,
+          subImagesRefs.current.slice(0, currentSubImages.length),
+          currentSubImages,
+        )
+      })
+      .catch(() => {
+        // Category content stays visible if the optional animation cannot load.
+      })
 
-      if (!isMounted.current) {
-        isMounted.current = true
-        placeSubImages()
-        return
-      }
-
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        gsap.set(imgRef.current, {
-          opacity: 1,
-          scaleX: 1,
-          scaleY: 1,
-          filter: 'blur(0px)',
-        })
-        gsap.set(titleRef.current, {
-          opacity: 1,
-          scaleX: 1,
-          scaleY: 1,
-          filter: 'blur(0px)',
-        })
-        placeSubImages()
-        return
-      }
-
-      gsap.fromTo(
-        imgRef.current,
-        {
-          scaleX: 0.2,
-          scaleY: 0.2,
-          filter: 'blur(30px)',
-        },
-        {
-          opacity: 1,
-          scaleX: 1,
-          scaleY: 1,
-          filter: 'blur(0px)',
-          duration: 0.8,
-          ease: 'expo',
-        },
-      )
-
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, scaleX: 1.2, scaleY: 1.2, filter: 'blur(10px)' },
-        {
-          opacity: 1,
-          scaleX: 1,
-          scaleY: 1,
-          filter: 'blur(0px)',
-          duration: 0.2,
-          ease: 'power2.out',
-        },
-      )
-
-      if (currentSubImages.length > 0) {
-        const mm = gsap.matchMedia()
-
-        currentSubImageElements.forEach((el, index) => {
-          mm.add('(min-width: 1024px)', () => {
-            gsap.fromTo(
-              el,
-              { opacity: 0, x: 0, y: 0 },
-              {
-                opacity: 1,
-                duration: 1.5,
-                x: currentSubImages[index]?.position.desktop.x,
-                y: currentSubImages[index]?.position.desktop.y,
-                ease: 'power2.out',
-              },
-            )
-          })
-        })
-
-        return () => mm.revert()
-      }
-    },
-    { scope: imgRef, dependencies: [hoveredIndex] },
-  )
+    return () => {
+      disposed = true
+      reducedMotion.removeEventListener('change', stopForReducedMotion)
+      cleanupAnimation?.()
+    }
+  }, [hoveredIndex, slidersLocale])
 
   return (
     <div className="overflow-hidden" aria-labelledby="hero">
@@ -206,10 +155,10 @@ export default function Hero({ productLinks }: IHeroProps) {
                 src={slidersLocale[hoveredIndex].image}
                 alt={slidersLocale[hoveredIndex].title}
                 fill
-                priority={hoveredIndex === 0}
+                fetchPriority={hoveredIndex === 0 ? 'high' : 'auto'}
                 loading="eager"
                 quality={60}
-                sizes="(max-width: 1280px) 64vw, 736px"
+                sizes="(max-width: 1279px) calc(40vw - 16px), 442px"
                 className="object-contain"
               />
             </div>

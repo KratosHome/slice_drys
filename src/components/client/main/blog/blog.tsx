@@ -1,109 +1,27 @@
-'use client'
-
-import Image from 'next/image'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
-import { Arrow } from '@/components/ui/arrow'
+import { useId } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
 import { TransitionLink } from '@/components/client/transition-link'
-
-import { useEffect } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
 import { formatDate } from '@/utils/format-date'
-
-import '@/components/client/styles/slider.css'
-import '@splidejs/react-splide/css'
-import './blog.css'
+import BlogCarousel, { BlogImage } from './blog-carousel'
 
 interface IBlogSectionProps {
   data: IPost[]
 }
 
 export default function BlogSection({ data }: IBlogSectionProps) {
+  const titleId = useId()
   const t = useTranslations('main.more-about-us')
   const locale = useLocale() as ILocale
 
-  useEffect(() => {
-    const target = document.querySelector('.blog-slider')
-
-    if (!target) return
-
-    const handleResize = (): void => {
-      let k: number
-
-      switch (true) {
-        case window.innerWidth >= 1280:
-          k = 35
-          break
-        case window.innerWidth >= 1024:
-          k = 30
-          break
-        case window.innerWidth >= 768:
-          k = 28
-          break
-        case window.innerWidth < 768:
-          k = 23
-          break
-        default:
-          k = 30
-      }
-
-      const x: number = data.length * k
-
-      const prev = document.querySelector(
-        '.blog-slider .splide__arrow--prev.custom__arrow-prev',
-      ) as HTMLElement
-      const next = document.querySelector(
-        '.blog-slider .splide__arrow--next.custom__arrow-next',
-      ) as HTMLElement
-
-      if (prev && next) {
-        prev.style.setProperty('--tw-arrow-translate', `-${x}px`)
-        next.style.setProperty('--tw-arrow-translate', `${x}px`)
-      }
-    }
-
-    const resizeObserver = new ResizeObserver(handleResize)
-
-    if (target) resizeObserver.observe(target)
-
-    return () => {
-      if (target) resizeObserver.unobserve(target)
-    }
-  }, [data])
-
-  const splideOptions = {
-    arrowPath: Arrow(),
-    type: 'loop',
-    perPage: 3,
-    perMove: 1,
-    pagination: true,
-    arrows: true,
-    autoplay: true,
-    interval: 3000,
-    focus: 'center',
-    breakpoints: {
-      768: { perPage: 1 },
-    },
-    classes: {
-      arrows: 'splide__arrows custom__arrows',
-      arrow: 'splide__arrow custom__arrow',
-      prev: 'splide__arrow--prev custom__arrow-prev',
-      next: 'splide__arrow--next custom__arrow-next',
-      pagination: 'splide__pagination custom__pagination',
-      page: 'splide__pagination__page custom__pagination-page',
-    },
-  }
-
   return (
-    <section
-      aria-labelledby="more about us"
-      className="section about-us bg-foreground text-background"
-    >
-      <div className="about__wrapper">
+    <BlogCarousel
+      titleId={titleId}
+      header={
         <div className="mb-6 contents items-center justify-between md:flex md:gap-[40px]">
           <h2
-            id="more about us"
+            id={titleId}
             className="title-section text-center !normal-case md:text-start"
           >
             {t('title')}
@@ -115,42 +33,35 @@ export default function BlogSection({ data }: IBlogSectionProps) {
             {t('more-btn')}
           </UnderlinedLink>
         </div>
-        <div className="mt-[40px] w-full max-w-[400px] md:mt-[80px] md:max-w-none">
-          <Splide
-            aria-labelledby="blog section"
-            className="blog-slider"
-            options={splideOptions}
-          >
-            {data.map((post) => (
-              <SplideSlide key={post._id}>
-                <div className="about__card">
-                  <TransitionLink href={`/${locale}/blog/${post.slug}`}>
-                    <AspectRatio ratio={355 / 285} className="h-full">
-                      <Image
-                        src={post.img}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1439px) 30vw, 400px"
-                        className="rounded-[12px_12px_0_0] object-cover"
-                      />
-                    </AspectRatio>
-                    <div className="p-4">
-                      <p className="mt-2 text-sm text-gray-400">
-                        {formatDate(
-                          post.createdAt instanceof Date
-                            ? post.createdAt
-                            : new Date(post.createdAt),
-                        )}
-                      </p>
-                      <h3 className="card__link text-white">{post.title}</h3>
-                    </div>
-                  </TransitionLink>
-                </div>
-              </SplideSlide>
-            ))}
-          </Splide>
-        </div>
-      </div>
-    </section>
+      }
+    >
+      {data.map((post, index) => (
+        <li key={post._id} className="splide__slide">
+          <div className="about__card">
+            <TransitionLink href={`/${locale}/blog/${post.slug}`}>
+              <AspectRatio ratio={355 / 285} className="h-full">
+                <BlogImage
+                  src={post.img}
+                  alt={post.title}
+                  fetchPriority={
+                    index < 2 || index === data.length - 1 ? 'auto' : 'low'
+                  }
+                />
+              </AspectRatio>
+              <div className="p-4">
+                <p className="mt-2 text-sm text-gray-400">
+                  {formatDate(
+                    post.createdAt instanceof Date
+                      ? post.createdAt
+                      : new Date(post.createdAt),
+                  )}
+                </p>
+                <h3 className="card__link text-white">{post.title}</h3>
+              </div>
+            </TransitionLink>
+          </div>
+        </li>
+      ))}
+    </BlogCarousel>
   )
 }

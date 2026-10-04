@@ -2,6 +2,7 @@
 
 import { Toast as ToastPrimitive } from '@base-ui/react/toast'
 import { useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Toast,
   ToastClose,
@@ -12,14 +13,13 @@ import {
   ToastTitle,
   ToastViewport,
 } from '@/components/ui/toast'
-import {
-  mountToastRenderer,
-  toastManager,
-  type ToastData,
-} from '@/hooks/useToast'
+import { mountToastRenderer, type ToastData } from '@/hooks/useToast'
+
+const toastManager = ToastPrimitive.createToastManager<ToastData>()
 
 function ToastList() {
   const { toasts } = ToastPrimitive.useToastManager<ToastData>()
+  const t = useTranslations('cart')
 
   return (
     <ToastPortal>
@@ -36,7 +36,7 @@ function ToastList() {
                 <ToastDescription />
               </div>
               {toast.data?.action}
-              <ToastClose />
+              <ToastClose aria-label={t('close')} />
             </ToastContent>
           </Toast>
         ))}
@@ -46,7 +46,7 @@ function ToastList() {
 }
 
 export default function Toaster() {
-  useEffect(mountToastRenderer, [])
+  useEffect(() => mountToastRenderer(toastManager), [])
 
   return (
     <ToastProvider toastManager={toastManager} limit={1} timeout={5000}>

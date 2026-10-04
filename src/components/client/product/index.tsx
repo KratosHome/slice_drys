@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import WeightSelector from './weight-selector'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
 import Image from 'next/image'
 import TopLabel from '@/components/client/labels/top-label'
@@ -24,7 +17,7 @@ import { getProductVariant, productVariantUrl } from '@/utils/product-variant'
 import { trackProductSelection } from '@/utils/analytics'
 
 interface IProductProps {
-  product: IProduct
+  product: IProductCard
   priority?: boolean
   initialVariant?: IVariableProduct
   analyticsList?: { id: string; name: string; index?: number }
@@ -47,18 +40,20 @@ export default function Product({
     () => false,
   )
 
-  const { addItemToCart, setOpenCart, hasItemInCart } = useCartStore(
-    (state) => state,
-  )
+  const addItemToCart = useCartStore((state) => state.addItemToCart)
+  const setOpenCart = useCartStore((state) => state.setOpenCart)
 
   const [selectedVariable, setSelectedVariable] = useState(
     getProductVariant(product, String(initialVariant?.weight ?? '')),
   )
   const price = getProductPrice(selectedVariable)
 
-  const isInCart: boolean = hasItemInCart(
-    product._id as string,
-    selectedVariable.weight,
+  const isInCart = useCartStore(
+    (state) =>
+      state.cart.itemList?.some(
+        (item) =>
+          item.id === product._id && item.weight === selectedVariable.weight,
+      ) ?? false,
   )
 
   const handleAddToCart = (): void => {
@@ -87,20 +82,18 @@ export default function Product({
     if (selected) setSelectedVariable(selected)
   }
 
+  const productHref = productVariantUrl(
+    `/${locale}/products/${product.category}/product/${product.slug.toLowerCase()}`,
+    selectedVariable.weight,
+  )
+  const handleSelection = () =>
+    trackProductSelection(product, selectedVariable, analyticsList)
+
   return (
-    <TransitionLink
-      href={productVariantUrl(
-        `/${locale}/products/${product.category}/product/${product.slug.toLowerCase()}`,
-        selectedVariable.weight,
-      )}
-      onClick={() =>
-        trackProductSelection(product, selectedVariable, analyticsList)
-      }
-      className="block px-2 py-8 sm:px-3 md:px-4"
-    >
+    <div className="block px-2 py-8 sm:px-3 md:px-4">
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
-          <div className="absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
+          <div className="pointer-events-none absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">
             {product.statusLabel?.includes('top') ? <TopLabel /> : null}
             {product.statusLabel?.includes('new') ? <NewLabel /> : null}
             {product.statusLabel?.includes('sale') ? (
@@ -109,23 +102,30 @@ export default function Product({
               </CardItem>
             ) : null}
           </div>
-          <CardItem
-            translateZ={70}
-            className="relative z-2 grid h-[229px] w-[140px] place-content-center md:w-[229px]"
+          <TransitionLink
+            href={productHref}
+            onClick={handleSelection}
+            aria-label={`${product.name}, ${selectedVariable.weight} ${t('g')}`}
+            className="block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
           >
-            <Image
-              src={product.img!}
-              alt={product.name}
-              className="relative aspect-square h-full w-full"
-              sizes="(max-width: 767px) 140px, 229px"
-              fill
-              priority={priority}
-              quality={50}
-              style={{
-                objectFit: 'contain',
-              }}
-            />
-          </CardItem>
+            <CardItem
+              translateZ={70}
+              className="relative z-2 grid h-[229px] w-[140px] place-content-center md:w-[229px]"
+            >
+              <Image
+                src={product.img!}
+                alt={product.name}
+                className="relative aspect-square h-full w-full"
+                sizes="(max-width: 767px) 140px, 229px"
+                fill
+                priority={priority}
+                quality={50}
+                style={{
+                  objectFit: 'contain',
+                }}
+              />
+            </CardItem>
+          </TransitionLink>
           {selectedVariable.count > 0 ? (
             <div className="h-6 sm:hidden" />
           ) : null}
@@ -137,51 +137,30 @@ export default function Product({
               {t('expect-soon')}
             </CardItem>
           ) : null}
-          <div className="flex w-full items-start justify-between gap-2">
+          <div className="relative z-20 flex w-full items-start justify-between gap-2">
             <CardItem
               translateZ={50}
               className="text-xs font-medium uppercase sm:text-sm md:text-base lg:text-lg xl:text-xl"
             >
-              {product.name}
-            </CardItem>
-            <CardItem translateZ={60}>
-              <div
-                onClick={(event) => {
-                  event.stopPropagation()
-                  event.preventDefault()
-                }}
+              <TransitionLink
+                href={productHref}
+                onClick={handleSelection}
+                className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
               >
-                <Select
-                  onValueChange={(value) => {
-                    if (value !== null) handleVariableChange(value)
-                  }}
-                  value={String(selectedVariable.weight)}
-                >
-                  <SelectTrigger
-                    className="w-fit border-none shadow-none outline-hidden"
-                    aria-label={t('choose-weight')}
-                  >
-                    <SelectValue>
-                      {selectedVariable.weight} {t('g')}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {product.variables.map((variable) => (
-                        <SelectItem
-                          key={variable._id}
-                          value={String(variable.weight)}
-                        >
-                          {variable.weight} {t('g')}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+                {product.name}
+              </TransitionLink>
+            </CardItem>
+            <CardItem className="pointer-events-auto relative z-20">
+              <WeightSelector
+                variables={product.variables}
+                weight={selectedVariable.weight}
+                unit={t('g')}
+                label={t('choose-weight')}
+                onValueChange={handleVariableChange}
+              />
             </CardItem>
           </div>
-          <div className="flex w-full items-end justify-between">
+          <div className="relative z-20 flex w-full items-end justify-between">
             <CardItem translateZ={30}>
               {isProductPriceReduced(selectedVariable) ? (
                 <>
@@ -200,31 +179,24 @@ export default function Product({
                 </p>
               ) : null}
             </CardItem>
-            <CardItem translateZ={80}>
-              <div
-                onClick={(event) => {
-                  event.stopPropagation()
-                  event.preventDefault()
-                }}
+            <CardItem className="pointer-events-auto relative z-20">
+              <Button
+                className="z-50!"
+                type="button"
+                variant="button"
+                disabled={selectedVariable.count <= 0 || price === undefined}
+                onClick={handleAddToCart}
               >
-                <Button
-                  className="z-50!"
-                  type="button"
-                  variant="button"
-                  disabled={selectedVariable.count <= 0 || price === undefined}
-                  onClick={handleAddToCart}
-                >
-                  {mounted
-                    ? isInCart
-                      ? t('in-cart')
-                      : t('add-to-cart')
-                    : t('add-to-cart')}
-                </Button>
-              </div>
+                {mounted
+                  ? isInCart
+                    ? t('in-cart')
+                    : t('add-to-cart')
+                  : t('add-to-cart')}
+              </Button>
             </CardItem>
           </div>
         </CardBody>
       </CardContainer>
-    </TransitionLink>
+    </div>
   )
 }

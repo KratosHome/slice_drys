@@ -12,7 +12,7 @@ interface ITransitionLinkProps extends Omit<
   LinkProps,
   'as' | 'children' | 'href'
 > {
-  children: ReactNode
+  children?: ReactNode
   href: string
 }
 
@@ -56,6 +56,9 @@ export const TransitionLink = ({
   children,
   href,
   onNavigate,
+  // Next 16.3.8 retries these localized RSC routes indefinitely during automatic
+  // prefetch. Keep navigation on demand until an upstream fix is verified here.
+  prefetch = false,
   ...props
 }: ITransitionLinkProps) => {
   const handleNavigate: NonNullable<LinkProps['onNavigate']> = (event) => {
@@ -80,7 +83,12 @@ export const TransitionLink = ({
   }
 
   return (
-    <Link {...props} href={href} onNavigate={handleNavigate}>
+    <Link
+      {...props}
+      href={href}
+      prefetch={prefetch}
+      onNavigate={handleNavigate}
+    >
       {children}
     </Link>
   )

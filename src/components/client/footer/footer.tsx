@@ -1,5 +1,3 @@
-'use client'
-
 import { pageLinks } from '@/data/main/routs'
 
 import Socials from '@/components/ui/socials'

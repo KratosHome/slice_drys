@@ -61,6 +61,8 @@
     "hamburger-menu": {
       "catalog": "Каталог",
       "logo": "логотип",
+      "menu-title": "Головне меню",
+      "close-main-menu": "Закрити головне меню",
       "open-main-menu": "Відкрийте головне меню"
     }
   },

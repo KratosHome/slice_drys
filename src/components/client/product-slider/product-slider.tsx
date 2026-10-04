@@ -1,20 +1,17 @@
 'use client'
 
-import { Splide, SplideSlide } from '@splidejs/react-splide'
+import type { Options } from '@splidejs/splide'
+import ViewportCarousel from '@/components/client/viewport-carousel'
 import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
 import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 
-import { useSplideConfig } from '@/hooks/useSplideConfig'
-
-import '@splidejs/react-splide/css'
-import '@/components/client/styles/slider.css'
-import './product-slider.css'
+import { useId, useMemo } from 'react'
 
 interface IProductSlider {
-  products: IProduct[]
+  products: IProductCard[]
   title: string
   message: string
 }
@@ -24,38 +21,45 @@ export default function ProductSlider({
   title,
   message,
 }: IProductSlider) {
-  useSplideConfig('.products-slider', products)
+  const titleId = useId()
 
-  const splideOptions = {
-    arrowPath: Arrow(),
-    autoplay: true,
-    type: 'loop',
-    interval: 3000,
-    perPage: Math.min(products.length, 3),
-    perMove: 1,
-    gap: '18px',
-    focus: 0,
-    arrows: true,
-    pagination: true,
-    breakpoints: {
-      768: {
-        perPage: 1,
-        gap: '0',
+  const splideOptions = useMemo<Options>(
+    () => ({
+      arrowPath: Arrow(),
+      autoplay: true,
+      type: 'slide',
+      rewind: true,
+      interval: 3000,
+      perPage: Math.min(products.length, 3),
+      perMove: 1,
+      gap: '18px',
+      focus: 0,
+      arrows: true,
+      pagination: true,
+      // Splide must not remove Base UI's tabIndex=-1 from its hidden form input.
+      focusableNodes:
+        'a, button, textarea, input:not([aria-hidden="true"]):not([type="hidden"]), select, iframe',
+      breakpoints: {
+        768: {
+          perPage: 1,
+          gap: '0px',
+        },
       },
-    },
-    classes: {
-      arrows: 'splide__arrows custom__arrows',
-      arrow: 'splide__arrow custom__arrow',
-      prev: 'splide__arrow--prev custom__arrow-prev',
-      next: 'splide__arrow--next custom__arrow-next',
-      pagination: 'splide__pagination custom__pagination',
-      page: 'splide__pagination__page custom__pagination-page',
-    },
-  }
+      classes: {
+        arrows: 'splide__arrows custom__arrows',
+        arrow: 'splide__arrow custom__arrow',
+        prev: 'splide__arrow--prev custom__arrow-prev',
+        next: 'splide__arrow--next custom__arrow-next',
+        pagination: 'splide__pagination custom__pagination',
+        page: 'splide__pagination__page custom__pagination-page',
+      },
+    }),
+    [products.length],
+  )
 
   return (
     <section
-      aria-labelledby="popular-products"
+      aria-labelledby={titleId}
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
       <ProductListTracking
@@ -72,7 +76,7 @@ export default function ProductSlider({
       />
       <div className="md:px-[20px] md:pb-16">
         <h2
-          id="popular-products"
+          id={titleId}
           className="title-rubik text-[clamp(32px,calc(32px+64*(100vw-375px)/1065),96px)] uppercase"
         >
           {title}
@@ -82,20 +86,23 @@ export default function ProductSlider({
           <UnderlineWave />
         </p>
       </div>
-      <Splide
-        aria-labelledby={`${title} slider`}
+      <ViewportCarousel
+        aria-labelledby={titleId}
         options={splideOptions}
         className="products-slider text-foreground bg-background mb-14 h-full w-full lg:mb-20"
       >
         {products.map((product, index) => (
-          <SplideSlide key={product._id} className="px-2 py-8 sm:px-3 md:px-4">
+          <li
+            key={product._id}
+            className="splide__slide px-2 py-8 sm:px-3 md:px-4"
+          >
             <Product
               product={product}
               analyticsList={{ id: 'popular_products', name: title, index }}
             />
-          </SplideSlide>
+          </li>
         ))}
-      </Splide>
+      </ViewportCarousel>
     </section>
   )
 }

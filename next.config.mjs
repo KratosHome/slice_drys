@@ -36,6 +36,7 @@ const imageOrigins = [
   "'self'",
   'data:',
   'blob:',
+  'https://www.googletagmanager.com',
   'https://res.cloudinary.com',
   'https://*.fbcdn.net',
   'https://*.instagram.com',
@@ -160,6 +161,15 @@ const nextConfig = {
   },
   async headers() {
     return [
+      {
+        source: '/fonts/rubik-doodle-shadow/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         source: '/(.*)',
         headers: securityHeaders,

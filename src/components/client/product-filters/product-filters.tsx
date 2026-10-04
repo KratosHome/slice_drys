@@ -275,7 +275,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         {sliderValue[0]}
                         {t('g')}
                         <svg className="absolute h-[40px] w-[70px] origin-center">
-                          <use href="/icons/sprite.svg#o-oval" />
+                          <use href="/icons/selection-sprite.svg#o-oval" />
                         </svg>
                       </span>
                     </div>
@@ -285,7 +285,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         {sliderValue[1]}
                         {t('g')}
                         <svg className="absolute h-[40px] w-[70px] origin-center">
-                          <use href="/icons/sprite.svg#o-oval" />
+                          <use href="/icons/selection-sprite.svg#o-oval" />
                         </svg>
                       </span>
                     </div>
@@ -387,7 +387,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                 {sliderValue[0]}
                                 {t('g')}
                                 <svg className="absolute h-[40px] w-[70px] origin-center">
-                                  <use href="/icons/sprite.svg#o-oval" />
+                                  <use href="/icons/selection-sprite.svg#o-oval" />
                                 </svg>
                               </span>
                             </div>
@@ -397,7 +397,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                 {sliderValue[1]}
                                 {t('g')}
                                 <svg className="absolute h-[40px] w-[70px] origin-center">
-                                  <use href="/icons/sprite.svg#o-oval" />
+                                  <use href="/icons/selection-sprite.svg#o-oval" />
                                 </svg>
                               </span>
                             </div>

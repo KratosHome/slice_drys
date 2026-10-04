@@ -2,6 +2,7 @@ import React from 'react'
 import { notFound, permanentRedirect } from 'next/navigation'
 import Product from '@/components/client/product'
 import ProductFilters from '@/components/client/product-filters/product-filters'
+import ClientMessages from '@/i18n/client-messages'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -451,12 +452,14 @@ export default async function ProductsPage(props: {
             </h1>
           </div>
           <div className="flex w-full flex-col md:flex-row md:gap-[50px]">
-            <ProductFilters
-              categories={childCategories}
-              weights={weightData.data.map(String)}
-              rootCategorySlug={rootCategorySlug}
-              activeCategorySlugs={selectedCategories}
-            />
+            <ClientMessages namespaces={['product-list']}>
+              <ProductFilters
+                categories={childCategories}
+                weights={weightData.data.map(String)}
+                rootCategorySlug={rootCategorySlug}
+                activeCategorySlugs={selectedCategories}
+              />
+            </ClientMessages>
             <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
               {productCards.map(({ product, initialVariant, key }, index) => (
                 <Product

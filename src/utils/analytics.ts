@@ -40,7 +40,7 @@ const roundMoney = (value: number) =>
   Math.round((value + Number.EPSILON) * 100) / 100
 
 export function getProductAnalyticsItem(
-  product: IProduct,
+  product: Pick<IProduct, '_id' | 'name' | 'category'>,
   variant: IVariableProduct,
   quantity = 1,
 ): AnalyticsItem | undefined {
@@ -126,7 +126,7 @@ export function trackEcommerceEvent(
 }
 
 export function trackProductSelection(
-  product: IProduct,
+  product: Pick<IProduct, '_id' | 'name' | 'category'>,
   variant: IVariableProduct,
   list?: AnalyticsList,
 ) {

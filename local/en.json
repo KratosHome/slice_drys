@@ -61,6 +61,8 @@
     "hamburger-menu": {
       "catalog": "Catalog",
       "logo": "logo",
+      "menu-title": "Main menu",
+      "close-main-menu": "Close main menu",
       "open-main-menu": "Open main menu"
     }
   },

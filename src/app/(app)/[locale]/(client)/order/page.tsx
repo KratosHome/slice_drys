@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import Order from '@/components/client/order/order'
+import ClientMessages from '@/i18n/client-messages'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -110,11 +111,13 @@ export default async function OrderPage({ params }: { params: Params }) {
         <h1 className="title-section title-rubik mt-10 normal-case! md:mt-[66px]">
           {t('order')}
         </h1>
-        <Order
-          defaultCities={{
-            novaPoshta: defaultCities || [],
-          }}
-        />
+        <ClientMessages namespaces={['order', 'cart', 'toast']}>
+          <Order
+            defaultCities={{
+              novaPoshta: defaultCities || [],
+            }}
+          />
+        </ClientMessages>
       </div>
       <ToTheTop />
     </>

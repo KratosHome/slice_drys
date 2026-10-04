@@ -1,4 +1,5 @@
 import { Suspense, type ReactNode } from 'react'
+import { preload } from 'react-dom'
 
 import Header from '@/components/client/header'
 import Footer from '@/components/client/footer'
@@ -8,12 +9,14 @@ import ThemeProvider from '@/components/providers/theme-provider'
 import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react'
 
-import { Rubik_Doodle_Shadow, Montserrat } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
+import { rubikDoodleShadow } from '@/fonts/rubik-doodle-shadow'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
+import { pickMessages } from '@/i18n/client-messages'
 
 import '../globals.css'
 import SaveReferral from '@/components/client/save-referral'
@@ -27,14 +30,6 @@ const montserrat = Montserrat({
   display: 'swap',
   variable: '--font-montserrat',
   weight: ['400', '500', '600', '700', '800'],
-})
-
-const rubikDoodleShadow = Rubik_Doodle_Shadow({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-  variable: '--font-rubik-doodle-shadow',
-  weight: ['400'],
 })
 
 interface ILocaleLayoutProps {
@@ -54,6 +49,14 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
 
   setRequestLocale(locale)
 
+  for (const href of rubikDoodleShadow.preloads[locale]) {
+    preload(href, {
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous',
+    })
+  }
+
   const [messages, categoriesData] = await Promise.all([
     getMessages(),
     getPublicCategories(),
@@ -69,10 +72,8 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       data-scroll-behavior="smooth"
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
-      <head>
-        <GoogleAnalytics />
-      </head>
       <body suppressHydrationWarning className="flex min-h-svh flex-col">
+        <GoogleAnalytics />
         <Suspense fallback={null}>
           <PageTransition locale={locale} />
         </Suspense>
@@ -82,14 +83,16 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider
+            messages={pickMessages(messages, ['main', 'cart', 'product'])}
+          >
             <ScrollToTop />
             <Toaster />
             <Header productLinks={productLinks} />
             <main className="flex-1">{children}</main>
             <Footer productLinks={productLinks} />
             <SaveReferral />
-            <Analytics />
+            {process.env.VERCEL === '1' ? <Analytics /> : null}
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

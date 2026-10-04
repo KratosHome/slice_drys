@@ -22,6 +22,7 @@ import {
   getPublicPosts,
 } from '@/server/public-data-cache.server'
 import { toPlainObject } from '@/utils/to-plain-object'
+import { toProductCard } from '@/utils/product-card'
 
 export const revalidate = 86400
 
@@ -68,7 +69,7 @@ export default async function HomePage(props: {
       <MainJsonLd products={products} />
       <Hero productLinks={productLinks} />
       <ProductSlider
-        products={products}
+        products={products.map(toProductCard)}
         title={t('products-slider.title')}
         message={t('products-slider.message')}
       />

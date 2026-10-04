@@ -48,3 +48,16 @@
   overflow: visible;
   overflow-x: clip;
 }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .insta-card {
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+  }
+
+  .insta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px hsl(var(--popover-foreground) / 0.2);
+  }
+}
