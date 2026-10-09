@@ -12,6 +12,10 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { convertToBase64 } from '@/utils/convert-to-base-64'
+import {
+  isPostPayloadTooLarge,
+  MAX_POST_PAYLOAD_BYTES,
+} from '@/utils/post-payload'
 import Image from 'next/image'
 import QuillEditor from '@/components/admin/quill-editor/d-quill-editor'
 
@@ -109,28 +113,61 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
   }, [postContent, setValue, post, slug])
 
   const onSubmit = async (data: IPostLocal) => {
-    setIsLoading(true)
+    if (isLoading) return
 
-    if (data.content) data.content[quillEditorLanguage] = quillEditorContent
-
-    const image: string = imageFile ? await convertToBase64(imageFile) : ''
+    data.content = {
+      ...postContent,
+      [quillEditorLanguage]: quillEditorContent,
+    }
 
     if (!data.content.en || !data.content.uk) {
       setContentError('Контент на обох мовах є обов’язковим')
-
       return
-    } else {
-      setContentError(null)
+    }
 
-      let response: IResponse
+    setContentError(null)
 
-      if (post?._id) {
-        response = await editPostServer(post._id, data, image)
-      } else {
-        response = await createPost(data, image)
+    if (!imageFile && !post?.img) {
+      toast({
+        variant: 'destructive',
+        title: 'Додайте зображення допису',
+      })
+      return
+    }
+
+    const showSizeError = () => {
+      toast({
+        variant: 'destructive',
+        title: 'Допис завеликий',
+        description:
+          'Зменште розмір головного зображення або зображень у тексті та спробуйте ще раз.',
+      })
+    }
+
+    // Avoid reading an oversized file into memory just to reject its base64.
+    if (
+      imageFile &&
+      Math.ceil(imageFile.size / 3) * 4 > MAX_POST_PAYLOAD_BYTES
+    ) {
+      showSizeError()
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const image = imageFile ? await convertToBase64(imageFile) : ''
+      const args = post?._id ? [post._id, data, image] : [data, image]
+
+      // Quill can also embed base64 images, so check the entire submission.
+      if (isPostPayloadTooLarge(args)) {
+        showSizeError()
+        return
       }
 
-      setIsLoading(false)
+      const response = post?._id
+        ? await editPostServer(post._id, data, image)
+        : await createPost(data, image)
 
       if (response.success) {
         setIsOpen(false)
@@ -139,6 +176,8 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
           duration: 3000,
           title: 'Success',
         })
+
+        router.refresh()
       } else {
         toast({
           variant: 'destructive',
@@ -146,9 +185,16 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
           description: response.message,
         })
       }
+    } catch {
+      toast({
+        variant: 'destructive',
+        title: 'Не вдалося зберегти допис',
+        description:
+          'Перевірте з’єднання та спробуйте ще раз. Якщо помилка повторюється, увійдіть у свій обліковий запис повторно.',
+      })
+    } finally {
+      setIsLoading(false)
     }
-
-    router.refresh()
   }
 
   const handleRadioChange = (value: string): void => {
@@ -591,7 +637,7 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                     Скасувати
                   </Button>
 
-                  <Button type="submit">
+                  <Button type="submit" disabled={isLoading}>
                     {isLoading ? <Spinner /> : buttonTitle}
                   </Button>
                 </div>
