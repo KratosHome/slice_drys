@@ -1,8 +1,11 @@
 'use client'
 
 import Link, { type LinkProps } from 'next/link'
-import { MoreHorizontal } from 'lucide-react'
-import { type IButtonProps, buttonVariants } from '@/components/ui/button'
+import { MoreHorizontalIcon } from '@/components/ui/native-icons'
+import {
+  type ButtonVariantProps,
+  buttonVariants,
+} from '@/components/ui/button-variants'
 
 import { type ComponentProps, forwardRef } from 'react'
 import { cn } from '@/utils/cn'
@@ -45,7 +48,7 @@ type PaginationLinkProps = {
   isActive?: boolean
   disabled?: boolean
   label?: string
-} & Pick<IButtonProps, 'size'> &
+} & Pick<ButtonVariantProps, 'size'> &
   ComponentProps<'a'> &
   LinkProps
 
@@ -161,7 +164,7 @@ const PaginationEllipsis = ({
     className={cn('flex h-9 w-9 items-center justify-center', className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <MoreHorizontalIcon className="h-4 w-4" />
   </span>
 )
 

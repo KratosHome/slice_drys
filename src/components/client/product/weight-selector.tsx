@@ -1,7 +1,7 @@
 'use client'
 
 import { useId, useRef, useState } from 'react'
-import { ChevronDownIcon } from 'lucide-react'
+import { ChevronDownIcon } from '@/components/ui/native-icons'
 
 type WeightSelectorControlComponent =
   typeof import('./weight-selector-control').default

@@ -5,12 +5,10 @@ import type { Options } from '@splidejs/splide'
 import ViewportCarousel from '@/components/client/viewport-carousel'
 import ViewportImage from '@/components/client/viewport-image'
 import { useViewportImages } from '@/components/client/use-viewport-images'
-import { Arrow } from '@/components/ui/arrow'
 
 const ImagesEnabled = createContext(false)
 
 const splideOptions: Options = {
-  arrowPath: Arrow(),
   type: 'loop',
   perPage: 3,
   perMove: 1,

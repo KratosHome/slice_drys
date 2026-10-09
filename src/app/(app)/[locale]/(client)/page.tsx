@@ -1,3 +1,5 @@
+import '@/app/(app)/homepage-utilities.css'
+
 import type { Metadata } from 'next'
 
 import { mainMetaData } from '@/data/meta-data/main'

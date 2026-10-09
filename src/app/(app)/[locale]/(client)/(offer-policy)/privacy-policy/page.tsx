@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import PrivacyPolicyJsonLd from '@/components/client/json-ld/privacy-policy-json-ld'
 import { locales } from '@/data/locales'
 import { SITE_URL } from '@/data/contacts'

@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Rubik Doodle Shadow";
+  src: url("/fonts/rubik-doodle-shadow/RubikDoodleShadow-home-symbols.3f7831e62061.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0021-0022,U+0027,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026;
+}
+
+@font-face {
+  font-family: "Rubik Doodle Shadow";
+  src: url("/fonts/rubik-doodle-shadow/RubikDoodleShadow-home-cyrillic.e5aa39d560cc.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0401,U+0404,U+0407,U+0410-0411,U+0413-0414,U+0416-0417,U+0419,U+041B-041C,U+0420,U+0424-0427,U+0429-044F,U+0451,U+0454,U+0456-0457,U+0490-0491;
+}
+
+@font-face {
+  font-family: "Rubik Doodle Shadow";
+  src: url("/fonts/rubik-doodle-shadow/RubikDoodleShadow-home-latin-critical.bba4a49d1b96.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0043-0045,U+0048-0049,U+004B,U+004E-0050,U+0052-0055,U+0059;
+}
+
+@font-face {
+  font-family: "Rubik Doodle Shadow";
+  src: url("/fonts/rubik-doodle-shadow/RubikDoodleShadow-home-latin.5d9c10e44827.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0041-0042,U+0046-0047,U+004A,U+004C-004D,U+0051,U+0056-0058,U+005A,U+0061-007A;
+}
+
+@font-face {
+  font-family: "Rubik Doodle Shadow";
+  src: url("/fonts/rubik-doodle-shadow/RubikDoodleShadow-punctuation.853eee59ca84.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0023-0026,U+0028-002C,U+002E-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215;
+}

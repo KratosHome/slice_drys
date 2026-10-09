@@ -1,23 +1,13 @@
-@import 'tailwindcss' source('../../');
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
 @import './theme.css';
 @import '../../fonts/rubik-doodle-shadow.css';
 @import '../../components/client/header/header-scroll.css';
 @import '../../components/ui/pagination.css';
-@import '@splidejs/react-splide/css';
 @import '../../components/client/styles/slider.css';
-@import '../../components/client/product-slider/product-slider.css';
 @import '../../components/client/main/blog/blog.css';
 @import '../../components/client/main/insta-feed/Insta-feed.css';
-
-/* Admin utilities are generated separately by the admin route layout. */
-@source not '../../components/admin';
-@source not './[locale]/admin';
-/* These shared UI primitives currently belong exclusively to the admin UI. */
-@source not '../../components/ui/sidebar.tsx';
-@source not '../../components/ui/sheet.tsx';
-@source not '../../components/ui/table.tsx';
-@source not '../../components/ui/tabs.tsx';
-@source not '../../components/ui/tooltip.tsx';
 
 @layer base {
   *,
@@ -221,30 +211,5 @@ body.page-transition-complete > .page-transition-progress > span {
 
   .page-transition-progress-bar::after {
     display: none;
-  }
-}
-
-@layer utilities {
-  .prose {
-    * {
-      color: hsl(var(--foreground));
-    }
-
-    text-wrap: balance;
-
-    &.ql-editor {
-      :where(h1, h2, h3, h4, h5, h6):not(:first-child) {
-        margin-top: 16px !important;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        break-after: avoid;
-      }
-    }
   }
 }

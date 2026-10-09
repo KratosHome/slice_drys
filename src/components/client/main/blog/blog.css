@@ -1,11 +1,3 @@
-.about-us .splide__arrow {
-  background-color: transparent;
-}
-
-.about-us .splide__pagination__page {
-  background-color: transparent;
-}
-
 .about-us .about__wrapper {
   margin-left: auto;
   margin-right: auto;
@@ -87,40 +79,6 @@
   }
 }
 
-.about-us .splide__pagination.custom__pagination {
-  bottom: -80px;
-  gap: 3px;
-}
-
-@media (min-width: 768px) {
-  .about-us .splide__pagination.custom__pagination {
-    bottom: -77px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .about-us .splide__pagination.custom__pagination {
-    bottom: -79px;
-  }
-}
-
-.about-us .splide__pagination__page.custom__pagination-page {
-  background: url('/icons/slider-bullet-light.svg') no-repeat center / cover;
-}
-
-.dark .about-us .splide__pagination__page.custom__pagination-page {
-  background: url('/icons/slider-bullet.svg') no-repeat center / cover;
-}
-
-.about-us .splide__pagination__page.custom__pagination-page.is-active {
-  background: url('/icons/slider-bullet-active-light.svg') no-repeat center /
-    cover;
-}
-
-.dark .about-us .splide__pagination__page.custom__pagination-page.is-active {
-  background: url('/icons/slider-bullet-active.svg') no-repeat center / cover;
-}
-
 .about-us .splide__slide {
   position: relative;
   align-items: stretch;
@@ -152,9 +110,4 @@
   .about-us .splide__track {
     margin-bottom: 100px;
   }
-}
-
-.about-us .splide__arrow.custom__arrow {
-  bottom: -90px;
-  top: auto;
 }

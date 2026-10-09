@@ -1,5 +1,3 @@
-'use client'
-
 import { contacts } from '@/data/contacts'
 
 import Link from 'next/link'
@@ -24,7 +22,6 @@ export default function NumberCall({
         'group flex cursor-pointer items-end gap-x-3 font-medium',
         className,
       )}
-      aria-labelledby="number-call"
     >
       <div
         className={cn(

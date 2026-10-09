@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import { getTranslations } from 'next-intl/server'
 import Order from '@/components/client/order/order'
 import ClientMessages from '@/i18n/client-messages'

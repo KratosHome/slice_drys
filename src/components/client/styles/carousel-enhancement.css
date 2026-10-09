@@ -1,0 +1,11 @@
+/* Load control styling with the engine; card layout remains in globals.css. */
+@import '@splidejs/react-splide/css';
+@import './slider-controls.css';
+@import '../product-slider/product-slider.css';
+@import '../main/blog/blog-controls.css';
+@import '../main/insta-feed/insta-feed-controls.css';
+
+/* The engine mounts only once this complete stylesheet has been applied. */
+.viewport-carousel {
+  --carousel-enhancement-ready: 1;
+}

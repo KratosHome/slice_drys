@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'

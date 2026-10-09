@@ -7,7 +7,6 @@ import ViewportCarousel from '@/components/client/viewport-carousel'
 import { useViewportImages } from '@/components/client/use-viewport-images'
 import InstaCard from './insta-card'
 import { UnderlinedLink } from '@/components/ui/underlined-link'
-import { Arrow } from '@/components/ui/arrow'
 
 import { useId, useMemo } from 'react'
 
@@ -18,12 +17,11 @@ interface IInstaFeedProps {
 
 export default function InstaFeed({ data, title }: IInstaFeedProps) {
   const titleId = useId()
-  const images = useViewportImages()
+  const { ref, enabled, activate } = useViewportImages()
   const posts = data.slice(0, 5)
 
   const splideOptions = useMemo<Options>(
     () => ({
-      arrowPath: Arrow(),
       type: 'loop',
       autoplay: true,
       interval: 3000,
@@ -49,8 +47,8 @@ export default function InstaFeed({ data, title }: IInstaFeedProps) {
 
   return (
     <section
-      ref={images.ref}
-      onFocusCapture={images.activate}
+      ref={ref}
+      onFocusCapture={activate}
       className="section instafeed px-6 py-12"
       aria-labelledby={titleId}
     >
@@ -82,7 +80,7 @@ export default function InstaFeed({ data, title }: IInstaFeedProps) {
             >
               <InstaCard
                 post={post}
-                imagesEnabled={images.enabled}
+                imagesEnabled={enabled}
                 imagePriority={
                   index < 2 || index === posts.length - 1 ? 'auto' : 'low'
                 }

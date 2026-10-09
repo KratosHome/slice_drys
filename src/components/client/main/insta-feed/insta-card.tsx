@@ -1,5 +1,6 @@
 import ViewportImage from '@/components/client/viewport-image'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 
 interface IInstaFeedCardProps {
   post: InstaFeed
@@ -12,6 +13,7 @@ export default function InstaCard({
   imagesEnabled,
   imagePriority,
 }: IInstaFeedCardProps) {
+  const locale = useLocale()
   return (
     <div className="insta-card bg-background relative mx-auto flex h-full w-full max-w-[400px] flex-col rounded-xl md:max-w-none">
       <div className="font-dmsans grid grid-cols-[auto_1fr] gap-x-[10px] px-[19px] py-[13px]">
@@ -29,7 +31,9 @@ export default function InstaCard({
         href={post.permalink}
         target="_blank"
         rel="noreferrer noopener"
-        aria-label="To the instagram post"
+        aria-label={
+          locale === 'uk' ? 'Відкрити допис в Instagram' : 'Open Instagram post'
+        }
         className="z-10 before:absolute before:inset-0 before:cursor-pointer"
       />
       <div className="relative aspect-square w-full">

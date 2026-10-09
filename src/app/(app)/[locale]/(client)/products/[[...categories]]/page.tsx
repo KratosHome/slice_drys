@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import React from 'react'
 import { notFound, permanentRedirect } from 'next/navigation'
 import Product from '@/components/client/product'

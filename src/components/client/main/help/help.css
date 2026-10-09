@@ -1,3 +1,5 @@
+@import '../../styles/slider-controls.css';
+
 .help {
   background-color: hsl(var(--foreground));
   padding-top: 32px;

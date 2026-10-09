@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { notFound, permanentRedirect } from 'next/navigation'

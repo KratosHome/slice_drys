@@ -1,0 +1,31 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import './theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+
+@source '../../';
+
+/* Admin utilities are generated separately by the admin route layout. */
+@source not '../../components/admin';
+@source not './[locale]/admin';
+/* These shared UI primitives currently belong exclusively to the admin UI. */
+@source not '../../components/ui/sidebar.tsx';
+@source not '../../components/ui/sheet.tsx';
+@source not '../../components/ui/table.tsx';
+@source not '../../components/ui/tabs.tsx';
+@source not '../../components/ui/tooltip.tsx';
+
+/* Inner storefront routes load these utilities through storefront-pages.css.
+   Keep homepage sections and shared controls in this initial stylesheet. */
+@source not './[locale]/(client)/blog';
+@source not './[locale]/(client)/products';
+@source not './[locale]/(client)/wholesale';
+@source not './[locale]/(client)/contacts';
+@source not './[locale]/(client)/order';
+@source not './[locale]/(client)/(offer-policy)';
+@source not '../../components/client/blog';
+@source not '../../components/client/wholesale';
+@source not '../../components/client/contacts';
+@source not '../../components/client/order';
+@source not '../../components/client/product-filters';
+@source not '../../components/client/product-page';
+@source not '../../components/client/main/help';

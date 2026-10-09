@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import PublicOfferJsonLd from '@/components/client/json-ld/public-offer-json-ld'
 import { locales } from '@/data/locales'
 import { SITE_URL } from '@/data/contacts'

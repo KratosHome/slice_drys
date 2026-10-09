@@ -12,7 +12,7 @@ interface ViewportCarouselProps {
   'aria-labelledby': string
 }
 
-// Keep the cards in the server HTML; load and mount the carousel as they approach.
+// Keep native scrolling until the visible carousel can be enhanced after paint.
 export default function ViewportCarousel({
   children,
   className,
@@ -42,7 +42,18 @@ export default function ViewportCarousel({
     let loading = false
     let visible = false
     let carousel: SplideInstance | undefined
+    let frame = 0
+    let idle = 0
+    let timer = 0
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const activationController = new AbortController()
+
+    const cancelActivation = () => {
+      window.cancelAnimationFrame(frame)
+      if (idle) window.cancelIdleCallback(idle)
+      window.clearTimeout(timer)
+      frame = idle = timer = 0
+    }
 
     const updateAutoplay = () => {
       if (!carousel || !options.autoplay) return
@@ -85,7 +96,10 @@ export default function ViewportCarousel({
       if (loading || disposed) return
       loading = true
       try {
-        const { Splide } = await import('@splidejs/splide')
+        const { Splide, arrowPath, waitForCarouselStyles } =
+          await import('./viewport-carousel-enhancement')
+        if (disposed) return
+        await waitForCarouselStyles(root, activationController.signal)
         if (disposed) return
         const track = root.querySelector<HTMLElement>('.splide__track')
         const slides = root.querySelectorAll<HTMLElement>('.splide__slide')
@@ -96,6 +110,7 @@ export default function ViewportCarousel({
         if (track) track.scrollLeft = 0
         carousel = new Splide(root, {
           ...options,
+          arrowPath: options.arrowPath ?? arrowPath,
           start: options.start ?? start,
           labelledby: labelledBy,
           autoplay: options.autoplay ? 'pause' : false,
@@ -107,8 +122,15 @@ export default function ViewportCarousel({
         carousel.on('arrows:mounted refresh', updateArrows)
         carousel.mount()
         carouselRef.current = carousel
+        resizeObserver.observe(root)
+        controlsObserver.observe(root, {
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['aria-expanded'],
+        })
         updateAutoplay()
       } catch {
+        if (disposed) return
         carousel?.destroy(true)
         carousel = undefined
         carouselRef.current = undefined
@@ -118,49 +140,77 @@ export default function ViewportCarousel({
       }
     }
 
+    const scheduleActivation = () => {
+      if (
+        document.readyState !== 'complete' ||
+        !visible ||
+        loading ||
+        disposed ||
+        frame ||
+        idle ||
+        timer
+      )
+        return
+      // Let the first screen paint before optional styles and JS enter the queue.
+      frame = window.requestAnimationFrame(() => {
+        frame = window.requestAnimationFrame(() => {
+          frame = 0
+          const enhance = () => {
+            idle = timer = 0
+            if (visible) void activate()
+          }
+          if (typeof window.requestIdleCallback === 'function') {
+            idle = window.requestIdleCallback(enhance, { timeout: 2000 })
+          } else {
+            timer = window.setTimeout(enhance, 200)
+          }
+        })
+      })
+    }
+    const activateOnInteraction = () => {
+      cancelActivation()
+      void activate()
+    }
+
     const resizeObserver = new ResizeObserver(updateArrows)
     const controlsObserver = new MutationObserver(updateAutoplay)
-    controlsObserver.observe(root, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['aria-expanded'],
-    })
-    resizeObserver.observe(root)
     reducedMotion.addEventListener('change', updateAutoplay)
     root.addEventListener('mouseenter', updateAutoplay)
+    root.addEventListener('mouseenter', activateOnInteraction)
     root.addEventListener('mouseleave', updateAutoplay)
     root.addEventListener('focusin', updateAutoplay)
+    root.addEventListener('focusin', activateOnInteraction)
     root.addEventListener('focusout', afterFocusChange)
+    // Complete the native touch gesture before changing slide positioning.
+    root.addEventListener('pointerup', activateOnInteraction, { passive: true })
     document.addEventListener('visibilitychange', updateAutoplay)
+    window.addEventListener('load', scheduleActivation)
 
-    const approaching = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          void activate()
-          approaching.disconnect()
-        }
-      },
-      { rootMargin: '250px' },
-    )
     const visibility = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
+      if (visible) scheduleActivation()
+      else cancelActivation()
       updateAutoplay()
     })
-    approaching.observe(root)
     visibility.observe(root)
 
     return () => {
       disposed = true
-      approaching.disconnect()
+      activationController.abort()
+      cancelActivation()
       visibility.disconnect()
       resizeObserver.disconnect()
       controlsObserver.disconnect()
       reducedMotion.removeEventListener('change', updateAutoplay)
       root.removeEventListener('mouseenter', updateAutoplay)
+      root.removeEventListener('mouseenter', activateOnInteraction)
       root.removeEventListener('mouseleave', updateAutoplay)
       root.removeEventListener('focusin', updateAutoplay)
+      root.removeEventListener('focusin', activateOnInteraction)
       root.removeEventListener('focusout', afterFocusChange)
+      root.removeEventListener('pointerup', activateOnInteraction)
       document.removeEventListener('visibilitychange', updateAutoplay)
+      window.removeEventListener('load', scheduleActivation)
       carousel?.destroy(true)
       carouselRef.current = undefined
       restoreMarkup()

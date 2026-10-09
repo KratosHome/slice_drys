@@ -2,7 +2,6 @@
 
 import type { Options } from '@splidejs/splide'
 import ViewportCarousel from '@/components/client/viewport-carousel'
-import { Arrow } from '@/components/ui/arrow'
 import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
@@ -25,7 +24,6 @@ export default function ProductSlider({
 
   const splideOptions = useMemo<Options>(
     () => ({
-      arrowPath: Arrow(),
       autoplay: true,
       type: 'slide',
       rewind: true,

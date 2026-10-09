@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Button } from '@/components/ui/button'
+import { NativeButton as Button } from '@/components/ui/native-button'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useState } from 'react'
 

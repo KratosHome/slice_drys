@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { cn } from '@/utils/cn'
 
 interface ISliderItemProps {
@@ -15,6 +15,7 @@ export default function SliderItem({
   isHovered,
 }: ISliderItemProps) {
   const [textWidth, setTextWidth] = useState<number>(190)
+  const curveId = useId()
 
   const textRef = useRef<SVGTextElement>(null)
 
@@ -36,29 +37,36 @@ export default function SliderItem({
         <svg
           viewBox={`0 95 ${textWidth + 150} 50`}
           height="70"
-          className="w-[200px] sm:w-[220px] md:w-[250px]"
+          className="w-[200px] [--hero-label-active:color-mix(in_srgb,var(--hero-accent),black_45%)] sm:w-[220px] md:w-[250px] dark:[--hero-label-active:color-mix(in_srgb,var(--hero-accent),white_45%)]"
+          style={{ '--hero-accent': hoverHexColor } as CSSProperties}
+          aria-hidden="true"
+          focusable="false"
         >
           <path
             stroke="transparent"
             fill="transparent"
             d={`M 35,150 A ${textWidth + 120},120 0 0,1 ${120 + textWidth},150`}
-            id="curve"
+            id={curveId}
           />
           <text
             className={cn(
               isHovered
                 ? 'text-[1.5rem] lg:text-[2.3rem]'
-                : 'fill-mid_gray text-[1rem] lg:text-[1.75rem]',
+                : 'text-[1rem] lg:text-[1.75rem]',
             )}
             fontFamily="Arial"
             letterSpacing="5"
             fill={
               isHovered
-                ? hoverHexColor
-                : 'light-dark(hsl(var(--muted-foreground)),hsl(var(--foreground)))'
+                ? 'var(--hero-label-active)'
+                : 'hsl(var(--muted-foreground))'
             }
           >
-            <textPath href="#curve" startOffset="50%" textAnchor="middle">
+            <textPath
+              href={`#${curveId}`}
+              startOffset="50%"
+              textAnchor="middle"
+            >
               {title}
             </textPath>
           </text>

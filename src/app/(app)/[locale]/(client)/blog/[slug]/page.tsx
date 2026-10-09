@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'

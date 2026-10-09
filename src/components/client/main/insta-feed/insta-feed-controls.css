@@ -1,0 +1,25 @@
+.instafeed .splide__arrow {
+  background-color: transparent;
+  /* Slide-count positioning already leaves room for the pagination row. */
+  margin-inline: 0;
+}
+
+.instafeed .splide__pagination__page {
+  background-color: transparent;
+}
+
+.instafeed .splide__pagination.custom__pagination {
+  bottom: -33px;
+}
+
+@media (min-width: 768px) {
+  .instafeed .splide__pagination.custom__pagination {
+    bottom: -43px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .instafeed .splide__pagination.custom__pagination {
+    bottom: -50px;
+  }
+}

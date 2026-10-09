@@ -1,7 +1,6 @@
-'use client'
-
 import { pageLinks, routs } from '@/data/main/routs'
 
+import HeaderShell from './header-shell'
 import HamburgerMenu from '@/components/client/header/hamburger-menu'
 import LocaleChange from '@/components/client/header/locale-change'
 import SmallCart from '@/components/client/header/small-cart'
@@ -11,7 +10,6 @@ import NumberCall from '@/components/client/number-call'
 import Socials from '@/components/ui/socials'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useEffect, useRef } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { cn } from '@/utils/cn'
 
@@ -24,51 +22,9 @@ export default function Header({ productLinks }: IHeaderProps) {
 
   const locale = useLocale() as ILocale
 
-  const headerRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const header = headerRef.current
-    if (!header) return
-    const desktop = window.matchMedia('(min-width: 1024px)')
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let frame: number | undefined
-
-    const update = () => {
-      frame = undefined
-      const progress = Math.min(
-        1,
-        Math.max(0, window.scrollY) / (desktop.matches ? 100 : 200),
-      )
-      const eased = reducedMotion.matches ? 0 : 1 - (1 - progress) ** 2
-      header.style.setProperty('--header-progress', String(eased))
-      header.dataset.compact = String(eased === 1)
-      header.dataset.scrolled = String(eased > 0)
-    }
-    const scheduleUpdate = () => {
-      if (frame === undefined) frame = window.requestAnimationFrame(update)
-    }
-
-    update()
-    window.addEventListener('scroll', scheduleUpdate, { passive: true })
-    desktop.addEventListener('change', scheduleUpdate)
-    reducedMotion.addEventListener('change', scheduleUpdate)
-    return () => {
-      if (frame !== undefined) window.cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', scheduleUpdate)
-      desktop.removeEventListener('change', scheduleUpdate)
-      reducedMotion.removeEventListener('change', scheduleUpdate)
-    }
-  }, [])
-
   return (
     <>
-      <header
-        ref={headerRef}
-        className={cn(
-          'site-header',
-          'bg-background sticky top-0 z-50 mx-auto w-full max-w-[1240px] border-b-[1px] border-[#E4E4E4] px-5',
-        )}
-      >
+      <HeaderShell>
         <div className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3">
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
@@ -134,7 +90,7 @@ export default function Header({ productLinks }: IHeaderProps) {
             </div>
           </div>
         </div>
-      </header>
+      </HeaderShell>
     </>
   )
 }

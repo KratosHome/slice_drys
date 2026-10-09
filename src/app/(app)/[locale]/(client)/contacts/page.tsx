@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import { getTranslations } from 'next-intl/server'
 import Contacts from '@/components/client/contacts/contacts'
 

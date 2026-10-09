@@ -1,5 +1,4 @@
 import { Suspense, type ReactNode } from 'react'
-import { preload } from 'react-dom'
 
 import Header from '@/components/client/header'
 import Footer from '@/components/client/footer'
@@ -11,6 +10,7 @@ import { Analytics } from '@vercel/analytics/react'
 
 import { Montserrat } from 'next/font/google'
 import { rubikDoodleShadow } from '@/fonts/rubik-doodle-shadow'
+import RubikDoodleShadowFonts from '@/fonts/rubik-doodle-shadow-fonts'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -49,14 +49,6 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
 
   setRequestLocale(locale)
 
-  for (const href of rubikDoodleShadow.preloads[locale]) {
-    preload(href, {
-      as: 'font',
-      type: 'font/woff2',
-      crossOrigin: 'anonymous',
-    })
-  }
-
   const [messages, categoriesData] = await Promise.all([
     getMessages(),
     getPublicCategories(),
@@ -72,6 +64,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
       data-scroll-behavior="smooth"
       className={`${montserrat.className} ${rubikDoodleShadow.variable}`}
     >
+      <head>
+        <RubikDoodleShadowFonts locale={locale} />
+      </head>
       <body suppressHydrationWarning className="flex min-h-svh flex-col">
         <GoogleAnalytics />
         <Suspense fallback={null}>
@@ -91,7 +86,9 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
             <Header productLinks={productLinks} />
             <main className="flex-1">{children}</main>
             <Footer productLinks={productLinks} />
-            <SaveReferral />
+            <Suspense fallback={null}>
+              <SaveReferral />
+            </Suspense>
             {process.env.VERCEL === '1' ? <Analytics /> : null}
           </NextIntlClientProvider>
         </ThemeProvider>

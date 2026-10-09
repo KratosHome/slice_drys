@@ -24,7 +24,7 @@
   },
   "sourceDownloadUrl": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikdoodleshadow/RubikDoodleShadow-Regular.ttf",
   "rebuildCommand": "python scripts/fonts/rubik-doodle-shadow/subset-font.py /path/to/RubikDoodleShadow-Regular.ttf",
-  "formatVersion": 3,
+  "formatVersion": 5,
   "previousCombinedSubsetBytes": 281528,
   "faces": [
     {
@@ -74,5 +74,120 @@
     "descentOverride": "20.95%",
     "lineGapOverride": "0.00%",
     "sizeAdjust": "119.36%"
+  },
+  "progressive": {
+    "criticalHeadings": {
+      "uk": "ТОПОВІ СУШЕНИКИ",
+      "en": "TOP-NOTCH DRIED SUSHENNYKY"
+    },
+    "faces": [
+      {
+        "name": "home-symbols",
+        "file": "RubikDoodleShadow-home-symbols.3f7831e62061.woff2",
+        "unicodeRanges": "U+0021-0022,U+0027,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
+        "characters": 14,
+        "bytes": 12096,
+        "sha256": "3f7831e62061ede94bf06f1cef5462cb7066a4e56c94f9ca15b254205e11d342",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "home-cyrillic-critical",
+        "file": "RubikDoodleShadow-home-cyrillic-critical.3fbb08879836.woff2",
+        "unicodeRanges": "U+0406,U+0412,U+0415,U+0418,U+041A,U+041D-041F,U+0421-0423,U+0428",
+        "characters": 12,
+        "bytes": 18600,
+        "sha256": "3fbb088798367c5b75c7d1561744ac25b1e24e0391d7dd199426e30e56ce102a",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "home-cyrillic",
+        "file": "RubikDoodleShadow-home-cyrillic.e5aa39d560cc.woff2",
+        "unicodeRanges": "U+0401,U+0404,U+0407,U+0410-0411,U+0413-0414,U+0416-0417,U+0419,U+041B-041C,U+0420,U+0424-0427,U+0429-044F,U+0451,U+0454,U+0456-0457,U+0490-0491",
+        "characters": 62,
+        "bytes": 81184,
+        "sha256": "e5aa39d560cc62334a2cdd6b83890997b4ac4ade0f4a19aeb85e91d724805ce2",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "home-latin-critical",
+        "file": "RubikDoodleShadow-home-latin-critical.bba4a49d1b96.woff2",
+        "unicodeRanges": "U+0043-0045,U+0048-0049,U+004B,U+004E-0050,U+0052-0055,U+0059",
+        "characters": 14,
+        "bytes": 20692,
+        "sha256": "bba4a49d1b964e6d386f8123c04a0b919891c45760e2104e8b6e1de8fd7b1368",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "home-latin",
+        "file": "RubikDoodleShadow-home-latin.5d9c10e44827.woff2",
+        "unicodeRanges": "U+0041-0042,U+0046-0047,U+004A,U+004C-004D,U+0051,U+0056-0058,U+005A,U+0061-007A",
+        "characters": 38,
+        "bytes": 62004,
+        "sha256": "5d9c10e4482707ad9f889bf767c27d9ce7e9d72e55676f44756b77cb3e201d2b",
+        "preloadLocales": [],
+        "assetExtraCharacters": ["U+0020"]
+      },
+      {
+        "name": "home-uk-critical",
+        "file": "RubikDoodleShadow-home-uk-critical.8dd8c9e4029c.woff2",
+        "unicodeRanges": "U+0020,U+002D,U+0406,U+0412,U+0415,U+0418,U+041A,U+041D-041F,U+0421-0423,U+0428",
+        "characters": 14,
+        "bytes": 19596,
+        "sha256": "8dd8c9e4029c407d16bbb5499adc3bf85383866f87c7d3b94c2e93654c28dd93",
+        "preloadLocales": ["uk"],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "home-en-critical",
+        "file": "RubikDoodleShadow-home-en-critical.394cf1179a6d.woff2",
+        "unicodeRanges": "U+0020,U+002D,U+0043-0045,U+0048-0049,U+004B,U+004E-0050,U+0052-0055,U+0059",
+        "characters": 16,
+        "bytes": 21712,
+        "sha256": "394cf1179a6d7712bd7e255ac42e1a1a5ca23df85f2237353b17d8f73f20b1d3",
+        "preloadLocales": ["en"],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "punctuation",
+        "file": "RubikDoodleShadow-punctuation.853eee59ca84.woff2",
+        "unicodeRanges": "U+0023-0026,U+0028-002C,U+002E-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
+        "characters": 85,
+        "bytes": 129284,
+        "sha256": "853eee59ca84da0ad3bd4c49b923100d6a5de6169d51ae7c7f121a41f2e1c2cf",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      }
+    ],
+    "subsetBytes": 365168,
+    "localeFaces": {
+      "uk": [
+        "home-uk-critical",
+        "home-symbols",
+        "home-cyrillic",
+        "home-latin-critical",
+        "home-latin",
+        "punctuation"
+      ],
+      "en": [
+        "home-en-critical",
+        "home-symbols",
+        "home-cyrillic-critical",
+        "home-cyrillic",
+        "home-latin",
+        "punctuation"
+      ]
+    },
+    "localeSubsetBytes": {
+      "uk": 324856,
+      "en": 324880
+    },
+    "localePreloadBytes": {
+      "uk": 19596,
+      "en": 21712
+    }
   }
 }

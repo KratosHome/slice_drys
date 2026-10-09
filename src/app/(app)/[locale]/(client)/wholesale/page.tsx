@@ -1,3 +1,5 @@
+import '@/app/(app)/storefront-pages.css'
+
 import InstaFeed from '@/components/client/main/insta-feed'
 import { instaData } from '@/data/main/insta-data'
 import ToTheTop from '@/components/ui/to-the-top'

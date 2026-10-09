@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
+import { NativeButton as Button } from '@/components/ui/native-button'
 import { useCartStore } from '@/store/cart-store'
 
 const CartPanel = dynamic(() => import('./cart-panel'), { ssr: false })

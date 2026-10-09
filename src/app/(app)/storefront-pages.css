@@ -1,0 +1,39 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import './theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+
+/* Preserve the complete utility ordering when route styles remain loaded after
+   navigation. The homepage only needs the smaller shared stylesheet. */
+@source '../../';
+@source not '../../components/admin';
+@source not './[locale]/admin';
+@source not '../../components/ui/sidebar.tsx';
+@source not '../../components/ui/sheet.tsx';
+@source not '../../components/ui/table.tsx';
+@source not '../../components/ui/tabs.tsx';
+@source not '../../components/ui/tooltip.tsx';
+
+@layer utilities {
+  .prose {
+    * {
+      color: hsl(var(--foreground));
+    }
+
+    text-wrap: balance;
+
+    &.ql-editor {
+      :where(h1, h2, h3, h4, h5, h6):not(:first-child) {
+        margin-top: 16px !important;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        break-after: avoid;
+      }
+    }
+  }
+}

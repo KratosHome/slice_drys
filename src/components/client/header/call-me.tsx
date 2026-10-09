@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useId, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
+import { NativeButton as Button } from '@/components/ui/native-button'
 
 const CallMeDialog = dynamic(() => import('./call-me-dialog'), { ssr: false })
 
