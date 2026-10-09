@@ -7,7 +7,7 @@ import UnderlineWave from '@/components/ui/underline-wave'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
 import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 
-import { useId, useMemo } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 interface IProductSlider {
   products: IProductCard[]
@@ -21,6 +21,37 @@ export default function ProductSlider({
   message,
 }: IProductSlider) {
   const titleId = useId()
+  const sectionRef = useRef<HTMLElement>(null)
+  const [imagesEnabled, setImagesEnabled] = useState(false)
+  const activateImages = useCallback(() => setImagesEnabled(true), [])
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section || imagesEnabled) return
+
+    let disposed = false
+    if (!('IntersectionObserver' in window)) {
+      queueMicrotask(() => {
+        if (!disposed) activateImages()
+      })
+      return () => {
+        disposed = true
+      }
+    }
+
+    // Observe the reserved image slots, not the heading above the carousel.
+    // Activate neighboring slides together before navigation or autoplay.
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        activateImages()
+        observer.disconnect()
+      }
+    })
+    section.querySelectorAll('[data-product-image]').forEach((image) => {
+      observer.observe(image)
+    })
+    return () => observer.disconnect()
+  }, [activateImages, imagesEnabled, products])
 
   const splideOptions = useMemo<Options>(
     () => ({
@@ -57,6 +88,9 @@ export default function ProductSlider({
 
   return (
     <section
+      ref={sectionRef}
+      onFocusCapture={activateImages}
+      onPointerDownCapture={activateImages}
       aria-labelledby={titleId}
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
@@ -96,6 +130,7 @@ export default function ProductSlider({
           >
             <Product
               product={product}
+              imageEnabled={imagesEnabled}
               analyticsList={{ id: 'popular_products', name: title, index }}
             />
           </li>

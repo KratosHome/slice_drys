@@ -24,9 +24,8 @@ export default function Hero({ productLinks }: IHeroProps) {
       slidersLocale.some((slider) => slider.slug === link.slug.toLowerCase()),
     )
     .slice(0, slidersLocale.length)
-  const [activeSlug, setActiveSlug] = useState(
-    heroLinks[0]?.slug.toLowerCase() ?? slidersLocale[0].slug,
-  )
+  const initialSlug = heroLinks[0]?.slug.toLowerCase() ?? slidersLocale[0].slug
+  const [activeSlug, setActiveSlug] = useState(initialSlug)
   const hoveredIndex = Math.max(
     0,
     slidersLocale.findIndex((slider) => slider.slug === activeSlug),
@@ -36,24 +35,11 @@ export default function Hero({ productLinks }: IHeroProps) {
 
   const titleRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
-  const subImagesRefs = useRef<HTMLImageElement[]>([])
-
   const previousIndex = useRef(hoveredIndex)
 
   useEffect(() => {
     const categoryChanged = previousIndex.current !== hoveredIndex
     previousIndex.current = hoveredIndex
-    const currentSubImages = slidersLocale[hoveredIndex].subImages ?? []
-
-    // A previous animation's cleanup can restore the old category's positions.
-    // Apply the current layout before loading any optional animation code.
-    subImagesRefs.current.forEach((element, index) => {
-      const item = currentSubImages[index]
-      if (!item || !element.isConnected) return
-      element.style.opacity = '1'
-      element.style.transform = `translate3d(${item.position.desktop.x}px, ${item.position.desktop.y}px, 0) rotate(${item.rotate ?? 0}deg)`
-    })
-
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     if (!categoryChanged || reducedMotion.matches) return
 
@@ -74,12 +60,7 @@ export default function Hero({ productLinks }: IHeroProps) {
           !titleRef.current
         )
           return
-        cleanupAnimation = animateHero(
-          imgRef.current,
-          titleRef.current,
-          subImagesRefs.current.slice(0, currentSubImages.length),
-          currentSubImages,
-        )
+        cleanupAnimation = animateHero(imgRef.current, titleRef.current)
       })
       .catch(() => {
         // Category content stays visible if the optional animation cannot load.
@@ -90,7 +71,7 @@ export default function Hero({ productLinks }: IHeroProps) {
       reducedMotion.removeEventListener('change', stopForReducedMotion)
       cleanupAnimation?.()
     }
-  }, [hoveredIndex, slidersLocale])
+  }, [hoveredIndex])
 
   return (
     <div className="overflow-hidden" aria-labelledby="hero">
@@ -155,7 +136,7 @@ export default function Hero({ productLinks }: IHeroProps) {
                 src={slidersLocale[hoveredIndex].image}
                 alt={slidersLocale[hoveredIndex].title}
                 fill
-                fetchPriority={hoveredIndex === 0 ? 'high' : 'auto'}
+                fetchPriority={activeSlug === initialSlug ? 'high' : 'auto'}
                 loading="eager"
                 quality={60}
                 sizes="(max-width: 1279px) calc(40vw - 16px), 442px"
@@ -163,12 +144,7 @@ export default function Hero({ productLinks }: IHeroProps) {
               />
             </div>
 
-            {slidersLocale[hoveredIndex].subImages ? (
-              <SubImages
-                subImages={slidersLocale[hoveredIndex].subImages}
-                subImagesRefs={subImagesRefs}
-              />
-            ) : null}
+            <SubImages slug={slidersLocale[hoveredIndex].slug} />
           </div>
         </nav>
       </div>

@@ -2,9 +2,14 @@
 
 import createNextIntlPlugin from 'next-intl/plugin'
 import * as NextMdx from '@next/mdx'
+import createBundleAnalyzer from '@next/bundle-analyzer'
 import { LEGACY_PUBLIC_PATHS } from './src/data/legacy-public-paths.mjs'
 
 const withNextIntl = createNextIntlPlugin()
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
+})
 
 const withMDX = NextMdx.default({
   extension: /\.mdx?$/,
@@ -184,4 +189,4 @@ const nextConfig = {
   },
 }
 
-export default withNextIntl(withMDX(nextConfig))
+export default withBundleAnalyzer(withNextIntl(withMDX(nextConfig)))

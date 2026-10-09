@@ -2,7 +2,8 @@
 
 import WeightSelector from './weight-selector'
 import { CardBody, CardContainer, CardItem } from '@/components/ui/3d-card'
-import Image from 'next/image'
+import Image, { type ImageProps } from 'next/image'
+import ViewportImage from '@/components/client/viewport-image'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
 import SaleLabel from '@/components/client/labels/sale-label'
@@ -19,6 +20,7 @@ import { trackProductSelection } from '@/utils/analytics'
 interface IProductProps {
   product: IProductCard
   priority?: boolean
+  imageEnabled?: boolean
   initialVariant?: IVariableProduct
   analyticsList?: { id: string; name: string; index?: number }
 }
@@ -28,6 +30,7 @@ const subscribeToHydration = () => () => undefined
 export default function Product({
   product,
   priority = false,
+  imageEnabled,
   initialVariant,
   analyticsList,
 }: IProductProps) {
@@ -88,6 +91,15 @@ export default function Product({
   )
   const handleSelection = () =>
     trackProductSelection(product, selectedVariable, analyticsList)
+  const imageProps = {
+    src: product.img!,
+    alt: product.name,
+    className: 'relative aspect-square h-full w-full',
+    sizes: '(max-width: 767px) 140px, 229px',
+    fill: true,
+    quality: 50,
+    style: { objectFit: 'contain' },
+  } satisfies ImageProps
 
   return (
     <div className="block px-2 py-8 sm:px-3 md:px-4">
@@ -109,21 +121,15 @@ export default function Product({
             className="block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
           >
             <CardItem
+              data-product-image
               translateZ={70}
               className="relative z-2 grid h-[229px] w-[140px] place-content-center md:w-[229px]"
             >
-              <Image
-                src={product.img!}
-                alt={product.name}
-                className="relative aspect-square h-full w-full"
-                sizes="(max-width: 767px) 140px, 229px"
-                fill
-                priority={priority}
-                quality={50}
-                style={{
-                  objectFit: 'contain',
-                }}
-              />
+              {priority || imageEnabled === undefined ? (
+                <Image {...imageProps} alt={product.name} priority={priority} />
+              ) : (
+                <ViewportImage {...imageProps} enabled={imageEnabled} />
+              )}
             </CardItem>
           </TransitionLink>
           {selectedVariable.count > 0 ? (

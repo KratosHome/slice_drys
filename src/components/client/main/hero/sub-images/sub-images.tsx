@@ -1,6 +1,14 @@
-import type { RefObject } from 'react'
+import { useEffect, useRef } from 'react'
 
 import Image, { type StaticImageData } from 'next/image'
+import type { HeroSlideSlug } from '@/data/hero-links'
+import {
+  actionSubImages,
+  fruitSubImages,
+  meatSubImages,
+  mixSubImages,
+  veggieSubImages,
+} from '@/data/hero-products-animation'
 
 import meat from '../../../../../../public/slider/meat/meet.webp'
 import orange from '../../../../../../public/slider/fruit/orange.webp'
@@ -36,15 +44,61 @@ const imageSources: Partial<Record<string, StaticImageData>> = {
   '/slider/action/right-top-text.webp': rightTopText,
 }
 
-interface ISubImagesProps {
-  subImages: IHeroAnimationSubImage[]
-  subImagesRefs: RefObject<HTMLImageElement[]>
+const subImagesBySlug: Record<HeroSlideSlug, IHeroAnimationSubImage[]> = {
+  meat: meatSubImages,
+  fruits: fruitSubImages,
+  vegetables: veggieSubImages,
+  mixes: mixSubImages,
+  promotions: actionSubImages,
 }
 
-export default function SubImages({
-  subImages,
-  subImagesRefs,
-}: ISubImagesProps) {
+export default function SubImages({ slug }: { slug: HeroSlideSlug }) {
+  const subImages = subImagesBySlug[slug]
+  const subImagesRefs = useRef<HTMLImageElement[]>([])
+  const previousSlug = useRef(slug)
+
+  useEffect(() => {
+    const categoryChanged = previousSlug.current !== slug
+    previousSlug.current = slug
+
+    // Cleanup of the previous category can restore its old inline positions.
+    subImagesRefs.current.forEach((element, index) => {
+      const item = subImages[index]
+      if (!item || !element.isConnected) return
+      element.style.opacity = '1'
+      element.style.transform = `translate3d(${item.position.desktop.x}px, ${item.position.desktop.y}px, 0) rotate(${item.rotate ?? 0}deg)`
+    })
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (!categoryChanged || reducedMotion.matches) return
+
+    let disposed = false
+    let cleanupAnimation: (() => void) | undefined
+    const stopForReducedMotion = () => {
+      if (!reducedMotion.matches) return
+      disposed = true
+      cleanupAnimation?.()
+    }
+    reducedMotion.addEventListener('change', stopForReducedMotion)
+    void import('../hero-animation')
+      .then(({ animateHeroDecorations }) => {
+        if (disposed || reducedMotion.matches) return
+        cleanupAnimation = animateHeroDecorations(
+          subImagesRefs.current.slice(0, subImages.length),
+          subImages,
+        )
+      })
+      .catch(() => {
+        // Decorations remain visible when the optional animation cannot load.
+      })
+
+    return () => {
+      disposed = true
+      reducedMotion.removeEventListener('change', stopForReducedMotion)
+      cleanupAnimation?.()
+    }
+  }, [slug, subImages])
+
   return (
     <div className="hero__animation absolute right-1/2 -bottom-2 z-20 hidden h-4/5 w-2/3 translate-x-1/2 items-center justify-center lg:flex">
       <div className="hero__animation-inner relative z-20 h-[100px] w-[100px]">

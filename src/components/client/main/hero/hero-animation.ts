@@ -1,11 +1,6 @@
 import { gsap } from 'gsap'
 
-export function animateHero(
-  image: HTMLImageElement,
-  title: HTMLDivElement,
-  decorations: HTMLImageElement[],
-  subImages: readonly IHeroAnimationSubImage[],
-) {
+export function animateHero(image: HTMLImageElement, title: HTMLDivElement) {
   const context = gsap.context(() => {
     gsap.fromTo(
       image,
@@ -40,26 +35,31 @@ export function animateHero(
         ease: 'power2.out',
       },
     )
+  })
 
-    const media = gsap.matchMedia()
-    media.add('(min-width: 1024px)', () => {
-      decorations.forEach((element, index) => {
-        const item = subImages[index]
-        if (!item || !element.isConnected) return
-        gsap.fromTo(
-          element,
-          { opacity: 0, x: 0, y: 0 },
-          {
-            opacity: 1,
-            duration: 1.5,
-            x: item.position.desktop.x,
-            y: item.position.desktop.y,
-            ease: 'power2.out',
-          },
-        )
-      })
+  return () => context.revert()
+}
+
+export function animateHeroDecorations(
+  decorations: HTMLImageElement[],
+  subImages: readonly IHeroAnimationSubImage[],
+) {
+  const context = gsap.context(() => {
+    decorations.forEach((element, index) => {
+      const item = subImages[index]
+      if (!item || !element.isConnected) return
+      gsap.fromTo(
+        element,
+        { opacity: 0, x: 0, y: 0 },
+        {
+          opacity: 1,
+          duration: 1.5,
+          x: item.position.desktop.x,
+          y: item.position.desktop.y,
+          ease: 'power2.out',
+        },
+      )
     })
-    return () => media.revert()
   })
 
   return () => context.revert()

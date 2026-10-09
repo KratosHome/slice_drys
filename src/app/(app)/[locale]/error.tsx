@@ -2,14 +2,22 @@
 
 import { useEffect } from 'react'
 import { useLocale } from 'next-intl'
+import FallbackStyles from '@/components/client/fallback-styles'
 
-export default function ErrorPage({
-  error,
-  reset,
-}: {
+interface ErrorPageProps {
   error: Error & { digest?: string }
   reset: () => void
-}) {
+}
+
+export default function ErrorPage(props: ErrorPageProps) {
+  return (
+    <FallbackStyles>
+      <ErrorContent {...props} />
+    </FallbackStyles>
+  )
+}
+
+function ErrorContent({ error, reset }: ErrorPageProps) {
   const locale = useLocale()
   const isUkrainian = locale === 'uk'
 

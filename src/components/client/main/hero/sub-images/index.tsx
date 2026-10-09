@@ -1,7 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { type RefObject, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
+import type { HeroSlideSlug } from '@/data/hero-links'
 
 const DesktopSubImages = dynamic(
   () => import('@/components/client/main/hero/sub-images/sub-images'),
@@ -19,10 +20,7 @@ const subscribeToDesktop = (listener: () => void) => {
 const getDesktopSnapshot = () => window.matchMedia(desktopQuery).matches
 const getServerSnapshot = () => false
 
-export default function SubImages(props: {
-  subImages: IHeroAnimationSubImage[]
-  subImagesRefs: RefObject<HTMLImageElement[]>
-}) {
+export default function SubImages(props: { slug: HeroSlideSlug }) {
   const desktop = useSyncExternalStore(
     subscribeToDesktop,
     getDesktopSnapshot,

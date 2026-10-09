@@ -46,6 +46,13 @@ and
 bun run start
 ```
 
+### Inspect bundle sizes
+
+Run `bun run analyze` to create a production build and interactive bundle reports
+in `.next/analyze/` (`client.html`, `nodejs.html`, and `edge.html`). The reports do
+not open automatically. Use the client report's entrypoint filter to inspect the
+homepage separately from admin and other routes.
+
 ### Additionally:
 
 Check the `.env.example` file, your `.env` file should have the same variables but filled with your data.

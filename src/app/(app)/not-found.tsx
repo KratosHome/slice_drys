@@ -1,5 +1,5 @@
 import './globals.css'
-import './storefront-pages.css'
+import './not-found-utilities.css'
 
 import Link from 'next/link'
 
