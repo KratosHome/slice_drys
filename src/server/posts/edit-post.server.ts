@@ -5,6 +5,7 @@ import { Post } from '@/server/posts/post-schema.server'
 import cloudinary from '@/server/cloudinary-config.server'
 import { fetchTags } from '@/data/fetch-tags'
 import { requirePermission } from '@/server/auth/require-admin.server'
+import { ApiError } from '@/server/api-error.server'
 
 export async function editPostServer(
   id: string,
@@ -12,9 +13,8 @@ export async function editPostServer(
   image?: string,
 ): Promise<IResponse> {
   'use server'
-  await requirePermission('blog:manage')
-
   try {
+    await requirePermission('blog:manage')
     await connectToDbServer()
 
     const existingPost = await Post.findById(id)
@@ -50,7 +50,18 @@ export async function editPostServer(
 
     return { success: true, message: 'Post updated successfully' }
   } catch (error) {
-    console.error(error)
-    return { success: false, message: "Can't update product" }
+    if (error instanceof ApiError && error.statusCode === 401) {
+      return { success: false, message: 'Сеанс завершився. Увійдіть знову.' }
+    }
+
+    if (error instanceof ApiError && error.statusCode === 403) {
+      return {
+        success: false,
+        message: 'Недостатньо прав для керування блогом.',
+      }
+    }
+
+    console.error('Admin post update failed', error)
+    return { success: false, message: 'Не вдалося оновити пост' }
   }
 }

@@ -111,6 +111,12 @@ const securityHeaders = [
 const nextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ['mongoose'],
+  experimental: {
+    serverActions: {
+      // Blog images are sent as base64. Stay below Vercel's 4.5 MB limit.
+      bodySizeLimit: '4mb',
+    },
+  },
   // Resolve historical URLs before removing their trailing slash, so they
   // reach the final page in one redirect. Keep slash removal for other URLs.
   skipTrailingSlashRedirect: true,

@@ -5,14 +5,14 @@ import cloudinary from '@/server/cloudinary-config.server'
 import { revalidateTag } from 'next/cache'
 import { fetchTags } from '@/data/fetch-tags'
 import { requirePermission } from '@/server/auth/require-admin.server'
+import { ApiError } from '@/server/api-error.server'
 
 export async function createPost(
   formData: IPostLocal,
   image: string,
 ): Promise<IResponse> {
-  await requirePermission('blog:manage')
-
   try {
+    await requirePermission('blog:manage')
     await connectToDbServer()
 
     let postData = {
@@ -42,6 +42,17 @@ export async function createPost(
 
     return { success: true, message: 'Post created' }
   } catch (error) {
+    if (error instanceof ApiError && error.statusCode === 401) {
+      return { success: false, message: 'Сеанс завершився. Увійдіть знову.' }
+    }
+
+    if (error instanceof ApiError && error.statusCode === 403) {
+      return {
+        success: false,
+        message: 'Недостатньо прав для керування блогом.',
+      }
+    }
+
     console.error('Admin post creation failed', error)
 
     return {
