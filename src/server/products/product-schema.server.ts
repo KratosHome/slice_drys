@@ -147,6 +147,14 @@ const productSchemaServer = new mongoose.Schema(
         type: String,
         enum: ['kcal', 'kJ'],
       },
+      perGrams: {
+        type: Number,
+        validate: {
+          validator: (value: number | null | undefined) =>
+            value == null || (Number.isFinite(value) && value > 0),
+          message: 'Nutrition basis must be a positive number of grams',
+        },
+      },
     },
     statusLabel: {
       type: [String],

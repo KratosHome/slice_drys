@@ -44,5 +44,8 @@ package-lock.json
 # generated knowledge graph
 /graphify-out/
 
+# local audit reports and screenshots
+/artifacts/
+
 # github
 .github

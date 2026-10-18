@@ -494,7 +494,44 @@ const EditorProduct = ({
 
                   <div className="space-y-2">
                     <div>
-                      <Label htmlFor="nutritionalValue.proteins">Білки</Label>
+                      <Label htmlFor="nutritionalValue.perGrams">
+                        Кількість продукту за етикеткою, г
+                      </Label>
+                      <Input
+                        id="nutritionalValue.perGrams"
+                        type="number"
+                        step="any"
+                        aria-describedby="nutrition-basis-help"
+                        {...register('nutritionalValue.perGrams', {
+                          setValueAs: (value) =>
+                            value == null || value === ''
+                              ? null
+                              : Number(value),
+                          validate: (value) =>
+                            value == null ||
+                            (Number.isFinite(value) && value > 0) ||
+                            'Вкажіть додатну кількість продукту в грамах',
+                        })}
+                      />
+                      <p
+                        id="nutrition-basis-help"
+                        className="text-muted-foreground text-sm"
+                      >
+                        Вкажіть, для якої кількості продукту наведено всі
+                        значення. Залиште порожнім, якщо джерело цього не
+                        підтверджує. Вага пачки не визначає цю кількість.
+                      </p>
+                      {errors.nutritionalValue?.perGrams && (
+                        <span className="text-red-700">
+                          {errors.nutritionalValue.perGrams.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="nutritionalValue.proteins">
+                        Білки, г
+                      </Label>
 
                       <Input
                         id="nutritionalValue.proteins"
@@ -518,7 +555,7 @@ const EditorProduct = ({
                     </div>
 
                     <div>
-                      <Label htmlFor="nutritionalValue.fats">Жири</Label>
+                      <Label htmlFor="nutritionalValue.fats">Жири, г</Label>
 
                       <Input
                         id="nutritionalValue.fats"
@@ -543,7 +580,7 @@ const EditorProduct = ({
 
                     <div>
                       <Label htmlFor="nutritionalValue.carbohydrates">
-                        Вуглеводи
+                        Вуглеводи, г
                       </Label>
 
                       <Input
