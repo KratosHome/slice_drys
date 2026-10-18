@@ -49,9 +49,6 @@ export default function RubikDoodleShadowFonts({
 
     let disposed = false
     let requested = false
-    let idle: number | undefined
-    let fallbackTask: number | undefined
-    const frames: number[] = []
     const cleanups: Array<() => void> = []
     root.dataset.rubikFontStage = 'critical'
 
@@ -73,9 +70,9 @@ export default function RubikDoodleShadowFonts({
         })
     }
 
-    // Interactions and restored scroll positions need the full alphabet now.
-    // There is no forced waiting period, and all server-rendered text stays in
-    // the document throughout font loading.
+    // The first screen already has its heading glyphs. Register the remaining
+    // faces when content approaches the viewport or the visitor interacts,
+    // including restored scroll positions. Readable fallback text stays visible.
     const events = [
       'scroll',
       'wheel',
@@ -107,43 +104,9 @@ export default function RubikDoodleShadowFonts({
 
     if (window.scrollY > 0 || window.location.hash) activate()
 
-    const hero = document.querySelector<HTMLImageElement>(
-      '[aria-labelledby="hero"] img[fetchpriority="high"]',
-    )
-    const firstScreenReady = Promise.all([
-      document.fonts
-        .load('400 32px "Rubik Doodle Shadow"', home.heading)
-        .catch(() => []),
-      document.fonts.ready,
-      hero?.decode().catch(() => undefined),
-    ])
-
-    void firstScreenReady.then(() => {
-      if (disposed || requested) return
-      // Give the ready first screen a paint, then register optional faces when
-      // the browser has time. Early interactions bypass this scheduling.
-      frames.push(
-        window.requestAnimationFrame(() => {
-          frames.push(
-            window.requestAnimationFrame(() => {
-              if (disposed || requested) return
-              if (typeof window.requestIdleCallback === 'function') {
-                idle = window.requestIdleCallback(activate, { timeout: 1000 })
-              } else {
-                fallbackTask = window.setTimeout(activate, 0)
-              }
-            }),
-          )
-        }),
-      )
-    })
-
     return () => {
       disposed = true
       cleanups.forEach((cleanup) => cleanup())
-      frames.forEach((frame) => window.cancelAnimationFrame(frame))
-      if (idle !== undefined) window.cancelIdleCallback(idle)
-      if (fallbackTask !== undefined) window.clearTimeout(fallbackTask)
     }
   }, [home, isHome, pathname])
 

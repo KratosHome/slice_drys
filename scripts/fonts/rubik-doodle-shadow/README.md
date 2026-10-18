@@ -20,10 +20,11 @@ faces and `progressive.localePreloadBytes` records their initial byte count.
 The initial font-face rule is inlined in the head (under 400 bytes per locale),
 so they do not add a render-blocking stylesheet request. Font binaries remain
 ordinary cached WOFF2 assets. The remaining faces are registered from a
-separate stylesheet after first-screen fonts and
-the hero image are ready and painted, or immediately on scrolling, navigation,
-focus, and other interactions. Nearby lower sections also trigger registration.
-There is no fixed waiting period and no content is hidden. Until the remaining
+separate stylesheet when lower sections approach the viewport, or immediately
+on scrolling, navigation, focus, and other interactions. Restored scroll
+positions and direct section links also request them immediately. An idle page
+at the top does not fetch the remaining alphabet. There is no fixed waiting
+period and no content is hidden. Until the remaining
 faces load, the existing metric-adjusted Arial fallback keeps the text readable.
 An inert `noscript` stylesheet supplies every face when JavaScript is disabled.
 

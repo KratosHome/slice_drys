@@ -1,6 +1,12 @@
 'use client'
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
+import {
+  Children,
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 import type { Options, Splide as SplideInstance } from '@splidejs/splide'
 import { cn } from '@/utils/cn'
 
@@ -9,6 +15,8 @@ interface ViewportCarouselProps {
   className?: string
   options: Options
   refreshKey?: boolean | number | string
+  activationThreshold?: number
+  onVisibleSlidesChange?: (start: number, count: number) => void
   'aria-labelledby': string
 }
 
@@ -18,10 +26,13 @@ export default function ViewportCarousel({
   className,
   options,
   refreshKey,
+  activationThreshold = 0,
+  onVisibleSlidesChange,
   'aria-labelledby': labelledBy,
 }: ViewportCarouselProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const carouselRef = useRef<SplideInstance | undefined>(undefined)
+  const slideCount = Children.count(children)
 
   useEffect(() => {
     const root = rootRef.current
@@ -41,6 +52,7 @@ export default function ViewportCarousel({
     let disposed = false
     let loading = false
     let visible = false
+    let readyToEnhance = false
     let carousel: SplideInstance | undefined
     let frame = 0
     let idle = 0
@@ -118,9 +130,15 @@ export default function ViewportCarousel({
           pauseOnHover: false,
           reducedMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
         })
+        // Prepare the destination and its neighbours before movement starts,
+        // including pagination jumps and autoplay.
+        carousel.on('move', (index: number) => {
+          onVisibleSlidesChange?.(index, carousel?.options.perPage ?? 1)
+        })
         // Splide recreates arrows when responsive or motion options change.
         carousel.on('arrows:mounted refresh', updateArrows)
         carousel.mount()
+        onVisibleSlidesChange?.(carousel.index, carousel.options.perPage ?? 1)
         carouselRef.current = carousel
         resizeObserver.observe(root)
         controlsObserver.observe(root, {
@@ -143,7 +161,7 @@ export default function ViewportCarousel({
     const scheduleActivation = () => {
       if (
         document.readyState !== 'complete' ||
-        !visible ||
+        !readyToEnhance ||
         loading ||
         disposed ||
         frame ||
@@ -157,7 +175,7 @@ export default function ViewportCarousel({
           frame = 0
           const enhance = () => {
             idle = timer = 0
-            if (visible) void activate()
+            if (readyToEnhance) void activate()
           }
           if (typeof window.requestIdleCallback === 'function') {
             idle = window.requestIdleCallback(enhance, { timeout: 2000 })
@@ -172,7 +190,10 @@ export default function ViewportCarousel({
       void activate()
     }
 
-    const resizeObserver = new ResizeObserver(updateArrows)
+    const resizeObserver = new ResizeObserver(() => {
+      updateArrows()
+      observeVisibility()
+    })
     const controlsObserver = new MutationObserver(updateAutoplay)
     reducedMotion.addEventListener('change', updateAutoplay)
     root.addEventListener('mouseenter', updateAutoplay)
@@ -186,19 +207,37 @@ export default function ViewportCarousel({
     document.addEventListener('visibilitychange', updateAutoplay)
     window.addEventListener('load', scheduleActivation)
 
-    const visibility = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting
-      if (visible) scheduleActivation()
-      else cancelActivation()
-      updateAutoplay()
-    })
-    visibility.observe(root)
+    let visibility: IntersectionObserver
+    const observeVisibility = () => {
+      visibility?.disconnect()
+      // In landscape, a carousel can be taller than the screen. Require the
+      // same fraction of the available viewport rather than an impossible
+      // fraction of the entire carousel.
+      const height = root.getBoundingClientRect().height
+      const threshold =
+        activationThreshold * Math.min(1, window.innerHeight / (height || 1))
+      visibility = new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting
+          readyToEnhance = visible && entry.intersectionRatio >= threshold
+          if (readyToEnhance) scheduleActivation()
+          else cancelActivation()
+          updateAutoplay()
+        },
+        { threshold: [0, threshold] },
+      )
+      visibility.observe(root)
+    }
+    observeVisibility()
+    resizeObserver.observe(root)
+    window.addEventListener('resize', observeVisibility)
 
     return () => {
       disposed = true
       activationController.abort()
       cancelActivation()
       visibility.disconnect()
+      window.removeEventListener('resize', observeVisibility)
       resizeObserver.disconnect()
       controlsObserver.disconnect()
       reducedMotion.removeEventListener('change', updateAutoplay)
@@ -215,11 +254,11 @@ export default function ViewportCarousel({
       carouselRef.current = undefined
       restoreMarkup()
     }
-  }, [options, labelledBy])
+  }, [options, labelledBy, activationThreshold, onVisibleSlidesChange])
 
   useEffect(() => {
     carouselRef.current?.refresh()
-  }, [children, refreshKey])
+  }, [slideCount, refreshKey])
 
   return (
     <div

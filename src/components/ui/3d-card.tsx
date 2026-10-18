@@ -1,22 +1,14 @@
 'use client'
 
 import {
-  type Dispatch,
-  type SetStateAction,
+  type CSSProperties,
   type ReactNode,
   type MouseEvent,
   type ElementType,
-  createContext,
-  useState,
-  useContext,
   useRef,
   useEffect,
 } from 'react'
 import { cn } from '@/utils/cn'
-
-const MouseEnterContext = createContext<
-  [boolean, Dispatch<SetStateAction<boolean>>] | undefined
->(undefined)
 
 export const CardContainer = ({
   children,
@@ -30,8 +22,6 @@ export const CardContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const supportsHover = useRef(false)
 
-  const [isMouseEntered, setIsMouseEntered] = useState<boolean>(false)
-
   useEffect(() => {
     const media = window.matchMedia(
       '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
@@ -39,7 +29,6 @@ export const CardContainer = ({
     const update = () => {
       supportsHover.current = media.matches
       if (!media.matches) {
-        setIsMouseEntered(false)
         if (containerRef.current) containerRef.current.style.transform = 'none'
       }
     }
@@ -60,44 +49,35 @@ export const CardContainer = ({
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`
   }
 
-  const handleMouseEnter = (): void => {
-    if (!supportsHover.current) return
-    setIsMouseEntered(true)
-    if (!containerRef.current) return
-  }
-
   const handleMouseLeave = (): void => {
     if (!containerRef.current) return
 
-    setIsMouseEntered(false)
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`
   }
 
   return (
-    <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
+    <div
+      className={cn('flex h-full w-full', containerClassName)}
+      style={{
+        perspective: '1000px',
+      }}
+    >
       <div
-        className={cn('flex h-full w-full', containerClassName)}
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className={cn(
+          'card-depth-surface',
+          'relative transition-all duration-200 ease-linear',
+          className,
+        )}
         style={{
-          perspective: '1000px',
+          transformStyle: 'preserve-3d',
         }}
       >
-        <div
-          ref={containerRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className={cn(
-            'relative transition-all duration-200 ease-linear',
-            className,
-          )}
-          style={{
-            transformStyle: 'preserve-3d',
-          }}
-        >
-          {children}
-        </div>
+        {children}
       </div>
-    </MouseEnterContext.Provider>
+    </div>
   )
 }
 
@@ -118,15 +98,6 @@ export const CardBody = ({
       {children}
     </div>
   )
-}
-
-const useMouseEnter = () => {
-  const context = useContext(MouseEnterContext)
-
-  if (context === undefined) {
-    throw new Error('useMouseEnter must be used within a MouseEnterProvider')
-  }
-  return context
 }
 
 export const CardItem = ({
@@ -151,30 +122,18 @@ export const CardItem = ({
   rotateY?: number | string
   rotateZ?: number | string
 }) => {
-  const ref = useRef<HTMLDivElement>(null)
-
-  const [isMouseEntered] = useMouseEnter()
-
-  useEffect(() => {
-    handleAnimations()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMouseEntered])
-
-  const handleAnimations = (): void => {
-    if (!ref.current) return
-
-    if (isMouseEntered) {
-      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`
-    } else {
-      ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`
-    }
-  }
-
   return (
     <Tag
-      ref={ref}
-      className={cn('transition duration-200 ease-linear', className)}
+      className={cn(
+        'card-depth-item',
+        'transition duration-200 ease-linear',
+        className,
+      )}
+      style={
+        {
+          '--card-item-transform': `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`,
+        } as CSSProperties
+      }
       {...rest}
     >
       {children}

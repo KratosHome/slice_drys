@@ -7,7 +7,15 @@ import UnderlineWave from '@/components/ui/underline-wave'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
 import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type SyntheticEvent,
+} from 'react'
 
 interface IProductSlider {
   products: IProductCard[]
@@ -22,36 +30,62 @@ export default function ProductSlider({
 }: IProductSlider) {
   const titleId = useId()
   const sectionRef = useRef<HTMLElement>(null)
-  const [imagesEnabled, setImagesEnabled] = useState(false)
-  const activateImages = useCallback(() => setImagesEnabled(true), [])
+  const [enabledImages, setEnabledImages] = useState<Set<string>>(
+    () => new Set(),
+  )
+  const activateImages = useCallback(
+    (start: number, count = 1) => {
+      setEnabledImages((previous) => {
+        const next = new Set(previous)
+        // One neighbour in each direction is ready for native swiping or autoplay.
+        for (
+          let i = Math.max(0, start - 1);
+          i < Math.min(products.length, start + count + 1);
+          i++
+        ) {
+          next.add(products[i].slug)
+        }
+        return next.size === previous.size ? previous : next
+      })
+    },
+    [products],
+  )
+  const activateFocusedImages = (event: SyntheticEvent<HTMLElement>) => {
+    const slide = (event.target as Element).closest<HTMLElement>(
+      '[data-product-index]',
+    )
+    if (slide) activateImages(Number(slide.dataset.productIndex))
+  }
 
   useEffect(() => {
     const section = sectionRef.current
-    if (!section || imagesEnabled) return
+    if (!section) return
 
     let disposed = false
     if (!('IntersectionObserver' in window)) {
       queueMicrotask(() => {
-        if (!disposed) activateImages()
+        if (!disposed) activateImages(0, products.length)
       })
       return () => {
         disposed = true
       }
     }
 
-    // Observe the reserved image slots, not the heading above the carousel.
-    // Activate neighboring slides together before navigation or autoplay.
+    // The clipped, offscreen slides should not all start fetching when the
+    // first image enters the viewport. Keep their reserved SSR geometry.
     const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        activateImages()
-        observer.disconnect()
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        const slide = entry.target.closest<HTMLElement>('[data-product-index]')
+        if (slide) activateImages(Number(slide.dataset.productIndex))
+        observer.unobserve(entry.target)
       }
     })
     section.querySelectorAll('[data-product-image]').forEach((image) => {
       observer.observe(image)
     })
     return () => observer.disconnect()
-  }, [activateImages, imagesEnabled, products])
+  }, [activateImages, products.length])
 
   const splideOptions = useMemo<Options>(
     () => ({
@@ -89,8 +123,8 @@ export default function ProductSlider({
   return (
     <section
       ref={sectionRef}
-      onFocusCapture={activateImages}
-      onPointerDownCapture={activateImages}
+      onFocusCapture={activateFocusedImages}
+      onPointerDownCapture={activateFocusedImages}
       aria-labelledby={titleId}
       className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
     >
@@ -121,16 +155,20 @@ export default function ProductSlider({
       <ViewportCarousel
         aria-labelledby={titleId}
         options={splideOptions}
+        refreshKey={products.map((product) => product.slug).join(',')}
+        activationThreshold={0.75}
+        onVisibleSlidesChange={activateImages}
         className="products-slider text-foreground bg-background mb-14 h-full w-full lg:mb-20"
       >
         {products.map((product, index) => (
           <li
             key={product._id}
+            data-product-index={index}
             className="splide__slide px-2 py-8 sm:px-3 md:px-4"
           >
             <Product
               product={product}
-              imageEnabled={imagesEnabled}
+              imageEnabled={enabledImages.has(product.slug)}
               analyticsList={{ id: 'popular_products', name: title, index }}
             />
           </li>
