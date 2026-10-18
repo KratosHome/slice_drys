@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 
-test('blog submission handles large images and recovers from failed requests', () => {
+test('blog editor preserves SEO titles and handles image limits and failed requests', () => {
   // Keep React and action mocks isolated from the other suites. Exercise the
   // actual editor handlers without a browser, database or image-hosting calls.
   const script = `
@@ -15,15 +15,35 @@ test('blog submission handles large images and recovers from failed requests', (
 
     let state = []
     let cursor = 0
+    let effects = []
+    let effectCursor = 0
+    let pendingEffects = []
+    let values
+    let validations = {}
+    let post
     let calls = []
+    let editCalls = []
     let notices = []
     let refreshed = 0
     let response = { success: true, message: 'Created' }
     let resolveAction
 
+    const setValue = (name, value) => {
+      const keys = name.split('.')
+      let target = values
+      for (const key of keys.slice(0, -1)) target = target[key] ??= {}
+      target[keys.at(-1)] = structuredClone(value)
+    }
+
     mock.module('react', () => ({
       ...React,
-      useEffect() {},
+      useEffect(effect, dependencies) {
+        const index = effectCursor++
+        if (!effects[index] || dependencies.some((dependency, i) => !Object.is(dependency, effects[index][i]))) {
+          pendingEffects.push(effect)
+          effects[index] = dependencies
+        }
+      },
       useState(initial) {
         const index = cursor++
         if (!(index in state)) state[index] = initial
@@ -32,12 +52,21 @@ test('blog submission handles large images and recovers from failed requests', (
         }]
       },
     }))
-    mock.module('react-hook-form', () => ({ useForm: () => ({
-      register: () => ({}),
-      handleSubmit: (handler) => handler,
-      setValue() {},
-      formState: { errors: {} },
-    }) }))
+    mock.module('react-hook-form', () => ({ useForm: ({ defaultValues }) => {
+      values ??= structuredClone(defaultValues)
+      return {
+        register: (name, options = {}) => {
+          validations[name] = options
+          return { name, onChange: (event) => {
+            setValue(name, event.target.value)
+            options.onChange?.(event)
+          } }
+        },
+        handleSubmit: (handler) => (data) => handler(structuredClone(data ?? values)),
+        setValue,
+        formState: { errors: {} },
+      }
+    } }))
     mock.module('next/navigation', () => ({
       useRouter: () => ({ refresh() { refreshed += 1 } }),
     }))
@@ -70,7 +99,7 @@ test('blog submission handles large images and recovers from failed requests', (
       },
     }))
     mock.module('@/server/posts/edit-post.server', () => ({
-      editPostServer: async () => { throw new Error('Unexpected edit') },
+      editPostServer: async (...args) => { editCalls.push(args); return response },
     }))
     mock.module('@/server/posts/delete-post.server', () => ({
       deletePost: async () => { throw new Error('Unexpected deletion') },
@@ -92,20 +121,28 @@ test('blog submission handles large images and recovers from failed requests', (
       if (predicate(node)) return node
       return find(node.props?.children, predicate)
     }
-    const render = () => { cursor = 0; return EditorPost({ buttonTitle: 'створити' }) }
+    const render = () => {
+      cursor = 0; effectCursor = 0; pendingEffects = []
+      const result = EditorPost({ buttonTitle: post ? 'редагувати' : 'створити', post })
+      for (const effect of pendingEffects) effect()
+      return result
+    }
     const submitButton = () => find(render(), (node) => node.props?.type === 'submit')
     const submit = (data = formData()) => find(render(), (node) => node.type === 'form').props.onSubmit(data)
     const setContent = (content) => find(render(), (node) => node.type === 'quill-editor').props.setContent(content)
     const setLanguage = (value) => find(render(), (node) => node.type === 'RadioGroup').props.onChange({
       target: { value, checked: true },
     })
+    const setField = (id, value) => find(render(), (node) => node.props?.id === id).props.onChange({ target: { value } })
+    const submitCurrent = () => find(render(), (node) => node.type === 'form').props.onSubmit()
     const setImage = (size, name = 'cover.webp') => {
       find(render(), (node) => node.props?.type === 'file').props.onChange({
         target: { files: [new File([new Uint8Array(size)], name, { type: 'image/webp' })] },
       })
     }
-    function reset() {
-      state = []; calls = []; notices = []; refreshed = 0
+    function reset(existingPost) {
+      state = []; calls = []; editCalls = []; notices = []; refreshed = 0
+      effects = []; values = undefined; validations = {}; post = existingPost
       response = { success: true, message: 'Created' }
       setContent(english)
       setLanguage('uk')
@@ -114,6 +151,52 @@ test('blog submission handles large images and recovers from failed requests', (
       setImage(128)
     }
     const assertReady = () => assert.notEqual(submitButton().props.disabled, true, 'submit must allow another attempt')
+
+    reset()
+    assert.deepEqual(values.seoTitle, { en: '', uk: '' }, 'new posts begin with optional blank SEO titles')
+    for (const locale of ['en', 'uk']) {
+      assert.equal(validations['seoTitle.' + locale].required, undefined)
+      assert.equal(validations['seoTitle.' + locale].minLength, undefined)
+      assert.equal(validations['seoTitle.' + locale].maxLength.value, 255)
+    }
+    await submitCurrent()
+    assert.deepEqual(calls[0][0].seoTitle, { en: '', uk: '' }, 'blank SEO fields may be submitted')
+
+    reset()
+    setField('seo-title-en', 'English search title')
+    setField('seo-title-uk', 'Український заголовок для пошуку')
+    setLanguage('uk')
+    setContent(ukrainian + ' ')
+    setLanguage('en')
+    setField('slug', 'new-article-slug')
+    await submitCurrent()
+    assert.deepEqual(calls[0][0].seoTitle, {
+      en: 'English search title', uk: 'Український заголовок для пошуку',
+    }, 'creation submits each SEO title after content, language and slug changes')
+
+    reset({ ...formData(), _id: 'legacy-post', img: 'https://example.com/cover.webp' })
+    assert.deepEqual(values.seoTitle, { en: '', uk: '' }, 'old posts need no SEO field migration in the editor')
+    setField('seo-title-uk', 'Новий SEO заголовок')
+    setLanguage('uk')
+    setContent(ukrainian + ' ')
+    setLanguage('en')
+    setField('slug', 'legacy-updated')
+    await submitCurrent()
+    assert.equal(editCalls[0][0], 'legacy-post')
+    assert.deepEqual(editCalls[0][1].seoTitle, { en: '', uk: 'Новий SEO заголовок' })
+
+    reset({
+      ...formData(), _id: 'seo-post', img: 'https://example.com/cover.webp',
+      seoTitle: { en: 'Saved English SEO title', uk: 'Збережений SEO заголовок' },
+    })
+    assert.deepEqual(values.seoTitle, post.seoTitle, 'editing loads saved SEO titles')
+    setField('seo-title-en', '')
+    setField('seo-title-uk', 'Оновлений SEO заголовок')
+    setField('title-en', 'A changed ordinary English article title')
+    setLanguage('uk')
+    await submitCurrent()
+    assert.deepEqual(editCalls[0][1].seoTitle, { en: '', uk: 'Оновлений SEO заголовок' },
+      'editing can clear a saved title and preserve changes through ordinary title and language updates')
 
     reset()
     setLanguage('uk')

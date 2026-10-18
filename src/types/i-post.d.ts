@@ -1,6 +1,7 @@
 interface IPost {
   _id?: string
   title: string
+  seoTitle?: string
   content: string
   img: string
   author: string
@@ -15,6 +16,7 @@ interface IPost {
 interface IPostLocal {
   _id?: string
   title: ILocalizedString
+  seoTitle?: Partial<ILocalizedString>
   content: ILocalizedString
   img: string
   author: ILocalizedString

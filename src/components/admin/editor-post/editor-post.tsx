@@ -77,6 +77,10 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
     defaultValues: {
       content: { en: '', uk: '' },
       title: { en: '', uk: '' },
+      seoTitle: {
+        en: post?.seoTitle?.en ?? '',
+        uk: post?.seoTitle?.uk ?? '',
+      },
       img: '',
       slug: post?.slug,
       author: { en: '', uk: '' },
@@ -111,6 +115,13 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
       setValue('slug', slug)
     }
   }, [postContent, setValue, post, slug])
+
+  useEffect(() => {
+    setValue('seoTitle', {
+      en: post?.seoTitle?.en ?? '',
+      uk: post?.seoTitle?.uk ?? '',
+    })
+  }, [post?._id, post?.seoTitle?.en, post?.seoTitle?.uk, setValue])
 
   const onSubmit = async (data: IPostLocal) => {
     if (isLoading) return
@@ -549,6 +560,66 @@ const EditorPost = ({ buttonTitle, post }: ICratePost) => {
                       </span>
                     )}
                   </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between gap-4">
+                    <div>
+                      <Label htmlFor="seo-title-uk">
+                        SEO title (UK, необов’язково)
+                      </Label>
+
+                      <Input
+                        id="seo-title-uk"
+                        maxLength={255}
+                        aria-describedby="seo-title-hint"
+                        {...register('seoTitle.uk', {
+                          maxLength: {
+                            value: 255,
+                            message: 'Максимум 255 символів',
+                          },
+                        })}
+                      />
+
+                      {errors.seoTitle?.uk && (
+                        <span className="text-red-700">
+                          {errors.seoTitle.uk.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="seo-title-en">
+                        SEO title (EN, необов’язково)
+                      </Label>
+
+                      <Input
+                        id="seo-title-en"
+                        maxLength={255}
+                        aria-describedby="seo-title-hint"
+                        {...register('seoTitle.en', {
+                          maxLength: {
+                            value: 255,
+                            message: 'Максимум 255 символів',
+                          },
+                        })}
+                      />
+
+                      {errors.seoTitle?.en && (
+                        <span className="text-red-700">
+                          {errors.seoTitle.en.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <p
+                    id="seo-title-hint"
+                    className="text-muted-foreground text-sm"
+                  >
+                    Якщо залишити порожнім, використовується звичайний заголовок
+                    статті.
+                  </p>
                 </div>
 
                 <div className="flex justify-between">
