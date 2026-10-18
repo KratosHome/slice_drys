@@ -5,7 +5,16 @@ import * as NextMdx from '@next/mdx'
 import createBundleAnalyzer from '@next/bundle-analyzer'
 import { LEGACY_PUBLIC_PATHS } from './src/data/legacy-public-paths.mjs'
 
-const withNextIntl = createNextIntlPlugin()
+const withNextIntl = createNextIntlPlugin({
+  experimental: {
+    messages: {
+      path: './local',
+      format: 'json',
+      locales: 'infer',
+      precompile: true,
+    },
+  },
+})
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
   openAnalyzer: false,

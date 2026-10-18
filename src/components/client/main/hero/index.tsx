@@ -136,8 +136,9 @@ export default function Hero({ productLinks }: IHeroProps) {
                 src={slidersLocale[hoveredIndex].image}
                 alt={slidersLocale[hoveredIndex].title}
                 fill
+                preload={activeSlug === initialSlug}
                 fetchPriority={activeSlug === initialSlug ? 'high' : 'auto'}
-                loading="eager"
+                loading={activeSlug === initialSlug ? undefined : 'eager'}
                 quality={60}
                 sizes="(max-width: 1279px) calc(40vw - 16px), 442px"
                 className="object-contain"
