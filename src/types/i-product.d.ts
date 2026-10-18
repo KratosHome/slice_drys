@@ -56,6 +56,7 @@ interface INutritionalValue {
   carbohydrates: string
   energyValue: string
   energyUnit?: 'kcal' | 'kJ'
+  perGrams?: number | null
 }
 
 interface IVariableProduct {

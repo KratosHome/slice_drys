@@ -23,6 +23,11 @@ export async function editProduct(
       return { success: false, message: 'Product not found' }
     }
 
+    await Product.validate(formData, [
+      'nutritionalValue.perGrams',
+      'nutritionalValue.energyUnit',
+    ])
+
     let imageUrl = existingProduct.img
 
     if (image) {
