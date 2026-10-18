@@ -16,6 +16,18 @@ const postSchemaServer = new mongoose.Schema(
         maxlength: 255,
       },
     },
+    seoTitle: {
+      en: {
+        type: String,
+        trim: true,
+        maxlength: 255,
+      },
+      uk: {
+        type: String,
+        trim: true,
+        maxlength: 255,
+      },
+    },
     content: {
       en: {
         type: String,

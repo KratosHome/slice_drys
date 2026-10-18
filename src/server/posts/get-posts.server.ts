@@ -12,6 +12,7 @@ interface IGetPostsOptions {
 
 const getSelectedFields = (locale: ILocale, includeContent = false) => ({
   [`title.${locale}`]: 1,
+  [`seoTitle.${locale}`]: 1,
   ...(includeContent ? { [`content.${locale}`]: 1 } : {}),
   [`author.${locale}`]: 1,
   [`metaDescription.${locale}`]: 1,
@@ -28,6 +29,7 @@ const formatPost = (post: IPostLocal, locale: ILocale): IPost => ({
   slug: post.slug,
   img: post.img,
   title: post.title[locale],
+  seoTitle: post.seoTitle?.[locale],
   content: post.content?.[locale] ?? '',
   author: post.author[locale],
   metaDescription: post.metaDescription[locale],

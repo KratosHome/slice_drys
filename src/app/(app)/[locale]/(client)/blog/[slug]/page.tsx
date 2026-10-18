@@ -26,17 +26,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data.success || !data.post?.[0]) notFound()
 
   const post = data.post[0]
+  const seoTitle = post.seoTitle?.trim() || post.title
   const metaKeywordsArray =
     post.keywords?.split(',').map((keyword: string) => keyword.trim()) || []
 
   const url = `${SITE_URL}/${locale}/blog/${normalizedSlug}`
 
   return {
-    title: post.title,
+    title: seoTitle,
     description: post.metaDescription,
     keywords: metaKeywordsArray,
     openGraph: {
-      title: post.title,
+      title: seoTitle,
       description: post.metaDescription,
       url,
       images: post.img
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
+      title: seoTitle,
       description: post.metaDescription,
       images: post.img,
     },
