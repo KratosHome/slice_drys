@@ -123,7 +123,7 @@ const Help: FC<HelpProps> = ({ data }) => {
           <p className="help__text">{data.content}</p>
           <Button
             variant="transparent"
-            className="flex max-w-max self-center px-5 py-6"
+            className="flex h-auto min-h-[52px] max-w-full self-center px-5 py-3 whitespace-normal"
             onClick={() => handleImageClick(data.link)}
           >
             <span>{data.button}</span>

@@ -107,8 +107,8 @@ export default async function PostPage({ params }: Props) {
     <>
       <BlogItemJsonLd post={data.post[0]} />
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
-        <div className="my-20 px-20">
-          <h1 className="bg-foreground text-background flex min-h-28 w-[100%] items-center justify-center px-10 py-5 text-left text-4xl leading-[48px] font-bold drop-shadow-[16px_-16px_0px_#A90909]">
+        <div className="my-12 px-6 sm:px-10 md:my-20 md:px-20">
+          <h1 className="bg-foreground text-background flex min-h-28 w-full min-w-0 items-center justify-center px-4 py-5 text-left text-2xl leading-snug font-bold wrap-anywhere drop-shadow-[16px_-16px_0px_#A90909] sm:text-3xl md:px-10 md:text-4xl md:leading-[48px]">
             {title}
           </h1>
         </div>

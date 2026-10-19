@@ -21,11 +21,17 @@ interface IUserData<T> {
   noCall?: boolean
 }
 
+interface ICartProductNames {
+  id: string
+  names: Partial<Record<ILocale, string>>
+}
+
 interface ICartItem {
   id: string
   quantity: number
   image: string
   name: string
+  names?: ICartProductNames['names']
   price: number
   weight: number
   maxQuantity: number

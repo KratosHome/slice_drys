@@ -10,6 +10,7 @@ import CartProductCard from '@/components/client/cart-product-card'
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/utils/cn'
 import styles from './small-cart.module.css'
+import { useCartProductNames } from '@/hooks/useCartProductNames'
 
 export default function CartPanel({
   id,
@@ -22,6 +23,7 @@ export default function CartPanel({
   const local = useLocale() as ILocale
   const titleId = useId()
   const openCart = useCartStore((state) => state.openCart)
+  useCartProductNames(openCart)
   const setOpenCart = useCartStore((state) => state.setOpenCart)
   const cart = useCartStore((state) => state.cart)
   const totalPrice = useCartStore((state) => state.totalPrice)
@@ -50,12 +52,14 @@ export default function CartPanel({
     >
       <PopoverContent
         id={id}
+        data-cart-container
         aria-labelledby={titleId}
         anchor={triggerRef}
         finalFocus={triggerRef}
+        collisionPadding={8}
         className={cn(
           styles.popover,
-          'bg-background outline-foreground mr-0 max-h-[80vh] w-screen overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]',
+          'bg-background outline-foreground mr-0 max-h-[80vh] w-screen max-w-[calc(100vw-16px)] overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]',
         )}
       >
         <div
@@ -73,6 +77,7 @@ export default function CartPanel({
             </h2>
             <button
               type="button"
+              data-cart-fallback
               aria-label={t('close')}
               onClick={() => setOpenCart(false)}
               className={cn(styles.close, 'cursor-pointer text-red-700')}

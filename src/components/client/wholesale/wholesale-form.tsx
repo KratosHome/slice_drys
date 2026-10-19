@@ -62,7 +62,7 @@ const WholesaleForm = () => {
           alt={t('icon-cart')}
           width={400}
           height={400}
-          className="mt-5 rotate-[15deg] object-contain md:mt-[20px]"
+          className="mx-auto mt-5 w-4/5 max-w-[400px] rotate-[15deg] object-contain md:mx-0 md:mt-[20px] md:w-[400px]"
         />
         <Image
           src={'/images/Вag-Logo.webp'}

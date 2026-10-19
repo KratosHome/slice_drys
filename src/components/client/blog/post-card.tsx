@@ -30,7 +30,7 @@ export default function PostCard({
     <TransitionLink
       href={`/${local}/blog/${post?.slug}`}
       className={cn(
-        "md:after:border-foreground relative max-w-[500px] md:max-w-none md:after:absolute md:after:top-0 md:after:h-full md:after:w-0 md:after:border-r md:after:border-dashed md:after:content-[''] md:last:after:content-none",
+        "md:after:border-foreground relative max-w-[500px] min-w-0 md:max-w-none md:after:absolute md:after:top-0 md:after:h-full md:after:w-0 md:after:border-r md:after:border-dashed md:after:content-[''] md:last:after:content-none",
         variant === 'big' ? 'md:after:-right-[25px]' : 'md:after:-right-[43px]',
         className,
       )}
@@ -72,7 +72,7 @@ export default function PostCard({
           </p>
           <p
             className={cn(
-              'mt-1 line-clamp-2 font-semibold text-wrap text-ellipsis',
+              'mt-1 font-semibold wrap-anywhere md:line-clamp-2',
               variant === 'big'
                 ? 'text-[clamp(16px,calc(16px+8*(100vw-375px)/1065),24px)]'
                 : 'text-[clamp(14px,calc(14px+6*(100vw-768px)/672),20px)]',

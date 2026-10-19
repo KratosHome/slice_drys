@@ -16,6 +16,7 @@ interface IAddItemToCartProps {
   maxQuantity?: number
   image?: string
   name?: string
+  names?: ICartProductNames['names']
   price?: number
   weight?: number
 }
@@ -44,6 +45,7 @@ interface ICartActions {
   ) => void
   clearCart: (full?: boolean) => void
   removeItemFromCart: (id: string, weight: number) => void
+  setItemNames: (products: ICartProductNames[]) => void
   setOpenCart: (openCart: boolean) => void
   submitOrder: (
     referralCode: string | undefined,
@@ -102,6 +104,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
               quantity = 1,
               image = '',
               name = '',
+              names,
               price = 0,
               weight = 0,
               maxQuantity = 0,
@@ -137,6 +140,7 @@ export const useCartStore = create<ICartState & ICartActions>()(
               quantity: nextQuantity,
               image,
               name,
+              names: names ?? existingItem?.names,
               price,
               weight,
               maxQuantity,
@@ -154,6 +158,31 @@ export const useCartStore = create<ICartState & ICartActions>()(
                 { ...updatedItem, quantity: addedQuantity },
               ]),
             )
+          },
+          setItemNames: (products) => {
+            const productsById = new Map(
+              products.map((product) => [product.id, product.names]),
+            )
+            set((state) => {
+              let changed = false
+              const itemList = state.cart.itemList?.map((item) => {
+                const incoming = productsById.get(item.id)
+                if (!incoming) return item
+                const names = { ...item.names }
+                for (const locale of ['uk', 'en'] as const) {
+                  const name = incoming[locale]?.trim()
+                  if (name && names[locale] !== name) {
+                    names[locale] = name
+                    changed = true
+                  }
+                }
+                return names.uk === item.names?.uk &&
+                  names.en === item.names?.en
+                  ? item
+                  : { ...item, names }
+              })
+              return changed ? { cart: { ...state.cart, itemList } } : state
+            })
           },
           hasItemInCart: (id, weight) => {
             return (

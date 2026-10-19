@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator'
 import { TransitionLink } from '@/components/client/transition-link'
 import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useRef } from 'react'
 import { cn } from '@/utils/cn'
 
 interface MenuPanelProps {
@@ -33,21 +33,9 @@ export default function MenuPanel({
   hamburgerLinksOther,
 }: MenuPanelProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const [isScrolled, setIsScrolled] = useState(
-    () => document.documentElement.scrollTop > 10,
-  )
   const locale = useLocale() as ILocale
   const t = useTranslations('main.hamburger-menu')
   const pathname = usePathname()
-
-  useEffect(() => {
-    if (!isOpen) return
-    const handleScroll = () =>
-      setIsScrolled(document.documentElement.scrollTop > 10)
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [isOpen])
 
   return (
     <Transition show={isOpen} as={Fragment} appear>
@@ -66,16 +54,15 @@ export default function MenuPanel({
           <DialogPanel
             id={id}
             className={cn(
-              'f-[100svh] bg-background fixed inset-y-0 z-500 w-full py-6 transition duration-500 sm:w-[50%] lg:hidden',
+              'bg-background fixed inset-y-0 z-500 w-full overflow-x-hidden overflow-y-auto overscroll-y-contain pb-6 transition duration-500 sm:w-[50%] lg:hidden',
               'data-closed:-translate-x-full',
               'data-leave:duration-500 data-leave:ease-in-out',
               'data-leave:data-closed:-translate-x-full',
-              isScrolled ? '' : 'top-[33px]',
             )}
           >
             <DialogTitle className="sr-only">{t('menu-title')}</DialogTitle>
             <div className="flex flex-col">
-              <div className="grid grid-cols-7 items-center justify-items-end px-5">
+              <div className="bg-background sticky top-0 z-10 grid grid-cols-7 items-center justify-items-end px-5 pt-6">
                 <button
                   ref={closeButtonRef}
                   type="button"

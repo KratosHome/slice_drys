@@ -29,6 +29,10 @@ Object.defineProperty(globalThis, 'localStorage', {
   configurable: true,
   value: storageApi,
 })
+Object.defineProperty(globalThis, 'window', {
+  configurable: true,
+  value: { localStorage: storageApi },
+})
 const { useCartStore } = await import('./cart-store')
 
 afterAll(() => {
@@ -123,6 +127,79 @@ describe('cart changes and order tracking', () => {
       useCartStore.getState().cart.itemList.map(({ weight }) => weight),
       [30],
     )
+  })
+
+  test('legacy persisted rows gain both names without changing the cart or customer data', async () => {
+    const legacyItems = [cartItem(30, 100), cartItem(150, 457, 2)]
+    const userData = {
+      name: 'Test',
+      deliveryInfo: { deliveryMethod: 'branch' },
+    }
+    storageApi.setItem(
+      'slice-drys-cart',
+      JSON.stringify({
+        version: 0,
+        state: {
+          cart: { itemList: legacyItems, userData },
+          totalProducts: 3,
+          totalPrice: 1014,
+        },
+      }),
+    )
+    await useCartStore.persist.rehydrate()
+    const names = { uk: 'Яловичина', en: 'Beef' }
+    useCartStore.getState().setItemNames([{ id: 'beef', names }])
+
+    const state = useCartStore.getState()
+    assert.deepEqual(
+      state.cart.itemList,
+      legacyItems.map((item) => ({ ...item, names })),
+    )
+    assert.deepEqual(state.cart.userData, userData)
+    assert.equal(state.totalPrice, 1014)
+    assert.equal(state.totalProducts, 3)
+    assert.equal(events().length, 0)
+    assert.deepEqual(
+      JSON.parse(storageApi.getItem('slice-drys-cart')).state.cart.itemList[0]
+        .names,
+      names,
+    )
+  })
+
+  test('late name lookup preserves current quantities and never restores removed rows', () => {
+    const actions = useCartStore.getState()
+    actions.addItemToCart(cartItem(30, 100))
+    actions.addItemToCart(cartItem(150, 457))
+    actions.updateItemQuantity('beef', 3, 5, 150)
+    actions.removeItemFromCart('beef', 30)
+    const tracked = events().length
+    const names = { uk: 'Яловичина', en: 'Beef' }
+    actions.setItemNames([
+      { id: 'beef', names },
+      { id: 'removed-product', names: { uk: 'Видалений', en: 'Removed' } },
+    ])
+
+    assert.deepEqual(useCartStore.getState().cart.itemList, [
+      { ...cartItem(150, 457, 3), names },
+    ])
+    assert.equal(useCartStore.getState().totalPrice, 1371)
+    assert.equal(events().length, tracked)
+    actions.addItemToCart(cartItem(150, 457))
+    assert.deepEqual(useCartStore.getState().cart.itemList[0].names, names)
+  })
+
+  test('missing or partial name results keep the saved fallback and existing translations', () => {
+    const actions = useCartStore.getState()
+    actions.addItemToCart({ ...cartItem(30, 100), names: { en: 'Beef' } })
+    const cart = useCartStore.getState().cart
+    actions.setItemNames([])
+    assert.equal(useCartStore.getState().cart, cart)
+    actions.setItemNames([{ id: 'beef', names: { uk: ' Яловичина ', en: '' } }])
+    assert.equal(useCartStore.getState().cart.itemList[0].name, 'Яловичина')
+    assert.deepEqual(useCartStore.getState().cart.itemList[0].names, {
+      uk: 'Яловичина',
+      en: 'Beef',
+    })
   })
 
   test('a failed order preserves the cart and does not create a purchase event', async () => {

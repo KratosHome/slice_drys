@@ -4,16 +4,27 @@ import { useTranslations } from 'next-intl'
 
 import CartProductCard from '@/components/client/cart-product-card'
 import { useCartStore } from '@/store/cart-store'
+import { useCartProductNames } from '@/hooks/useCartProductNames'
 
 export default function CartList() {
   const t = useTranslations('cart')
+  useCartProductNames()
   const { cart, totalPrice, totalProducts, minOrderAmount, clearCart } =
     useCartStore((state) => state)
 
   return (
-    <div className="flex flex-col">
+    <div
+      data-cart-container
+      role="region"
+      aria-label={t('basket')}
+      tabIndex={-1}
+      className="flex flex-col"
+    >
       {cart.itemList?.length === 0 ? (
-        <div className="mt-4 h-[300px] py-[150px] text-center text-[20px]">
+        <div
+          role="status"
+          className="mt-4 h-[300px] py-[150px] text-center text-[20px]"
+        >
           {t('cart-empty')}
         </div>
       ) : (
@@ -30,12 +41,18 @@ export default function CartList() {
             </span>
           </div>
           <div className="mt-1 px-6 text-right text-base">
-            <span
-              className="before:bg-foreground relative inline-block cursor-pointer select-none before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-left before:scale-x-0 before:opacity-100 before:transition-transform before:duration-300 before:ease-in-out hover:before:scale-x-100"
-              onClick={() => clearCart()}
+            <button
+              type="button"
+              className="before:bg-foreground relative inline-block cursor-pointer select-none before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-left before:scale-x-0 before:opacity-100 before:transition-transform before:duration-300 before:ease-in-out hover:before:scale-x-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+              onClick={(event) => {
+                event.currentTarget
+                  .closest<HTMLElement>('[data-cart-container]')
+                  ?.focus()
+                clearCart()
+              }}
             >
               {t('clear-cart')}
-            </span>
+            </button>
           </div>
 
           <div className="mt-6 space-y-4 overflow-hidden">
