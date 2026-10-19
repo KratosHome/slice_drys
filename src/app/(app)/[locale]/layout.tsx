@@ -7,6 +7,7 @@ import Toaster from '@/components/ui/toaster'
 import ThemeProvider from '@/components/providers/theme-provider'
 import GoogleAnalytics from '@/components/google-analytics'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { Montserrat } from 'next/font/google'
 import { rubikDoodleShadow } from '@/fonts/rubik-doodle-shadow'
@@ -89,7 +90,12 @@ export default async function LocaleLayout(props: ILocaleLayoutProps) {
             <Suspense fallback={null}>
               <SaveReferral />
             </Suspense>
-            {process.env.VERCEL === '1' ? <Analytics /> : null}
+            {process.env.VERCEL === '1' ? (
+              <>
+                <Analytics />
+                <SpeedInsights />
+              </>
+            ) : null}
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
