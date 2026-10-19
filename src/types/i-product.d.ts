@@ -55,7 +55,7 @@ interface INutritionalValue {
   fats: string
   carbohydrates: string
   energyValue: string
-  energyUnit?: 'kcal' | 'kJ'
+  energyUnit?: 'kcal' | 'kJ' | null
   perGrams?: number | null
 }
 

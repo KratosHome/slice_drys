@@ -145,7 +145,7 @@ const productSchemaServer = new mongoose.Schema(
       },
       energyUnit: {
         type: String,
-        enum: ['kcal', 'kJ'],
+        enum: ['kcal', 'kJ', null],
       },
       perGrams: {
         type: Number,

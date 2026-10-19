@@ -488,46 +488,11 @@ const EditorProduct = ({
                 <div>
                   <h2 className="text-lg font-semibold">Харчова цінність</h2>
                   <p className="text-muted-foreground mb-3 text-sm">
-                    Звірте значення, одиниці та базу розрахунку з етикеткою
-                    виробника. Не визначайте одиницю енергії за самим числом.
+                    Усі значення наведені на 100 г продукту. Зберігайте значення
+                    з етикетки, без перерахунку на упаковку.
                   </p>
 
                   <div className="space-y-2">
-                    <div>
-                      <Label htmlFor="nutritionalValue.perGrams">
-                        Кількість продукту за етикеткою, г
-                      </Label>
-                      <Input
-                        id="nutritionalValue.perGrams"
-                        type="number"
-                        step="any"
-                        aria-describedby="nutrition-basis-help"
-                        {...register('nutritionalValue.perGrams', {
-                          setValueAs: (value) =>
-                            value == null || value === ''
-                              ? null
-                              : Number(value),
-                          validate: (value) =>
-                            value == null ||
-                            (Number.isFinite(value) && value > 0) ||
-                            'Вкажіть додатну кількість продукту в грамах',
-                        })}
-                      />
-                      <p
-                        id="nutrition-basis-help"
-                        className="text-muted-foreground text-sm"
-                      >
-                        Вкажіть, для якої кількості продукту наведено всі
-                        значення. Залиште порожнім, якщо джерело цього не
-                        підтверджує. Вага пачки не визначає цю кількість.
-                      </p>
-                      {errors.nutritionalValue?.perGrams && (
-                        <span className="text-red-700">
-                          {errors.nutritionalValue.perGrams.message}
-                        </span>
-                      )}
-                    </div>
-
                     <div>
                       <Label htmlFor="nutritionalValue.proteins">
                         Білки, г
@@ -641,12 +606,10 @@ const EditorProduct = ({
                         className="border-input bg-background flex h-10 w-full rounded-md border px-3 py-2 text-sm"
                         defaultValue=""
                         {...register('nutritionalValue.energyUnit', {
-                          required: 'Звірте та оберіть одиницю за етикеткою',
+                          setValueAs: (value) => (value === '' ? null : value),
                         })}
                       >
-                        <option value="">
-                          Оберіть після перевірки етикетки
-                        </option>
+                        <option value="">Одиницю уточнюємо</option>
                         <option value="kcal">ккал</option>
                         <option value="kJ">кДж</option>
                       </select>

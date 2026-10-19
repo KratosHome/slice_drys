@@ -13,6 +13,7 @@ import {
 } from '@/components/client/product-page/icons'
 import { getTranslations } from 'next-intl/server'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
+import { ProductNutrition } from './nutrition'
 
 interface AccordionsProps {
   nutrition: INutritionalValue
@@ -24,9 +25,6 @@ export const Accordions = async ({
   description,
 }: AccordionsProps) => {
   const t = await getTranslations('product')
-  const perGrams = nutrition.perGrams
-  const hasNutritionBasis =
-    typeof perGrams === 'number' && Number.isFinite(perGrams) && perGrams > 0
 
   const content = JSON.parse(description)
   const converter = new QuillDeltaToHtmlConverter(content.ops)
@@ -44,52 +42,11 @@ export const Accordions = async ({
           transition={{ type: 'spring', stiffness: 300 }}
         >
           <AccordionTrigger className="py-6">
-            <h2>
-              {hasNutritionBasis
-                ? t('nutritional-value-per-grams', {
-                    grams: perGrams,
-                  })
-                : t('nutritional-value')}
-            </h2>
+            <h2>{t('nutritional-value')}</h2>
           </AccordionTrigger>
         </ResponsiveMotion>
         <AccordionContent className="border border-t-0 px-4">
-          {!hasNutritionBasis && (
-            <p className="text-muted-foreground mt-6 text-sm">
-              {t('nutrition-basis-unverified')}
-            </p>
-          )}
-          <section className="my-6 grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2">
-            <div className="flex w-full max-w-[290px] justify-between">
-              <h3 className="font-bold">{t('proteins')}</h3>
-              <span>
-                {nutrition.proteins} {t('g')}
-              </span>
-            </div>
-            <div className="flex w-full max-w-[290px] justify-between">
-              <h3 className="font-bold">{t('fats')}</h3>
-              <span>
-                {nutrition.fats} {t('g')}
-              </span>
-            </div>
-            <div className="flex w-full max-w-[290px] justify-between">
-              <h3 className="font-bold">{t('carbohydrates')}</h3>
-              <span>
-                {nutrition.carbohydrates} {t('g')}
-              </span>
-            </div>
-            <div className="flex w-full max-w-[290px] justify-between gap-4">
-              <h3 className="font-bold">{t('energy-value')}</h3>
-              <span className="text-right">
-                {nutrition.energyUnit === 'kcal' ||
-                nutrition.energyUnit === 'kJ'
-                  ? `${nutrition.energyValue} ${t(nutrition.energyUnit)}`
-                  : t('energy-unit-unverified', {
-                      value: nutrition.energyValue,
-                    })}
-              </span>
-            </div>
-          </section>
+          <ProductNutrition nutrition={nutrition} />
         </AccordionContent>
       </AccordionItem>
 

@@ -15,15 +15,15 @@ import NewLabel from '@/components/client/labels/new-label'
 import { useCartStore } from '@/store/cart-store'
 import SaleLabel from '@/components/client/labels/sale-label'
 import { useTranslations } from 'next-intl'
-import { useSearchParams } from 'next/navigation'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import UnderlineWave from '@/components/ui/underline-wave'
 import { MIN_ORDER_AMOUNT } from '@/constants/order'
 import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
-import { getProductVariant, productVariantUrl } from '@/utils/product-variant'
+import { productVariantUrl } from '@/utils/product-variant'
 import { useProductView } from '@/hooks/useProductView'
+import { useProductVariant } from './product-variant-provider'
 
 const subscribeToHydration = () => () => undefined
 
@@ -36,13 +36,9 @@ export const ProductInfo = ({
 }) => {
   const t = useTranslations('product')
   const tCart = useTranslations('cart')
-  const searchParams = useSearchParams()
-
-  const weightParam = searchParams.get('weight')
-
   const { name, composition, variables } = product
 
-  const selectedVariable = getProductVariant(product, weightParam)
+  const selectedVariable = useProductVariant()
   const price = getProductPrice(selectedVariable)
   useProductView(product, selectedVariable)
 

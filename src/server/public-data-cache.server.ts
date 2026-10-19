@@ -63,7 +63,8 @@ const getCachedMainProducts = unstable_cache(
 const getCachedProduct = unstable_cache(
   async (slug: string, locale: ILocale) =>
     throwOnInfrastructureFailure(await getProductBySlug({ slug, locale })),
-  ['public-product-v2'],
+  // Refresh snapshots that predate the confirmed energy units.
+  ['public-product-v3'],
   {
     revalidate: revalidateDay,
     tags: [fetchTags.products, fetchTags.product, fetchTags.menu],

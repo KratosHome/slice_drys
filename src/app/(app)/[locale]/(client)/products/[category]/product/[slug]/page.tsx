@@ -17,6 +17,7 @@ import {
   getPublicProductRecommendations,
 } from '@/server/public-data-cache.server'
 import { getCanonicalProductCategorySlug } from '@/utils/product-category'
+import { ProductVariantProvider } from '@/components/client/product-page/product-variant-provider'
 
 export const revalidate = 86400
 
@@ -207,19 +208,21 @@ export default async function ProductPage({ params, searchParams }: Props) {
           product={productData.name}
           categoryLink={`products/${canonicalCategorySlug}`}
         />
-        <ProductInfo
-          product={productData as unknown as IProduct}
-          imageGallery={
-            <SliderWithThumbnails
-              img={productData.img}
-              alt={productData.name}
-            />
-          }
-        />
-        <Accordions
-          nutrition={productData.nutritionalValue}
-          description={productData.description}
-        />
+        <ProductVariantProvider product={productData}>
+          <ProductInfo
+            product={productData as unknown as IProduct}
+            imageGallery={
+              <SliderWithThumbnails
+                img={productData.img}
+                alt={productData.name}
+              />
+            }
+          />
+          <Accordions
+            nutrition={productData.nutritionalValue}
+            description={productData.description}
+          />
+        </ProductVariantProvider>
         <Suspense fallback={null}>
           <ProductRecommendations
             locale={locale}

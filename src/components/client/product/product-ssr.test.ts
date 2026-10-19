@@ -28,6 +28,7 @@ test('catalogue and detail SSR include selected weight and price before hydratio
     }))
     const { default: Product } = await import('./src/components/client/product/index.tsx')
     const { ProductInfo } = await import('./src/components/client/product-page/product-page.tsx')
+    const { ProductVariantProvider } = await import('./src/components/client/product-page/product-variant-provider.tsx')
     const product = {
       _id: 'fixture', name: 'Test beef', slug: 'test-beef', category: 'jerky',
       img: '/blog-image.webp', statusLabel: [], composition: ['beef'],
@@ -58,7 +59,9 @@ test('catalogue and detail SSR include selected weight and price before hydratio
       const detailHtml = renderToStaticMarkup(React.createElement(
         NextIntlClientProvider,
         { locale, messages, timeZone: 'Europe/Kyiv' },
-        React.createElement(ProductInfo, { product, imageGallery: null }),
+        React.createElement(ProductVariantProvider, { product },
+          React.createElement(ProductInfo, { product, imageGallery: null }),
+        ),
       ))
       const detailTrigger = detailHtml.match(/<button[^>]*role="combobox"[^>]*>.*?<\\/button>/)?.[0]
       assert.ok(detailTrigger?.includes('id="weight"'), 'detail weight trigger keeps its label association')
