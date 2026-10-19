@@ -4,8 +4,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import 'quill/dist/quill.snow.css'
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import {
   CardIcon,
   ChequeIcon,
@@ -13,43 +11,16 @@ import {
 } from '@/components/client/product-page/icons'
 import { getTranslations } from 'next-intl/server'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
-import { ProductNutrition } from './nutrition'
 
-interface AccordionsProps {
-  nutrition: INutritionalValue
-  description: string
-}
-
-export const Accordions = async ({
-  nutrition,
-  description,
-}: AccordionsProps) => {
+export const Accordions = async () => {
   const t = await getTranslations('product')
-
-  const content = JSON.parse(description)
-  const converter = new QuillDeltaToHtmlConverter(content.ops)
-  const html = converter.convert()
 
   return (
     <Accordion
       multiple
-      defaultValue={['info', 'nutrition', 'about']}
-      className="mx-auto mb-[230px] grid max-w-[988px] gap-6"
+      defaultValue={['info']}
+      className="mx-auto mb-20 grid max-w-[988px] gap-6"
     >
-      <AccordionItem value={'nutrition'}>
-        <ResponsiveMotion
-          whileHover={{ scale: 1.009 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <AccordionTrigger className="py-6">
-            <h2>{t('nutritional-value')}</h2>
-          </AccordionTrigger>
-        </ResponsiveMotion>
-        <AccordionContent className="border border-t-0 px-4">
-          <ProductNutrition nutrition={nutrition} />
-        </AccordionContent>
-      </AccordionItem>
-
       <AccordionItem value={'info'}>
         <ResponsiveMotion
           whileHover={{ scale: 1.009 }}
@@ -131,26 +102,6 @@ export const Accordions = async ({
               </ul>
             </dd>
           </div>
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="about">
-        <ResponsiveMotion
-          whileHover={{ scale: 1.009 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          <AccordionTrigger className="py-6">
-            <h2>{t('about-product')}</h2>
-          </AccordionTrigger>
-        </ResponsiveMotion>
-        <AccordionContent className="border border-t-0">
-          <section className="flex flex-wrap gap-5 sm:flex-nowrap">
-            <article
-              id="editor"
-              className="ql-editor prose lg:prose-xl"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-          </section>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

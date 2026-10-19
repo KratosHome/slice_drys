@@ -18,7 +18,6 @@ import { useTranslations } from 'next-intl'
 import { increaseProductVisit } from '@/server/products/increase-product-visit.server'
 import { Button } from '@/components/ui/button'
 import { ResponsiveMotion } from '@/components/client/responsive-motion'
-import UnderlineWave from '@/components/ui/underline-wave'
 import { MIN_ORDER_AMOUNT } from '@/constants/order'
 import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
 import { productVariantUrl } from '@/utils/product-variant'
@@ -30,9 +29,11 @@ const subscribeToHydration = () => () => undefined
 export const ProductInfo = ({
   product,
   imageGallery,
+  nutritionContent,
 }: {
   product: IProduct
   imageGallery: React.ReactNode
+  nutritionContent?: React.ReactNode
 }) => {
   const t = useTranslations('product')
   const tCart = useTranslations('cart')
@@ -112,87 +113,97 @@ export const ProductInfo = ({
   }
 
   return (
-    <section className="lg:border-light_gray mb-20 flex flex-col gap-10 pb-10 lg:flex-row lg:border">
-      <div className="absolute grid gap-0.5">
+    <section className="relative mb-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
+      <div className="absolute top-0 left-0 z-10 grid gap-0.5">
         {product.statusLabel?.includes('top') && <TopLabel />}
         {product.statusLabel?.includes('new') && <NewLabel />}
         {product.statusLabel?.includes('sale') && <SaleLabel />}
       </div>
       {imageGallery}
-      <div className="lg:w-1/2">
-        <h1 className="bg-foreground text-background relative py-2 pl-3 text-[40px] font-bold">
-          {t('dried-jerky')} {name} {selectedVariable.weight}&nbsp;{t('g')}.
+      <div className="grid min-w-0 grid-cols-1 gap-y-6 lg:w-[56%] lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+        <h1 className="relative order-1 text-[30px] leading-tight font-semibold tracking-tight sm:text-[36px] lg:col-span-2 xl:text-[40px]">
+          <span className="text-muted-foreground mb-2 block text-xs font-medium tracking-[0.16em] uppercase">
+            {t('dried-jerky')}
+          </span>
+          {name}{' '}
+          <span className="text-muted-foreground inline-block align-middle text-lg font-normal tracking-normal whitespace-nowrap sm:text-xl">
+            / {selectedVariable.weight}&nbsp;{t('g')}.
+          </span>
           {selectedVariable.count === 0 && (
-            <div className="flex w-fit items-center bg-red-700 px-2 py-1 text-[11px]! font-medium text-white sm:absolute sm:top-0 sm:right-8 sm:text-xs lg:text-sm">
+            <span className="mt-3 block w-fit rounded-sm bg-red-700 px-2 py-1 text-xs font-medium tracking-normal text-white">
               {t('expect-soon')}
-            </div>
+            </span>
           )}
         </h1>
-        <div className="mt-6 pb-14 sm:mt-3 sm:text-xl sm:leading-8">
-          <div className="flex gap-2">
-            <p className="font-bold">{t('composition')}:</p>
-            <p>{composition.join(', ')}</p>
-          </div>
-        </div>
-        <div className="relative flex items-stretch justify-center gap-6 pb-[3.75rem] sm:justify-start">
-          <Select
-            value={String(selectedVariable.weight)}
-            onValueChange={(value) => {
-              if (value !== null) handleWeightChange(value)
-            }}
-          >
-            <SelectTrigger id="weight" className="relative">
-              <label
-                htmlFor="weight"
-                className="absolute -top-6 left-0 text-base font-normal text-[#7d7d7d]"
+        <section className="lg:border-foreground/10 lg:bg-foreground/[0.025] order-2 min-w-0 lg:col-start-1 lg:row-start-2 lg:rounded-l-xl lg:border lg:border-r-0 lg:p-5">
+          <h2 className="text-muted-foreground mb-3 text-xs font-medium tracking-[0.12em] uppercase">
+            {t('composition')}
+          </h2>
+          <p className="text-sm leading-6 wrap-anywhere sm:text-base">
+            {composition.join(', ')}
+          </p>
+        </section>
+        <div className="border-foreground/10 order-3 min-w-0 border-t pt-5 lg:col-span-2 lg:row-start-3 lg:border-0 lg:pt-0">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div className="relative pt-6">
+              <Select
+                value={String(selectedVariable.weight)}
+                onValueChange={(value) => {
+                  if (value !== null) handleWeightChange(value)
+                }}
               >
-                {t('choose-weight')}
-              </label>
-              <SelectValue placeholder={t('weight')}>
-                {selectedVariable.weight} {t('g')}.
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent className="bg-grey-select">
-              <SelectGroup>
-                <SelectLabel>{t('weight')}</SelectLabel>
-                {variables.map((variable) => (
-                  <SelectItem
-                    key={variable.weight}
-                    value={String(variable.weight)}
+                <SelectTrigger
+                  id="weight"
+                  className="border-foreground/15 relative h-[52px] min-w-28 rounded-lg bg-transparent text-xl font-medium shadow-none"
+                >
+                  <label
+                    htmlFor="weight"
+                    className="text-muted-foreground absolute -top-6 left-0 text-sm font-normal"
                   >
-                    {variable.weight} {t('g')}.
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <div className="bg-grey-select content-center rounded-sm border px-8 py-2 text-2xl font-medium">
-            {selectedVariable.weight} {t('g')}.
-          </div>
-        </div>
-        <div className="flex flex-col items-end justify-between gap-10 pb-8 text-2xl font-bold sm:flex-row sm:pb-16">
-          <div className="w-full text-center whitespace-nowrap md:w-max">
-            {isProductPriceReduced(selectedVariable) ? (
-              <>
-                {selectedVariable.price && (
-                  <p className="text-xs font-semibold text-[#7D7D7D] line-through sm:text-sm md:text-base lg:text-lg xl:text-lg">
-                    {selectedVariable.price} {selectedVariable.currency}
+                    {t('choose-weight')}
+                  </label>
+                  <SelectValue placeholder={t('weight')}>
+                    {selectedVariable.weight} {t('g')}.
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="bg-grey-select">
+                  <SelectGroup>
+                    <SelectLabel>{t('weight')}</SelectLabel>
+                    {variables.map((variable) => (
+                      <SelectItem
+                        key={variable.weight}
+                        value={String(variable.weight)}
+                      >
+                        {variable.weight} {t('g')}.
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="text-right font-bold whitespace-nowrap">
+              {isProductPriceReduced(selectedVariable) ? (
+                <>
+                  {selectedVariable.price && (
+                    <p className="text-muted-foreground text-sm font-medium line-through">
+                      {selectedVariable.price} {selectedVariable.currency}
+                    </p>
+                  )}
+                  <p className="text-2xl font-bold sm:text-[28px]">
+                    {price} {selectedVariable.currency}
                   </p>
-                )}
-                <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                  {price} {selectedVariable.currency}
-                </p>
-              </>
-            ) : (
-              price !== undefined && (
-                <p className="text-sm font-semibold sm:text-base lg:text-lg xl:text-xl">
-                  {price} {selectedVariable.currency}
-                </p>
-              )
-            )}
+                </>
+              ) : (
+                price !== undefined && (
+                  <p className="text-2xl font-bold sm:text-[28px]">
+                    {price} {selectedVariable.currency}
+                  </p>
+                )
+              )}
+            </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 pr-4 md:items-stretch">
-            <div className="bg-foreground text-background flex h-[50px] min-w-[115px] items-center justify-between px-2.5 font-bold">
+          <div className="flex items-stretch gap-3 text-lg font-semibold">
+            <div className="border-foreground/15 flex h-[52px] min-w-28 items-center justify-between rounded-lg border px-2.5 font-medium">
               <ResponsiveMotion
                 className="cursor-pointer"
                 whileHover={{ scale: 1.1 }}
@@ -224,7 +235,7 @@ export const ProductInfo = ({
             </div>
             <Button
               aria-label={isInCart ? t('in-cart') : t('add-to-cart')}
-              className="h-[50px] min-w-[190px] rounded-none"
+              className="h-[52px] min-w-0 flex-1 rounded-lg text-lg font-semibold"
               type="button"
               variant="danger"
               disabled={selectedVariable.count <= 0 || price === undefined}
@@ -237,24 +248,28 @@ export const ProductInfo = ({
                 : t('add-to-cart')}
             </Button>
           </div>
+          <p className="text-muted-foreground mt-4 text-xs leading-5 sm:text-sm">
+            {tCart('minimum-order-amount')} {MIN_ORDER_AMOUNT} {tCart('uah')}.
+          </p>
         </div>
-        <p className="text-sm text-[#7D7D7D]">
-          {tCart('minimum-order-amount')} {MIN_ORDER_AMOUNT} {tCart('uah')}.
-        </p>
-        <div className="relative ml-auto flex w-fit items-stretch justify-end gap-2 pt-5 pr-5 pb-4">
-          <svg className="-mt-2.5 h-[65px] w-[65px]">
+        {nutritionContent && (
+          <div className="lg:border-foreground/10 lg:bg-foreground/[0.025] order-4 min-w-0 lg:col-start-2 lg:row-start-2 lg:rounded-r-xl lg:border lg:border-l-0 lg:p-5 lg:pl-0">
+            {nutritionContent}
+          </div>
+        )}
+        <div className="order-5 flex w-fit items-center gap-4 opacity-75 lg:col-span-2">
+          <svg className="h-12 w-12">
             <use href="/icons/sprite-sertif.svg#haccp_certified" />
           </svg>
-          <svg className="h-[65px] w-[65px]">
+          <svg className="h-12 w-12">
             <use href="/icons/sprite-sertif.svg#gluten_free" />
           </svg>
-          <svg className="h-[65px] w-[65px]">
+          <svg className="h-12 w-12">
             <use href="/icons/sprite-sertif.svg#non_gmo" />
           </svg>
-          <svg className="h-[65px] w-[65px]">
+          <svg className="h-12 w-12">
             <use href="/icons/sprite-sertif.svg#sugar_free" />
           </svg>
-          <UnderlineWave />
         </div>
       </div>
     </section>

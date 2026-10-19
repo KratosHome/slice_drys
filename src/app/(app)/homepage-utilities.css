@@ -1,7 +1,7 @@
-@layer theme, base, components, utilities;
+@import './cascade-layers.css';
 @import 'tailwindcss/theme.css' layer(theme);
 @import './theme.css';
-@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import 'tailwindcss/utilities.css' layer(utilities.homepage) source(none);
 
 /* Scan the homepage and its shared controls explicitly. Other storefront routes
    keep the complete, consistently ordered utilities in storefront-pages.css.

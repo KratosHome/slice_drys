@@ -66,12 +66,15 @@ test('nutrition SSR shares the purchase variant and respects explicit or unknown
       const noData = locale === 'uk' ? 'Немає даних' : 'No data'
       const format = value => new Intl.NumberFormat(locale, { maximumFractionDigits: 1, useGrouping: false }).format(value)
       const packHeading = weight => locale === 'uk' ? 'На упаковку ' + weight + ' г' : 'Per ' + weight + ' g pack'
-      const render = (value = nutrition, detail = false, selection = product) => renderToStaticMarkup(
+      const render = (value = nutrition, detail = false, selection = product, variant = 'cards') => renderToStaticMarkup(
         React.createElement(NextIntlClientProvider,
           { locale, messages, timeZone: 'Europe/Kyiv' },
           React.createElement(ProductVariantProvider, { product: selection },
-            detail ? React.createElement(ProductInfo, { product: selection, imageGallery: null }) : null,
-            React.createElement(ProductNutrition, { nutrition: value }),
+            detail ? React.createElement(ProductInfo, {
+              product: selection,
+              imageGallery: null,
+              nutritionContent: React.createElement(ProductNutrition, { nutrition: value, variant }),
+            }) : React.createElement(ProductNutrition, { nutrition: value, variant }),
           ),
         ),
       )
@@ -95,6 +98,57 @@ test('nutrition SSR shares the purchase variant and respects explicit or unknown
         assert.ok(plain(cards[1]).includes(t['energy-pack-pending']))
         assert.ok(!plain(cards[1]).includes(energy), 'pack energy must not use or scale the label number')
         assert.doesNotMatch(html, /NaN|Infinity|ккал|кДж|kcal|kJ/)
+      }
+
+      const compactRows = html => Object.fromEntries(
+        [...html.matchAll(/<tr[^>]*>\s*<th\b[^>]*scope="row"[^>]*>([\s\S]*?)<\/th>([\s\S]*?)<\/tr>/g)]
+          .map(match => [plain(match[1]), [...match[2].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map(cell => plain(cell[1]))]),
+      )
+
+      // The compact table reads the same pack selection without replacing or rounding source values.
+      for (const weight of [30, 50, 100, 150]) {
+        query = 'weight=' + weight
+        const html = render(nutrition, true, product, 'compact')
+        assert.match(html, /<table\b/)
+        assert.equal((html.match(/<table\b/g) || []).length, 1, 'detail slot renders one nutrition table')
+        const trigger = html.match(/<button[^>]*role="combobox"[^>]*>[\s\S]*?<\/button>/)?.[0]
+        assert.ok(trigger?.includes(weight + ' ' + unit), 'compact pack and purchase selection agree')
+        assert.equal(plain(html.match(/<caption[^>]*>([\s\S]*?)<\/caption>/)[1]), t['nutritional-value'])
+        const columnLabels = [...html.matchAll(/<th\b[^>]*scope="col"[^>]*>([\s\S]*?)<\/th>/g)].map(match => plain(match[1]))
+        assert.deepEqual(columnLabels, [t['nutritional-value'], baseHeading, packHeading(weight)])
+        assert.deepEqual(compactRows(html), {
+          [labels[0]]: ['20 ' + unit, format(20 * weight / 100) + ' ' + unit],
+          [labels[1]]: ['0 ' + unit, '0 ' + unit],
+          [labels[2]]: [small, small],
+        })
+        assert.ok(plain(html).includes(t['energy-unit-unverified'].replace('{value}', locale === 'uk' ? '897,123' : '897.123')))
+        assert.ok(plain(html).includes(packHeading(weight) + ': ' + t['energy-pack-pending']))
+        assert.doesNotMatch(html, /NaN|Infinity|ккал|кДж|kcal|kJ/)
+      }
+
+      for (const energyUnit of ['kcal', 'kJ']) {
+        query = 'weight=150'
+        const known = { ...nutrition, energyUnit, energyValue: '320' }
+        const html = render(known, false, product, 'compact')
+        assert.deepEqual(compactRows(html)[t['energy']], ['320 ' + t[energyUnit], '480 ' + t[energyUnit]])
+        assert.ok(!html.includes(t['energy-pack-pending']))
+        for (const energyValue of ['0', null, 'invalid']) {
+          const missing = render({ ...known, energyValue }, false, product, 'compact')
+          const expected = energyValue === '0' ? '0 ' + t[energyUnit] : noData
+          assert.deepEqual(compactRows(missing)[t['energy']], [expected, expected])
+          assert.doesNotMatch(missing, /NaN|Infinity/)
+        }
+      }
+
+      query = 'weight=50'
+      for (const value of [null, {}, { ...nutrition, energyUnit: 'watts' }]) {
+        const html = render(value, false, product, 'compact')
+        assert.equal(Object.keys(compactRows(html)).length, 3, 'unverified units never authorize a pack energy calculation')
+        assert.ok(plain(html).includes(t['energy-pack-pending']))
+        assert.doesNotMatch(html, /NaN|Infinity|ккал|кДж|kcal|kJ/)
+        if (!value || !value.proteins) {
+          assert.deepEqual(compactRows(html), Object.fromEntries(labels.map(label => [label, [noData, noData]])))
+        }
       }
 
       // All four pack sizes and repeated switches use the very same variant as purchase details.

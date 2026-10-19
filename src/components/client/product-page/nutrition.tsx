@@ -13,8 +13,10 @@ const nutrients = ['proteins', 'fats', 'carbohydrates'] as const
 
 export function ProductNutrition({
   nutrition,
+  variant = 'cards',
 }: {
   nutrition?: INutritionalValue | null
+  variant?: 'cards' | 'compact'
 }) {
   const t = useTranslations('product')
   const locale = useLocale()
@@ -27,6 +29,111 @@ export function ProductNutrition({
     Number.isFinite(weight) && weight > 0
       ? new Intl.NumberFormat(locale).format(weight)
       : t('nutrition-no-data')
+
+  if (variant === 'compact') {
+    const baseEnergy = formatEnergyValue(nutrition?.energyValue, locale)
+    const packEnergy = energyUnit
+      ? formatEnergyValue(
+          calculatePackNutrient(nutrition?.energyValue, weight),
+          locale,
+        )
+      : undefined
+    const energyLabel = (value: string | undefined) =>
+      !energyUnit || value === undefined
+        ? t('nutrition-no-data')
+        : `${value} ${t(energyUnit)}`
+
+    return (
+      <section
+        className="min-w-0 rounded-lg border border-current/12 px-4 py-4 lg:rounded-none lg:border-0 lg:border-l lg:border-current/10 lg:py-0 lg:pr-0 lg:pl-5"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <table className="w-full table-fixed border-collapse text-sm lg:text-[13px]">
+          <caption className="px-0 pt-0 pb-3 text-left text-[15px] font-semibold">
+            <h2>{t('nutritional-value')}</h2>
+          </caption>
+          <colgroup>
+            <col className="w-[40%]" />
+            <col className="w-[30%]" />
+            <col className="w-[30%]" />
+          </colgroup>
+          <thead>
+            <tr className="text-muted-foreground border-b border-current/8 text-[11px] leading-normal lg:text-xs">
+              <th scope="col" className="px-0 py-1.5 text-left font-normal">
+                <span className="sr-only">{t('nutritional-value')}</span>
+              </th>
+              <th
+                scope="col"
+                className="py-1.5 pr-0 pl-2 text-right align-bottom font-normal wrap-anywhere"
+              >
+                {t('nutrition-per-100')}
+              </th>
+              <th
+                scope="col"
+                className="py-1.5 pr-0 pl-2 text-right align-bottom font-normal wrap-anywhere"
+              >
+                {t('nutrition-per-pack', { grams })}
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-current/8">
+            {nutrients.map((nutrient) => (
+              <tr key={nutrient}>
+                <th
+                  scope="row"
+                  className="px-0 py-2 text-left align-top font-medium wrap-anywhere"
+                >
+                  {t(nutrient)}
+                </th>
+                {[
+                  parseNutritionValue(nutrition?.[nutrient]),
+                  calculatePackNutrient(nutrition?.[nutrient], weight),
+                ].map((value, index) => (
+                  <td
+                    key={index}
+                    className="py-2 pr-0 pl-2 text-right align-top wrap-anywhere tabular-nums last:font-semibold"
+                  >
+                    {formatNutrient(value, locale, t('g')) ??
+                      t('nutrition-no-data')}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            {energyUnit ? (
+              <tr>
+                <th
+                  scope="row"
+                  className="px-0 py-2 text-left align-top font-medium wrap-anywhere"
+                >
+                  {t('energy')}
+                </th>
+                <td className="py-2 pr-0 pl-2 text-right align-top wrap-anywhere tabular-nums">
+                  {energyLabel(baseEnergy)}
+                </td>
+                <td className="py-2 pr-0 pl-2 text-right align-top font-semibold wrap-anywhere tabular-nums">
+                  {energyLabel(packEnergy)}
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+        {!energyUnit ? (
+          <div className="text-muted-foreground grid gap-1 border-t border-current/8 px-0 pt-3 text-xs leading-relaxed wrap-anywhere">
+            <p>
+              {t('energy-value-per-100')}:{' '}
+              {t('energy-unit-unverified', {
+                value: baseEnergy ?? t('nutrition-no-data'),
+              })}
+            </p>
+            <p>
+              {t('nutrition-per-pack', { grams })}: {t('energy-pack-pending')}
+            </p>
+          </div>
+        ) : null}
+      </section>
+    )
+  }
 
   return (
     <div

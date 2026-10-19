@@ -155,6 +155,7 @@
     "proteins": "Protein",
     "fats": "Fat",
     "carbohydrates": "Carbohydrates",
+    "energy": "Energy",
     "energy-value": "Energy value",
     "kcal": "kcal",
     "kJ": "kJ",

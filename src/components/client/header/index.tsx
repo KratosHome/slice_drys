@@ -25,7 +25,7 @@ export default function Header({ productLinks }: IHeaderProps) {
   return (
     <>
       <HeaderShell>
-        <div className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3">
+        <div className="mx-auto grid h-full max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center justify-between py-3 lg:gap-x-6 xl:gap-x-8">
           <div className="max-w-min">
             <nav className="hidden gap-3 lg:flex">
               {productLinks.slice(0, 4)?.map((link) => (
@@ -61,20 +61,20 @@ export default function Header({ productLinks }: IHeaderProps) {
             </svg>
           </TransitionLink>
           <div className="justify-self-end">
-            <div className="flex justify-end lg:justify-between lg:gap-x-[clamp(20px,calc(20px+60*(100vw-1024px)/316),80px)]">
+            <div className="flex justify-end lg:justify-between lg:gap-x-4 xl:gap-x-10">
               <nav className="hidden gap-x-[10px] text-[20px] lg:flex">
                 {pageLinks[locale].slice(1, 4)?.map((link: ILink) => (
                   <TransitionLink
                     key={link.id}
                     href={`/${locale}/${link.href}`}
-                    className="p-3 text-[20px] transition-all duration-300 ease-in-out will-change-transform hover:scale-105 hover:text-red-500"
+                    className="px-2 py-3 text-[20px] transition-all duration-300 ease-in-out will-change-transform hover:scale-105 hover:text-red-500 xl:px-3"
                   >
                     {link.name}
                   </TransitionLink>
                 ))}
               </nav>
               <div className="flex items-center justify-center gap-x-4 lg:justify-between">
-                <LocaleChange className="hidden lg:block" />
+                <LocaleChange className="hidden lg:flex" />
                 <ThemeToggle />
                 <SmallCart />
               </div>

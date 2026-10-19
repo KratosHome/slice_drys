@@ -1,9 +1,10 @@
+@import './cascade-layers.css';
 @import 'tailwindcss/theme.css' layer(theme);
 @import './theme.css';
-@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import 'tailwindcss/utilities.css' layer(utilities.storefront) source(none);
 
-/* Preserve the complete utility ordering when route styles remain loaded after
-   navigation. The homepage only needs the smaller shared stylesheet. */
+/* The complete storefront utilities outrank the smaller homepage stylesheet,
+   even when React retains and inserts that stylesheet later during navigation. */
 @source '../../';
 @source not '../../components/admin';
 @source not './[locale]/admin';
@@ -13,7 +14,7 @@
 @source not '../../components/ui/tabs.tsx';
 @source not '../../components/ui/tooltip.tsx';
 
-@layer utilities {
+@layer utilities.storefront {
   .prose {
     * {
       color: hsl(var(--foreground));

@@ -1,7 +1,7 @@
-@layer theme, base, components, utilities;
+@import './cascade-layers.css';
 @import 'tailwindcss/theme.css' layer(theme);
 @import './theme.css';
-@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import 'tailwindcss/utilities.css' layer(utilities.fallback) source(none);
 
 /* Next preloads root fallback styles on every route. Keep this source limited
    to the 404 page so it cannot pull another route's utilities into startup. */

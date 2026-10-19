@@ -18,6 +18,8 @@ import {
 } from '@/server/public-data-cache.server'
 import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 import { ProductVariantProvider } from '@/components/client/product-page/product-variant-provider'
+import { ProductNutrition } from '@/components/client/product-page/nutrition'
+import { ProductDescription } from '@/components/client/product-page/description'
 
 export const revalidate = 86400
 
@@ -149,6 +151,7 @@ async function ProductRecommendations({
   return (
     <ProductSlider
       products={recommendations.data}
+      overlapPreviousSection={false}
       title={t('also-buy')}
       message={t('something-that-will-come-handy-along-with-your-choice')}
     />
@@ -211,6 +214,12 @@ export default async function ProductPage({ params, searchParams }: Props) {
         <ProductVariantProvider product={productData}>
           <ProductInfo
             product={productData as unknown as IProduct}
+            nutritionContent={
+              <ProductNutrition
+                nutrition={productData.nutritionalValue}
+                variant="compact"
+              />
+            }
             imageGallery={
               <SliderWithThumbnails
                 img={productData.img}
@@ -218,10 +227,8 @@ export default async function ProductPage({ params, searchParams }: Props) {
               />
             }
           />
-          <Accordions
-            nutrition={productData.nutritionalValue}
-            description={productData.description}
-          />
+          <ProductDescription description={productData.description} />
+          <Accordions />
         </ProductVariantProvider>
         <Suspense fallback={null}>
           <ProductRecommendations

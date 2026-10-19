@@ -1,4 +1,4 @@
-@layer theme, base, components, utilities;
+@import './cascade-layers.css';
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
 @import './theme.css';

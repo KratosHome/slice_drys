@@ -6,6 +6,7 @@ import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
 import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
+import { cn } from '@/utils/cn'
 
 import {
   useCallback,
@@ -21,12 +22,14 @@ interface IProductSlider {
   products: IProductCard[]
   title: string
   message: string
+  overlapPreviousSection?: boolean
 }
 
 export default function ProductSlider({
   products,
   title,
   message,
+  overlapPreviousSection = true,
 }: IProductSlider) {
   const titleId = useId()
   const sectionRef = useRef<HTMLElement>(null)
@@ -126,7 +129,10 @@ export default function ProductSlider({
       onFocusCapture={activateFocusedImages}
       onPointerDownCapture={activateFocusedImages}
       aria-labelledby={titleId}
-      className="mx-auto -mt-[200px] max-w-[1280px] px-5 md:-mt-[100px] lg:-mt-[50px]"
+      className={cn(
+        'mx-auto max-w-[1280px] px-5',
+        overlapPreviousSection && '-mt-[200px] md:-mt-[100px] lg:-mt-[50px]',
+      )}
     >
       <ProductListTracking
         listId="popular_products"

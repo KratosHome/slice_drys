@@ -1,0 +1,4 @@
+/* React retains route styles during navigation. Complete utility bundles must
+   outrank the smaller shared bundles, regardless of stylesheet insertion order. */
+@layer theme, base, components, utilities;
+@layer utilities.fallback, utilities.homepage, utilities.storefront, utilities.admin;

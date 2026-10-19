@@ -31,7 +31,12 @@ function LocaleChangeLinks({ className, onNavigate }: ILocaleChangeProps) {
   const search = query ? `?${query}` : ''
 
   return (
-    <div className={cn('flex items-center text-sm', className)}>
+    <div
+      className={cn(
+        'flex shrink-0 items-center text-sm whitespace-nowrap',
+        className,
+      )}
+    >
       <TransitionLink
         href={`${getLocalizedPath('uk', path)}${search}`}
         onNavigate={onNavigate}
