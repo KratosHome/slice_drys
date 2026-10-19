@@ -3,7 +3,7 @@
 import { Slider as SliderPrimitive } from '@base-ui/react/slider'
 import { forwardRef } from 'react'
 import { cn } from '@/utils/cn'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import styles from './slider.module.css'
 
 const Slider = forwardRef<
   HTMLDivElement,
@@ -25,27 +25,26 @@ const Slider = forwardRef<
       {...props}
     >
       <SliderPrimitive.Control className="relative flex w-full touch-none items-center select-none">
-        <LazyMotion features={domAnimation}>
-          <SliderPrimitive.Track className="bg-primary/20 relative h-[2px] w-full grow overflow-hidden rounded-full">
-            <SliderPrimitive.Indicator className="bg-primary absolute h-full" />
-          </SliderPrimitive.Track>
-          {values.map((_, index) => (
-            <SliderPrimitive.Thumb
-              key={index}
-              index={index}
+        <SliderPrimitive.Track className="bg-primary/20 relative h-[2px] w-full grow overflow-hidden rounded-full">
+          <SliderPrimitive.Indicator className="bg-primary absolute h-full" />
+        </SliderPrimitive.Track>
+        {values.map((_, index) => (
+          <SliderPrimitive.Thumb
+            key={index}
+            index={index}
+            className={cn(
+              'bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+              index === 1 && 'pr-1',
+            )}
+          >
+            <div
               className={cn(
-                'bg-slider bg-background font-rubik flex size-max cursor-pointer items-center justify-center rounded-full bg-cover bg-center text-[35px] transition-colors focus:outline-hidden focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-                index === 1 && 'pr-1',
+                styles.thumb,
+                "h-[50px] w-[50px] bg-[url('/icons/o-circle.png')] bg-contain bg-no-repeat dark:bg-[url('/icons/o-circle-light.png')]",
               )}
-            >
-              <m.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className="h-[50px] w-[50px] bg-[url('/icons/o-circle.png')] bg-contain bg-no-repeat dark:bg-[url('/icons/o-circle-light.png')]"
-              />
-            </SliderPrimitive.Thumb>
-          ))}
-        </LazyMotion>
+            />
+          </SliderPrimitive.Thumb>
+        ))}
       </SliderPrimitive.Control>
     </SliderPrimitive.Root>
   )

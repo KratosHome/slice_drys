@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDebounce } from 'use-debounce'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import styles from './product-filters.module.css'
 import {
   Dialog,
   DialogContent,
@@ -114,6 +114,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
       params.get('maxWeight') !== currentParams.get('maxWeight')
 
     if (minWeightChanged || maxWeightChanged) {
+      params.delete('page')
       updateUrlParams(params)
     }
 
@@ -201,44 +202,36 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         <div className="hidden w-full max-w-80 grow md:block">
           <Accordion defaultValue={['item-1']} className="mb-2">
             <AccordionItem value="item-1">
-              <LazyMotion features={domAnimation}>
-                <m.div
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <AccordionTrigger className="font-rubik">
-                    {t('type')}
-                  </AccordionTrigger>
-                </m.div>
-              </LazyMotion>
+              <div className={styles.trigger}>
+                <AccordionTrigger className="font-rubik">
+                  {t('type')}
+                </AccordionTrigger>
+              </div>
               <AccordionContent className="flex max-h-[400px] flex-col gap-2 pt-8 pb-[40px]">
                 {categories.length > 0 ? (
                   categories.map((category) => (
-                    <LazyMotion key={category.slug} features={domAnimation}>
-                      <m.label
-                        htmlFor={category.slug}
-                        className="flex cursor-pointer items-center gap-[24px]"
-                        whileHover={{ scale: 1.05, marginLeft: 15 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
+                    <label
+                      key={category.slug}
+                      htmlFor={category.slug}
+                      className={`${styles.category} flex cursor-pointer items-center gap-[24px]`}
+                    >
+                      <CheckboxPrimitive.Root
+                        id={category.slug}
+                        checked={selectedCategories.includes(category.slug)}
+                        onCheckedChange={() =>
+                          handleToggleCategory(category.slug)
+                        }
+                        className="relative z-0 cursor-pointer py-2"
                       >
-                        <CheckboxPrimitive.Root
-                          id={category.slug}
-                          checked={selectedCategories.includes(category.slug)}
-                          onCheckedChange={() =>
-                            handleToggleCategory(category.slug)
-                          }
-                          className="relative z-0 cursor-pointer py-2"
-                        >
-                          <CheckboxRoot />
-                          <CheckboxPrimitive.Indicator>
-                            <CheckboxIndicator />
-                          </CheckboxPrimitive.Indicator>
-                        </CheckboxPrimitive.Root>
-                        <span className="text-xl text-[20px] font-normal uppercase">
-                          {category.name[locale]}
-                        </span>
-                      </m.label>
-                    </LazyMotion>
+                        <CheckboxRoot />
+                        <CheckboxPrimitive.Indicator>
+                          <CheckboxIndicator />
+                        </CheckboxPrimitive.Indicator>
+                      </CheckboxPrimitive.Root>
+                      <span className="text-xl text-[20px] font-normal uppercase">
+                        {category.name[locale]}
+                      </span>
+                    </label>
                   ))
                 ) : (
                   <div>{t('no-categories-available')}</div>
@@ -249,16 +242,11 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
           <Accordion defaultValue={['item-2']}>
             <AccordionItem value="item-2">
-              <LazyMotion features={domAnimation}>
-                <m.div
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <AccordionTrigger className="font-rubik">
-                    {t('weight')}
-                  </AccordionTrigger>
-                </m.div>
-              </LazyMotion>
+              <div className={styles.trigger}>
+                <AccordionTrigger className="font-rubik">
+                  {t('weight')}
+                </AccordionTrigger>
+              </div>
               <AccordionContent>
                 <div className="my-[50px]">
                   <Slider

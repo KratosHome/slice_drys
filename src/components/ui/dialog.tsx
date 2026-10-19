@@ -3,7 +3,6 @@
 import { X } from 'lucide-react'
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 
-import { ResponsiveMotion } from '@/components/client/responsive-motion'
 import dialogMotionStyles from './dialog-motion.module.css'
 
 import {
@@ -151,20 +150,25 @@ const ClientDialogHeader = ({
     {children}
     <Close
       aria-label="Close"
-      className="ring-offset-background focus:ring-ring data-open:text-red-cust cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-open:bg-transparent"
+      className={cn(
+        'ring-offset-background focus:ring-ring data-open:text-red-cust cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-open:bg-transparent',
+        dialogMotionStyles.closeButton,
+      )}
     >
-      <ResponsiveMotion
-        initial={{ rotate: 0, scale: 1 }}
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ rotate: 90, scale: 0.9, opacity: 0.8 }}
-        transition={{ type: 'spring', stiffness: 300 }}
-        className="text-red-cust cursor-pointer"
-        aria-label="Close"
+      <div
+        className={cn(
+          'text-red-cust cursor-pointer',
+          dialogMotionStyles.closeIcon,
+        )}
       >
-        <svg className="h-8 w-8 md:h-12 md:w-12">
+        <svg
+          className="h-8 w-8 md:h-12 md:w-12"
+          aria-hidden="true"
+          focusable="false"
+        >
           <use href="/icons/sprite.svg#close" />
         </svg>
-      </ResponsiveMotion>
+      </div>
     </Close>
   </div>
 )

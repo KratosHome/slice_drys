@@ -86,7 +86,7 @@ const getCachedProductRecommendations = unstable_cache(
 const getCachedProductsList = unstable_cache(
   async (options: IGetProductsParams) =>
     throwOnInfrastructureFailure(await getProductsList(options)),
-  ['public-products-list-v2'],
+  ['public-products-list-v3'],
   {
     revalidate: revalidateDay,
     tags: [fetchTags.products, fetchTags.product, fetchTags.menu],

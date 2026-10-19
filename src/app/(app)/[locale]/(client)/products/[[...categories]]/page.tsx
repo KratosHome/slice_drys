@@ -31,6 +31,7 @@ import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
 import ProductListTracking from '@/components/google-analytics/product-list-tracking'
 import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 import { getPaginationRange } from '@/utils/get-pagination-range'
+import { toProductCard } from '@/utils/product-card'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import 'quill/dist/quill.snow.css'
 import { SITE_URL } from '@/data/contacts'
@@ -382,13 +383,14 @@ export default async function ProductsPage(props: {
   const pageSuffix = !hasFacetQuery && page > 1 ? `?page=${page}` : ''
   const canonicalUrl = `${SITE_URL}/${locale}/${canonicalPath}${pageSuffix}`
 
-  const productCards = productListData.data.flatMap((product: IProduct) =>
-    product.variables.map((initialVariant: IVariableProduct) => ({
-      product,
+  const productCards = productListData.data.flatMap((product: IProduct) => {
+    const card = toProductCard(product)
+    return card.variables.map((initialVariant: IVariableProduct) => ({
+      product: card,
       initialVariant,
       key: `${product.slug}-${initialVariant._id ?? initialVariant.weight}`,
-    })),
-  )
+    }))
+  })
 
   const getPageUrl = (pageNum: number) => {
     const nextSearchParams = { ...resolvedSearchParams }

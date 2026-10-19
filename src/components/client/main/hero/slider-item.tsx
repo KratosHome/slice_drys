@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
+import { useId, type CSSProperties } from 'react'
 import { cn } from '@/utils/cn'
+
+const textWidth = 190
 
 interface ISliderItemProps {
   title: string
@@ -14,17 +16,7 @@ export default function SliderItem({
   hoverHexColor,
   isHovered,
 }: ISliderItemProps) {
-  const [textWidth, setTextWidth] = useState<number>(190)
   const curveId = useId()
-
-  const textRef = useRef<SVGTextElement>(null)
-
-  useEffect(() => {
-    if (textRef.current) {
-      const width = textRef.current.getBBox().width
-      setTextWidth(Math.max(width, 190))
-    }
-  }, [title, isHovered])
 
   return (
     <>

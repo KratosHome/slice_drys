@@ -1,0 +1,20 @@
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .trigger {
+    transition: transform 200ms ease-out;
+  }
+
+  .trigger:hover {
+    transform: scale(1.03);
+  }
+
+  .category {
+    transition:
+      transform 200ms ease-out,
+      margin-left 200ms ease-out;
+  }
+
+  .category:hover {
+    transform: scale(1.05);
+    margin-left: 15px;
+  }
+}

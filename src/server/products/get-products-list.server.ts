@@ -62,11 +62,14 @@ export async function getProductsList({
       delete query.categories
     }
 
-    if (minWeight || maxWeight) {
+    const numericMinWeight = minWeight ? Number(minWeight) : undefined
+    const numericMaxWeight = maxWeight ? Number(maxWeight) : undefined
+
+    if (numericMinWeight !== undefined || numericMaxWeight !== undefined) {
       const weightQuery: { $gte?: number; $lte?: number } = {}
-      if (minWeight) weightQuery.$gte = Number(minWeight)
-      if (maxWeight) weightQuery.$lte = Number(maxWeight)
-      query['variables.weight'] = weightQuery
+      if (numericMinWeight !== undefined) weightQuery.$gte = numericMinWeight
+      if (numericMaxWeight !== undefined) weightQuery.$lte = numericMaxWeight
+      query.variables = { $elemMatch: { weight: weightQuery } }
     }
 
     const skip = (page - 1) * limit
@@ -95,7 +98,17 @@ export async function getProductsList({
         description: product.description[locale],
         metaDescription: product.metaDescription?.[locale],
         img: product.img,
-        variables: JSON.parse(JSON.stringify(product.variables)),
+        variables: JSON.parse(
+          JSON.stringify(
+            product.variables.filter(
+              (variable: IVariableProduct) =>
+                (numericMinWeight === undefined ||
+                  variable.weight >= numericMinWeight) &&
+                (numericMaxWeight === undefined ||
+                  variable.weight <= numericMaxWeight),
+            ),
+          ),
+        ),
         statusLabel: product.statusLabel,
         categories: populatedCategories.map((category) => String(category._id)),
         images: [],
