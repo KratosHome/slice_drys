@@ -33,7 +33,7 @@ export const Accordions = async ({
   return (
     <Accordion
       multiple
-      defaultValue={['info', 'nutrition']}
+      defaultValue={['info', 'nutrition', 'about']}
       className="mx-auto mb-[230px] grid max-w-[988px] gap-6"
     >
       <AccordionItem value={'nutrition'}>
