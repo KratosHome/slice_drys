@@ -59,13 +59,13 @@ export default function CartPanel({
         collisionPadding={8}
         className={cn(
           styles.popover,
-          'bg-background outline-foreground mr-0 max-h-[80vh] w-screen max-w-[calc(100vw-16px)] overflow-hidden overflow-y-auto rounded-lg p-4 outline-1 sm:w-[600px]',
+          'bg-background outline-foreground mr-0 max-h-[80dvh] w-screen max-w-[calc(100vw-16px)] overflow-x-hidden overflow-y-auto rounded-lg p-5 outline-1 sm:w-[600px]',
         )}
       >
         <div
           className={cn(
             styles.header,
-            'bg-background absolute top-0 right-0 z-20 w-full rounded-t-lg px-5 pt-5',
+            'bg-background w-full rounded-t-lg',
           )}
         >
           <div className="bg-foreground text-background flex w-full items-center justify-between border-b p-[12px] md:px-[48px] md:py-[32px]">
@@ -93,7 +93,7 @@ export default function CartPanel({
           <div
             className={cn(
               styles.body,
-              'mt-4 h-[300px] pt-[150px] text-center text-[20px] md:pt-[190px]',
+              'py-16 text-center text-[20px]',
             )}
           >
             {t('cart-empty')}
@@ -103,7 +103,7 @@ export default function CartPanel({
             <div
               className={cn(
                 styles.meta,
-                'bg-background absolute top-[75px] left-0 w-full px-6 text-right text-[16px] md:top-[140px]',
+                'bg-background mt-3 w-full text-right text-[16px]',
               )}
             >
               <span className="mr-[24px] font-semibold text-[#7D7D7D]">
@@ -118,7 +118,7 @@ export default function CartPanel({
             <div
               className={cn(
                 styles.body,
-                'space-y-4 overflow-x-hidden overflow-y-auto pt-[70px] pb-[150px] md:pt-[150px]',
+                'my-4 space-y-4',
               )}
             >
               {cart.itemList?.map((item) => (
@@ -128,7 +128,7 @@ export default function CartPanel({
             <div
               className={cn(
                 styles.footer,
-                'bg-background absolute bottom-0 left-0 w-full rounded-b-lg px-5 pb-4',
+                'bg-background w-full rounded-b-lg',
               )}
             >
               <div className="flex items-center justify-between pt-2">

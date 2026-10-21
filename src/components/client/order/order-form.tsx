@@ -64,7 +64,7 @@ const deliveryProviderLabels = {
     icon: {
       src: '/images/nova-poshta.webp',
       alt: {
-        uk: 'Укрпошта лого',
+        uk: 'Нова Пошта лого',
         en: 'Nova Poshta logo',
       },
       height: 40,
@@ -390,10 +390,6 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     maxLength={120}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: t('validation-required'),
-                      },
                       validate: (value) =>
                         !!String(value ?? '').trim() ||
                         t('validation-required'),
@@ -421,10 +417,6 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                     maxLength={120}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: t('validation-required'),
-                      },
                       validate: (value) =>
                         !!String(value ?? '').trim() ||
                         t('validation-required'),
