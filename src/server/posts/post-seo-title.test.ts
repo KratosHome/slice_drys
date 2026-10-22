@@ -94,6 +94,7 @@ test('localized SEO titles reach article metadata with title fallback and unchan
     ]) {
       mock.module(component, () => ({ default: () => null }))
     }
+    mock.module('@/i18n/client-messages', () => ({ default: ({ children }) => children }))
     mock.module('quill/dist/quill.snow.css', () => ({}))
 
     const { generateMetadata, default: PostPage } = await import(

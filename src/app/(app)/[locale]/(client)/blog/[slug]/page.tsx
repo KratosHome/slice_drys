@@ -13,6 +13,7 @@ import JoinCommunity from '@/components/client/promo-banner/join-community'
 import ToTheTop from '@/components/ui/to-the-top'
 import { SITE_URL } from '@/data/contacts'
 import { getPublicPost } from '@/server/public-data-cache.server'
+import PostVisitTracker from '@/components/client/blog/post-visit-tracker'
 
 export const revalidate = 86400
 
@@ -105,6 +106,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <>
+      <PostVisitTracker slug={normalizedSlug} />
       <BlogItemJsonLd post={data.post[0]} />
       <div className="mx-auto flex max-w-[1280px] flex-col justify-center">
         <div className="my-12 px-6 sm:px-10 md:my-20 md:px-20">
