@@ -7,6 +7,7 @@ interface IOrderResponse {
   success: boolean
   message: Partial<Record<ILocale, string>>
   receipt?: IOrderReceipt
+  customerReview?: import('./google-customer-reviews').CustomerReviewOrder
 }
 
 interface IOrderReceipt {

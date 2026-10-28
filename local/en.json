@@ -243,6 +243,8 @@
     "area-edit": "Edit",
     "error": "Oops! Something went wrong. Please try again or give us a call.",
     "success": "Order has been placed successfully!",
+    "confirmation-title": "Thank you for your order!",
+    "confirmation-order-number": "Order number: {orderId}",
     "order": "Order"
   },
   "wholesale": {

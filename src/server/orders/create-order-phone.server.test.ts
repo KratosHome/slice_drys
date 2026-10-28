@@ -59,6 +59,7 @@ test('invalid user or delivery phones cannot reach order persistence', () => {
         })
         assert.equal(response.success, false, field + ': ' + invalidPhone)
         assert.equal(response.receipt, undefined)
+        assert.equal(response.customerReview, undefined)
       }
     }
     assert.equal(connections, 0)
@@ -71,6 +72,11 @@ test('invalid user or delivery phones cannot reach order persistence', () => {
     assert.equal(savedOrder.user.phone, '+380631234567')
     assert.equal(savedOrder.delivery.phone, '+380631234567')
     assert.equal(validResponse.receipt.value, 457)
+    assert.equal(validResponse.customerReview.orderId, 'mock-saved-order')
+    assert.equal(validResponse.customerReview.email, 'buyer@example.test')
+    assert.equal(validResponse.customerReview.deliveryCountry, 'UA')
+    assert.match(validResponse.customerReview.estimatedDeliveryDate, /^\\d{4}-\\d{2}-\\d{2}$/)
+    assert.equal(JSON.stringify(validResponse.receipt).includes('buyer@example.test'), false)
   `
 
   const result = spawnSync(process.execPath, ['-e', script], {

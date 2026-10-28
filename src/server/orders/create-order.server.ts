@@ -14,6 +14,7 @@ import { Product } from '@/server/products/product-schema.server'
 import { getProductPrice } from '@/utils/product-price'
 import { MIN_ORDER_AMOUNT } from '@/constants/order'
 import { normalizeOrderPhone } from '@/utils/order-contact'
+import { createCustomerReviewOrder } from '@/server/orders/customer-review.server'
 
 const MAX_ORDER_LINES = 50
 const MAX_COMMENT_LENGTH = 2_000
@@ -376,6 +377,11 @@ export async function createOrderServer(
           quantity: product.count,
         })),
       },
+      customerReview: createCustomerReviewOrder(
+        order._id.toString(),
+        user.email,
+        order.createdAt,
+      ),
     }
   } catch (error) {
     if (!(error instanceof InvalidOrderError)) {

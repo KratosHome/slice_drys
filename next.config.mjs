@@ -33,6 +33,8 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 const scriptOrigins = [
   'https://www.googletagmanager.com',
   'https://va.vercel-scripts.com',
+  'https://apis.google.com',
+  'https://www.gstatic.com',
 ]
 
 const connectOrigins = [
@@ -77,7 +79,7 @@ const createContentSecurityPolicy = () => {
     `img-src ${imageOrigins.join(' ')}`,
     `connect-src 'self' ${connectOrigins.join(' ')}`,
     `font-src ${fontOrigins.join(' ')}`,
-    "frame-src 'none'",
+    'frame-src https://www.google.com/shopping/customerreviews/',
     "frame-ancestors 'none'",
     "form-action 'self'",
     "object-src 'none'",

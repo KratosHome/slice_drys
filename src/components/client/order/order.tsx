@@ -1,11 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 import OrderForm, { ORDER_FORM_ID } from '@/components/client/order/order-form'
 import OrderList from '@/components/client/order/order-list'
+import OrderConfirmation from '@/components/client/order/order-confirmation'
 import { useCartStore } from '@/store/cart-store'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
@@ -54,10 +54,9 @@ export default function Order({ defaultCities }: Props) {
   const locale = useLocale() as ILocale
   const { toast } = useToast()
 
-  const { replace } = useRouter()
-
   const [loading, setLoading] = useState(false)
   const [formValid, setFormValid] = useState(false)
+  const [confirmation, setConfirmation] = useState<IOrderResponse | null>(null)
   const checkoutTracked = useRef(false)
 
   const formRef = useRef<{
@@ -108,14 +107,8 @@ export default function Order({ defaultCities }: Props) {
 
     const cb = (resp: IOrderResponse) => {
       if (resp.success) {
-        toast({
-          duration: 5000,
-          title: tToast('success'),
-          description: resp.message[locale],
-        })
         setLoading(false)
-        formRef.current?.reset()
-        replace(`/${locale}/`)
+        setConfirmation(resp)
       } else {
         setLoading(false)
         toast({
@@ -127,6 +120,8 @@ export default function Order({ defaultCities }: Props) {
     }
     submitOrder(referralCode, cb)
   }
+
+  if (confirmation) return <OrderConfirmation response={confirmation} />
 
   return (
     <div className="mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
