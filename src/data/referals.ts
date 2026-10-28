@@ -24,6 +24,12 @@ export const referrals = [
     rateBps: 1_000,
     link: 'https://www.youtube.com/@keddr/featured',
   },
+  {
+    name: 'Нагорні Походеньки',
+    code: 'nahorny',
+    rateBps: 1_000,
+    link: 'https://www.youtube.com/@nahornipohodenky/videos',
+  },
 ] as const satisfies readonly ReferralDefinition[]
 
 export function getReferralByCode(
