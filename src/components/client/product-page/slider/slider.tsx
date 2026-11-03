@@ -9,6 +9,7 @@ const SliderWithThumbnails = ({ img, alt }: { img: string; alt: string }) => {
           alt={alt}
           fill
           preload
+          fetchPriority="high"
           sizes="(max-width: 375px) calc(100vw - 32px), (max-width: 1023px) 344px, 400px"
           quality={70}
         />

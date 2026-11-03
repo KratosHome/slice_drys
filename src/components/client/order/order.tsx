@@ -161,8 +161,7 @@ export default function Order({ defaultCities }: Props) {
             }
           >
             <ResponsiveMotion
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              variant="button"
               className="bg-foreground text-background flex h-[60px] w-full min-w-[250px] items-center justify-center px-[10px] text-center"
             >
               {t('order')}

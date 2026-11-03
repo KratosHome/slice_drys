@@ -148,8 +148,7 @@ export default function CartPanel({
 
               <div className="mt-[32px] flex h-[60px] items-stretch gap-[16px]">
                 <ResponsiveMotion
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  variant="button"
                   className="border-foreground bg-background flex w-full items-center justify-center border-[1px]"
                 >
                   <Button
@@ -161,8 +160,7 @@ export default function CartPanel({
                   </Button>
                 </ResponsiveMotion>
                 <ResponsiveMotion
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  variant="button"
                   disabled={belowMinimum}
                   className={cn(
                     'bg-foreground text-background flex w-full items-center justify-center',

@@ -27,7 +27,8 @@ SOURCE_RANGES = (
     "U+20AC,U+20B4,U+2116,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,"
     "U+FFFD,U+0301,U+0308,U+02BB-02BC"
 )
-UI_SYMBOLS = set(map(ord, " \u00a0!\"'-<>\u02bb\u02bc\u2013\u2014\u2018\u2019\u201c\u201d\u2026"))
+UI_SYMBOLS = set(map(ord, " \u00a0!\"'+-<>\u02bb\u02bc\u2013\u2014\u2018\u2019\u201c\u201d\u2026"))
+NUMERIC_SYMBOLS = set(map(ord, "0123456789"))
 
 
 def unicode_ranges(codepoints):
@@ -60,7 +61,7 @@ def write_stylesheet(name, faces):
     return f"/fonts/rubik-doodle-shadow/{filename}"
 
 
-def write_browser_assets(faces, fallback, home_faces, critical_titles):
+def write_browser_assets(faces, fallback, home_faces, critical_titles, inner_faces, inner_titles):
     """Keep preload URLs and CSS sources identical, including their content hashes."""
     urls = {face["name"]: f'/fonts/rubik-doodle-shadow/{face["file"]}' for face in faces}
     (STYLE_OUTPUT / "rubik-doodle-shadow-assets.json").write_text(
@@ -85,6 +86,7 @@ def write_browser_assets(faces, fallback, home_faces, critical_titles):
     loading = {
         "full": write_stylesheet("full", faces),
         "home": {},
+        "inner": {},
     }
     for locale in ("uk", "en"):
         critical = [face for face in home_faces[locale] if locale in face["preloadLocales"]]
@@ -94,6 +96,19 @@ def write_browser_assets(faces, fallback, home_faces, critical_titles):
             "remaining": write_stylesheet(f"home-{locale}-remaining", remaining),
             "preloads": [f'/fonts/rubik-doodle-shadow/{face["file"]}' for face in critical],
             "heading": critical_titles[locale],
+        }
+        controls = [face for face in inner_faces if face["name"] in ("ui", "numeric")]
+        heading = next(face for face in inner_faces if face["name"] == f"inner-{locale}-critical")
+        loading["inner"][locale] = {
+            "controlsRules": "\n\n".join(font_face_rule(face) for face in controls),
+            "controlsCharacters": "".join(chr(code) for code in sorted((UI_SYMBOLS | NUMERIC_SYMBOLS) & set(subset.parse_unicodes(SOURCE_RANGES)))),
+            "headingRules": font_face_rule(heading),
+            "headingCharacters": "".join(sorted(set(inner_titles[locale]))),
+            "headingPreload": f'/fonts/rubik-doodle-shadow/{heading["file"]}',
+            # Re-registering the critical faces uses the same URLs and keeps
+            # this stylesheet complete on product/article routes, where the
+            # alphabet is not registered until it is actually needed.
+            "remaining": write_stylesheet("inner-full", inner_faces),
         }
     (STYLE_OUTPUT / "rubik-doodle-shadow-loading.json").write_text(
         json.dumps(loading, ensure_ascii=False, indent=2) + "\n"
@@ -120,11 +135,13 @@ def main():
         if 0x0041 <= code <= 0x005A or 0x0061 <= code <= 0x007A
     }
     ui = supported & UI_SYMBOLS
+    numeric = (supported & NUMERIC_SYMBOLS) - ui
     groups = {
         "ui": ui,
         "cyrillic": cyrillic,
         "latin": latin,
-        "punctuation": supported - ui - cyrillic - latin,
+        "numeric": numeric,
+        "punctuation": supported - ui - cyrillic - latin - numeric,
     }
     critical_titles = {
         locale: json.loads((PROJECT_ROOT / f"local/{locale}.json").read_text())["main"]["products-slider"]["title"].upper()
@@ -146,9 +163,22 @@ def main():
         "home-en-critical": critical_ui | critical_latin,
     }
     home_face_names = {
-        "uk": ["home-uk-critical", "home-symbols", "home-cyrillic", "home-latin-critical", "home-latin", "punctuation"],
-        "en": ["home-en-critical", "home-symbols", "home-cyrillic-critical", "home-cyrillic", "home-latin", "punctuation"],
+        "uk": ["home-uk-critical", "home-symbols", "home-cyrillic", "home-latin-critical", "home-latin", "numeric", "punctuation"],
+        "en": ["home-en-critical", "home-symbols", "home-cyrillic-critical", "home-cyrillic", "home-latin", "numeric", "punctuation"],
     }
+    inner_titles = {}
+    for locale in ("uk", "en"):
+        messages = json.loads((PROJECT_ROOT / f"local/{locale}.json").read_text())
+        inner_titles[locale] = " ".join([messages["blog"]["title"], messages["product-list"]["type"], messages["product-list"]["weight"], messages["product-list"]["filter"]])
+    inner_cyrillic = set(map(ord, inner_titles["uk"])) & cyrillic
+    inner_latin = set(map(ord, inner_titles["en"])) & latin
+    inner_groups = {
+        "inner-uk-critical": inner_cyrillic,
+        "inner-cyrillic": cyrillic - inner_cyrillic,
+        "inner-en-critical": inner_latin,
+        "inner-latin": latin - inner_latin,
+    }
+    inner_face_names = ["ui", "numeric", *inner_groups, "punctuation"]
     if set.union(*groups.values()) != supported:
         raise ValueError("Character coverage differs from the previous combined face")
     if sum(map(len, groups.values())) != len(supported):
@@ -164,7 +194,7 @@ def main():
     metric_changes = []
     faces = []
 
-    for name, characters in (groups | home_groups).items():
+    for name, characters in (groups | home_groups | inner_groups).items():
         font = TTFont(source, recalcTimestamp=False)
         options = subset.Options()
         options.hinting = False
@@ -226,13 +256,23 @@ def main():
     original_faces = [face for face in faces if face["name"] in groups]
     faces_by_name = {face["name"]: face for face in faces}
     home_faces = {locale: [faces_by_name[name] for name in names] for locale, names in home_face_names.items()}
-    home_assets = [face for face in faces if face["name"] in home_groups] + [faces_by_name["punctuation"]]
+    home_assets = [face for face in faces if face["name"] in home_groups] + [faces_by_name[name] for name in ("numeric", "punctuation")]
+    inner_faces = [faces_by_name[name] for name in inner_face_names]
+    inner_coverage = [groups[name] if name in groups else inner_groups[name] for name in inner_face_names]
+    if set.union(*inner_coverage) != supported or sum(map(len, inner_coverage)) != len(supported):
+        raise ValueError("Inner faces must retain disjoint full character coverage")
     metadata.update({
-        "formatVersion": 5,
+        "formatVersion": 6,
         "unicodeRanges": SOURCE_RANGES,
         "previousCombinedSubsetBytes": 281528,
         "subsetBytes": sum(face["bytes"] for face in original_faces),
         "faces": original_faces,
+        "inner": {
+            "criticalHeadings": inner_titles,
+            "faces": inner_faces,
+            "controlsBytes": sum(face["bytes"] for face in inner_faces if face["name"] in ("ui", "numeric")),
+            "localeHeadingBytes": {locale: faces_by_name[f"inner-{locale}-critical"]["bytes"] for locale in ("uk", "en")},
+        },
         "progressive": {
             "criticalHeadings": critical_titles,
             "faces": home_assets,
@@ -267,7 +307,7 @@ def main():
     })
     metadata.pop("subsetSha256", None)
     METADATA.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n")
-    loading = write_browser_assets(original_faces, metadata["fallbackMetrics"], home_faces, critical_titles)
+    loading = write_browser_assets(original_faces, metadata["fallbackMetrics"], home_faces, critical_titles, inner_faces, inner_titles)
     print(json.dumps({"progressivePreloadBytes": metadata["progressive"]["localePreloadBytes"], "loading": loading, "verification": metadata["renderingVerification"]}, indent=2, ensure_ascii=False))
 
 

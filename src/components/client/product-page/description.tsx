@@ -1,4 +1,4 @@
-import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.core.css'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { getTranslations } from 'next-intl/server'
 

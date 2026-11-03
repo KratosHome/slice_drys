@@ -4,6 +4,10 @@ import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import loading from './rubik-doodle-shadow-loading.json'
 import { rubikDoodleShadow } from './rubik-doodle-shadow'
+import {
+  getRubikFontProfile,
+  hasUncoveredCharacters,
+} from './rubik-font-profile'
 
 const pendingStylesheets = new Map<string, Promise<void>>()
 
@@ -36,13 +40,26 @@ export default function RubikDoodleShadowFonts({
   locale,
 }: RubikDoodleShadowFontsProps) {
   const pathname = usePathname()
-  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`
+  const profile = getRubikFontProfile(pathname, locale)
+  const isHome = profile === 'home'
+  const isFull = profile === 'full'
   const home = loading.home[locale]
-  const preloads = isHome ? home.preloads : rubikDoodleShadow.preloads[locale]
+  const inner = loading.inner[locale]
+  const preloads = isHome
+    ? home.preloads
+    : isFull
+      ? rubikDoodleShadow.preloads[locale]
+      : profile === 'headings'
+        ? [inner.headingPreload]
+        : []
+  const criticalRules = isHome
+    ? home.criticalRules
+    : inner.controlsRules + (profile === 'headings' ? inner.headingRules : '')
+  const remaining = isHome ? home.remaining : inner.remaining
 
   useEffect(() => {
     const root = document.documentElement
-    if (!isHome) {
+    if (isFull) {
       root.dataset.rubikFontStage = 'full'
       return
     }
@@ -56,7 +73,7 @@ export default function RubikDoodleShadowFonts({
       if (disposed || requested) return
       requested = true
       root.dataset.rubikFontStage = 'remaining-loading'
-      void registerStylesheet(home.remaining)
+      void registerStylesheet(remaining)
         .then(() => {
           if (disposed) return
           root.dataset.rubikFontStage = 'remaining-registered'
@@ -70,9 +87,9 @@ export default function RubikDoodleShadowFonts({
         })
     }
 
-    // The first screen already has its heading glyphs. Register the remaining
-    // faces when content approaches the viewport or the visitor interacts,
-    // including restored scroll positions. Readable fallback text stays visible.
+    // First-screen text has its glyphs in the inline critical rules. Register
+    // the remaining faces when needed content approaches the viewport, or on
+    // interaction. Never hide text or leave it waiting on a fixed timer.
     const events = [
       'scroll',
       'wheel',
@@ -94,12 +111,67 @@ export default function RubikDoodleShadowFonts({
         },
         { rootMargin: '150px' },
       )
-      document
-        .querySelectorAll(
-          'main .about-us, main [aria-labelledby="reviews"], main [aria-labelledby="FAQ"], main .instafeed, footer',
+      if (isHome) {
+        document
+          .querySelectorAll(
+            'main .about-us, main [aria-labelledby="reviews"], main [aria-labelledby="FAQ"], main .instafeed, footer',
+          )
+          .forEach((section) => observer.observe(section))
+      } else {
+        const covered = new Set(
+          inner.controlsCharacters +
+            (profile === 'headings' ? inner.headingCharacters : ''),
         )
-        .forEach((section) => observer.observe(section))
+        const observed = new Set<Element>()
+        const observeMissingGlyphs = () => {
+          if (disposed || requested) return
+          document
+            .querySelectorAll(
+              '[class*="font-rubik"], .title-rubik, .title-section, [style*="--font-rubik-doodle-shadow"]',
+            )
+            .forEach((element) => {
+              const style = getComputedStyle(element)
+              if (!style.fontFamily.includes('Rubik Doodle Shadow')) return
+              const text = element.textContent ?? ''
+              const renderedText =
+                style.textTransform === 'uppercase'
+                  ? text.toUpperCase()
+                  : style.textTransform === 'lowercase'
+                    ? text.toLowerCase()
+                    : text
+              if (hasUncoveredCharacters(renderedText, covered)) {
+                observer.observe(element)
+                observed.add(element)
+              } else if (observed.delete(element)) {
+                observer.unobserve(element)
+              }
+            })
+        }
+        observeMissingGlyphs()
+        // Recommendations and dialogs can arrive after the first React effect.
+        // Recheck their actual text without polling or observing every frame.
+        let frame: number | undefined
+        const mutations = new MutationObserver(() => {
+          if (disposed || requested || frame !== undefined) return
+          frame = requestAnimationFrame(() => {
+            frame = undefined
+            observeMissingGlyphs()
+          })
+        })
+        mutations.observe(document.body, {
+          childList: true,
+          characterData: true,
+          subtree: true,
+        })
+        cleanups.push(() => {
+          mutations.disconnect()
+          if (frame !== undefined) cancelAnimationFrame(frame)
+        })
+      }
       cleanups.push(() => observer.disconnect())
+    } else {
+      // Browsers without IntersectionObserver still receive complete glyphs.
+      activate()
     }
 
     if (window.scrollY > 0 || window.location.hash) activate()
@@ -108,18 +180,20 @@ export default function RubikDoodleShadowFonts({
       disposed = true
       cleanups.forEach((cleanup) => cleanup())
     }
-  }, [home, isHome, pathname])
+  }, [inner, isFull, isHome, pathname, profile, remaining])
 
   return (
     <>
-      {isHome ? (
-        <style data-rubik-critical={locale}>{home.criticalRules}</style>
-      ) : (
+      {isFull ? (
         <link
           rel="stylesheet"
           href={loading.full}
           precedence="rubik-doodle-shadow"
         />
+      ) : (
+        <style data-rubik-critical={locale} data-rubik-profile={profile}>
+          {criticalRules}
+        </style>
       )}
       {preloads.map((href) => (
         <link
@@ -131,9 +205,9 @@ export default function RubikDoodleShadowFonts({
           crossOrigin="anonymous"
         />
       ))}
-      {isHome ? (
+      {!isFull ? (
         <noscript>
-          <link rel="stylesheet" href={home.remaining} />
+          <link rel="stylesheet" href={remaining} />
         </noscript>
       ) : null}
     </>

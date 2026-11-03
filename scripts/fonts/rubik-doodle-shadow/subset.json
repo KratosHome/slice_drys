@@ -13,7 +13,7 @@
   ],
   "coverage": "The same 227 mapped characters as the previous combined UK/English font. CSS unicode ranges are disjoint; punctuation and digits stay available when needed. Latin retains the extra space glyph used to derive the unchanged Arial fallback metrics.",
   "originalInitialFontBytes": 333448,
-  "subsetBytes": 315328,
+  "subsetBytes": 321220,
   "renderingVerification": {
     "decomposedOutlineChanges": 0,
     "advanceWidthChanges": 0,
@@ -24,16 +24,16 @@
   },
   "sourceDownloadUrl": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikdoodleshadow/RubikDoodleShadow-Regular.ttf",
   "rebuildCommand": "python scripts/fonts/rubik-doodle-shadow/subset-font.py /path/to/RubikDoodleShadow-Regular.ttf",
-  "formatVersion": 5,
+  "formatVersion": 6,
   "previousCombinedSubsetBytes": 281528,
   "faces": [
     {
       "name": "ui",
-      "file": "RubikDoodleShadow-ui.dd0fafe01a05.woff2",
-      "unicodeRanges": "U+0020-0022,U+0027,U+002D,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
-      "characters": 16,
-      "bytes": 12904,
-      "sha256": "dd0fafe01a05ae275689fa8eddc44e5fa7251d6e18629053798041af0375505d",
+      "file": "RubikDoodleShadow-ui.3ecd9ef3675c.woff2",
+      "unicodeRanges": "U+0020-0022,U+0027,U+002B,U+002D,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
+      "characters": 17,
+      "bytes": 14784,
+      "sha256": "3ecd9ef3675c520cf47d30b69dae98a12e29bed8e8982ccb9b8e94169ae597d5",
       "preloadLocales": ["uk", "en"],
       "assetExtraCharacters": []
     },
@@ -58,12 +58,22 @@
       "assetExtraCharacters": ["U+0020"]
     },
     {
+      "name": "numeric",
+      "file": "RubikDoodleShadow-numeric.76802aea06d3.woff2",
+      "unicodeRanges": "U+0030-0039",
+      "characters": 10,
+      "bytes": 35208,
+      "sha256": "76802aea06d3d06b089736410228e8a7c80ab767899f232252b2987eb76e67e3",
+      "preloadLocales": [],
+      "assetExtraCharacters": []
+    },
+    {
       "name": "punctuation",
-      "file": "RubikDoodleShadow-punctuation.853eee59ca84.woff2",
-      "unicodeRanges": "U+0023-0026,U+0028-002C,U+002E-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
-      "characters": 85,
-      "bytes": 129284,
-      "sha256": "853eee59ca84da0ad3bd4c49b923100d6a5de6169d51ae7c7f121a41f2e1c2cf",
+      "file": "RubikDoodleShadow-punctuation.921d2a4af087.woff2",
+      "unicodeRanges": "U+0023-0026,U+0028-002A,U+002C,U+002E-002F,U+003A-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
+      "characters": 74,
+      "bytes": 98088,
+      "sha256": "921d2a4af087222684215fc895f706522ed1436a3d7456be3cdb8f06fdbc2cbe",
       "preloadLocales": [],
       "assetExtraCharacters": []
     }
@@ -83,11 +93,11 @@
     "faces": [
       {
         "name": "home-symbols",
-        "file": "RubikDoodleShadow-home-symbols.3f7831e62061.woff2",
-        "unicodeRanges": "U+0021-0022,U+0027,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
-        "characters": 14,
-        "bytes": 12096,
-        "sha256": "3f7831e62061ede94bf06f1cef5462cb7066a4e56c94f9ca15b254205e11d342",
+        "file": "RubikDoodleShadow-home-symbols.b99d33e58baf.woff2",
+        "unicodeRanges": "U+0021-0022,U+0027,U+002B,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
+        "characters": 15,
+        "bytes": 13956,
+        "sha256": "b99d33e58baf2cd066dff76e3a37af9d609259bfdb798f66c24b6644113a4c26",
         "preloadLocales": [],
         "assetExtraCharacters": []
       },
@@ -152,17 +162,27 @@
         "assetExtraCharacters": []
       },
       {
+        "name": "numeric",
+        "file": "RubikDoodleShadow-numeric.76802aea06d3.woff2",
+        "unicodeRanges": "U+0030-0039",
+        "characters": 10,
+        "bytes": 35208,
+        "sha256": "76802aea06d3d06b089736410228e8a7c80ab767899f232252b2987eb76e67e3",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
         "name": "punctuation",
-        "file": "RubikDoodleShadow-punctuation.853eee59ca84.woff2",
-        "unicodeRanges": "U+0023-0026,U+0028-002C,U+002E-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
-        "characters": 85,
-        "bytes": 129284,
-        "sha256": "853eee59ca84da0ad3bd4c49b923100d6a5de6169d51ae7c7f121a41f2e1c2cf",
+        "file": "RubikDoodleShadow-punctuation.921d2a4af087.woff2",
+        "unicodeRanges": "U+0023-0026,U+0028-002A,U+002C,U+002E-002F,U+003A-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
+        "characters": 74,
+        "bytes": 98088,
+        "sha256": "921d2a4af087222684215fc895f706522ed1436a3d7456be3cdb8f06fdbc2cbe",
         "preloadLocales": [],
         "assetExtraCharacters": []
       }
     ],
-    "subsetBytes": 365168,
+    "subsetBytes": 371040,
     "localeFaces": {
       "uk": [
         "home-uk-critical",
@@ -170,6 +190,7 @@
         "home-cyrillic",
         "home-latin-critical",
         "home-latin",
+        "numeric",
         "punctuation"
       ],
       "en": [
@@ -178,16 +199,100 @@
         "home-cyrillic-critical",
         "home-cyrillic",
         "home-latin",
+        "numeric",
         "punctuation"
       ]
     },
     "localeSubsetBytes": {
-      "uk": 324856,
-      "en": 324880
+      "uk": 330728,
+      "en": 330752
     },
     "localePreloadBytes": {
       "uk": 19596,
       "en": 21712
+    }
+  },
+  "inner": {
+    "criticalHeadings": {
+      "uk": "Блог Тип Вага Фільтр",
+      "en": "Blog Type Weight Filter"
+    },
+    "faces": [
+      {
+        "name": "ui",
+        "file": "RubikDoodleShadow-ui.3ecd9ef3675c.woff2",
+        "unicodeRanges": "U+0020-0022,U+0027,U+002B,U+002D,U+003C,U+003E,U+00A0,U+02BC,U+2013-2014,U+2018-2019,U+201C-201D,U+2026",
+        "characters": 17,
+        "bytes": 14784,
+        "sha256": "3ecd9ef3675c520cf47d30b69dae98a12e29bed8e8982ccb9b8e94169ae597d5",
+        "preloadLocales": ["uk", "en"],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "numeric",
+        "file": "RubikDoodleShadow-numeric.76802aea06d3.woff2",
+        "unicodeRanges": "U+0030-0039",
+        "characters": 10,
+        "bytes": 35208,
+        "sha256": "76802aea06d3d06b089736410228e8a7c80ab767899f232252b2987eb76e67e3",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "inner-uk-critical",
+        "file": "RubikDoodleShadow-inner-uk-critical.7fde03611a1d.woff2",
+        "unicodeRanges": "U+0411-0412,U+0422,U+0424,U+0430,U+0433,U+0438,U+043B,U+043E-0440,U+0442,U+044C,U+0456",
+        "characters": 14,
+        "bytes": 17268,
+        "sha256": "7fde03611a1dbd8bfbd26da86ae06379e0b382701791b1167ae054d3b058d955",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "inner-cyrillic",
+        "file": "RubikDoodleShadow-inner-cyrillic.6f817fb2903f.woff2",
+        "unicodeRanges": "U+0401,U+0404,U+0406-0407,U+0410,U+0413-0421,U+0423,U+0425-042F,U+0431-0432,U+0434-0437,U+0439-043A,U+043C-043D,U+0441,U+0443-044B,U+044D-044F,U+0451,U+0454,U+0457,U+0490-0491",
+        "characters": 60,
+        "bytes": 80252,
+        "sha256": "6f817fb2903f19e848574e2c6631780b4fe2dc2212e043bc38b26924fb12ebc5",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "inner-en-critical",
+        "file": "RubikDoodleShadow-inner-en-critical.ddf5f682b243.woff2",
+        "unicodeRanges": "U+0042,U+0046,U+0054,U+0057,U+0065,U+0067-0069,U+006C,U+006F-0070,U+0072,U+0074,U+0079",
+        "characters": 14,
+        "bytes": 18712,
+        "sha256": "ddf5f682b243c083cefab86641897c20bc2bd1da259de24918c4ae6933c01f61",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "inner-latin",
+        "file": "RubikDoodleShadow-inner-latin.690d0a794383.woff2",
+        "unicodeRanges": "U+0041,U+0043-0045,U+0047-0053,U+0055-0056,U+0058-005A,U+0061-0064,U+0066,U+006A-006B,U+006D-006E,U+0071,U+0073,U+0075-0078,U+007A",
+        "characters": 38,
+        "bytes": 55632,
+        "sha256": "690d0a794383333ffed5dfa9783fb3f34aa388c16469cc29c436763c9a3d5e08",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      },
+      {
+        "name": "punctuation",
+        "file": "RubikDoodleShadow-punctuation.921d2a4af087.woff2",
+        "unicodeRanges": "U+0023-0026,U+0028-002A,U+002C,U+002E-002F,U+003A-003B,U+003D,U+003F-0040,U+005B-0060,U+007B-007E,U+00A1-00AC,U+00AE-00BF,U+00D7,U+00F7,U+0301,U+0308,U+201A,U+201E,U+2020-2022,U+2030,U+2039-203A,U+2044,U+20AC,U+20B4,U+2116,U+2122,U+2212,U+2215",
+        "characters": 74,
+        "bytes": 98088,
+        "sha256": "921d2a4af087222684215fc895f706522ed1436a3d7456be3cdb8f06fdbc2cbe",
+        "preloadLocales": [],
+        "assetExtraCharacters": []
+      }
+    ],
+    "controlsBytes": 49992,
+    "localeHeadingBytes": {
+      "uk": 17268,
+      "en": 18712
     }
   }
 }

@@ -1,14 +1,5 @@
 'use client'
 import React, { useEffect, useState, useSyncExternalStore } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/doodle-select'
 import ChangeQuantityIcon from '@/components/icons/change-quantity-icon'
 import TopLabel from '@/components/client/labels/top-label'
 import NewLabel from '@/components/client/labels/new-label'
@@ -23,6 +14,7 @@ import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
 import { productVariantUrl } from '@/utils/product-variant'
 import { useProductView } from '@/hooks/useProductView'
 import { useProductVariant } from './product-variant-provider'
+import ProductWeightSelector from './product-weight-selector'
 
 const subscribeToHydration = () => () => undefined
 
@@ -146,40 +138,14 @@ export const ProductInfo = ({
         <div className="border-foreground/10 order-3 min-w-0 border-t pt-5 lg:col-span-2 lg:row-start-3 lg:border-0 lg:pt-0">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div className="relative pt-6">
-              <Select
-                value={String(selectedVariable.weight)}
-                onValueChange={(value) => {
-                  if (value !== null) handleWeightChange(value)
-                }}
-              >
-                <SelectTrigger
-                  id="weight"
-                  className="border-foreground/15 relative h-[52px] min-w-28 rounded-lg bg-transparent text-xl font-medium shadow-none"
-                >
-                  <label
-                    htmlFor="weight"
-                    className="text-muted-foreground absolute -top-6 left-0 text-sm font-normal"
-                  >
-                    {t('choose-weight')}
-                  </label>
-                  <SelectValue placeholder={t('weight')}>
-                    {selectedVariable.weight} {t('g')}.
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className="bg-grey-select">
-                  <SelectGroup>
-                    <SelectLabel>{t('weight')}</SelectLabel>
-                    {variables.map((variable) => (
-                      <SelectItem
-                        key={variable.weight}
-                        value={String(variable.weight)}
-                      >
-                        {variable.weight} {t('g')}.
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <ProductWeightSelector
+                variables={variables}
+                weight={selectedVariable.weight}
+                unit={t('g')}
+                label={t('choose-weight')}
+                groupLabel={t('weight')}
+                onValueChange={handleWeightChange}
+              />
             </div>
             <div className="text-right font-bold whitespace-nowrap">
               {isProductPriceReduced(selectedVariable) ? (
@@ -206,8 +172,7 @@ export const ProductInfo = ({
             <div className="border-foreground/15 flex h-[52px] min-w-28 items-center justify-between rounded-lg border px-2.5 font-medium">
               <ResponsiveMotion
                 className="cursor-pointer"
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                variant="quantity"
                 onClick={() =>
                   setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
                 }
@@ -222,8 +187,7 @@ export const ProductInfo = ({
               <div className="min-w-4 text-center">{quantity}</div>
               <ResponsiveMotion
                 className="cursor-pointer"
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                variant="quantity"
                 onClick={() =>
                   setQuantity((prev) =>
                     prev < selectedVariable.count ? prev + 1 : prev,

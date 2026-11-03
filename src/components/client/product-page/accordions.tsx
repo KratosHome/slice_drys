@@ -22,10 +22,7 @@ export const Accordions = async () => {
       className="mx-auto mb-20 grid max-w-[988px] gap-6"
     >
       <AccordionItem value={'info'}>
-        <ResponsiveMotion
-          whileHover={{ scale: 1.009 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
+        <ResponsiveMotion variant="accordion">
           <AccordionTrigger className="py-6">
             {t('shelf-life')}
           </AccordionTrigger>
@@ -51,10 +48,7 @@ export const Accordions = async () => {
       </AccordionItem>
 
       <AccordionItem value={'delivery'}>
-        <ResponsiveMotion
-          whileHover={{ scale: 1.009 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
+        <ResponsiveMotion variant="accordion">
           <AccordionTrigger className="py-6">{t('delivery')}</AccordionTrigger>
         </ResponsiveMotion>
         <AccordionContent className="gap-6 border border-t-0 p-6">

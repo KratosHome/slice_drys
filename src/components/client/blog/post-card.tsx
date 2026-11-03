@@ -35,15 +35,7 @@ export default function PostCard({
         className,
       )}
     >
-      <ResponsiveMotion
-        whileHover={{
-          y: -5,
-          boxShadow: '0px 10px 20px hsla(var(--foreground) / 0.2)',
-        }}
-        transition={{ duration: 0.3 }}
-        whileTap={{ scale: 0.95 }}
-        className="group w-full rounded-xl p-4 will-change-transform active:scale-[0.95] active:shadow-xl"
-      >
+      <ResponsiveMotion variant="card" className="group w-full rounded-xl p-4">
         <div>
           <AspectRatio
             ratio={variant === 'big' ? 593 / 475 : 355 / 285}
@@ -53,12 +45,13 @@ export default function PostCard({
               src={post?.img || ''}
               alt={post?.title}
               fill
-              priority={priority}
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : undefined}
               className="h-full w-full object-cover transition-all duration-300 group-hover:rounded-2xl"
               sizes={
                 variant === 'big'
-                  ? '(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 50vw'
-                  : '(max-width: 768px) 50vw, 30vw'
+                  ? '(max-width: 539px) calc(100vw - 72px), (max-width: 767px) 468px, (max-width: 1279px) calc(50vw - 77px), 563px'
+                  : '(max-width: 767px) calc(50vw - 52px), (max-width: 1279px) calc((100vw - 308px) / 3), 324px'
               }
             />
           </AspectRatio>

@@ -1,0 +1,43 @@
+/* Interaction-only effects need no hydration, viewport listener or motion runtime. */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .motion:not([data-motion-disabled]) {
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.3s ease;
+  }
+
+  .button:not([data-motion-disabled]):hover {
+    transform: scale(1.05);
+  }
+
+  .button:not([data-motion-disabled]):active {
+    transform: scale(0.95);
+  }
+
+  .quantity:not([data-motion-disabled]):hover {
+    transform: scale(1.1);
+  }
+
+  .accordion:not([data-motion-disabled]):hover {
+    transform: scale(1.009);
+  }
+
+  .card:not([data-motion-disabled]):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px hsl(var(--foreground) / 0.2);
+  }
+
+  .card:not([data-motion-disabled]):active {
+    transform: translateY(-5px) scale(0.95);
+  }
+}
+
+/* Blog cards already provide press feedback on touch screens. */
+@media (prefers-reduced-motion: no-preference) {
+  @media (max-width: 767px), (hover: none), (pointer: coarse) {
+    .card:not([data-motion-disabled]):active {
+      transform: scale(0.95);
+      box-shadow: 0 10px 20px hsl(var(--foreground) / 0.2);
+    }
+  }
+}

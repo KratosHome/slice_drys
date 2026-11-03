@@ -91,8 +91,7 @@ export default function CartProductCard({
           <div className="bg-foreground text-background flex h-[50px] min-w-[115px] items-center justify-between px-2.5 font-bold">
             <ResponsiveMotion
               className="cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              variant="quantity"
               onClick={() =>
                 updateItemQuantity(
                   item.id,
@@ -112,8 +111,7 @@ export default function CartProductCard({
             <div className="min-w-4 text-center text-2xl">{item.quantity}</div>
             <ResponsiveMotion
               className="cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              variant="quantity"
               onClick={() =>
                 updateItemQuantity(
                   item.id,
