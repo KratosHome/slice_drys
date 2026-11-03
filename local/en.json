@@ -211,9 +211,10 @@
   "order": {
     "page-title": "Checkout",
     "contacts-title": "Contact details",
-    "surname-placeholder": "Surname",
-    "name-placeholder": "Name",
-    "phone-placeholder": "Phone",
+    "surname-label": "Surname",
+    "name-label": "Name",
+    "phone-label": "Phone",
+    "email-label": "Email address",
     "phone-field-description": "In format +38 (093) 123 45 67",
     "delivery-title": "Delivery",
     "delivery-method-to-branch": "To the branch",
@@ -260,6 +261,8 @@
     "fill-out-form": "Fill out the form",
     "start-cooperation": "Start Cooperation",
     "name": "Name",
+    "phone-number": "Phone number",
+    "email": "Email address",
     "this-field-is-required": "This field is required",
     "minimum-characters": "Minimum 2 characters",
     "maximum-characters": "Maximum 50 characters",
@@ -269,7 +272,7 @@
     "where-you-going-sell": "Where do you plan to sell?",
     "maximum-100-characters": "Maximum 100 characters",
     "link-company-name": "Link or company name",
-    "how-did-you-find-about-us": "How did you find out about us?",
+    "how-did-you-find-about-us": "How did you find out about us? (optional)",
     "send": "Send"
   },
   "contacts": {

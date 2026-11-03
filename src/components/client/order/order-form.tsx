@@ -51,6 +51,8 @@ type UserDataKeys = keyof IUserData<
 >
 
 const legendStyle = 'text-xl font-bold md:text-2xl'
+const contactInputStyle =
+  'h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]'
 const radioItemStyle = 'h-5 w-5 cursor-pointer'
 const radioItemFilledStyle =
   'bg-border outline outline-[10px] outline-border focus:outline ml-[10px] focus:outline-[10px]'
@@ -379,11 +381,10 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                   style={{ overflow: 'hidden' }}
                   className="p-0.5"
                 >
-                  <Label htmlFor="surname" className="sr-only">
-                    {t('surname-placeholder')}
+                  <Label htmlFor="surname" className="mb-2 block">
+                    {t('surname-label')}
                   </Label>
                   <Input
-                    placeholder={t('surname-placeholder')}
                     name="surname"
                     id="surname"
                     autoComplete="family-name"
@@ -403,14 +404,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         surname,
                       })
                     }}
-                    className="h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                    className={contactInputStyle}
                   />
 
-                  <Label htmlFor="name" className="sr-only">
-                    {t('name-placeholder')}
+                  <Label htmlFor="name" className="mt-6 mb-2 block">
+                    {t('name-label')}
                   </Label>
                   <Input
-                    placeholder={t('name-placeholder')}
                     name="name"
                     id="name"
                     autoComplete="given-name"
@@ -430,14 +430,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         name,
                       })
                     }}
-                    className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                    className={contactInputStyle}
                   />
 
-                  <Label htmlFor="phoneNumber" className="sr-only">
-                    {t('phone-placeholder')}
+                  <Label htmlFor="phoneNumber" className="mt-6 mb-2 block">
+                    {t('phone-label')}
                   </Label>
                   <Input
-                    placeholder={t('phone-placeholder')}
                     name="phoneNumber"
                     id="phoneNumber"
                     type="tel"
@@ -475,14 +474,13 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         phoneNumber,
                       })
                     }}
-                    className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                    className={contactInputStyle}
                   />
 
-                  <Label htmlFor="email" className="sr-only">
-                    E-mail
+                  <Label htmlFor="email" className="mt-6 mb-2 block">
+                    {t('email-label')}
                   </Label>
                   <Input
-                    placeholder="E-mail"
                     name="email"
                     id="email"
                     type="email"
@@ -510,7 +508,7 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
                         email,
                       })
                     }}
-                    className="mt-6 h-[60px] px-4 py-[18px] text-[clamp(16px,calc(16px+4*(100vw-768px)/672),20px)] md:py-[15px] lg:max-w-[90%]"
+                    className={contactInputStyle}
                   />
                 </m.div>
               </LazyMotion>

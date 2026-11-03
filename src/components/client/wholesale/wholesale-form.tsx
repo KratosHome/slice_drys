@@ -2,6 +2,7 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
@@ -126,13 +127,21 @@ const WholesaleForm = () => {
           {t('start-cooperation')}
         </div>
         <form
+          noValidate
           onSubmit={handleSubmit(onSubmit)}
           className="border-foreground flex flex-col gap-[32px] border border-t-0 border-dashed p-[32px]"
         >
-          <div>
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-name">{t('name')}</Label>
             <Input
+              id="wholesale-name"
+              autoComplete="name"
+              required
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={
+                errors.name ? 'wholesale-name-error' : undefined
+              }
               className="h-[60px] rounded-none"
-              placeholder={t('name')}
               {...register('name', {
                 required: t('this-field-is-required'),
                 minLength: { value: 2, message: t('minimum-characters') },
@@ -140,10 +149,17 @@ const WholesaleForm = () => {
               })}
             />
             {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
+              <p
+                id="wholesale-name-error"
+                role="alert"
+                className="text-red-500"
+              >
+                {errors.name.message}
+              </p>
             )}
           </div>
-          <div className="flex flex-col items-start">
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-phone">{t('phone-number')}</Label>
             <Controller
               control={control}
               name="phoneNumber"
@@ -167,7 +183,16 @@ const WholesaleForm = () => {
                 }
                 return (
                   <ForwardedMaskedInput
-                    id="phoneNumber"
+                    id="wholesale-phone"
+                    name="phoneNumber"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    required
+                    aria-invalid={Boolean(errors.phoneNumber)}
+                    aria-describedby={
+                      errors.phoneNumber ? 'wholesale-phone-error' : undefined
+                    }
                     mask={[
                       '+',
                       /\d/,
@@ -200,15 +225,28 @@ const WholesaleForm = () => {
               }}
             />
             {errors.phoneNumber && (
-              <p className="text-sm text-red-500">
+              <p
+                id="wholesale-phone-error"
+                role="alert"
+                className="text-sm text-red-500"
+              >
                 {errors.phoneNumber.message}
               </p>
             )}
           </div>
-          <div>
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-email">{t('email')}</Label>
             <Input
+              id="wholesale-email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              required
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={
+                errors.email ? 'wholesale-email-error' : undefined
+              }
               className="h-[60px] rounded-none"
-              placeholder="Email"
               {...register('email', {
                 required: t('this-field-is-required'),
                 pattern: {
@@ -218,13 +256,27 @@ const WholesaleForm = () => {
               })}
             />
             {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
+              <p
+                id="wholesale-email-error"
+                role="alert"
+                className="text-red-500"
+              >
+                {errors.email.message}
+              </p>
             )}
           </div>
-          <div>
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-where-sell">
+              {t('where-you-going-sell')}
+            </Label>
             <Input
+              id="wholesale-where-sell"
+              required
+              aria-invalid={Boolean(errors.whereSell)}
+              aria-describedby={
+                errors.whereSell ? 'wholesale-where-sell-error' : undefined
+              }
               className="h-[60px] rounded-none"
-              placeholder={t('where-you-going-sell')}
               {...register('whereSell', {
                 required: t('this-field-is-required'),
                 minLength: { value: 2, message: t('minimum-characters') },
@@ -232,23 +284,51 @@ const WholesaleForm = () => {
               })}
             />
             {errors.whereSell && (
-              <p className="text-red-500">{errors.whereSell.message}</p>
+              <p
+                id="wholesale-where-sell-error"
+                role="alert"
+                className="text-red-500"
+              >
+                {errors.whereSell.message}
+              </p>
             )}
           </div>
-          <Input
-            className="h-[60px] rounded-none"
-            placeholder={t('link-company-name')}
-            {...register('link', {
-              required: t('this-field-is-required'),
-              minLength: { value: 2, message: t('minimum-characters') },
-              maxLength: { value: 100, message: t('maximum-100-characters') },
-            })}
-          />
-          <Input
-            className="h-[60px] rounded-none"
-            placeholder={t('how-did-you-find-about-us')}
-            {...register('howYouFindUs')}
-          />
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-company">{t('link-company-name')}</Label>
+            <Input
+              id="wholesale-company"
+              required
+              aria-invalid={Boolean(errors.link)}
+              aria-describedby={
+                errors.link ? 'wholesale-company-error' : undefined
+              }
+              className="h-[60px] rounded-none"
+              {...register('link', {
+                required: t('this-field-is-required'),
+                minLength: { value: 2, message: t('minimum-characters') },
+                maxLength: { value: 100, message: t('maximum-100-characters') },
+              })}
+            />
+            {errors.link && (
+              <p
+                id="wholesale-company-error"
+                role="alert"
+                className="text-red-500"
+              >
+                {errors.link.message}
+              </p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="wholesale-referral">
+              {t('how-did-you-find-about-us')}
+            </Label>
+            <Input
+              id="wholesale-referral"
+              className="h-[60px] rounded-none"
+              {...register('howYouFindUs')}
+            />
+          </div>
           <div className="flex justify-center">
             <Button
               variant="button"
