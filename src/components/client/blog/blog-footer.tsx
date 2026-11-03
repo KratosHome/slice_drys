@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/useToast'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/button'
 import UnderlineWave from '@/components/ui/underline-wave'
+import { trackNewsletterSignup } from '@/utils/analytics'
 
 function BlogFooter() {
   const locale = useLocale() as ILocale
@@ -18,26 +19,38 @@ function BlogFooter() {
   const tToast = useTranslations('toast')
   const { toast } = useToast()
   const [isLoading, setIsLoading] = React.useState(false)
+  const submitting = React.useRef(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (submitting.current) return
+    submitting.current = true
     setIsLoading(true)
-    const formData = new FormData(e.currentTarget)
-    const resp = await subscribeServer(formData.get('email') as string)
-    setIsLoading(false)
-    if (resp.success) {
-      ;(e.target as HTMLFormElement).reset()
-      toast({
-        duration: 3000,
-        title: tToast('success'),
-        description: resp.message[locale],
-      })
-    } else {
-      toast({
-        variant: 'destructive',
-        title: tToast('error'),
-        description: resp.message[locale],
-      })
+    const form = e.currentTarget
+    try {
+      const resp = await subscribeServer(
+        new FormData(form).get('email') as string,
+      )
+      if (resp.success) {
+        if (resp.created) trackNewsletterSignup()
+        form.reset()
+        toast({
+          duration: 3000,
+          title: tToast('success'),
+          description: resp.message[locale],
+        })
+      } else {
+        toast({
+          variant: 'destructive',
+          title: tToast('error'),
+          description: resp.message[locale],
+        })
+      }
+    } catch {
+      toast({ variant: 'destructive', title: tToast('error') })
+    } finally {
+      submitting.current = false
+      setIsLoading(false)
     }
   }
   return (

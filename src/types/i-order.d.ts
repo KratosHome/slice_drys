@@ -23,6 +23,7 @@ type ICreateOrderDelivery =
     }
 
 interface ICreateOrderInput {
+  idempotencyKey: string
   products: ICreateOrderProduct[]
   user: ICreateOrderUser
   delivery: ICreateOrderDelivery

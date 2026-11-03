@@ -71,6 +71,8 @@ export default async function HomePage(props: {
       <MainJsonLd products={products} />
       <Hero productLinks={productLinks} />
       <ProductSlider
+        key={locale}
+        listId="popular_products"
         products={products.map(toProductCard)}
         title={t('products-slider.title')}
         message={t('products-slider.message')}

@@ -12,7 +12,7 @@ export function useProductView(product: IProduct, variant: IVariableProduct) {
     const signature = JSON.stringify(item)
     if (signature === previousView.current) return
 
-    if (trackEcommerceEvent('view_item', [item])) {
+    if (trackEcommerceEvent('view_item', [item]) === 'queued') {
       previousView.current = signature
     }
   }, [product, variant])

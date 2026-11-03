@@ -9,15 +9,22 @@ import { buttonVariants } from '@/components/ui/button-variants'
 
 export default function OrderConfirmation({
   response,
+  showOriginalNotice,
+  onReturnToDraft,
 }: {
-  response: IOrderResponse
+  response: Extract<IOrderResponse, { success: true }>
+  showOriginalNotice?: boolean
+  onReturnToDraft?: () => void
 }) {
   const locale = useLocale() as ILocale
   const t = useTranslations('order')
   const tCart = useTranslations('cart')
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const orderId =
-    response.receipt?.transactionId ?? response.customerReview?.orderId
+  const orderId = response.receipt.transactionId
+  const currency = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: response.receipt.currency,
+  })
 
   useLayoutEffect(() => {
     headingRef.current?.focus()
@@ -39,11 +46,42 @@ export default function OrderConfirmation({
       <p className="mt-5 text-lg" role="status">
         {response.message[locale] || t('success')}
       </p>
-      {orderId ? (
-        <p className="mt-4 text-sm break-all md:text-base">
-          {t('confirmation-order-number', { orderId })}
-        </p>
-      ) : null}
+      <p className="mt-4 text-sm break-all md:text-base">
+        {t('confirmation-order-number', { orderId })}
+      </p>
+      <ul className="mt-6 space-y-2 text-start">
+        {response.receipt.items.map((item) => (
+          <li
+            key={`${item.id}:${item.weight}`}
+            className="flex justify-between gap-4"
+          >
+            <span>
+              {t('receipt-item', {
+                name: item.name,
+                weight: item.weight,
+                quantity: item.quantity,
+              })}
+            </span>
+            <span className="whitespace-nowrap">
+              {currency.format(item.price * item.quantity)}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 flex justify-between gap-4 font-bold">
+        {t('receipt-total')}{' '}
+        <span>{currency.format(response.receipt.value)}</span>
+      </p>
+      {showOriginalNotice && <p className="mt-5">{t('original-confirmed')}</p>}
+      {onReturnToDraft && (
+        <button
+          type="button"
+          className="mx-auto mt-4 block cursor-pointer underline underline-offset-4"
+          onClick={onReturnToDraft}
+        >
+          {t('return-to-draft')}
+        </button>
+      )}
       <Link
         href={`/${locale}/products`}
         className={buttonVariants({

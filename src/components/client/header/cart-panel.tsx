@@ -29,7 +29,10 @@ export default function CartPanel({
   const totalPrice = useCartStore((state) => state.totalPrice)
   const totalProducts = useCartStore((state) => state.totalProducts)
   const minOrderAmount = useCartStore((state) => state.minOrderAmount)
-  const belowMinimum = totalPrice < minOrderAmount
+  const hasOriginalOrder = useCartStore((state) =>
+    Boolean(state.checkout?.input),
+  )
+  const checkoutBlocked = !hasOriginalOrder && totalPrice < minOrderAmount
   const missingAmount = Math.max(0, minOrderAmount - totalPrice)
 
   return (
@@ -62,12 +65,7 @@ export default function CartPanel({
           'bg-background outline-foreground mr-0 max-h-[80dvh] w-screen max-w-[calc(100vw-16px)] overflow-x-hidden overflow-y-auto rounded-lg p-5 outline-1 sm:w-[600px]',
         )}
       >
-        <div
-          className={cn(
-            styles.header,
-            'bg-background w-full rounded-t-lg',
-          )}
-        >
+        <div className={cn(styles.header, 'bg-background w-full rounded-t-lg')}>
           <div className="bg-foreground text-background flex w-full items-center justify-between border-b p-[12px] md:px-[48px] md:py-[32px]">
             <h2
               id={titleId}
@@ -90,13 +88,17 @@ export default function CartPanel({
         </div>
 
         {cart.itemList?.length === 0 ? (
-          <div
-            className={cn(
-              styles.body,
-              'py-16 text-center text-[20px]',
-            )}
-          >
+          <div className={cn(styles.body, 'py-16 text-center text-[20px]')}>
             {t('cart-empty')}
+            {hasOriginalOrder && (
+              <TransitionLink
+                href={`/${local}/order`}
+                onClick={() => setOpenCart(false)}
+                className="mt-4 block underline underline-offset-4"
+              >
+                {t('return-to-original')}
+              </TransitionLink>
+            )}
           </div>
         ) : (
           <>
@@ -115,21 +117,13 @@ export default function CartPanel({
                 })}
               </span>
             </div>
-            <div
-              className={cn(
-                styles.body,
-                'my-4 space-y-4',
-              )}
-            >
+            <div className={cn(styles.body, 'my-4 space-y-4')}>
               {cart.itemList?.map((item) => (
                 <CartProductCard itemData={item} key={item.id + item.weight} />
               ))}
             </div>
             <div
-              className={cn(
-                styles.footer,
-                'bg-background w-full rounded-b-lg',
-              )}
+              className={cn(styles.footer, 'bg-background w-full rounded-b-lg')}
             >
               <div className="flex items-center justify-between pt-2">
                 <p className="text-lg font-bold">{t('total')}:</p>
@@ -139,7 +133,7 @@ export default function CartPanel({
                 </div>
               </div>
 
-              {belowMinimum ? (
+              {checkoutBlocked ? (
                 <div className="mt-2 text-sm text-red-500" aria-live="polite">
                   {t('minimum-order-amount')} {minOrderAmount} {t('uah')}.{' '}
                   {t('minimum-order-shortfall', { amount: missingAmount })}
@@ -161,13 +155,13 @@ export default function CartPanel({
                 </ResponsiveMotion>
                 <ResponsiveMotion
                   variant="button"
-                  disabled={belowMinimum}
+                  disabled={checkoutBlocked}
                   className={cn(
                     'bg-foreground text-background flex w-full items-center justify-center',
-                    belowMinimum && 'bg-gray-500',
+                    checkoutBlocked && 'bg-gray-500',
                   )}
                 >
-                  {belowMinimum ? (
+                  {checkoutBlocked ? (
                     <Button
                       type="button"
                       variant="none"
@@ -180,9 +174,9 @@ export default function CartPanel({
                     <TransitionLink
                       href={`/${local}/order`}
                       onClick={() => setOpenCart(false)}
-                      className="flex h-full w-full items-center justify-center text-base md:text-xl"
+                      className="flex h-full w-full items-center justify-center px-2 text-center text-base leading-tight md:text-xl"
                     >
-                      {t('order')}
+                      {hasOriginalOrder ? t('return-to-original') : t('order')}
                     </TransitionLink>
                   )}
                 </ResponsiveMotion>

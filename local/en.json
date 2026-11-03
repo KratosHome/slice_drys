@@ -24,6 +24,7 @@
       "logo-slice-drys": "logo slice drys"
     },
     "call-me": {
+      "send-error": "We couldn't confirm your callback request. Please try again.",
       "call-back": "Call back",
       "leave-your-details-and-we-will-call-you-back": "Leave your details and we will call you back.",
       "your-name": "Your name",
@@ -81,6 +82,7 @@
     "minimum-order-amount": "Minimum order amount",
     "minimum-order-shortfall": "Add items for another {amount} UAH.",
     "continue-shopping": "Continue shopping",
+    "return-to-original": "Return to original order",
     "order": "Order",
     "clear-cart": "Remove all goods"
   },
@@ -243,9 +245,19 @@
     "validation-email-format": "Incorrect email format",
     "area-edit": "Edit",
     "error": "Oops! Something went wrong. Please try again or give us a call.",
+    "unconfirmed": "We could not confirm your order. Retry your original order or call us to check its status.",
     "success": "Order has been placed successfully!",
     "confirmation-title": "Thank you for your order!",
     "confirmation-order-number": "Order number: {orderId}",
+    "original-title": "Awaiting order confirmation",
+    "original-explanation": "Retry your original order to get its receipt. If the shop already accepted it, you’ll see its order number. If your request never arrived, retrying submits the items and details from your first attempt for a new order.",
+    "original-product": "Item {number}",
+    "receipt-item": "{name}, {weight} g × {quantity}",
+    "retry-original": "Retry original order",
+    "original-conflict": "An order from this checkout was already saved with different details. Please call us to check its items and order number.",
+    "original-confirmed": "This receipt confirms your original order. Changes you made afterwards weren’t included.",
+    "receipt-total": "Order total",
+    "return-to-draft": "Return to edited cart",
     "order": "Order"
   },
   "wholesale": {
@@ -276,6 +288,7 @@
     "send": "Send"
   },
   "contacts": {
+    "send-error": "We couldn't confirm your callback request. Please try again.",
     "title": "Contacts",
     "description": "Do you have any questions, ideas, or would you like to place an order? We are always happy to help.",
     "form-description": "Do you want us to call?",

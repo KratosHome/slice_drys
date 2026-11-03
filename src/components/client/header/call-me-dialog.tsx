@@ -1,6 +1,6 @@
 'use client'
 
-import { type ChangeEvent, type RefObject, useId } from 'react'
+import { type ChangeEvent, type RefObject, useId, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Controller, useForm } from 'react-hook-form'
 import {
@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { Button } from '@/components/ui/button'
 import { callMeBackServer } from '@/server/info/call-me-back.server'
+import { useLeadSubmit } from '@/hooks/useLeadSubmit'
 
 const MASKED_INPUT_PREFIX = '+38 (0'
 const MASKED_INPUT_MASK = [
@@ -59,6 +60,7 @@ export default function CallMeDialog({
   const t = useTranslations('main.call-me')
   const nameId = useId()
   const phoneId = useId()
+  const dismissed = useRef(false)
   const {
     register,
     handleSubmit,
@@ -69,14 +71,30 @@ export default function CallMeDialog({
     defaultValues: { name: '', phoneNumber: MASKED_INPUT_PREFIX },
   })
 
-  const sendCall = async (data: IFormData): Promise<void> => {
-    await callMeBackServer({ name: data.name, phoneNumber: data.phoneNumber })
-    reset()
-    onOpenChange(false)
-  }
+  const sendCall = useLeadSubmit<IFormData>(
+    'callback',
+    (data) => {
+      dismissed.current = false
+      return callMeBackServer(data)
+    },
+    () => {
+      // The shopper may have dismissed and reopened the dialog while waiting.
+      if (!dismissed.current) {
+        reset()
+        onOpenChange(false)
+      }
+    },
+    t('send-error'),
+  )
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) dismissed.current = true
+        onOpenChange(nextOpen)
+      }}
+    >
       <AnimatedDialogContent
         id={id}
         finalFocus={triggerRef}

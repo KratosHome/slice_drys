@@ -1,6 +1,6 @@
 import { contacts } from '@/data/contacts'
 
-import Link from 'next/link'
+import ContactLink from '@/components/client/contacts/contact-link'
 
 import { cn } from '@/utils/cn'
 import { useTranslations } from 'next-intl'
@@ -40,12 +40,12 @@ export default function NumberCall({
           <use href="/icons/sprite.svg#phone" />
         </svg>
       </div>
-      <Link
-        href={`tel:${contacts.phone}`}
+      <ContactLink
+        method="phone"
         className="block duration-300 group-hover:skew-x-[-10deg] group-hover:text-red-500"
       >
         {contacts.phone}
-      </Link>
+      </ContactLink>
     </div>
   )
 }

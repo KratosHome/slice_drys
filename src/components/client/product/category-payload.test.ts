@@ -24,12 +24,10 @@ test('category client cards omit server descriptions without changing variants o
     const serverResult = { success: true, data: [full], currentPage: 1, totalItems: 1, totalPages: 1 }
     function Product() { return null }
     function ProductListJsonLd() { return null }
-    function ProductListTracking() { return null }
 
     mock.module('@/components/client/product', () => ({ default: Product }))
     mock.module('@/components/client/product-filters/product-filters', () => ({ default: () => null }))
     mock.module('@/components/client/json-ld/product-list-json-ld', () => ({ default: ProductListJsonLd }))
-    mock.module('@/components/google-analytics/product-list-tracking', () => ({ default: ProductListTracking }))
     mock.module('next/navigation', () => ({
       notFound() { throw new Error('Unexpected notFound') },
       permanentRedirect() { throw new Error('Unexpected redirect') },
@@ -58,6 +56,7 @@ test('category client cards omit server descriptions without changing variants o
     const cards = elements.filter(element => element.type === Product)
     assert.equal(cards.length, 2, 'each existing pack keeps its own card')
     for (const [index, { props }] of cards.entries()) {
+      assert.deepEqual(props.analyticsList, { id: 'products/meat', name: category.name.uk, index })
       const sourceVariant = full.variables[index]
       const payload = JSON.stringify(props)
       assert.doesNotMatch(payload, /Server-only|server-category-id|unused.webp|"sold"/)
@@ -69,8 +68,6 @@ test('category client cards omit server descriptions without changing variants o
     }
     const structuredData = elements.find(element => element.type === ProductListJsonLd)
     assert.equal(structuredData.props.productsData, serverResult, 'JSON-LD still receives the full server data')
-    const tracking = elements.find(element => element.type === ProductListTracking)
-    assert.deepEqual(tracking.props.items, full.variables.map(variable => getProductAnalyticsItem(full, variable)))
     assert.equal(JSON.stringify(full), original, 'the source record is not mutated')
   `
 

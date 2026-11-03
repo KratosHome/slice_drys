@@ -3,12 +3,22 @@ interface IResponse {
   message: string
 }
 
-interface IOrderResponse {
-  success: boolean
+type IOrderResponse = {
   message: Partial<Record<ILocale, string>>
-  receipt?: IOrderReceipt
-  customerReview?: import('./google-customer-reviews').CustomerReviewOrder
-}
+} & (
+  | {
+      success: true
+      errorCode?: never
+      receipt: IOrderReceipt
+      customerReview?: import('./google-customer-reviews').CustomerReviewOrder
+    }
+  | {
+      success: false
+      errorCode: import('../constants/checkout-errors').CheckoutErrorCode
+      receipt?: never
+      customerReview?: never
+    }
+)
 
 interface IOrderReceipt {
   transactionId: string

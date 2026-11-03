@@ -150,6 +150,8 @@ async function ProductRecommendations({
 
   return (
     <ProductSlider
+      key={`${locale}/${productSlug}`}
+      listId="recommended_products"
       products={recommendations.data}
       overlapPreviousSection={false}
       title={t('also-buy')}

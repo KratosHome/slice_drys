@@ -21,6 +21,8 @@ namespace NodeJS {
     INSTAGRAM_ID?: string
 
     NEXT_PUBLIC_GOOGLE_ANALYTICS_ID?: string
+    GA4_API_SECRET?: string
+    CRON_SECRET?: string
 
     NEXTAUTH_SECRET?: string
   }

@@ -15,14 +15,15 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
 import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
 import { getProductVariant, productVariantUrl } from '@/utils/product-variant'
-import { trackProductSelection } from '@/utils/analytics'
+import { trackProductSelection, type AnalyticsList } from '@/utils/analytics'
+import { useProductListTracking } from '@/components/google-analytics/product-list-tracking'
 
 interface IProductProps {
   product: IProductCard
   priority?: boolean
   imageEnabled?: boolean
   initialVariant?: IVariableProduct
-  analyticsList?: { id: string; name: string; index?: number }
+  analyticsList?: AnalyticsList
 }
 
 const subscribeToHydration = () => () => undefined
@@ -48,6 +49,11 @@ export default function Product({
 
   const [selectedVariable, setSelectedVariable] = useState(
     getProductVariant(product, String(initialVariant?.weight ?? '')),
+  )
+  const cardRef = useProductListTracking(
+    product,
+    selectedVariable,
+    analyticsList,
   )
   const price = getProductPrice(selectedVariable)
 
@@ -102,7 +108,7 @@ export default function Product({
   } satisfies ImageProps
 
   return (
-    <div className="block px-2 py-8 sm:px-3 md:px-4">
+    <div ref={cardRef} className="block px-2 py-8 sm:px-3 md:px-4">
       <CardContainer className="relative h-full w-full rounded-sm">
         <CardBody className="relative flex h-full w-full flex-col items-center justify-between md:mb-[20px] md:gap-4">
           <div className="pointer-events-none absolute top-0 left-0 z-10 flex flex-col gap-1 text-[11px] font-medium text-white sm:text-xs lg:text-sm xl:text-base">

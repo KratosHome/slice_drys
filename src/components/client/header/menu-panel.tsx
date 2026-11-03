@@ -12,6 +12,7 @@ import LocaleChange from '@/components/client/header/locale-change'
 import Socials from '@/components/ui/socials'
 import { Separator } from '@/components/ui/separator'
 import { TransitionLink } from '@/components/client/transition-link'
+import ContactLink from '@/components/client/contacts/contact-link'
 import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { Fragment, useRef } from 'react'
@@ -130,13 +131,13 @@ export default function MenuPanel({
                 <svg width="24px" height="24px">
                   <use href="/icons/sprite.svg#phone" />
                 </svg>
-                <TransitionLink
-                  href={`tel:${contacts.phone}`}
+                <ContactLink
+                  method="phone"
                   onClick={onClose}
                   className="font-medium active:text-red-700"
                 >
                   {contacts.phone}
-                </TransitionLink>
+                </ContactLink>
               </div>
             </div>
           </DialogPanel>

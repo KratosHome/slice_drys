@@ -4,8 +4,6 @@ import type { Options } from '@splidejs/splide'
 import ViewportCarousel from '@/components/client/viewport-carousel'
 import Product from '@/components/client/product'
 import UnderlineWave from '@/components/ui/underline-wave'
-import ProductListTracking from '@/components/google-analytics/product-list-tracking'
-import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 import { cn } from '@/utils/cn'
 
 import {
@@ -20,6 +18,7 @@ import {
 
 interface IProductSlider {
   products: IProductCard[]
+  listId: 'popular_products' | 'recommended_products'
   title: string
   message: string
   overlapPreviousSection?: boolean
@@ -27,6 +26,7 @@ interface IProductSlider {
 
 export default function ProductSlider({
   products,
+  listId,
   title,
   message,
   overlapPreviousSection = true,
@@ -134,18 +134,6 @@ export default function ProductSlider({
         overlapPreviousSection && '-mt-[200px] md:-mt-[100px] lg:-mt-[50px]',
       )}
     >
-      <ProductListTracking
-        listId="popular_products"
-        listName={title}
-        items={products
-          .map((product) =>
-            getProductAnalyticsItem(
-              product,
-              product.variant ?? product.variables[0],
-            ),
-          )
-          .filter((item): item is AnalyticsItem => item !== undefined)}
-      />
       <div className="md:px-[20px] md:pb-16">
         <h2
           id={titleId}
@@ -175,7 +163,7 @@ export default function ProductSlider({
             <Product
               product={product}
               imageEnabled={enabledImages.has(product.slug)}
-              analyticsList={{ id: 'popular_products', name: title, index }}
+              analyticsList={{ id: listId, name: title, index }}
             />
           </li>
         ))}

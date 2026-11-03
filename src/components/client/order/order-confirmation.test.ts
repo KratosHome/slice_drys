@@ -3,6 +3,9 @@ import { spawnSync } from 'node:child_process'
 import { test } from 'node:test'
 
 test('order confirmation keeps the saved order visible in both languages and gates the Google module', () => {
+  // @ts-expect-error An accepted order must always have a receipt.
+  void ({ success: true, message: {} } satisfies IOrderResponse)
+
   // Keep the Google mock isolated from other suites; rendering cannot contact
   // Google, create an order, or send a customer notification.
   const script = String.raw`
@@ -35,16 +38,19 @@ test('order confirmation keeps the saved order visible in both languages and gat
     const original = JSON.stringify(response)
 
     for (const [locale, messages] of [['uk', ukMessages], ['en', enMessages]]) {
-      const render = value => renderToStaticMarkup(React.createElement(
+      const render = (value, props = {}) => renderToStaticMarkup(React.createElement(
         NextIntlClientProvider,
         { locale, messages, timeZone: 'Europe/Kyiv' },
-        React.createElement(OrderConfirmation, { response: value }),
+        React.createElement(OrderConfirmation, { response: value, ...props }),
       ))
       surveyOrders = []
       const html = render(response)
       assert.ok(html.includes(messages.order['confirmation-title']), 'confirmation uses the active language')
       assert.ok(html.includes(response.message[locale]), 'server success message remains visible')
       assert.ok(html.includes(messages.order['confirmation-order-number'].replace('{orderId}', receipt.transactionId)), 'saved receipt number is visible')
+      assert.ok(html.includes(messages.order['receipt-item'].replace('{name}', 'Beef').replace('{weight}', '150').replace('{quantity}', '1')))
+      assert.ok(html.includes(new Intl.NumberFormat(locale, { style: 'currency', currency: 'UAH' }).format(receipt.value)))
+      assert.ok(!html.includes(messages.order['return-to-draft']))
       assert.ok(html.includes('href="/' + locale + '/products"'), 'customer can continue shopping in the same language')
       assert.ok(html.includes(messages.cart['continue-shopping']))
       assert.match(html, /<section[^>]*aria-labelledby="order-confirmation-title"/)
@@ -60,10 +66,12 @@ test('order confirmation keeps the saved order visible in both languages and gat
       assert.ok(withoutSurvey.includes(receipt.transactionId))
       assert.ok(withoutSurvey.includes(messages.order.success), 'missing server translation uses the localized success fallback')
       assert.equal(surveyOrders.length, 0, 'Google is not mounted without review data')
-      const withoutReceipt = render({ success: true, message: {} })
-      assert.ok(withoutReceipt.includes(messages.order['confirmation-title']))
-      assert.ok(!withoutReceipt.includes(receipt.transactionId), 'a missing receipt never produces a fabricated order number')
-      assert.equal(surveyOrders.length, 0)
+
+      const replay = render({ success: true, message: {}, receipt }, {
+        showOriginalNotice: true, onReturnToDraft() {},
+      })
+      assert.ok(replay.includes(messages.order['original-confirmed']))
+      assert.ok(replay.includes(messages.order['return-to-draft']))
     }
     assert.equal(JSON.stringify(response), original, 'rendering never mutates the successful response')
   `

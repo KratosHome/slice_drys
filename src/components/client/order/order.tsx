@@ -42,7 +42,6 @@ function getStoredReferralCode(): string | undefined {
 
     return storedReferral.code.trim()
   } catch {
-    window.localStorage.removeItem('ref')
     return undefined
   }
 }
@@ -56,8 +55,11 @@ export default function Order({ defaultCities }: Props) {
 
   const [loading, setLoading] = useState(false)
   const [formValid, setFormValid] = useState(false)
-  const [confirmation, setConfirmation] = useState<IOrderResponse | null>(null)
-  const checkoutTracked = useRef(false)
+  const [confirmation, setConfirmation] = useState<{
+    response: Extract<IOrderResponse, { success: true }>
+    retried: boolean
+  } | null>(null)
+  const checkoutQueued = useRef(false)
 
   const formRef = useRef<{
     reset: () => void
@@ -67,16 +69,18 @@ export default function Order({ defaultCities }: Props) {
   const {
     totalPrice,
     minOrderAmount,
+    checkout,
     cart: { userData, itemList },
   } = useCartStore((state) => state)
+  const original = checkout?.input
 
   useEffect(() => {
-    if (checkoutTracked.current || !itemList?.length) return
-    checkoutTracked.current = trackEcommerceEvent(
-      'begin_checkout',
-      getCartAnalyticsItems(itemList),
-    )
-  }, [itemList])
+    if (checkoutQueued.current || confirmation || original || !itemList?.length)
+      return
+    checkoutQueued.current =
+      trackEcommerceEvent('begin_checkout', getCartAnalyticsItems(itemList)) ===
+      'queued'
+  }, [itemList, original, confirmation])
 
   useEffect(() => {
     if (userData?.formStep === 4) {
@@ -93,35 +97,106 @@ export default function Order({ defaultCities }: Props) {
     }
   }, [minOrderAmount, totalPrice, userData?.formStep])
 
-  const handleSubmit = async () => {
-    if (
+  const submit = (retried: boolean) => {
+    if (loading) return
+    const pending = useCartStore.getState().checkout?.input
+    if (retried) {
+      if (!original || pending?.idempotencyKey !== original.idempotencyKey)
+        return
+    } else if (
+      pending ||
       !formRef.current ||
-      loading ||
       totalPrice < minOrderAmount ||
       userData?.formStep !== 3
-    )
+    ) {
       return
+    }
     setLoading(true)
 
-    const referralCode = getStoredReferralCode()
-
-    const cb = (resp: IOrderResponse) => {
-      if (resp.success) {
+    return submitOrder(
+      retried ? undefined : getStoredReferralCode(),
+      (resp) => {
         setLoading(false)
-        setConfirmation(resp)
-      } else {
-        setLoading(false)
-        toast({
-          variant: 'destructive',
-          title: tToast('error'),
-          description: resp.message[locale],
-        })
-      }
-    }
-    submitOrder(referralCode, cb)
+        if (resp.success) {
+          setConfirmation({ response: resp, retried })
+        } else {
+          toast({
+            variant: 'destructive',
+            title: tToast('error'),
+            description:
+              resp.errorCode === 'idempotency_conflict'
+                ? tOrder('original-conflict')
+                : resp.message[locale],
+          })
+        }
+      },
+    )
   }
 
-  if (confirmation) return <OrderConfirmation response={confirmation} />
+  if (confirmation) {
+    return (
+      <OrderConfirmation
+        response={confirmation.response}
+        showOriginalNotice={confirmation.retried || Boolean(itemList?.length)}
+        onReturnToDraft={
+          itemList?.length
+            ? () => {
+                checkoutQueued.current = false
+                setConfirmation(null)
+              }
+            : undefined
+        }
+      />
+    )
+  }
+
+  if (original) {
+    return (
+      <section
+        aria-labelledby="original-order-title"
+        aria-busy={loading}
+        className="border-foreground/20 mx-auto my-10 max-w-[760px] border px-5 py-8 md:px-10"
+      >
+        {loading ? <Loading /> : null}
+        <h2 id="original-order-title" className="font-rubik text-2xl">
+          {tOrder('original-title')}
+        </h2>
+        {!loading && <p className="mt-4">{tOrder('original-explanation')}</p>}
+        <ul className="my-4 list-disc space-y-1 ps-6">
+          {original.products.map((product, index) => {
+            const item = itemList?.find((entry) => entry.id === product.id)
+            return (
+              <li key={`${product.id}:${product.weight}`}>
+                {tOrder('receipt-item', {
+                  name:
+                    item?.names?.[locale] ||
+                    item?.name ||
+                    tOrder('original-product', { number: index + 1 }),
+                  weight: product.weight,
+                  quantity: product.count,
+                })}
+              </li>
+            )
+          })}
+        </ul>
+        {original.comment && (
+          <p className="my-4 break-words whitespace-pre-wrap">
+            {tOrder('comment-title')}: {original.comment}
+          </p>
+        )}
+        {!loading && (
+          <Button
+            type="button"
+            variant="button"
+            onClick={() => submit(true)}
+            className="h-auto! min-h-[50px] px-6 py-3 whitespace-normal"
+          >
+            {tOrder('retry-original')}
+          </Button>
+        )}
+      </section>
+    )
+  }
 
   return (
     <div className="mt-10 flex flex-col items-center gap-[70px] lg:mt-[70px] lg:flex-row lg:items-start lg:gap-[clamp(30px,calc(30px+40*(100vw-1024px)/416),70px)]">
@@ -129,7 +204,7 @@ export default function Order({ defaultCities }: Props) {
       <OrderForm
         ref={formRef}
         defaultCities={defaultCities}
-        onFinalSubmit={handleSubmit}
+        onFinalSubmit={() => submit(false)}
         onValidityChange={setFormValid}
         submitting={loading}
       />

@@ -4,9 +4,12 @@ import { afterEach, beforeEach, describe, test } from 'node:test'
 import {
   getCartAnalyticsItems,
   getProductAnalyticsItem,
+  trackCheckoutError,
+  trackContactClick,
   trackEcommerceEvent,
+  trackLead,
+  trackNewsletterSignup,
   trackProductSelection,
-  trackPurchase,
   type AnalyticsItem,
 } from './analytics'
 
@@ -25,15 +28,10 @@ const item: AnalyticsItem = {
 describe('GA4 ecommerce', () => {
   beforeEach(() => {
     dataLayer = []
-    const session = new Map<string, string>()
     Object.defineProperty(globalThis, 'window', {
       configurable: true,
       value: {
         dataLayer,
-        sessionStorage: {
-          getItem: (key: string) => session.get(key) ?? null,
-          setItem: (key: string, value: string) => session.set(key, value),
-        },
       },
     })
     process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID = 'G-TEST123'
@@ -50,11 +48,11 @@ describe('GA4 ecommerce', () => {
     }
   })
 
-  test('queues initialization before early product events and uses UAH totals', () => {
-    assert.equal(trackEcommerceEvent('view_item', [item]), true)
+  test('reports only queued when the Google script is absent and uses UAH totals', () => {
+    assert.equal(trackEcommerceEvent('view_item', [item]), 'queued')
     assert.equal(
       trackEcommerceEvent('add_to_cart', [{ ...item, quantity: 2 }]),
-      true,
+      'queued',
     )
     assert.equal(dataLayer[0][0], 'js')
     assert.equal(Array.isArray(dataLayer[2]), false)
@@ -96,9 +94,9 @@ describe('GA4 ecommerce', () => {
 
   test('does not queue events when the measurement ID is missing or invalid', () => {
     delete process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
-    assert.equal(trackEcommerceEvent('view_item', [item]), false)
+    assert.equal(trackEcommerceEvent('view_item', [item]), 'skipped')
     process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID = 'UA-123'
-    assert.equal(trackEcommerceEvent('view_item', [item]), false)
+    assert.equal(trackEcommerceEvent('view_item', [item]), 'skipped')
     assert.equal(dataLayer.length, 0)
   })
 
@@ -106,7 +104,7 @@ describe('GA4 ecommerce', () => {
     const originalNodeEnv = process.env.NODE_ENV
     try {
       Object.assign(process.env, { NODE_ENV: 'development' })
-      assert.equal(trackEcommerceEvent('view_item', [item]), false)
+      assert.equal(trackEcommerceEvent('view_item', [item]), 'skipped')
       assert.equal(dataLayer.length, 0)
     } finally {
       Object.assign(process.env, { NODE_ENV: originalNodeEnv })
@@ -136,52 +134,63 @@ describe('GA4 ecommerce', () => {
     assert.equal(parameters.items[0].item_variant, '150 g')
   })
 
+  test('queues only fixed labels for leads, contacts, errors and subscriptions', () => {
+    assert.equal(trackLead('wholesale'), 'queued')
+    assert.equal(trackLead('callback'), 'queued')
+    assert.equal(trackContactClick('email'), 'queued')
+    assert.equal(trackContactClick('phone'), 'queued')
+    assert.equal(trackCheckoutError('order_unconfirmed'), 'queued')
+    assert.equal(trackNewsletterSignup(), 'queued')
+    assert.deepEqual(
+      dataLayer.slice(2).map((entry) => Array.from(entry)),
+      [
+        [
+          'event',
+          'generate_lead',
+          { send_to: 'G-TEST123', form_type: 'wholesale' },
+        ],
+        [
+          'event',
+          'generate_lead',
+          { send_to: 'G-TEST123', form_type: 'callback' },
+        ],
+        [
+          'event',
+          'contact_click',
+          { send_to: 'G-TEST123', contact_method: 'email' },
+        ],
+        [
+          'event',
+          'contact_click',
+          { send_to: 'G-TEST123', contact_method: 'phone' },
+        ],
+        [
+          'event',
+          'checkout_error',
+          { send_to: 'G-TEST123', error_code: 'order_unconfirmed' },
+        ],
+        ['event', 'newsletter_signup', { send_to: 'G-TEST123' }],
+      ],
+    )
+  })
+
+  test('rejects user data supplied in place of technical labels at runtime', () => {
+    // @ts-expect-error Reject unchecked input from callers outside TypeScript.
+    assert.equal(trackCheckoutError('buyer@example.test'), 'skipped')
+    // @ts-expect-error Contact destinations are not analytics parameters.
+    assert.equal(trackContactClick('tel:+380000000000'), 'skipped')
+    // @ts-expect-error Only the two known form types are allowed.
+    assert.equal(trackLead('private address'), 'skipped')
+    assert.equal(dataLayer.length, 0)
+  })
+
   test('ignores invalid quantities and treats an empty cart as a cart view', () => {
     assert.equal(
       trackEcommerceEvent('add_to_cart', [{ ...item, quantity: 0 }]),
-      false,
+      'skipped',
     )
-    assert.equal(trackEcommerceEvent('view_cart', []), true)
+    assert.equal(trackEcommerceEvent('view_cart', []), 'queued')
     assert.equal(dataLayer[2][1], 'view_cart')
-  })
-
-  test('sends only receipt products and a saved transaction ID once', () => {
-    const receipt: IOrderReceipt = {
-      transactionId: 'saved-order-1',
-      currency: 'UAH',
-      value: 914,
-      items: [
-        { id: 'beef', name: 'Яловичина', weight: 150, price: 457, quantity: 2 },
-      ],
-    }
-    assert.equal(trackPurchase(receipt), true)
-    assert.equal(trackPurchase(receipt), false)
-    const purchases = dataLayer.filter((entry) => entry[1] === 'purchase')
-    assert.equal(purchases.length, 1)
-    assert.deepEqual(purchases[0][2], {
-      send_to: 'G-TEST123',
-      currency: 'UAH',
-      transaction_id: 'saved-order-1',
-      value: 914,
-      items: [{ ...item, quantity: 2 }],
-    })
-  })
-
-  test('rejects a purchase without an ID or with an inconsistent total', () => {
-    const receipt: IOrderReceipt = {
-      transactionId: '',
-      currency: 'UAH',
-      value: 457,
-      items: [
-        { id: 'beef', name: 'Яловичина', weight: 150, price: 457, quantity: 1 },
-      ],
-    }
-    assert.equal(trackPurchase(receipt), false)
-    assert.equal(
-      trackPurchase({ ...receipt, transactionId: 'invalid-total', value: 415 }),
-      false,
-    )
-    assert.equal(dataLayer.length, 0)
   })
 
   test('cart mapping excludes any checkout contact fields', () => {
@@ -204,6 +213,6 @@ describe('GA4 ecommerce', () => {
         throw new Error('Analytics blocked')
       },
     })
-    assert.equal(trackEcommerceEvent('add_to_cart', [item]), false)
+    assert.equal(trackEcommerceEvent('add_to_cart', [item]), 'skipped')
   })
 })

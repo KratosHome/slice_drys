@@ -7,6 +7,7 @@ import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { useTranslations } from 'next-intl'
 import { sendWholesale } from '@/server/info/wholesale.server'
 import { toast } from '@/hooks/useToast'
+import { useLeadSubmit } from '@/hooks/useLeadSubmit'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
@@ -26,7 +27,7 @@ const WholesaleForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<FormData>({
     defaultValues: {
@@ -39,20 +40,17 @@ const WholesaleForm = () => {
     },
   })
 
-  const onSubmit = async (data: FormData) => {
-    const result = await sendWholesale(data)
-
-    if (result.success) {
+  const onSubmit = useLeadSubmit<FormData>(
+    'wholesale',
+    sendWholesale,
+    () => {
       toast({
         title: t('thank-you-we-will-contact-you'),
       })
       reset()
-    } else {
-      toast({
-        title: t('error'),
-      })
-    }
-  }
+    },
+    t('error'),
+  )
 
   return (
     <div className="grid pt-10 md:pt-[140px] lg:grid-cols-2">
@@ -333,6 +331,7 @@ const WholesaleForm = () => {
             <Button
               variant="button"
               type="submit"
+              disabled={isSubmitting}
               className="h-[60px]! max-w-max! px-7"
             >
               {t('send')}

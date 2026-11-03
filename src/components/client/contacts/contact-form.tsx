@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { callMeBackServer } from '@/server/info/call-me-back.server'
 import ForwardedMaskedInput from '@/components/ui/forwarded-masked-input'
 import { toast } from '@/hooks/useToast'
+import { useLeadSubmit } from '@/hooks/useLeadSubmit'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 
@@ -28,7 +29,7 @@ const ContactForm = ({
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({
     defaultValues: {
@@ -37,18 +38,15 @@ const ContactForm = ({
     },
   })
 
-  const sendCall = async (data: ContactFormData) => {
-    await callMeBackServer({
-      name: '',
-      phoneNumber: data.phoneNumber,
-    })
-
-    toast({
-      title: t('thank-you-we-will-contact-you_shortly'),
-    })
-
-    reset()
-  }
+  const sendCall = useLeadSubmit<ContactFormData>(
+    'callback',
+    callMeBackServer,
+    () => {
+      toast({ title: t('thank-you-we-will-contact-you_shortly') })
+      reset()
+    },
+    t('send-error'),
+  )
 
   return (
     <form
@@ -127,6 +125,7 @@ const ContactForm = ({
       <Button
         type="submit"
         variant="button"
+        disabled={isSubmitting}
         className="mt-[40px] flex h-[60px] items-center px-[60px] text-2xl font-medium"
       >
         {button}

@@ -1,6 +1,6 @@
 import { contacts } from '@/data/contacts'
 import { useLocale, useTranslations } from 'next-intl'
-import { TransitionLink } from '@/components/client/transition-link'
+import ContactLink from '@/components/client/contacts/contact-link'
 
 const ContactInfo = ({ block_title }: { block_title: string }) => {
   const locale = useLocale() as ILocale
@@ -22,9 +22,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#mail" />
           </svg>
-          <TransitionLink href={`mailto:${contacts.mail}`}>
-            {contacts.mail}
-          </TransitionLink>
+          <ContactLink method="email">{contacts.mail}</ContactLink>
         </div>
         <div className="info-item phone mb-8 flex items-center gap-x-3">
           <svg
@@ -35,9 +33,7 @@ const ContactInfo = ({ block_title }: { block_title: string }) => {
           >
             <use href="/icons/sprite.svg#phone" />
           </svg>
-          <TransitionLink href={`tel:${contacts.phone}`}>
-            {contacts.phone}
-          </TransitionLink>
+          <ContactLink method="phone">{contacts.phone}</ContactLink>
         </div>
         <div className="info-item location mb-8 flex items-center gap-x-3">
           <svg

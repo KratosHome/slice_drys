@@ -1,27 +1,40 @@
 'use server'
 
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
+import { setTimeout as delay } from 'node:timers/promises'
 
 import mongoose from 'mongoose'
+import { cookies } from 'next/headers'
 import { after } from 'next/server'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { getReferralByCode } from '@/data/referals'
 import { connectToDbServer } from '@/server/connect-to-db.server'
 import { sendOrderNotification } from '@/server/info/order-notification.server'
-import { Order } from '@/server/orders/order-schema.server'
+import { Order, ensureOrderKeyIndex } from '@/server/orders/order-schema.server'
+import {
+  getOrderReceipt,
+  type ReceiptOrder,
+} from '@/server/orders/order-receipt'
+import {
+  deliverPendingPurchases,
+  purchaseDeliveryEnabled,
+} from '@/server/orders/purchase-delivery.server'
 import { Product } from '@/server/products/product-schema.server'
 import { getProductPrice } from '@/utils/product-price'
 import { MIN_ORDER_AMOUNT } from '@/constants/order'
+import type { CheckoutErrorCode } from '@/constants/checkout-errors'
 import { normalizeOrderPhone } from '@/utils/order-contact'
 import { createCustomerReviewOrder } from '@/server/orders/customer-review.server'
 
 const MAX_ORDER_LINES = 50
 const MAX_COMMENT_LENGTH = 2_000
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const UUID_V4 =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 class InvalidOrderError extends Error {
-  constructor() {
+  constructor(readonly code: CheckoutErrorCode = 'invalid_order') {
     super('Invalid order')
     this.name = 'InvalidOrderError'
   }
@@ -47,12 +60,10 @@ interface ProductPricingDocument {
   }>
 }
 
-interface PersistedProduct {
-  id: string
-  name: string
-  count: number
-  price: number
-  weight: number
+interface AcceptedOrder extends ReceiptOrder {
+  createdAt: Date
+  user: { email: string }
+  requestHash: string
 }
 
 type OrderAttribution =
@@ -201,7 +212,7 @@ function buildAttribution(
 async function getTrustedProducts(
   requestedProducts: RequestedProduct[],
   locale: ILocale,
-): Promise<{ products: PersistedProduct[]; total: number }> {
+): Promise<{ products: ReceiptOrder['products']; total: number }> {
   const productIds = [...new Set(requestedProducts.map((item) => item.id))]
   const productDocuments = await Product.find({ _id: { $in: productIds } })
     .select('_id name variables')
@@ -211,7 +222,7 @@ async function getTrustedProducts(
   )
 
   if (productById.size !== productIds.length) {
-    throw new InvalidOrderError()
+    throw new InvalidOrderError('product_unavailable')
   }
 
   let total = 0
@@ -227,19 +238,19 @@ async function getTrustedProducts(
       !Number.isSafeInteger(variant.count) ||
       requestedProduct.count > variant.count
     ) {
-      throw new InvalidOrderError()
+      throw new InvalidOrderError('product_unavailable')
     }
 
     const price = getProductPrice(variant)
 
     if (typeof price !== 'number' || !Number.isFinite(price) || price <= 0) {
-      throw new InvalidOrderError()
+      throw new InvalidOrderError('product_unavailable')
     }
 
     const name = product.name[locale] || product.name.uk || product.name.en
 
     if (typeof name !== 'string' || !name.trim()) {
-      throw new InvalidOrderError()
+      throw new InvalidOrderError('product_unavailable')
     }
 
     const normalizedPrice = roundMoney(price)
@@ -254,11 +265,64 @@ async function getTrustedProducts(
     }
   })
 
-  if (!Number.isFinite(total) || total < MIN_ORDER_AMOUNT) {
-    throw new InvalidOrderError()
+  if (!Number.isFinite(total)) throw new InvalidOrderError()
+  if (total < MIN_ORDER_AMOUNT) {
+    throw new InvalidOrderError('minimum_order_amount')
   }
 
   return { products, total }
+}
+
+async function getAnalyticsClientId(): Promise<string> {
+  // Accept only a GA-generated numeric client ID. Never forward arbitrary
+  // cookie values or derive an identifier from customer contact information.
+  try {
+    const value = (await cookies()).get('_ga')?.value ?? ''
+    const id = /^GA\d+\.\d+\.(\d{1,10}\.\d{1,10})$/.exec(value)?.[1]
+    if (id) return id
+  } catch {
+    // Checkout still works when cookies aren't available.
+  }
+  return randomUUID()
+}
+
+function acceptedOrderResponse(
+  order: AcceptedOrder,
+  requestHash: string,
+  message: IOrderResponse['message'],
+): IOrderResponse {
+  if (order.requestHash !== requestHash) {
+    throw new InvalidOrderError('idempotency_conflict')
+  }
+  const response: IOrderResponse = {
+    success: true,
+    message,
+    receipt: getOrderReceipt(order),
+  }
+  try {
+    response.customerReview = createCustomerReviewOrder(
+      response.receipt.transactionId,
+      order.user.email,
+      order.createdAt,
+    )
+  } catch {
+    console.error('Could not prepare the customer review for an accepted order')
+  }
+  return response
+}
+
+function scheduleAfterAcceptance(name: string, task: () => Promise<unknown>) {
+  try {
+    after(async () => {
+      try {
+        await task()
+      } catch {
+        console.error(`Could not run ${name} for an accepted order`)
+      }
+    })
+  } catch {
+    console.error(`Could not schedule ${name} for an accepted order`)
+  }
 }
 
 export async function createOrderServer(
@@ -268,7 +332,14 @@ export async function createOrderServer(
   const locale = (await getLocale()) as ILocale
 
   try {
-    if (!isRecord(orderData)) throw new InvalidOrderError()
+    if (
+      !isRecord(orderData) ||
+      typeof orderData.idempotencyKey !== 'string' ||
+      !UUID_V4.test(orderData.idempotencyKey)
+    ) {
+      throw new InvalidOrderError()
+    }
+    const idempotencyKey = orderData.idempotencyKey.toLowerCase()
 
     const userData = orderData.user
     const deliveryData = orderData.delivery
@@ -296,31 +367,77 @@ export async function createOrderServer(
     const requestedProducts = normalizeRequestedProducts(orderData.products)
     const delivery = normalizeDelivery(deliveryData)
 
-    await connectToDbServer()
-
-    const trustedOrder = await getTrustedProducts(requestedProducts, locale)
     const comment =
       typeof orderData.comment === 'string'
         ? orderData.comment.trim().slice(0, MAX_COMMENT_LENGTH)
         : ''
-    const attribution = buildAttribution(
-      orderData.referralCode,
-      trustedOrder.total,
-    )
     const user = {
-      id: `user-${randomUUID()}`,
       name: getRequiredString(userData.name, 120),
       surname: getRequiredString(userData.surname, 120),
       phone,
       email,
     }
+    const noCall = orderData.noCall === true
+    const referralCode =
+      typeof orderData.referralCode === 'string'
+        ? orderData.referralCode.trim()
+        : ''
+    const requestHash = createHash('sha256')
+      .update(
+        JSON.stringify({
+          user,
+          delivery,
+          paymentMethod,
+          comment,
+          noCall,
+          referralCode,
+          products: [...requestedProducts].sort(
+            (a, b) => a.id.localeCompare(b.id) || a.weight - b.weight,
+          ),
+        }),
+      )
+      .digest('hex')
+    const message = { [locale]: t('success') }
+
+    await connectToDbServer()
+    await ensureOrderKeyIndex()
+    const findPriorOrder = () =>
+      Order.findOne({ idempotencyKey })
+        .read('primary')
+        .readConcern('majority')
+        .select('_id total products user.email createdAt requestHash')
+        .lean<AcceptedOrder | null>()
+    const existing = await findPriorOrder()
+    if (existing) return acceptedOrderResponse(existing, requestHash, message)
+
+    let trustedOrder
+    try {
+      trustedOrder = await getTrustedProducts(requestedProducts, locale)
+    } catch (error) {
+      // Another request can accept this order while the catalog is changing.
+      const winner = await findPriorOrder()
+      if (winner) return acceptedOrderResponse(winner, requestHash, message)
+      throw error
+    }
+    const attribution = buildAttribution(referralCode, trustedOrder.total)
+    const purchaseDelivery = purchaseDeliveryEnabled()
+      ? {
+          state: 'pending',
+          nextAttemptAt: new Date(),
+          attempts: 0,
+          clientId: await getAnalyticsClientId(),
+        }
+      : undefined
 
     const order = new Order({
+      idempotencyKey,
+      requestHash,
+      purchaseDelivery,
       status: 'new',
       products: trustedOrder.products,
       total: trustedOrder.total,
       attribution,
-      user,
+      user: { ...user, id: `user-${randomUUID()}` },
       delivery,
       payment: {
         method: paymentMethod,
@@ -328,61 +445,65 @@ export async function createOrderServer(
       comment,
     })
 
-    await order.save()
-
-    const notification = {
-      totalPrice: `${trustedOrder.total} ₴`,
-      paymentMethod: paymentMethod === 'cash' ? 'післяоплата' : 'на картку',
-      name: `${user.name} ${user.surname}`,
-      phone: user.phone,
-      delivery:
-        'courier' in delivery
-          ? `Кур'єром: ${delivery.courier}`
-          : `Новою поштою: ${delivery.city}, ${delivery.department}`,
-      comment: comment || 'Немає коментарів',
-      products: trustedOrder.products
-        .map(
-          (product, index) =>
-            `${index + 1}. ${product.name} (вага ${product.weight}) x ${product.count} од`,
-        )
-        .join('\n'),
-      callback: orderData.noCall === true ? 'НЕ ПОТРІБЕН' : 'ПОТРІБЕН',
-      blogger:
-        attribution.source === 'referral'
-          ? {
-              name: attribution.bloggerName,
-              interest: attribution.rateBps / 100,
-              link: attribution.bloggerLink,
-              commissionAmount: attribution.commissionAmount,
-            }
-          : undefined,
+    let accepted: AcceptedOrder = order
+    try {
+      await order.save({ w: 'majority' })
+    } catch (error) {
+      // A concurrent insert can win, and a successful write can lose its
+      // acknowledgement. In both cases return the document MongoDB accepted.
+      let winner = await findPriorOrder()
+      if (!winner && isRecord(error) && error.code === 11000) {
+        // The unique index can reject a racing insert before the winner is
+        // visible to a majority read. Wait briefly for replication.
+        for (const waitMs of [50, 200, 750]) {
+          await delay(waitMs)
+          winner = await findPriorOrder()
+          if (winner) break
+        }
+      }
+      if (!winner) throw error
+      if (winner._id.toString() !== order._id.toString()) {
+        return acceptedOrderResponse(winner, requestHash, message)
+      }
+      // Our insert committed, so this request still owns its notifications.
+      accepted = winner
     }
 
-    after(() => sendOrderNotification(notification))
-
-    return {
-      success: true,
-      message: {
-        [locale]: t('success'),
-      },
-      receipt: {
-        transactionId: order._id.toString(),
-        currency: 'UAH',
-        value: trustedOrder.total,
-        items: trustedOrder.products.map((product) => ({
-          id: product.id,
-          name: product.name,
-          weight: product.weight,
-          price: product.price,
-          quantity: product.count,
-        })),
-      },
-      customerReview: createCustomerReviewOrder(
-        order._id.toString(),
-        user.email,
-        order.createdAt,
-      ),
+    if (purchaseDelivery) {
+      scheduleAfterAcceptance('purchase delivery', () =>
+        deliverPendingPurchases({ orderId: order._id.toString(), limit: 1 }),
+      )
     }
+    scheduleAfterAcceptance('order notification', () =>
+      sendOrderNotification({
+        totalPrice: `${trustedOrder.total} ₴`,
+        paymentMethod: paymentMethod === 'cash' ? 'післяоплата' : 'на картку',
+        name: `${user.name} ${user.surname}`,
+        phone: user.phone,
+        delivery:
+          'courier' in delivery
+            ? `Кур'єром: ${delivery.courier}`
+            : `Новою поштою: ${delivery.city}, ${delivery.department}`,
+        comment: comment || 'Немає коментарів',
+        products: trustedOrder.products
+          .map(
+            (product, index) =>
+              `${index + 1}. ${product.name} (вага ${product.weight}) x ${product.count} од`,
+          )
+          .join('\n'),
+        callback: noCall ? 'НЕ ПОТРІБЕН' : 'ПОТРІБЕН',
+        blogger:
+          attribution.source === 'referral'
+            ? {
+                name: attribution.bloggerName,
+                interest: attribution.rateBps / 100,
+                link: attribution.bloggerLink,
+                commissionAmount: attribution.commissionAmount,
+              }
+            : undefined,
+      }),
+    )
+    return acceptedOrderResponse(accepted, requestHash, message)
   } catch (error) {
     if (!(error instanceof InvalidOrderError)) {
       console.error('Unexpected order creation failure', {
@@ -392,8 +513,12 @@ export async function createOrderServer(
 
     return {
       success: false,
+      errorCode:
+        error instanceof InvalidOrderError ? error.code : 'order_unconfirmed',
       message: {
-        [locale]: t('error'),
+        [locale]: t(
+          error instanceof InvalidOrderError ? 'error' : 'unconfirmed',
+        ),
       },
     }
   }

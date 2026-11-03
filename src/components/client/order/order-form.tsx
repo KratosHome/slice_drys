@@ -105,8 +105,8 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
     const setUserData = useCartStore((state) => state.setCartUserData)
     const userData = useCartStore((state) => state.cart.userData)
     const { totalPrice, minOrderAmount } = useCartStore((state) => state)
-    const trackedShipping = useRef<string | undefined>(undefined)
-    const trackedPayment = useRef<string | undefined>(undefined)
+    const queuedShipping = useRef<string | undefined>(undefined)
+    const queuedPayment = useRef<string | undefined>(undefined)
 
     const {
       register,
@@ -291,25 +291,25 @@ const OrderForm = forwardRef<OrderFormRef, Props>(
       // These events run only after the active form fields pass validation.
       if ((userData?.formStep ?? 0) >= 1) {
         const shippingTier = `${userData?.deliveryInfo?.deliveryProvider ?? 'novaPoshta'}:${userData?.deliveryInfo?.deliveryMethod ?? 'branch'}`
-        if (trackedShipping.current !== shippingTier) {
+        if (queuedShipping.current !== shippingTier) {
           if (
             trackEcommerceEvent('add_shipping_info', items, {
               shipping_tier: shippingTier,
-            })
+            }) === 'queued'
           ) {
-            trackedShipping.current = shippingTier
+            queuedShipping.current = shippingTier
           }
         }
       }
       if ((userData?.formStep ?? 0) >= 2) {
         const paymentType = userData?.paymentInfo ?? 'card'
-        if (trackedPayment.current !== paymentType) {
+        if (queuedPayment.current !== paymentType) {
           if (
             trackEcommerceEvent('add_payment_info', items, {
               payment_type: paymentType,
-            })
+            }) === 'queued'
           ) {
-            trackedPayment.current = paymentType
+            queuedPayment.current = paymentType
           }
         }
       }

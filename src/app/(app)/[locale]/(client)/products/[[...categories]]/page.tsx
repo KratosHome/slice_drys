@@ -28,8 +28,6 @@ import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getProductBgImg } from '@/data/product-bg-img'
 import ProductListJsonLd from '@/components/client/json-ld/product-list-json-ld'
-import ProductListTracking from '@/components/google-analytics/product-list-tracking'
-import { getProductAnalyticsItem, type AnalyticsItem } from '@/utils/analytics'
 import { getPaginationRange } from '@/utils/get-pagination-range'
 import { toProductCard } from '@/utils/product-card'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
@@ -403,15 +401,6 @@ export default async function ProductsPage(props: {
 
   return (
     <>
-      <ProductListTracking
-        listId={canonicalPath}
-        listName={currentCategory.name[locale]}
-        items={productCards
-          .map(({ product, initialVariant }) =>
-            getProductAnalyticsItem(product, initialVariant),
-          )
-          .filter((item): item is AnalyticsItem => item !== undefined)}
-      />
       {!hasFacetQuery ? (
         <ProductListJsonLd
           currentCategories={currentCategory}
@@ -464,7 +453,16 @@ export default async function ProductsPage(props: {
                 activeCategorySlugs={selectedCategories}
               />
             </ClientMessages>
-            <div className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7">
+            <div
+              key={JSON.stringify([
+                canonicalRoute,
+                page,
+                selectedCategories,
+                minWeightValue,
+                maxWeightValue,
+              ])}
+              className="grid w-full grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 lg:gap-7"
+            >
               {productCards.map(({ product, initialVariant, key }, index) => (
                 <Product
                   key={key}

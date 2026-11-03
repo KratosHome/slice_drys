@@ -1,3 +1,7 @@
+import {
+  CHECKOUT_ERROR_CODES,
+  type CheckoutErrorCode,
+} from '@/constants/checkout-errors'
 import { getProductPrice } from '@/utils/product-price'
 
 export interface AnalyticsItem {
@@ -27,7 +31,6 @@ type EcommerceEvent =
   | 'begin_checkout'
   | 'add_shipping_info'
   | 'add_payment_info'
-  | 'purchase'
 
 type AnalyticsWindow = Window & {
   dataLayer?: unknown[]
@@ -35,7 +38,6 @@ type AnalyticsWindow = Window & {
   sliceDrysAnalyticsInitialized?: boolean
 }
 
-const trackedPurchases = new Set<string>()
 const roundMoney = (value: number) =>
   Math.round((value + Number.EPSILON) * 100) / 100
 
@@ -69,11 +71,15 @@ export function getCartAnalyticsItems(items: ICartItem[]): AnalyticsItem[] {
   }))
 }
 
-export function trackEcommerceEvent(
-  event: EcommerceEvent,
-  items: AnalyticsItem[],
-  parameters: Record<string, string | number> = {},
-): boolean {
+function queueEvent(
+  event:
+    | EcommerceEvent
+    | 'generate_lead'
+    | 'checkout_error'
+    | 'contact_click'
+    | 'newsletter_signup',
+  parameters: Record<string, unknown>,
+): 'queued' | 'skipped' {
   const measurementId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
   if (
     process.env.NODE_ENV === 'development' ||
@@ -81,17 +87,7 @@ export function trackEcommerceEvent(
     !measurementId ||
     !/^G-[A-Z0-9]+$/.test(measurementId)
   )
-    return false
-
-  const validItems = items.filter(
-    (item) =>
-      item.item_id &&
-      Number.isFinite(item.price) &&
-      item.price > 0 &&
-      Number.isSafeInteger(item.quantity) &&
-      item.quantity > 0,
-  )
-  if (validItems.length === 0 && event !== 'view_cart') return false
+    return 'skipped'
 
   try {
     const analyticsWindow = window as AnalyticsWindow
@@ -108,21 +104,56 @@ export function trackEcommerceEvent(
     }
     analyticsWindow.gtag('event', event, {
       send_to: measurementId,
-      currency: 'UAH',
-      value: roundMoney(
-        validItems.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0,
-        ),
-      ),
       ...parameters,
-      items: validItems,
     })
-    return true
+    return 'queued'
   } catch {
     // Analytics must never interrupt adding to the cart or placing an order.
-    return false
+    return 'skipped'
   }
+}
+
+export function trackEcommerceEvent(
+  event: EcommerceEvent,
+  items: AnalyticsItem[],
+  parameters: Record<string, string | number> = {},
+): 'queued' | 'skipped' {
+  const validItems = items.filter(
+    (item) =>
+      item.item_id &&
+      Number.isFinite(item.price) &&
+      item.price > 0 &&
+      Number.isSafeInteger(item.quantity) &&
+      item.quantity > 0,
+  )
+  if (validItems.length === 0 && event !== 'view_cart') return 'skipped'
+  return queueEvent(event, {
+    currency: 'UAH',
+    value: roundMoney(
+      validItems.reduce((total, item) => total + item.price * item.quantity, 0),
+    ),
+    ...parameters,
+    items: validItems,
+  })
+}
+
+export function trackCheckoutError(code: CheckoutErrorCode) {
+  if (!CHECKOUT_ERROR_CODES.includes(code)) return 'skipped'
+  return queueEvent('checkout_error', { error_code: code })
+}
+
+export function trackLead(form: 'callback' | 'wholesale') {
+  if (form !== 'callback' && form !== 'wholesale') return 'skipped'
+  return queueEvent('generate_lead', { form_type: form })
+}
+
+export function trackContactClick(method: 'phone' | 'email') {
+  if (method !== 'phone' && method !== 'email') return 'skipped'
+  return queueEvent('contact_click', { contact_method: method })
+}
+
+export function trackNewsletterSignup() {
+  return queueEvent('newsletter_signup', {})
 }
 
 export function trackProductSelection(
@@ -140,61 +171,4 @@ export function trackProductSelection(
       ...(list?.name ? { item_list_name: list.name } : {}),
     },
   )
-}
-
-export function trackPurchase(receipt: IOrderReceipt): boolean {
-  const { transactionId } = receipt
-  if (
-    !transactionId ||
-    trackedPurchases.has(transactionId) ||
-    receipt.currency !== 'UAH' ||
-    !Number.isFinite(receipt.value) ||
-    receipt.value <= 0 ||
-    !receipt.items.length ||
-    receipt.items.some(
-      (item) =>
-        !item.id ||
-        !Number.isFinite(item.price) ||
-        item.price <= 0 ||
-        !Number.isSafeInteger(item.quantity) ||
-        item.quantity <= 0,
-    ) ||
-    receipt.value !==
-      roundMoney(
-        receipt.items.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0,
-        ),
-      )
-  )
-    return false
-
-  const storageKey = `ga4-purchase:${transactionId}`
-  try {
-    if (window.sessionStorage.getItem(storageKey)) return false
-  } catch {
-    // Browsers may disable storage. GA4 also deduplicates transaction IDs.
-  }
-
-  // Only the saved order's receipt supplies the purchase total and unit prices.
-  const items = receipt.items.map((item) => ({
-    item_id: item.id,
-    item_name: item.name,
-    item_variant: `${item.weight} g`,
-    price: item.price,
-    quantity: item.quantity,
-  }))
-  const tracked = trackEcommerceEvent('purchase', items, {
-    transaction_id: transactionId,
-    value: receipt.value,
-  })
-  if (!tracked) return false
-
-  trackedPurchases.add(transactionId)
-  try {
-    window.sessionStorage.setItem(storageKey, '1')
-  } catch {
-    // In-memory deduplication still covers repeated callbacks in this page.
-  }
-  return true
 }
