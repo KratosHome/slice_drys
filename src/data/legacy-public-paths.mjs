@@ -23,4 +23,45 @@ export const LEGACY_PUBLIC_PATHS = Object.freeze({
   tomato: '/products/vegetables/tomato',
   beetroot: '/products/vegetables/beetroot',
   carrot: '/products/vegetables/carrot',
+
+  // Before the product-route migration, cards linked to /:category/:slug.
+  // Keep these exact pairs separate from the single-segment catalog links.
+  // Destinations use the canonical root category, not a child or promotion.
+  'fruits/apple': '/products/fruits/product/apple',
+  'fruits/apple-with-cinnamon': '/products/fruits/product/apple-with-cinnamon',
+  'fruits/banana': '/products/fruits/product/banana',
+  'fruits/grapefruit': '/products/fruits/product/grapefruit',
+  'fruits/kiwi': '/products/fruits/product/kiwi',
+  'fruits/lemon': '/products/fruits/product/lemon',
+  'fruits/orange': '/products/fruits/product/orange',
+  'fruits/persimmon': '/products/fruits/product/persimmon',
+  'fruits/plum': '/products/fruits/product/plum',
+  'fruits/strawberry': '/products/fruits/product/strawberry',
+  'fruits/tangerine': '/products/fruits/product/tangerine',
+  'meat/beef': '/products/meat/product/beef',
+  'meat/chicken': '/products/meat/product/chicken',
+  'meat/pork': '/products/meat/product/pork',
+  'meat/turkey': '/products/meat/product/turkey',
+  'mixes/banana-strawberry': '/products/mixes/product/banana-strawberry',
+  'mixes/beef-chicken': '/products/mixes/product/beef-chicken',
+  'mixes/kiwi-strawberry': '/products/mixes/product/kiwi-strawberry',
+  'vegetables/beetroot': '/products/vegetables/product/beetroot',
+  'vegetables/carrot': '/products/vegetables/product/carrot',
+  'vegetables/pumpkin': '/products/vegetables/product/pumpkin',
+  'vegetables/tomato': '/products/vegetables/product/tomato',
+
+  // Known malformed historical link; do not redirect arbitrary undefined/*.
+  'undefined/beef-chicken': '/products/mixes/product/beef-chicken',
+
+  // Additional exact historical paths confirmed in Search Console.
+  // Some used a child, missing, or incorrect category before the migration.
+  'plum/plum': '/products/fruits/product/plum',
+  'undefined/tangerine': '/products/fruits/product/tangerine',
+  'meat/beef-chicken': '/products/mixes/product/beef-chicken',
+  'strawberry/strawberry': '/products/fruits/product/strawberry',
+  'meat/orange': '/products/fruits/product/orange',
+  'beef/beef': '/products/meat/product/beef',
+  'orange/orange': '/products/fruits/product/orange',
+  'undefined/plum': '/products/fruits/product/plum',
+  'products/grapefruit': '/products/fruits/product/grapefruit',
 })

@@ -51,10 +51,42 @@ test('catalogue and detail SSR include selected weight and price before hydratio
       assert.ok(html.includes('?weight=150'), 'detail URL must preserve selected weight')
       const links = html.match(/<a\\b[^>]*>.*?<\\/a>/g) ?? []
       assert.equal(links.length, 2, 'product image and title have independent navigation links')
+      assert.ok(links.every(link => link.includes('href="/' + locale + '/products/jerky/product/test-beef?weight=150"')), 'both links retain the localized product URL and selected weight')
       assert.ok(links[0].includes('aria-label="Test beef, 150 ' + messages.product.g + '"'), 'product link has an accessible name')
       assert.ok(links.every(link => !/<(?:button|input|select)\\b/.test(link)), 'weight and cart controls are outside both navigation links')
       assert.ok(html.includes(messages.product['add-to-cart']), 'cart-dependent label keeps stable server fallback')
       assert.ok(!html.includes(messages.product['in-cart']), 'persisted cart state must wait for hydration')
+
+      const normalizedHtml = renderToStaticMarkup(React.createElement(
+        NextIntlClientProvider,
+        { locale, messages, timeZone: 'Europe/Kyiv' },
+        React.createElement(Product, {
+          product: { ...product, category: ' Jerky ', slug: ' Test-Beef ' },
+          initialVariant: product.variables[1],
+        }),
+      ))
+      const normalizedLinks = normalizedHtml.match(/<a\\b[^>]*>.*?<\\/a>/g) ?? []
+      assert.equal(normalizedLinks.length, 2)
+      assert.ok(normalizedLinks.every(link => link.includes('href="/' + locale + '/products/jerky/product/test-beef?weight=150"')), 'valid legacy casing and whitespace normalize without losing either link')
+
+      for (const field of ['category', 'slug']) {
+        for (const value of [undefined, null, '', '   ', 'undefined', ' UNDEFINED ', 'null', ' NULL ', 123]) {
+          const invalidHtml = renderToStaticMarkup(React.createElement(
+            NextIntlClientProvider,
+            { locale, messages, timeZone: 'Europe/Kyiv' },
+            React.createElement(Product, {
+              product: { ...product, [field]: value },
+              initialVariant: product.variables[1],
+            }),
+          ))
+          assert.doesNotMatch(invalidHtml, /<a\\b/, field + '=' + String(value) + ' must not create either navigation link')
+          assert.match(invalidHtml, /<img\\b/, 'a card without a destination keeps its image')
+          assert.ok(invalidHtml.includes('Test beef'), 'a card without a destination keeps its title')
+          assert.match(invalidHtml, /<p[^>]*>457 UAH<\\/p>/, 'a card without a destination keeps its price')
+          assert.ok(invalidHtml.includes('role="combobox"'), 'a card without a destination keeps its weight selector')
+          assert.ok(invalidHtml.includes(messages.product['add-to-cart']), 'a card without a destination keeps its cart control')
+        }
+      }
 
       const detailHtml = renderToStaticMarkup(React.createElement(
         NextIntlClientProvider,

@@ -139,14 +139,14 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   async redirects() {
     const legacyRedirects = Object.entries(LEGACY_PUBLIC_PATHS).flatMap(
-      ([slug, destination]) => [
+      ([legacyPath, destination]) => [
         {
-          source: `/${slug}`,
+          source: `/${legacyPath}`,
           destination: `/uk${destination}`,
           permanent: true,
         },
         ...['uk', 'en'].map((locale) => ({
-          source: `/${locale}/${slug}`,
+          source: `/${locale}/${legacyPath}`,
           destination: `/${locale}${destination}`,
           permanent: true,
         })),

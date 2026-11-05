@@ -10,7 +10,7 @@ import SaleLabel from '@/components/client/labels/sale-label'
 import { NativeButton as Button } from '@/components/ui/native-button'
 import { TransitionLink } from '@/components/client/transition-link'
 
-import { useState, useSyncExternalStore } from 'react'
+import { type ComponentProps, useState, useSyncExternalStore } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCartStore } from '@/store/cart-store'
 import { getProductPrice, isProductPriceReduced } from '@/utils/product-price'
@@ -27,6 +27,32 @@ interface IProductProps {
 }
 
 const subscribeToHydration = () => () => undefined
+
+function normalizeProductPathSegment(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+
+  const segment = value.trim().toLowerCase()
+  return segment && segment !== 'undefined' && segment !== 'null'
+    ? segment
+    : null
+}
+
+function ProductCardLink({
+  href,
+  children,
+  className,
+  ...props
+}: Omit<ComponentProps<typeof TransitionLink>, 'href'> & {
+  href: string | null
+}) {
+  if (!href) return <div className={className}>{children}</div>
+
+  return (
+    <TransitionLink href={href} className={className} {...props}>
+      {children}
+    </TransitionLink>
+  )
+}
 
 export default function Product({
   product,
@@ -91,10 +117,15 @@ export default function Product({
     if (selected) setSelectedVariable(selected)
   }
 
-  const productHref = productVariantUrl(
-    `/${locale}/products/${product.category}/product/${product.slug.toLowerCase()}`,
-    selectedVariable.weight,
-  )
+  const category = normalizeProductPathSegment(product.category)
+  const slug = normalizeProductPathSegment(product.slug)
+  const productHref =
+    category && slug
+      ? productVariantUrl(
+          `/${locale}/products/${category}/product/${slug}`,
+          selectedVariable.weight,
+        )
+      : null
   const handleSelection = () =>
     trackProductSelection(product, selectedVariable, analyticsList)
   const imageProps = {
@@ -120,7 +151,7 @@ export default function Product({
               </CardItem>
             ) : null}
           </div>
-          <TransitionLink
+          <ProductCardLink
             href={productHref}
             onClick={handleSelection}
             aria-label={`${product.name}, ${selectedVariable.weight} ${t('g')}`}
@@ -137,7 +168,7 @@ export default function Product({
                 <ViewportImage {...imageProps} enabled={imageEnabled} />
               )}
             </CardItem>
-          </TransitionLink>
+          </ProductCardLink>
           {selectedVariable.count > 0 ? (
             <div className="h-6 sm:hidden" />
           ) : null}
@@ -154,13 +185,13 @@ export default function Product({
               translateZ={50}
               className="text-xs font-medium uppercase sm:text-sm md:text-base lg:text-lg xl:text-xl"
             >
-              <TransitionLink
+              <ProductCardLink
                 href={productHref}
                 onClick={handleSelection}
                 className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
               >
                 {product.name}
-              </TransitionLink>
+              </ProductCardLink>
             </CardItem>
             <CardItem className="pointer-events-auto relative z-20">
               <WeightSelector

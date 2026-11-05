@@ -9,15 +9,12 @@ export async function proxy(request: NextRequest) {
   const hasLocale = routing.locales.includes(requestedLocale as ILocale)
   const publicRouteSegments = hasLocale ? segments.slice(1) : segments
 
-  const legacySlug = publicRouteSegments[0]?.toLowerCase()
-  // Keep historical category links pointed at their corresponding catalog.
-  if (
-    publicRouteSegments.length === 1 &&
-    Object.hasOwn(LEGACY_PUBLIC_PATHS, legacySlug)
-  ) {
-    const categoryUrl = new URL(request.url)
-    categoryUrl.pathname = `/${hasLocale ? requestedLocale : routing.defaultLocale}${LEGACY_PUBLIC_PATHS[legacySlug]}`
-    return NextResponse.redirect(categoryUrl, 308)
+  const legacyPath = publicRouteSegments.join('/').toLowerCase()
+  // Match the entire old path so catalog and product links stay distinct.
+  if (Object.hasOwn(LEGACY_PUBLIC_PATHS, legacyPath)) {
+    const destinationUrl = new URL(request.url)
+    destinationUrl.pathname = `/${hasLocale ? requestedLocale : routing.defaultLocale}${LEGACY_PUBLIC_PATHS[legacyPath]}`
+    return NextResponse.redirect(destinationUrl, 308)
   }
 
   const isUnprefixedPublicRoute =
