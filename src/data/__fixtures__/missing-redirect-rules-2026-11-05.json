@@ -1,0 +1,469 @@
+[
+  {
+    "source": "/uk/grapefruit/grapefruit",
+    "destination": "/uk/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/grapefruit/grapefruit"],
+    "verified": true
+  },
+  {
+    "source": "/uk/kiwi/kiwi-strawberry",
+    "destination": "/uk/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/kiwi/kiwi-strawberry",
+      "https://slicedrys.com/uk/kiwi/kiwi-strawberry?weight=30",
+      "https://slicedrys.com/uk/kiwi/kiwi-strawberry?weight=50"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/turkey/turkey",
+    "destination": "/uk/products/meat/product/turkey",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/turkey/turkey"],
+    "verified": true
+  },
+  {
+    "source": "/uk/pork/pork",
+    "destination": "/uk/products/meat/product/pork",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/pork/pork",
+      "https://slicedrys.com/uk/pork/pork?weight=100"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/pork/pork",
+    "destination": "/uk/products/meat/product/pork",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/pork/pork"],
+    "verified": true
+  },
+  {
+    "source": "/uk/tomato/tomato",
+    "destination": "/uk/products/vegetables/product/tomato",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/tomato/tomato",
+      "https://slicedrys.com/uk/tomato/tomato?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/persimmon/persimmon",
+    "destination": "/uk/products/fruits/product/persimmon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/persimmon/persimmon"],
+    "verified": true
+  },
+  {
+    "source": "/tomato/tomato",
+    "destination": "/uk/products/vegetables/product/tomato",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/tomato/tomato"],
+    "verified": true
+  },
+  {
+    "source": "/uk/promotions/grapefruit",
+    "destination": "/uk/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/promotions/grapefruit",
+      "https://slicedrys.com/uk/promotions/grapefruit?weight=50"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/beetroot/beetroot",
+    "destination": "/uk/products/vegetables/product/beetroot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/beetroot/beetroot",
+      "https://slicedrys.com/uk/beetroot/beetroot?weight=50",
+      "https://slicedrys.com/uk/beetroot/beetroot?weight=100"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/beetroot/beetroot",
+    "destination": "/uk/products/vegetables/product/beetroot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/beetroot/beetroot"],
+    "verified": true
+  },
+  {
+    "source": "/uk/banana/banana",
+    "destination": "/uk/products/fruits/product/banana",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/banana/banana"],
+    "verified": true
+  },
+  {
+    "source": "/banana/banana",
+    "destination": "/uk/products/fruits/product/banana",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/banana/banana"],
+    "verified": true
+  },
+  {
+    "source": "/grapefruit/Grapefruit",
+    "destination": "/uk/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/grapefruit/Grapefruit"],
+    "verified": true
+  },
+  {
+    "source": "/uk/lemon/lemon",
+    "destination": "/uk/products/fruits/product/lemon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/lemon/lemon",
+      "https://slicedrys.com/uk/lemon/lemon?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/en/banana/banana",
+    "destination": "/en/products/fruits/product/banana",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/banana/banana?weight=30",
+      "https://slicedrys.com/en/banana/banana"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/tangerine/tangerine",
+    "destination": "/uk/products/fruits/product/tangerine",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/tangerine/tangerine?weight=100",
+      "https://slicedrys.com/uk/tangerine/tangerine?weight=50",
+      "https://slicedrys.com/uk/tangerine/tangerine?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/en/tangerine/tangerine",
+    "destination": "/en/products/fruits/product/tangerine",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/tangerine/tangerine?weight=30",
+      "https://slicedrys.com/en/tangerine/tangerine"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/meat/lemon",
+    "destination": "/uk/products/fruits/product/lemon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/meat/lemon?weight=30"],
+    "verified": true
+  },
+  {
+    "source": "/uk/carrot/carrot",
+    "destination": "/uk/products/vegetables/product/carrot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/carrot/carrot?weight=150",
+      "https://slicedrys.com/uk/carrot/carrot?weight=50",
+      "https://slicedrys.com/uk/carrot/carrot?weight=100",
+      "https://slicedrys.com/uk/carrot/carrot"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/meat/kiwi-strawberry",
+    "destination": "/uk/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/meat/kiwi-strawberry"],
+    "verified": true
+  },
+  {
+    "source": "/uk/persimmon/persimmon",
+    "destination": "/uk/products/fruits/product/persimmon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/persimmon/persimmon?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/grapefruit/grapefruit",
+    "destination": "/uk/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/grapefruit/grapefruit"],
+    "verified": true
+  },
+  {
+    "source": "/uk/turkey/turkey",
+    "destination": "/uk/products/meat/product/turkey",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/turkey/turkey?weight=30"],
+    "verified": true
+  },
+  {
+    "source": "/en/meat/kiwi-strawberry",
+    "destination": "/en/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/meat/kiwi-strawberry?weight=100",
+      "https://slicedrys.com/en/meat/kiwi-strawberry"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/meat/kiwi-strawberry",
+    "destination": "/uk/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/meat/kiwi-strawberry"],
+    "verified": true
+  },
+  {
+    "source": "/uk/strawberry/banana-strawberry",
+    "destination": "/uk/products/mixes/product/banana-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/strawberry/banana-strawberry?weight=100",
+      "https://slicedrys.com/uk/strawberry/banana-strawberry?weight=150"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/en/kiwi/kiwi-strawberry",
+    "destination": "/en/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/kiwi/kiwi-strawberry?weight=30",
+      "https://slicedrys.com/en/kiwi/kiwi-strawberry"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/en/strawberry/banana-strawberry",
+    "destination": "/en/products/mixes/product/banana-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/strawberry/banana-strawberry?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/lemon/lemon",
+    "destination": "/uk/products/fruits/product/lemon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/lemon/lemon"],
+    "verified": true
+  },
+  {
+    "source": "/uk/meat/carrot",
+    "destination": "/uk/products/vegetables/product/carrot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/meat/carrot?weight=98"],
+    "verified": true
+  },
+  {
+    "source": "/en/beetroot/beetroot",
+    "destination": "/en/products/vegetables/product/beetroot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/beetroot/beetroot?weight=50",
+      "https://slicedrys.com/en/beetroot/beetroot"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/strawberry/kiwi-strawberry",
+    "destination": "/uk/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/strawberry/kiwi-strawberry?weight=150"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/beef/beef-chicken",
+    "destination": "/uk/products/mixes/product/beef-chicken",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/beef/beef-chicken?weight=50"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/promotions/apple",
+    "destination": "/uk/products/fruits/product/apple",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/promotions/apple",
+      "https://slicedrys.com/uk/promotions/apple?weight=150"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/apple/apple-with-cinnamon",
+    "destination": "/uk/products/fruits/product/apple-with-cinnamon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/uk/apple/apple-with-cinnamon?weight=30",
+      "https://slicedrys.com/uk/apple/apple-with-cinnamon?weight=50",
+      "https://slicedrys.com/uk/apple/apple-with-cinnamon?weight=100"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/uk/apple/apple",
+    "destination": "/uk/products/fruits/product/apple",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/apple/apple?weight=150"],
+    "verified": true
+  },
+  {
+    "source": "/en/apple/apple-with-cinnamon",
+    "destination": "/en/products/fruits/product/apple-with-cinnamon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/apple/apple-with-cinnamon"],
+    "verified": true
+  },
+  {
+    "source": "/en/promotions/apple",
+    "destination": "/en/products/fruits/product/apple",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/promotions/apple"],
+    "verified": true
+  },
+  {
+    "source": "/uk/kiwi/kiwi",
+    "destination": "/uk/products/fruits/product/kiwi",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/uk/kiwi/kiwi?weight=30"],
+    "verified": true
+  },
+  {
+    "source": "/promotions/apple",
+    "destination": "/uk/products/fruits/product/apple",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/promotions/apple"],
+    "verified": true
+  },
+  {
+    "source": "/carrot/carrot",
+    "destination": "/uk/products/vegetables/product/carrot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/carrot/carrot"],
+    "verified": true
+  },
+  {
+    "source": "/apple/apple-with-cinnamon",
+    "destination": "/uk/products/fruits/product/apple-with-cinnamon",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/apple/apple-with-cinnamon"],
+    "verified": true
+  },
+  {
+    "source": "/en/pork/pork",
+    "destination": "/en/products/meat/product/pork",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/pork/pork"],
+    "verified": true
+  },
+  {
+    "source": "/en/carrot/carrot",
+    "destination": "/en/products/vegetables/product/carrot",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/carrot/carrot"],
+    "verified": true
+  },
+  {
+    "source": "/en/grapefruit/grapefruit",
+    "destination": "/en/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/grapefruit/grapefruit"],
+    "verified": true
+  },
+  {
+    "source": "/en/tomato/tomato",
+    "destination": "/en/products/vegetables/product/tomato",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/en/tomato/tomato"],
+    "verified": true
+  },
+  {
+    "source": "/en/promotions/grapefruit",
+    "destination": "/en/products/fruits/product/grapefruit",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/promotions/grapefruit?weight=50"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/en/turkey/turkey",
+    "destination": "/en/products/meat/product/turkey",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": [
+      "https://slicedrys.com/en/turkey/turkey",
+      "https://slicedrys.com/en/turkey/turkey?weight=30"
+    ],
+    "verified": true
+  },
+  {
+    "source": "/kiwi/kiwi-strawberry",
+    "destination": "/uk/products/mixes/product/kiwi-strawberry",
+    "permanent": true,
+    "preserve_query": true,
+    "exact_source_urls": ["https://slicedrys.com/kiwi/kiwi-strawberry"],
+    "verified": true
+  }
+]
