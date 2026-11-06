@@ -1,4 +1,5 @@
 import { getLocale } from 'next-intl/server'
+import type { ProductReviewsData } from '@/types/product-review'
 
 import {
   buildOrganization,
@@ -16,6 +17,7 @@ interface ProductJsonLdProps {
   canonicalUrl: string
   categoryName: string
   categoryUrl: string
+  reviews?: ProductReviewsData
 }
 
 export default async function ProductJsonLd({
@@ -23,6 +25,7 @@ export default async function ProductJsonLd({
   canonicalUrl,
   categoryName,
   categoryUrl,
+  reviews,
 }: ProductJsonLdProps) {
   const locale = (await getLocale()) as ILocale
   const pageId = `${canonicalUrl}#webpage`
@@ -30,7 +33,7 @@ export default async function ProductJsonLd({
   const breadcrumbId = `${canonicalUrl}#breadcrumb`
   const homeName = locale === 'uk' ? 'Головна' : 'Home'
   const productNode = {
-    ...buildProductNode(productData, canonicalUrl),
+    ...buildProductNode(productData, canonicalUrl, reviews),
     mainEntityOfPage: { '@id': pageId },
   }
 

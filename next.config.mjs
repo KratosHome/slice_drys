@@ -127,7 +127,13 @@ const securityHeaders = [
 
 const nextConfig = {
   poweredByHeader: false,
-  serverExternalPackages: ['mongoose'],
+  serverExternalPackages: ['mongoose', 'heic-to'],
+  outputFileTracingIncludes: {
+    '/api/product-reviews': [
+      './node_modules/heic-to/package.json',
+      './node_modules/heic-to/dist/csp/heic-to.js',
+    ],
+  },
   experimental: {
     serverActions: {
       // Blog images are sent as base64. Stay below Vercel's 4.5 MB limit.

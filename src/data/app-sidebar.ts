@@ -6,6 +6,7 @@ import {
   CircleUser,
   FolderKanban,
   TrendingUp,
+  MessageSquare,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { AdminPermission } from '@/constants/user-role'
@@ -67,5 +68,12 @@ export const appSidebarData: AppSidebarItem[] = [
     icon: TrendingUp,
     link: 'admin/statistics',
     permission: 'statistics:read',
+  },
+  {
+    id: 8,
+    name: 'Відгуки',
+    icon: MessageSquare,
+    link: 'admin/reviews',
+    permission: 'reviews:manage',
   },
 ]

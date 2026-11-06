@@ -1,6 +1,7 @@
 import '@/app/(app)/storefront-pages.css'
 
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { notFound, permanentRedirect } from 'next/navigation'
 import ProductJsonLd from '@/components/client/json-ld/product-json-ld'
@@ -20,6 +21,8 @@ import { getCanonicalProductCategorySlug } from '@/utils/product-category'
 import { ProductVariantProvider } from '@/components/client/product-page/product-variant-provider'
 import { ProductNutrition } from '@/components/client/product-page/nutrition'
 import { ProductDescription } from '@/components/client/product-page/description'
+import { ProductReviews } from '@/components/client/product-reviews'
+import { getProductReviews } from '@/server/reviews/product-reviews.server'
 
 export const revalidate = 86400
 
@@ -198,6 +201,11 @@ export default async function ProductPage({ params, searchParams }: Props) {
         categorySlug.toLowerCase() === canonicalCategorySlug,
     ) ?? productData.categories[0]
 
+  // Moderation changes must reach the visible reviews and JSON-LD together.
+  // Keep product snapshots cached, but read approved reviews on each request.
+  await connection()
+  const reviews = await getProductReviews(String(productData._id))
+
   return (
     <>
       <ProductJsonLd
@@ -205,6 +213,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
         canonicalUrl={canonicalUrl}
         categoryName={canonicalCategory.name}
         categoryUrl={`${SITE_URL}/${locale}/products/${canonicalCategorySlug}`}
+        reviews={reviews}
       />
       <div className="mx-auto max-w-[1280px] px-4">
         <Breadcrumbs
@@ -232,6 +241,7 @@ export default async function ProductPage({ params, searchParams }: Props) {
           <ProductDescription description={productData.description} />
           <Accordions />
         </ProductVariantProvider>
+        <ProductReviews data={reviews} locale={locale} />
         <Suspense fallback={null}>
           <ProductRecommendations
             locale={locale}

@@ -17,6 +17,7 @@ const ADMIN_PERMISSIONS = [
   'statistics:read',
   'categories:manage',
   'products:manage',
+  'reviews:manage',
   'blog:manage',
   'blocks:manage',
   'users:manage',
@@ -25,7 +26,12 @@ const ADMIN_PERMISSIONS = [
 export type AdminPermission = (typeof ADMIN_PERMISSIONS)[number]
 
 const ROLE_PERMISSIONS: Record<AdminRole, readonly AdminPermission[]> = {
-  manager: ['orders:read', 'orders:update-status', 'statistics:read'],
+  manager: [
+    'orders:read',
+    'orders:update-status',
+    'statistics:read',
+    'reviews:manage',
+  ],
   'super-admin': ADMIN_PERMISSIONS,
 }
 
@@ -38,7 +44,7 @@ export const USER_ROLE_LABELS: Record<UserRole, string> = {
 
 export const USER_ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   client: 'Не має доступу до адмінпанелі.',
-  manager: 'Має доступ до замовлень і статистики.',
+  manager: 'Має доступ до замовлень, статистики та модерації відгуків.',
   developer: 'Технічна роль без доступу до адмінпанелі.',
   'super-admin': 'Має повний доступ і може створювати користувачів.',
 }

@@ -1,6 +1,7 @@
 import { contacts, SITE_URL } from '@/data/contacts'
 import { getProductPrice } from '@/utils/product-price'
 import { productVariantUrl } from '@/utils/product-variant'
+import type { ProductReviewsData } from '@/types/product-review'
 
 type JsonLdNode = Record<string, unknown>
 
@@ -122,6 +123,7 @@ function currencyCode(value: string): string {
 export function buildProductNode(
   product: IProduct,
   canonicalUrl: string,
+  reviews?: ProductReviewsData,
 ): JsonLdNode {
   const productSku = String(product._id || product.slug)
   const images = Array.from(
@@ -174,6 +176,19 @@ export function buildProductNode(
         ? product.description
         : undefined
 
+  // This is the same approved snapshot rendered on the product page. Product
+  // lists and store testimonials do not supply it and never acquire a rating.
+  const productReviews =
+    reviews?.productId === String(product._id) ? reviews.reviews : []
+  const hasRatings = productReviews.length > 0
+  const averageRating = hasRatings
+    ? Math.round(
+        (productReviews.reduce((sum, review) => sum + review.rating, 0) /
+          productReviews.length) *
+          10,
+      ) / 10
+    : null
+
   return {
     '@type': 'Product',
     '@id': `${canonicalUrl}#product`,
@@ -188,5 +203,29 @@ export function buildProductNode(
       name: BRAND_NAME,
     },
     offers: offers.length > 0 ? offers : undefined,
+    ...(hasRatings
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: averageRating,
+            bestRating: 5,
+            worstRating: 1,
+            ratingCount: productReviews.length,
+          },
+          review: productReviews.map((review) => ({
+            '@type': 'Review',
+            '@id': `${canonicalUrl}#review-${review.id}`,
+            author: { '@type': 'Person', name: review.author },
+            datePublished: toIsoDate(review.createdAt),
+            reviewBody: review.text,
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: review.rating,
+              bestRating: 5,
+              worstRating: 1,
+            },
+          })),
+        }
+      : {}),
   }
 }
